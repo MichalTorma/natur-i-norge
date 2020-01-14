@@ -3,9 +3,10 @@ import pandas as pd
 import sqlite3
 
 # %%
-data = pd.read_excel('../data/GAD3_T4Østl_RH.xlsx', sheet_name='GAD0', header=[0,1,2])
-data
-
+data = pd.read_excel('../data/GAD3_T4Østl_RH.xlsx', sheet_name='GADml2', skiprows=1 )
+data.columns
+#%%
+data.columns = [str(x) for x in data.columns]
 # %%
 def compactifyColumnNames(columns):
     filtered_names = [list(filter(lambda x: 'Unnamed' not in str(x), names)) for names in columns]
@@ -13,6 +14,12 @@ def compactifyColumnNames(columns):
 
 # %%
 data.columns = compactifyColumnNames(data.columns)
-data
+data.columns
 
 # %%
+conn = sqlite3.Connection('nin.db')
+
+# %%
+data.to_sql('T4', conn)
+#%%
+data.columns
