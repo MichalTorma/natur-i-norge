@@ -25,6 +25,7 @@ dependencies:
   provider: ^4.0.1
   built_collection: '>=2.0.0 <5.0.0'
   built_value: ^7.0.2
+  dio: ^3.0.8
   flutter:
     sdk: flutter
 
