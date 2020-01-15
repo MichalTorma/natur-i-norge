@@ -25,12 +25,14 @@ class _$DynamicPropertiesSerializer
       'Value',
       serializers.serialize(object.value,
           specifiedType: const FullType(String)),
-      'Properties',
-      serializers.serialize(object.properties,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(DynamicProperties)])),
     ];
-
+    if (object.properties != null) {
+      result
+        ..add('Properties')
+        ..add(serializers.serialize(object.properties,
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(DynamicProperties)])));
+    }
     return result;
   }
 
@@ -85,9 +87,6 @@ class _$DynamicProperties extends DynamicProperties {
     }
     if (value == null) {
       throw new BuiltValueNullFieldError('DynamicProperties', 'value');
-    }
-    if (properties == null) {
-      throw new BuiltValueNullFieldError('DynamicProperties', 'properties');
     }
   }
 
@@ -173,12 +172,12 @@ class DynamicPropertiesBuilder
     try {
       _$result = _$v ??
           new _$DynamicProperties._(
-              name: name, value: value, properties: properties.build());
+              name: name, value: value, properties: _properties?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'properties';
-        properties.build();
+        _properties?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'DynamicProperties', _$failedField, e.toString());

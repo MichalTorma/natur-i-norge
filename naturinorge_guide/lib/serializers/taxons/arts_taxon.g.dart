@@ -37,17 +37,6 @@ class _$ArtsTaxonSerializer implements StructuredSerializer<ArtsTaxon> {
       'taxonomicStatus',
       serializers.serialize(object.taxonomicStatus,
           specifiedType: const FullType(String)),
-      'higherClassification',
-      serializers.serialize(object.higherClassification,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(AcceptedNameUsage)])),
-      'nameAccordingTo',
-      serializers.serialize(object.nameAccordingTo,
-          specifiedType: const FullType(String)),
-      'dynamicProperties',
-      serializers.serialize(object.dynamicProperties,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(DynamicProperties)])),
     ];
     if (object.acceptedNameUsage != null) {
       result
@@ -102,22 +91,6 @@ class _$ArtsTaxonSerializer implements StructuredSerializer<ArtsTaxon> {
                   specifiedType: const FullType(AcceptedNameUsage))
               as AcceptedNameUsage);
           break;
-        case 'higherClassification':
-          result.higherClassification.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(AcceptedNameUsage)]))
-              as BuiltList<dynamic>);
-          break;
-        case 'nameAccordingTo':
-          result.nameAccordingTo = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'dynamicProperties':
-          result.dynamicProperties.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(DynamicProperties)]))
-              as BuiltList<dynamic>);
-          break;
       }
     }
 
@@ -142,12 +115,6 @@ class _$ArtsTaxon extends ArtsTaxon {
   final String taxonomicStatus;
   @override
   final AcceptedNameUsage acceptedNameUsage;
-  @override
-  final BuiltList<AcceptedNameUsage> higherClassification;
-  @override
-  final String nameAccordingTo;
-  @override
-  final BuiltList<DynamicProperties> dynamicProperties;
 
   factory _$ArtsTaxon([void Function(ArtsTaxonBuilder) updates]) =>
       (new ArtsTaxonBuilder()..update(updates)).build();
@@ -160,10 +127,7 @@ class _$ArtsTaxon extends ArtsTaxon {
       this.scientificNameAuthorship,
       this.taxonRank,
       this.taxonomicStatus,
-      this.acceptedNameUsage,
-      this.higherClassification,
-      this.nameAccordingTo,
-      this.dynamicProperties})
+      this.acceptedNameUsage})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('ArtsTaxon', 'id');
@@ -187,15 +151,6 @@ class _$ArtsTaxon extends ArtsTaxon {
     if (taxonomicStatus == null) {
       throw new BuiltValueNullFieldError('ArtsTaxon', 'taxonomicStatus');
     }
-    if (higherClassification == null) {
-      throw new BuiltValueNullFieldError('ArtsTaxon', 'higherClassification');
-    }
-    if (nameAccordingTo == null) {
-      throw new BuiltValueNullFieldError('ArtsTaxon', 'nameAccordingTo');
-    }
-    if (dynamicProperties == null) {
-      throw new BuiltValueNullFieldError('ArtsTaxon', 'dynamicProperties');
-    }
   }
 
   @override
@@ -216,10 +171,7 @@ class _$ArtsTaxon extends ArtsTaxon {
         scientificNameAuthorship == other.scientificNameAuthorship &&
         taxonRank == other.taxonRank &&
         taxonomicStatus == other.taxonomicStatus &&
-        acceptedNameUsage == other.acceptedNameUsage &&
-        higherClassification == other.higherClassification &&
-        nameAccordingTo == other.nameAccordingTo &&
-        dynamicProperties == other.dynamicProperties;
+        acceptedNameUsage == other.acceptedNameUsage;
   }
 
   @override
@@ -229,21 +181,13 @@ class _$ArtsTaxon extends ArtsTaxon {
             $jc(
                 $jc(
                     $jc(
-                        $jc(
-                            $jc(
-                                $jc(
-                                    $jc(
-                                        $jc($jc(0, id.hashCode),
-                                            scientificNameID.hashCode),
-                                        taxonID.hashCode),
-                                    scientificName.hashCode),
-                                scientificNameAuthorship.hashCode),
-                            taxonRank.hashCode),
-                        taxonomicStatus.hashCode),
-                    acceptedNameUsage.hashCode),
-                higherClassification.hashCode),
-            nameAccordingTo.hashCode),
-        dynamicProperties.hashCode));
+                        $jc($jc($jc(0, id.hashCode), scientificNameID.hashCode),
+                            taxonID.hashCode),
+                        scientificName.hashCode),
+                    scientificNameAuthorship.hashCode),
+                taxonRank.hashCode),
+            taxonomicStatus.hashCode),
+        acceptedNameUsage.hashCode));
   }
 
   @override
@@ -256,10 +200,7 @@ class _$ArtsTaxon extends ArtsTaxon {
           ..add('scientificNameAuthorship', scientificNameAuthorship)
           ..add('taxonRank', taxonRank)
           ..add('taxonomicStatus', taxonomicStatus)
-          ..add('acceptedNameUsage', acceptedNameUsage)
-          ..add('higherClassification', higherClassification)
-          ..add('nameAccordingTo', nameAccordingTo)
-          ..add('dynamicProperties', dynamicProperties))
+          ..add('acceptedNameUsage', acceptedNameUsage))
         .toString();
   }
 }
@@ -305,24 +246,6 @@ class ArtsTaxonBuilder implements Builder<ArtsTaxon, ArtsTaxonBuilder> {
   set acceptedNameUsage(AcceptedNameUsageBuilder acceptedNameUsage) =>
       _$this._acceptedNameUsage = acceptedNameUsage;
 
-  ListBuilder<AcceptedNameUsage> _higherClassification;
-  ListBuilder<AcceptedNameUsage> get higherClassification =>
-      _$this._higherClassification ??= new ListBuilder<AcceptedNameUsage>();
-  set higherClassification(
-          ListBuilder<AcceptedNameUsage> higherClassification) =>
-      _$this._higherClassification = higherClassification;
-
-  String _nameAccordingTo;
-  String get nameAccordingTo => _$this._nameAccordingTo;
-  set nameAccordingTo(String nameAccordingTo) =>
-      _$this._nameAccordingTo = nameAccordingTo;
-
-  ListBuilder<DynamicProperties> _dynamicProperties;
-  ListBuilder<DynamicProperties> get dynamicProperties =>
-      _$this._dynamicProperties ??= new ListBuilder<DynamicProperties>();
-  set dynamicProperties(ListBuilder<DynamicProperties> dynamicProperties) =>
-      _$this._dynamicProperties = dynamicProperties;
-
   ArtsTaxonBuilder();
 
   ArtsTaxonBuilder get _$this {
@@ -335,9 +258,6 @@ class ArtsTaxonBuilder implements Builder<ArtsTaxon, ArtsTaxonBuilder> {
       _taxonRank = _$v.taxonRank;
       _taxonomicStatus = _$v.taxonomicStatus;
       _acceptedNameUsage = _$v.acceptedNameUsage?.toBuilder();
-      _higherClassification = _$v.higherClassification?.toBuilder();
-      _nameAccordingTo = _$v.nameAccordingTo;
-      _dynamicProperties = _$v.dynamicProperties?.toBuilder();
       _$v = null;
     }
     return this;
@@ -369,20 +289,12 @@ class ArtsTaxonBuilder implements Builder<ArtsTaxon, ArtsTaxonBuilder> {
               scientificNameAuthorship: scientificNameAuthorship,
               taxonRank: taxonRank,
               taxonomicStatus: taxonomicStatus,
-              acceptedNameUsage: _acceptedNameUsage?.build(),
-              higherClassification: higherClassification.build(),
-              nameAccordingTo: nameAccordingTo,
-              dynamicProperties: dynamicProperties.build());
+              acceptedNameUsage: _acceptedNameUsage?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'acceptedNameUsage';
         _acceptedNameUsage?.build();
-        _$failedField = 'higherClassification';
-        higherClassification.build();
-
-        _$failedField = 'dynamicProperties';
-        dynamicProperties.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'ArtsTaxon', _$failedField, e.toString());

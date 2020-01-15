@@ -132,11 +132,11 @@ abstract class Observations
   int get scientificNameId;
   String toJson() {
     return json
-        .encode(serializers.serializeWith(Observations.serializer, this));
+        .encode(standardSerializers.serializeWith(Observations.serializer, this));
   }
 
   static Observations fromJson(String jsonString) {
-    return serializers.deserializeWith(
+    return standardSerializers.deserializeWith(
         Observations.serializer, json.decode(jsonString));
   }
 

@@ -29,11 +29,11 @@ abstract class ArtsObservation
   int get totalPages;
   String toJson() {
     return json
-        .encode(serializers.serializeWith(ArtsObservation.serializer, this));
+        .encode(standardSerializers.serializeWith(ArtsObservation.serializer, this));
   }
 
   static ArtsObservation fromJson(String jsonString) {
-    return serializers.deserializeWith(
+    return standardSerializers.deserializeWith(
         ArtsObservation.serializer, json.decode(jsonString));
   }
 

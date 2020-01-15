@@ -3,6 +3,7 @@ library serializers;
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
+import 'package:built_value/standard_json_plugin.dart';
 import 'package:naturinorge_guide/serializers/observations/arts_observation.dart';
 import 'package:naturinorge_guide/serializers/observations/observations.dart';
 import 'package:naturinorge_guide/serializers/observations/property_url.dart';
@@ -32,3 +33,5 @@ part 'serializers.g.dart';
   DynamicProperties,
 ])
 final Serializers serializers = _$serializers;
+Serializers standardSerializers =
+(serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

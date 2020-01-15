@@ -14,12 +14,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Observations.serializer)
       ..add(PropertyUrl.serializer)
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(AcceptedNameUsage)]),
-          () => new ListBuilder<AcceptedNameUsage>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(DynamicProperties)]),
-          () => new ListBuilder<DynamicProperties>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(DynamicProperties)]),
           () => new ListBuilder<DynamicProperties>())
       ..addBuilderFactory(
