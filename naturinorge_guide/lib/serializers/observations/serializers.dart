@@ -3,9 +3,12 @@ library serializers;
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
-import 'package:naturinorge_guide/serializers/arts_observation.dart';
-import 'package:naturinorge_guide/serializers/observations.dart';
-import 'package:naturinorge_guide/serializers/property_url.dart';
+import 'package:naturinorge_guide/serializers/observations/arts_observation.dart';
+import 'package:naturinorge_guide/serializers/observations/observations.dart';
+import 'package:naturinorge_guide/serializers/observations/property_url.dart';
+import 'package:naturinorge_guide/serializers/taxons/accepted_name_usage.dart';
+import 'package:naturinorge_guide/serializers/taxons/arts_taxon.dart';
+import 'package:naturinorge_guide/serializers/taxons/dynamic_properties.dart';
 
 part 'serializers.g.dart';
 
@@ -23,6 +26,9 @@ part 'serializers.g.dart';
 @SerializersFor([
   ArtsObservation,
   Observations,
-  PropertyUrl
+  PropertyUrl,
+  AcceptedNameUsage,
+  ArtsTaxon,
+  DynamicProperties,
 ])
 final Serializers serializers = _$serializers;
