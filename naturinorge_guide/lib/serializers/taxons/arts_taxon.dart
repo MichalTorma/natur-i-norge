@@ -34,18 +34,18 @@ abstract class ArtsTaxon implements Built<ArtsTaxon, ArtsTaxonBuilder> {
   @BuiltValueField(wireName: 'acceptedNameUsage')
   @nullable
   AcceptedNameUsage get acceptedNameUsage;
-  @BuiltValueField(wireName: 'higherClassification')
-  BuiltList<AcceptedNameUsage> get higherClassification;
-  @BuiltValueField(wireName: 'nameAccordingTo')
-  String get nameAccordingTo;
-  @BuiltValueField(wireName: 'dynamicProperties')
-  BuiltList<DynamicProperties> get dynamicProperties;
+  // @BuiltValueField(wireName: 'higherClassification')
+  // BuiltList<AcceptedNameUsage> get higherClassification;
+  // @BuiltValueField(wireName: 'nameAccordingTo')
+  // String get nameAccordingTo;
+  // @BuiltValueField(wireName: 'dynamicProperties')
+  // BuiltList<DynamicProperties> get dynamicProperties;
   String toJson() {
-    return json.encode(serializers.serializeWith(ArtsTaxon.serializer, this));
+    return json.encode(standardSerializers.serializeWith(ArtsTaxon.serializer, this));
   }
 
   static ArtsTaxon fromJson(String jsonString) {
-    return serializers.deserializeWith(
+    return standardSerializers.deserializeWith(
         ArtsTaxon.serializer, json.decode(jsonString));
   }
 

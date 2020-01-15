@@ -40,11 +40,11 @@ abstract class AcceptedNameUsage
   String get dynamicProperties;
   String toJson() {
     return json
-        .encode(serializers.serializeWith(AcceptedNameUsage.serializer, this));
+        .encode(standardSerializers.serializeWith(AcceptedNameUsage.serializer, this));
   }
 
   static AcceptedNameUsage fromJson(String jsonString) {
-    return serializers.deserializeWith(
+    return standardSerializers.deserializeWith(
         AcceptedNameUsage.serializer, json.decode(jsonString));
   }
 

@@ -22,11 +22,11 @@ abstract class PropertyUrl implements Built<PropertyUrl, PropertyUrlBuilder> {
   @BuiltValueField(wireName: 'Url')
   String get url;
   String toJson() {
-    return json.encode(serializers.serializeWith(PropertyUrl.serializer, this));
+    return json.encode(standardSerializers.serializeWith(PropertyUrl.serializer, this));
   }
 
   static PropertyUrl fromJson(String jsonString) {
-    return serializers.deserializeWith(
+    return standardSerializers.deserializeWith(
         PropertyUrl.serializer, json.decode(jsonString));
   }
 

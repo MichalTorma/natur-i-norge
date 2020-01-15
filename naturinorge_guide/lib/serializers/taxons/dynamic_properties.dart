@@ -20,15 +20,16 @@ abstract class DynamicProperties
   String get name;
   @BuiltValueField(wireName: 'Value')
   String get value;
+  @nullable
   @BuiltValueField(wireName: 'Properties')
   BuiltList<DynamicProperties> get properties;
   String toJson() {
     return json
-        .encode(serializers.serializeWith(DynamicProperties.serializer, this));
+        .encode(standardSerializers.serializeWith(DynamicProperties.serializer, this));
   }
 
   static DynamicProperties fromJson(String jsonString) {
-    return serializers.deserializeWith(
+    return standardSerializers.deserializeWith(
         DynamicProperties.serializer, json.decode(jsonString));
   }
 
