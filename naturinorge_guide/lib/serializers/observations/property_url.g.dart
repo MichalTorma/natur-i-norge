@@ -17,16 +17,25 @@ class _$PropertyUrlSerializer implements StructuredSerializer<PropertyUrl> {
   @override
   Iterable<Object> serialize(Serializers serializers, PropertyUrl object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'Type',
-      serializers.serialize(object.type, specifiedType: const FullType(String)),
-      'LinkTekst',
-      serializers.serialize(object.linkTekst,
-          specifiedType: const FullType(String)),
-      'Url',
-      serializers.serialize(object.url, specifiedType: const FullType(String)),
-    ];
-
+    final result = <Object>[];
+    if (object.type != null) {
+      result
+        ..add('Type')
+        ..add(serializers.serialize(object.type,
+            specifiedType: const FullType(String)));
+    }
+    if (object.linkTekst != null) {
+      result
+        ..add('LinkTekst')
+        ..add(serializers.serialize(object.linkTekst,
+            specifiedType: const FullType(String)));
+    }
+    if (object.url != null) {
+      result
+        ..add('Url')
+        ..add(serializers.serialize(object.url,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -71,17 +80,7 @@ class _$PropertyUrl extends PropertyUrl {
   factory _$PropertyUrl([void Function(PropertyUrlBuilder) updates]) =>
       (new PropertyUrlBuilder()..update(updates)).build();
 
-  _$PropertyUrl._({this.type, this.linkTekst, this.url}) : super._() {
-    if (type == null) {
-      throw new BuiltValueNullFieldError('PropertyUrl', 'type');
-    }
-    if (linkTekst == null) {
-      throw new BuiltValueNullFieldError('PropertyUrl', 'linkTekst');
-    }
-    if (url == null) {
-      throw new BuiltValueNullFieldError('PropertyUrl', 'url');
-    }
-  }
+  _$PropertyUrl._({this.type, this.linkTekst, this.url}) : super._();
 
   @override
   PropertyUrl rebuild(void Function(PropertyUrlBuilder) updates) =>

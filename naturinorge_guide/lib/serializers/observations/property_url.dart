@@ -15,10 +15,13 @@ abstract class PropertyUrl implements Built<PropertyUrl, PropertyUrlBuilder> {
 
   factory PropertyUrl([updates(PropertyUrlBuilder b)]) = _$PropertyUrl;
 
+  @nullable
   @BuiltValueField(wireName: 'Type')
   String get type;
+  @nullable
   @BuiltValueField(wireName: 'LinkTekst')
   String get linkTekst;
+  @nullable
   @BuiltValueField(wireName: 'Url')
   String get url;
   String toJson() {

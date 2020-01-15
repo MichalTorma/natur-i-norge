@@ -18,176 +18,351 @@ class _$ObservationsSerializer implements StructuredSerializer<Observations> {
   @override
   Iterable<Object> serialize(Serializers serializers, Observations object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'species',
-      serializers.serialize(object.species,
-          specifiedType: const FullType(String)),
-      'Id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'Institution',
-      serializers.serialize(object.institution,
-          specifiedType: const FullType(String)),
-      'InstitutionCode',
-      serializers.serialize(object.institutionCode,
-          specifiedType: const FullType(String)),
-      'InstitutionUrl',
-      serializers.serialize(object.institutionUrl,
-          specifiedType: const FullType(String)),
-      'InstitutionLogoUrl',
-      serializers.serialize(object.institutionLogoUrl,
-          specifiedType: const FullType(String)),
-      'Collection',
-      serializers.serialize(object.collection,
-          specifiedType: const FullType(String)),
-      'CollectionCode',
-      serializers.serialize(object.collectionCode,
-          specifiedType: const FullType(String)),
-      'CatalogNumber',
-      serializers.serialize(object.catalogNumber,
-          specifiedType: const FullType(String)),
-      'DetailUrl',
-      serializers.serialize(object.detailUrl,
-          specifiedType: const FullType(String)),
-      'Collector',
-      serializers.serialize(object.collector,
-          specifiedType: const FullType(String)),
-      'CollectedDate',
-      serializers.serialize(object.collectedDate,
-          specifiedType: const FullType(String)),
-      'IdentifiedBy',
-      serializers.serialize(object.identifiedBy,
-          specifiedType: const FullType(String)),
-      'DatetimeIdentified',
-      serializers.serialize(object.datetimeIdentified,
-          specifiedType: const FullType(String)),
-      'BasisOfRecord',
-      serializers.serialize(object.basisOfRecord,
-          specifiedType: const FullType(String)),
-      'TaxonId',
-      serializers.serialize(object.taxonId, specifiedType: const FullType(int)),
-      'Habitat',
-      serializers.serialize(object.habitat,
-          specifiedType: const FullType(String)),
-      'DatasetId',
-      serializers.serialize(object.datasetId,
-          specifiedType: const FullType(String)),
-      'DatasetName',
-      serializers.serialize(object.datasetName,
-          specifiedType: const FullType(String)),
-      'ObsUrl',
-      serializers.serialize(object.obsUrl,
-          specifiedType: const FullType(String)),
-      'Name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
-      'ScientificName',
-      serializers.serialize(object.scientificName,
-          specifiedType: const FullType(String)),
-      'Author',
-      serializers.serialize(object.author,
-          specifiedType: const FullType(String)),
-      'kingdom',
-      serializers.serialize(object.kingdom,
-          specifiedType: const FullType(String)),
-      'phylum',
-      serializers.serialize(object.phylum,
-          specifiedType: const FullType(String)),
-      'klass',
-      serializers.serialize(object.klass,
-          specifiedType: const FullType(String)),
-      'order',
-      serializers.serialize(object.order,
-          specifiedType: const FullType(String)),
-      'family',
-      serializers.serialize(object.family,
-          specifiedType: const FullType(String)),
-      'genus',
-      serializers.serialize(object.genus,
-          specifiedType: const FullType(String)),
-      'subspecies',
-      serializers.serialize(object.subspecies,
-          specifiedType: const FullType(String)),
-      'specificEpithet',
-      serializers.serialize(object.specificEpithet,
-          specifiedType: const FullType(String)),
-      'infraspecificEpithet',
-      serializers.serialize(object.infraspecificEpithet,
-          specifiedType: const FullType(String)),
-      'Status',
-      serializers.serialize(object.status,
-          specifiedType: const FullType(String)),
-      'TypeObj',
-      serializers.serialize(object.typeObj,
-          specifiedType: const FullType(String)),
-      'Sex',
-      serializers.serialize(object.sex, specifiedType: const FullType(String)),
-      'Count',
-      serializers.serialize(object.count,
-          specifiedType: const FullType(String)),
-      'Notes',
-      serializers.serialize(object.notes,
-          specifiedType: const FullType(String)),
-      'Country',
-      serializers.serialize(object.country,
-          specifiedType: const FullType(String)),
-      'County',
-      serializers.serialize(object.county,
-          specifiedType: const FullType(String)),
-      'CountyId',
-      serializers.serialize(object.countyId,
-          specifiedType: const FullType(int)),
-      'Municipality',
-      serializers.serialize(object.municipality,
-          specifiedType: const FullType(String)),
-      'MunicipalityId',
-      serializers.serialize(object.municipalityId,
-          specifiedType: const FullType(int)),
-      'Locality',
-      serializers.serialize(object.locality,
-          specifiedType: const FullType(String)),
-      'Longitude',
-      serializers.serialize(object.longitude,
-          specifiedType: const FullType(String)),
-      'Latitude',
-      serializers.serialize(object.latitude,
-          specifiedType: const FullType(String)),
-      'Precision',
-      serializers.serialize(object.precision,
-          specifiedType: const FullType(String)),
-      'FootprintWKT',
-      serializers.serialize(object.footprintWKT,
-          specifiedType: const FullType(String)),
-      'East',
-      serializers.serialize(object.east, specifiedType: const FullType(double)),
-      'North',
-      serializers.serialize(object.north,
-          specifiedType: const FullType(double)),
-      'Projection',
-      serializers.serialize(object.projection,
-          specifiedType: const FullType(int)),
-      'Info',
-      serializers.serialize(object.info, specifiedType: const FullType(String)),
-      'PropertyUrls',
-      serializers.serialize(object.propertyUrls,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(PropertyUrl)])),
-      'ThumbImgUrls',
-      serializers.serialize(object.thumbImgUrls,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(String)])),
-      'Behavior',
-      serializers.serialize(object.behavior,
-          specifiedType: const FullType(String)),
-      'OtherCatalogNumbers',
-      serializers.serialize(object.otherCatalogNumbers,
-          specifiedType: const FullType(String)),
-      'TrackDateTime',
-      serializers.serialize(object.trackDateTime,
-          specifiedType: const FullType(String)),
-      'ScientificNameId',
-      serializers.serialize(object.scientificNameId,
-          specifiedType: const FullType(int)),
-    ];
-
+    final result = <Object>[];
+    if (object.species != null) {
+      result
+        ..add('species')
+        ..add(serializers.serialize(object.species,
+            specifiedType: const FullType(String)));
+    }
+    if (object.id != null) {
+      result
+        ..add('Id')
+        ..add(serializers.serialize(object.id,
+            specifiedType: const FullType(String)));
+    }
+    if (object.institution != null) {
+      result
+        ..add('Institution')
+        ..add(serializers.serialize(object.institution,
+            specifiedType: const FullType(String)));
+    }
+    if (object.institutionCode != null) {
+      result
+        ..add('InstitutionCode')
+        ..add(serializers.serialize(object.institutionCode,
+            specifiedType: const FullType(String)));
+    }
+    if (object.institutionUrl != null) {
+      result
+        ..add('InstitutionUrl')
+        ..add(serializers.serialize(object.institutionUrl,
+            specifiedType: const FullType(String)));
+    }
+    if (object.institutionLogoUrl != null) {
+      result
+        ..add('InstitutionLogoUrl')
+        ..add(serializers.serialize(object.institutionLogoUrl,
+            specifiedType: const FullType(String)));
+    }
+    if (object.collection != null) {
+      result
+        ..add('Collection')
+        ..add(serializers.serialize(object.collection,
+            specifiedType: const FullType(String)));
+    }
+    if (object.collectionCode != null) {
+      result
+        ..add('CollectionCode')
+        ..add(serializers.serialize(object.collectionCode,
+            specifiedType: const FullType(String)));
+    }
+    if (object.catalogNumber != null) {
+      result
+        ..add('CatalogNumber')
+        ..add(serializers.serialize(object.catalogNumber,
+            specifiedType: const FullType(String)));
+    }
+    if (object.detailUrl != null) {
+      result
+        ..add('DetailUrl')
+        ..add(serializers.serialize(object.detailUrl,
+            specifiedType: const FullType(String)));
+    }
+    if (object.collector != null) {
+      result
+        ..add('Collector')
+        ..add(serializers.serialize(object.collector,
+            specifiedType: const FullType(String)));
+    }
+    if (object.collectedDate != null) {
+      result
+        ..add('CollectedDate')
+        ..add(serializers.serialize(object.collectedDate,
+            specifiedType: const FullType(String)));
+    }
+    if (object.identifiedBy != null) {
+      result
+        ..add('IdentifiedBy')
+        ..add(serializers.serialize(object.identifiedBy,
+            specifiedType: const FullType(String)));
+    }
+    if (object.datetimeIdentified != null) {
+      result
+        ..add('DatetimeIdentified')
+        ..add(serializers.serialize(object.datetimeIdentified,
+            specifiedType: const FullType(String)));
+    }
+    if (object.basisOfRecord != null) {
+      result
+        ..add('BasisOfRecord')
+        ..add(serializers.serialize(object.basisOfRecord,
+            specifiedType: const FullType(String)));
+    }
+    if (object.taxonId != null) {
+      result
+        ..add('TaxonId')
+        ..add(serializers.serialize(object.taxonId,
+            specifiedType: const FullType(int)));
+    }
+    if (object.habitat != null) {
+      result
+        ..add('Habitat')
+        ..add(serializers.serialize(object.habitat,
+            specifiedType: const FullType(String)));
+    }
+    if (object.datasetId != null) {
+      result
+        ..add('DatasetId')
+        ..add(serializers.serialize(object.datasetId,
+            specifiedType: const FullType(String)));
+    }
+    if (object.datasetName != null) {
+      result
+        ..add('DatasetName')
+        ..add(serializers.serialize(object.datasetName,
+            specifiedType: const FullType(String)));
+    }
+    if (object.obsUrl != null) {
+      result
+        ..add('ObsUrl')
+        ..add(serializers.serialize(object.obsUrl,
+            specifiedType: const FullType(String)));
+    }
+    if (object.name != null) {
+      result
+        ..add('Name')
+        ..add(serializers.serialize(object.name,
+            specifiedType: const FullType(String)));
+    }
+    if (object.scientificName != null) {
+      result
+        ..add('ScientificName')
+        ..add(serializers.serialize(object.scientificName,
+            specifiedType: const FullType(String)));
+    }
+    if (object.author != null) {
+      result
+        ..add('Author')
+        ..add(serializers.serialize(object.author,
+            specifiedType: const FullType(String)));
+    }
+    if (object.kingdom != null) {
+      result
+        ..add('kingdom')
+        ..add(serializers.serialize(object.kingdom,
+            specifiedType: const FullType(String)));
+    }
+    if (object.phylum != null) {
+      result
+        ..add('phylum')
+        ..add(serializers.serialize(object.phylum,
+            specifiedType: const FullType(String)));
+    }
+    if (object.klass != null) {
+      result
+        ..add('klass')
+        ..add(serializers.serialize(object.klass,
+            specifiedType: const FullType(String)));
+    }
+    if (object.order != null) {
+      result
+        ..add('order')
+        ..add(serializers.serialize(object.order,
+            specifiedType: const FullType(String)));
+    }
+    if (object.family != null) {
+      result
+        ..add('family')
+        ..add(serializers.serialize(object.family,
+            specifiedType: const FullType(String)));
+    }
+    if (object.genus != null) {
+      result
+        ..add('genus')
+        ..add(serializers.serialize(object.genus,
+            specifiedType: const FullType(String)));
+    }
+    if (object.subspecies != null) {
+      result
+        ..add('subspecies')
+        ..add(serializers.serialize(object.subspecies,
+            specifiedType: const FullType(String)));
+    }
+    if (object.specificEpithet != null) {
+      result
+        ..add('specificEpithet')
+        ..add(serializers.serialize(object.specificEpithet,
+            specifiedType: const FullType(String)));
+    }
+    if (object.infraspecificEpithet != null) {
+      result
+        ..add('infraspecificEpithet')
+        ..add(serializers.serialize(object.infraspecificEpithet,
+            specifiedType: const FullType(String)));
+    }
+    if (object.status != null) {
+      result
+        ..add('Status')
+        ..add(serializers.serialize(object.status,
+            specifiedType: const FullType(String)));
+    }
+    if (object.typeObj != null) {
+      result
+        ..add('TypeObj')
+        ..add(serializers.serialize(object.typeObj,
+            specifiedType: const FullType(String)));
+    }
+    if (object.sex != null) {
+      result
+        ..add('Sex')
+        ..add(serializers.serialize(object.sex,
+            specifiedType: const FullType(String)));
+    }
+    if (object.count != null) {
+      result
+        ..add('Count')
+        ..add(serializers.serialize(object.count,
+            specifiedType: const FullType(String)));
+    }
+    if (object.notes != null) {
+      result
+        ..add('Notes')
+        ..add(serializers.serialize(object.notes,
+            specifiedType: const FullType(String)));
+    }
+    if (object.country != null) {
+      result
+        ..add('Country')
+        ..add(serializers.serialize(object.country,
+            specifiedType: const FullType(String)));
+    }
+    if (object.county != null) {
+      result
+        ..add('County')
+        ..add(serializers.serialize(object.county,
+            specifiedType: const FullType(String)));
+    }
+    if (object.countyId != null) {
+      result
+        ..add('CountyId')
+        ..add(serializers.serialize(object.countyId,
+            specifiedType: const FullType(int)));
+    }
+    if (object.municipality != null) {
+      result
+        ..add('Municipality')
+        ..add(serializers.serialize(object.municipality,
+            specifiedType: const FullType(String)));
+    }
+    if (object.municipalityId != null) {
+      result
+        ..add('MunicipalityId')
+        ..add(serializers.serialize(object.municipalityId,
+            specifiedType: const FullType(int)));
+    }
+    if (object.locality != null) {
+      result
+        ..add('Locality')
+        ..add(serializers.serialize(object.locality,
+            specifiedType: const FullType(String)));
+    }
+    if (object.longitude != null) {
+      result
+        ..add('Longitude')
+        ..add(serializers.serialize(object.longitude,
+            specifiedType: const FullType(String)));
+    }
+    if (object.latitude != null) {
+      result
+        ..add('Latitude')
+        ..add(serializers.serialize(object.latitude,
+            specifiedType: const FullType(String)));
+    }
+    if (object.precision != null) {
+      result
+        ..add('Precision')
+        ..add(serializers.serialize(object.precision,
+            specifiedType: const FullType(String)));
+    }
+    if (object.footprintWKT != null) {
+      result
+        ..add('FootprintWKT')
+        ..add(serializers.serialize(object.footprintWKT,
+            specifiedType: const FullType(String)));
+    }
+    if (object.east != null) {
+      result
+        ..add('East')
+        ..add(serializers.serialize(object.east,
+            specifiedType: const FullType(double)));
+    }
+    if (object.north != null) {
+      result
+        ..add('North')
+        ..add(serializers.serialize(object.north,
+            specifiedType: const FullType(double)));
+    }
+    if (object.projection != null) {
+      result
+        ..add('Projection')
+        ..add(serializers.serialize(object.projection,
+            specifiedType: const FullType(int)));
+    }
+    if (object.info != null) {
+      result
+        ..add('Info')
+        ..add(serializers.serialize(object.info,
+            specifiedType: const FullType(String)));
+    }
+    if (object.propertyUrls != null) {
+      result
+        ..add('PropertyUrls')
+        ..add(serializers.serialize(object.propertyUrls,
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(PropertyUrl)])));
+    }
+    if (object.thumbImgUrls != null) {
+      result
+        ..add('ThumbImgUrls')
+        ..add(serializers.serialize(object.thumbImgUrls,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(String)])));
+    }
+    if (object.behavior != null) {
+      result
+        ..add('Behavior')
+        ..add(serializers.serialize(object.behavior,
+            specifiedType: const FullType(String)));
+    }
+    if (object.otherCatalogNumbers != null) {
+      result
+        ..add('OtherCatalogNumbers')
+        ..add(serializers.serialize(object.otherCatalogNumbers,
+            specifiedType: const FullType(String)));
+    }
+    if (object.trackDateTime != null) {
+      result
+        ..add('TrackDateTime')
+        ..add(serializers.serialize(object.trackDateTime,
+            specifiedType: const FullType(String)));
+    }
+    if (object.scientificNameId != null) {
+      result
+        ..add('ScientificNameId')
+        ..add(serializers.serialize(object.scientificNameId,
+            specifiedType: const FullType(int)));
+    }
     return result;
   }
 
@@ -618,180 +793,7 @@ class _$Observations extends Observations {
       this.otherCatalogNumbers,
       this.trackDateTime,
       this.scientificNameId})
-      : super._() {
-    if (species == null) {
-      throw new BuiltValueNullFieldError('Observations', 'species');
-    }
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Observations', 'id');
-    }
-    if (institution == null) {
-      throw new BuiltValueNullFieldError('Observations', 'institution');
-    }
-    if (institutionCode == null) {
-      throw new BuiltValueNullFieldError('Observations', 'institutionCode');
-    }
-    if (institutionUrl == null) {
-      throw new BuiltValueNullFieldError('Observations', 'institutionUrl');
-    }
-    if (institutionLogoUrl == null) {
-      throw new BuiltValueNullFieldError('Observations', 'institutionLogoUrl');
-    }
-    if (collection == null) {
-      throw new BuiltValueNullFieldError('Observations', 'collection');
-    }
-    if (collectionCode == null) {
-      throw new BuiltValueNullFieldError('Observations', 'collectionCode');
-    }
-    if (catalogNumber == null) {
-      throw new BuiltValueNullFieldError('Observations', 'catalogNumber');
-    }
-    if (detailUrl == null) {
-      throw new BuiltValueNullFieldError('Observations', 'detailUrl');
-    }
-    if (collector == null) {
-      throw new BuiltValueNullFieldError('Observations', 'collector');
-    }
-    if (collectedDate == null) {
-      throw new BuiltValueNullFieldError('Observations', 'collectedDate');
-    }
-    if (identifiedBy == null) {
-      throw new BuiltValueNullFieldError('Observations', 'identifiedBy');
-    }
-    if (datetimeIdentified == null) {
-      throw new BuiltValueNullFieldError('Observations', 'datetimeIdentified');
-    }
-    if (basisOfRecord == null) {
-      throw new BuiltValueNullFieldError('Observations', 'basisOfRecord');
-    }
-    if (taxonId == null) {
-      throw new BuiltValueNullFieldError('Observations', 'taxonId');
-    }
-    if (habitat == null) {
-      throw new BuiltValueNullFieldError('Observations', 'habitat');
-    }
-    if (datasetId == null) {
-      throw new BuiltValueNullFieldError('Observations', 'datasetId');
-    }
-    if (datasetName == null) {
-      throw new BuiltValueNullFieldError('Observations', 'datasetName');
-    }
-    if (obsUrl == null) {
-      throw new BuiltValueNullFieldError('Observations', 'obsUrl');
-    }
-    if (name == null) {
-      throw new BuiltValueNullFieldError('Observations', 'name');
-    }
-    if (scientificName == null) {
-      throw new BuiltValueNullFieldError('Observations', 'scientificName');
-    }
-    if (author == null) {
-      throw new BuiltValueNullFieldError('Observations', 'author');
-    }
-    if (kingdom == null) {
-      throw new BuiltValueNullFieldError('Observations', 'kingdom');
-    }
-    if (phylum == null) {
-      throw new BuiltValueNullFieldError('Observations', 'phylum');
-    }
-    if (klass == null) {
-      throw new BuiltValueNullFieldError('Observations', 'klass');
-    }
-    if (order == null) {
-      throw new BuiltValueNullFieldError('Observations', 'order');
-    }
-    if (family == null) {
-      throw new BuiltValueNullFieldError('Observations', 'family');
-    }
-    if (genus == null) {
-      throw new BuiltValueNullFieldError('Observations', 'genus');
-    }
-    if (subspecies == null) {
-      throw new BuiltValueNullFieldError('Observations', 'subspecies');
-    }
-    if (specificEpithet == null) {
-      throw new BuiltValueNullFieldError('Observations', 'specificEpithet');
-    }
-    if (infraspecificEpithet == null) {
-      throw new BuiltValueNullFieldError(
-          'Observations', 'infraspecificEpithet');
-    }
-    if (status == null) {
-      throw new BuiltValueNullFieldError('Observations', 'status');
-    }
-    if (typeObj == null) {
-      throw new BuiltValueNullFieldError('Observations', 'typeObj');
-    }
-    if (sex == null) {
-      throw new BuiltValueNullFieldError('Observations', 'sex');
-    }
-    if (count == null) {
-      throw new BuiltValueNullFieldError('Observations', 'count');
-    }
-    if (notes == null) {
-      throw new BuiltValueNullFieldError('Observations', 'notes');
-    }
-    if (country == null) {
-      throw new BuiltValueNullFieldError('Observations', 'country');
-    }
-    if (county == null) {
-      throw new BuiltValueNullFieldError('Observations', 'county');
-    }
-    if (countyId == null) {
-      throw new BuiltValueNullFieldError('Observations', 'countyId');
-    }
-    if (municipality == null) {
-      throw new BuiltValueNullFieldError('Observations', 'municipality');
-    }
-    if (municipalityId == null) {
-      throw new BuiltValueNullFieldError('Observations', 'municipalityId');
-    }
-    if (locality == null) {
-      throw new BuiltValueNullFieldError('Observations', 'locality');
-    }
-    if (longitude == null) {
-      throw new BuiltValueNullFieldError('Observations', 'longitude');
-    }
-    if (latitude == null) {
-      throw new BuiltValueNullFieldError('Observations', 'latitude');
-    }
-    if (precision == null) {
-      throw new BuiltValueNullFieldError('Observations', 'precision');
-    }
-    if (footprintWKT == null) {
-      throw new BuiltValueNullFieldError('Observations', 'footprintWKT');
-    }
-    if (east == null) {
-      throw new BuiltValueNullFieldError('Observations', 'east');
-    }
-    if (north == null) {
-      throw new BuiltValueNullFieldError('Observations', 'north');
-    }
-    if (projection == null) {
-      throw new BuiltValueNullFieldError('Observations', 'projection');
-    }
-    if (info == null) {
-      throw new BuiltValueNullFieldError('Observations', 'info');
-    }
-    if (propertyUrls == null) {
-      throw new BuiltValueNullFieldError('Observations', 'propertyUrls');
-    }
-    if (thumbImgUrls == null) {
-      throw new BuiltValueNullFieldError('Observations', 'thumbImgUrls');
-    }
-    if (behavior == null) {
-      throw new BuiltValueNullFieldError('Observations', 'behavior');
-    }
-    if (otherCatalogNumbers == null) {
-      throw new BuiltValueNullFieldError('Observations', 'otherCatalogNumbers');
-    }
-    if (trackDateTime == null) {
-      throw new BuiltValueNullFieldError('Observations', 'trackDateTime');
-    }
-    if (scientificNameId == null) {
-      throw new BuiltValueNullFieldError('Observations', 'scientificNameId');
-    }
-  }
+      : super._();
 
   @override
   Observations rebuild(void Function(ObservationsBuilder) updates) =>
@@ -1356,8 +1358,8 @@ class ObservationsBuilder
               north: north,
               projection: projection,
               info: info,
-              propertyUrls: propertyUrls.build(),
-              thumbImgUrls: thumbImgUrls.build(),
+              propertyUrls: _propertyUrls?.build(),
+              thumbImgUrls: _thumbImgUrls?.build(),
               behavior: behavior,
               otherCatalogNumbers: otherCatalogNumbers,
               trackDateTime: trackDateTime,
@@ -1366,9 +1368,9 @@ class ObservationsBuilder
       String _$failedField;
       try {
         _$failedField = 'propertyUrls';
-        propertyUrls.build();
+        _propertyUrls?.build();
         _$failedField = 'thumbImgUrls';
-        thumbImgUrls.build();
+        _thumbImgUrls?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Observations', _$failedField, e.toString());

@@ -214,4 +214,9 @@ main() {
 }""";
   ArtsTaxon.fromJson(tstJson);
   });
+
+  test("get observations page for taxa", () async {
+    var taxa = await ArtsApi.getTaxon("picea abies");
+    var observations = await ArtsApi.getObservationPage(taxon: taxa[0],);
+  });
 }

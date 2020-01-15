@@ -3,6 +3,14 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - google_maps_flutter (0.0.1):
+    - Flutter
+    - GoogleMaps
+  - GoogleMaps (2.7.0):
+    - GoogleMaps/Maps (= 2.7.0)
+  - GoogleMaps/Base (2.7.0)
+  - GoogleMaps/Maps (2.7.0):
+    - GoogleMaps/Base
   - moor_ffi (0.0.1):
     - Flutter
   - path_provider (0.0.1):
@@ -13,6 +21,7 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - moor_ffi (from `.symlinks/plugins/moor_ffi/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -20,10 +29,13 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FMDB
+    - GoogleMaps
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  google_maps_flutter:
+    :path: ".symlinks/plugins/google_maps_flutter/ios"
   moor_ffi:
     :path: ".symlinks/plugins/moor_ffi/ios"
   path_provider:
@@ -34,6 +46,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  google_maps_flutter: d0dd62f5a7d39bae61057eb9f52dd778d99c7c6c
+  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   moor_ffi: d66c9470c18e9cb333423bbcb493c105c6c774c6
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0

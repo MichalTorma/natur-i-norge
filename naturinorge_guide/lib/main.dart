@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_description.dart';
 import 'package:naturinorge_guide/details/details_view.dart';
+import 'package:naturinorge_guide/details/map_provider.dart';
 import 'package:naturinorge_guide/filter_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<FilterProvider>(
           create: (_) => FilterProvider(MyDatabase().t4Dao),
         ),
+        ChangeNotifierProvider<MapProvider>(
+          create: (_) => MapProvider(),
+        )
       ],
       child: MaterialApp(
         title: 'Natur i Norge',
