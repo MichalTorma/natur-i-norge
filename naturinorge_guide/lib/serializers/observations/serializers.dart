@@ -7,6 +7,12 @@ import 'package:built_value/standard_json_plugin.dart';
 import 'package:naturinorge_guide/serializers/observations/arts_observation.dart';
 import 'package:naturinorge_guide/serializers/observations/observations.dart';
 import 'package:naturinorge_guide/serializers/observations/property_url.dart';
+import 'package:naturinorge_guide/serializers/search_location/crs.dart';
+import 'package:naturinorge_guide/serializers/search_location/crs_property.dart';
+import 'package:naturinorge_guide/serializers/search_location/feature_geometry.dart';
+import 'package:naturinorge_guide/serializers/search_location/feature_property.dart';
+import 'package:naturinorge_guide/serializers/search_location/features.dart';
+import 'package:naturinorge_guide/serializers/search_location/search_location.dart';
 import 'package:naturinorge_guide/serializers/taxons/accepted_name_usage.dart';
 import 'package:naturinorge_guide/serializers/taxons/arts_taxon.dart';
 import 'package:naturinorge_guide/serializers/taxons/dynamic_properties.dart';
@@ -31,6 +37,12 @@ part 'serializers.g.dart';
   AcceptedNameUsage,
   ArtsTaxon,
   DynamicProperties,
+  CrsProperty,
+  Crs,
+  FeatureGeometry,
+  FeatureProperty,
+  Features,
+  SearchLocation
 ])
 final Serializers serializers = _$serializers;
 Serializers standardSerializers =

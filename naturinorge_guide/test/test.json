@@ -3,12 +3,12 @@
         {
             "geometry": {
                 "coordinates": [
-                    429340.0,
-                    8768630.0
+                    251147.0,
+                    7040525.0
                 ],
                 "type": "Point"
             },
-            "id": "2713360",
+            "id": "804593",
             "properties": {
                 "ObservationCount": 1,
                 "MaxCategory": 0
@@ -18,12 +18,12 @@
         {
             "geometry": {
                 "coordinates": [
-                    636602.0,
-                    8904017.0
+                    260056.0,
+                    6635355.0
                 ],
                 "type": "Point"
             },
-            "id": "2713383",
+            "id": "804596",
             "properties": {
                 "ObservationCount": 1,
                 "MaxCategory": 0

@@ -25,10 +25,13 @@ abstract class ArtsTaxon implements Built<ArtsTaxon, ArtsTaxonBuilder> {
   int get taxonID;
   @BuiltValueField(wireName: 'scientificName')
   String get scientificName;
+  @nullable
   @BuiltValueField(wireName: 'scientificNameAuthorship')
   String get scientificNameAuthorship;
+  @nullable
   @BuiltValueField(wireName: 'taxonRank')
   String get taxonRank;
+  @nullable
   @BuiltValueField(wireName: 'taxonomicStatus')
   String get taxonomicStatus;
   @BuiltValueField(wireName: 'acceptedNameUsage')

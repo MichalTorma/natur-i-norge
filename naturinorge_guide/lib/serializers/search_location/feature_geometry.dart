@@ -17,7 +17,7 @@ abstract class FeatureGeometry
       _$FeatureGeometry;
 
   @BuiltValueField(wireName: 'coordinates')
-  BuiltList<int> get coordinates;
+  BuiltList<double> get coordinates;
   @BuiltValueField(wireName: 'type')
   String get type;
   String toJson() {
