@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:naturinorge_guide/api/arts_api.dart';
 import 'package:naturinorge_guide/serializers/search_location/search_location.dart';
 import 'package:naturinorge_guide/serializers/taxons/arts_taxon.dart';
+import 'package:naturinorge_guide/tools/crs_converter.dart';
 
 main() {
   test("Arts get Taxon", () async {
@@ -213,12 +214,14 @@ main() {
         }
     ]
 }""";
-  ArtsTaxon.fromJson(tstJson);
+    ArtsTaxon.fromJson(tstJson);
   });
 
   test("get observations page for taxa", () async {
     var taxa = await ArtsApi.getTaxon("picea abies");
-    var observations = await ArtsApi.getObservationPage(taxon: taxa[0],);
+    var observations = await ArtsApi.getObservationPage(
+      taxon: taxa[0],
+    );
   });
 
   test("get all locations from buffer", () async {
@@ -226,8 +229,16 @@ main() {
     var searchLocation = await ArtsApi.getAllObservations(taxa[0]);
   });
 
-  test("offline locationSearch deserialization", (){
-    String tst = """{"features":[{"geometry":{"coordinates":[251147.0,7040525.0],"type":"Point"},"id":"804593","properties":{"ObservationCount":1,"MaxCategory":0},"type":"Feature"},{"geometry":{"coordinates":[260056.0,6635355.0],"type":"Point"},"id":"804596","properties":{"ObservationCount":1,"MaxCategory":0},"type":"Feature"}],"crs":{"properties":{"name":"EPSG:32633"},"type":"Name"},"type":"FeatureCollection"}""";
+  test("offline locationSearch deserialization", () {
+    String tst =
+        """{"features":[{"geometry":{"coordinates":[251147.0,7040525.0],"type":"Point"},"id":"804593","properties":{"ObservationCount":1,"MaxCategory":0},"type":"Feature"},{"geometry":{"coordinates":[260056.0,6635355.0],"type":"Point"},"id":"804596","properties":{"ObservationCount":1,"MaxCategory":0},"type":"Feature"}],"crs":{"properties":{"name":"EPSG:32633"},"type":"Name"},"type":"FeatureCollection"}""";
     SearchLocation.fromJson(tst);
+  });
+
+  test("CRS conversion test", () {
+    // This will log "[41.33544, 19.789071]" to the console.
+    var res =
+        CrsConverter.utmToLatLon(398676.179117283, 4576702.45725602, 34, true);
+    print(res);
   });
 }

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
+import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:naturinorge_guide/serializers/observations/serializers.dart';
 
@@ -17,7 +18,7 @@ abstract class FeatureGeometry
       _$FeatureGeometry;
 
   @BuiltValueField(wireName: 'coordinates')
-  BuiltList<double> get coordinates;
+  BuiltList<JsonObject> get coordinates;
   @BuiltValueField(wireName: 'type')
   String get type;
   String toJson() {
