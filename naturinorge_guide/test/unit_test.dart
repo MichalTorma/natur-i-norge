@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:naturinorge_guide/api/arts_api.dart';
+import 'package:naturinorge_guide/serializers/search_location/search_location.dart';
 import 'package:naturinorge_guide/serializers/taxons/arts_taxon.dart';
 
 main() {
@@ -218,5 +219,15 @@ main() {
   test("get observations page for taxa", () async {
     var taxa = await ArtsApi.getTaxon("picea abies");
     var observations = await ArtsApi.getObservationPage(taxon: taxa[0],);
+  });
+
+  test("get all locations from buffer", () async {
+    var taxa = await ArtsApi.getTaxon("Cryothecomonas scybalophora");
+    var searchLocation = await ArtsApi.getAllObservations(taxa[0]);
+  });
+
+  test("offline locationSearch deserialization", (){
+    String tst = """{"features":[{"geometry":{"coordinates":[251147.0,7040525.0],"type":"Point"},"id":"804593","properties":{"ObservationCount":1,"MaxCategory":0},"type":"Feature"},{"geometry":{"coordinates":[260056.0,6635355.0],"type":"Point"},"id":"804596","properties":{"ObservationCount":1,"MaxCategory":0},"type":"Feature"}],"crs":{"properties":{"name":"EPSG:32633"},"type":"Name"},"type":"FeatureCollection"}""";
+    SearchLocation.fromJson(tst);
   });
 }

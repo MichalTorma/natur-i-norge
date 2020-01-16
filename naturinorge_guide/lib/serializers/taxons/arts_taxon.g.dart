@@ -28,16 +28,25 @@ class _$ArtsTaxonSerializer implements StructuredSerializer<ArtsTaxon> {
       'scientificName',
       serializers.serialize(object.scientificName,
           specifiedType: const FullType(String)),
-      'scientificNameAuthorship',
-      serializers.serialize(object.scientificNameAuthorship,
-          specifiedType: const FullType(String)),
-      'taxonRank',
-      serializers.serialize(object.taxonRank,
-          specifiedType: const FullType(String)),
-      'taxonomicStatus',
-      serializers.serialize(object.taxonomicStatus,
-          specifiedType: const FullType(String)),
     ];
+    if (object.scientificNameAuthorship != null) {
+      result
+        ..add('scientificNameAuthorship')
+        ..add(serializers.serialize(object.scientificNameAuthorship,
+            specifiedType: const FullType(String)));
+    }
+    if (object.taxonRank != null) {
+      result
+        ..add('taxonRank')
+        ..add(serializers.serialize(object.taxonRank,
+            specifiedType: const FullType(String)));
+    }
+    if (object.taxonomicStatus != null) {
+      result
+        ..add('taxonomicStatus')
+        ..add(serializers.serialize(object.taxonomicStatus,
+            specifiedType: const FullType(String)));
+    }
     if (object.acceptedNameUsage != null) {
       result
         ..add('acceptedNameUsage')
@@ -140,16 +149,6 @@ class _$ArtsTaxon extends ArtsTaxon {
     }
     if (scientificName == null) {
       throw new BuiltValueNullFieldError('ArtsTaxon', 'scientificName');
-    }
-    if (scientificNameAuthorship == null) {
-      throw new BuiltValueNullFieldError(
-          'ArtsTaxon', 'scientificNameAuthorship');
-    }
-    if (taxonRank == null) {
-      throw new BuiltValueNullFieldError('ArtsTaxon', 'taxonRank');
-    }
-    if (taxonomicStatus == null) {
-      throw new BuiltValueNullFieldError('ArtsTaxon', 'taxonomicStatus');
     }
   }
 
