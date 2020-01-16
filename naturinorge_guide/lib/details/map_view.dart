@@ -23,7 +23,7 @@ class _MapViewState extends State<MapView> {
             CameraPosition(target: LatLng(63.990556, 12.3077779), zoom: 6),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-          Provider.of<MapProvider>(context, listen: false).loadObservations();
+          Provider.of<MapProvider>(context, listen: false).loadObservationsv2();
         });
         
   }

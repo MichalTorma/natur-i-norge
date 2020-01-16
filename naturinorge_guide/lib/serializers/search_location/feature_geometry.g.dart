@@ -23,7 +23,7 @@ class _$FeatureGeometrySerializer
       'coordinates',
       serializers.serialize(object.coordinates,
           specifiedType:
-              const FullType(BuiltList, const [const FullType(double)])),
+              const FullType(BuiltList, const [const FullType(JsonObject)])),
       'type',
       serializers.serialize(object.type, specifiedType: const FullType(String)),
     ];
@@ -45,8 +45,8 @@ class _$FeatureGeometrySerializer
       switch (key) {
         case 'coordinates':
           result.coordinates.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(double)]))
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(JsonObject)]))
               as BuiltList<dynamic>);
           break;
         case 'type':
@@ -62,7 +62,7 @@ class _$FeatureGeometrySerializer
 
 class _$FeatureGeometry extends FeatureGeometry {
   @override
-  final BuiltList<double> coordinates;
+  final BuiltList<JsonObject> coordinates;
   @override
   final String type;
 
@@ -112,10 +112,10 @@ class FeatureGeometryBuilder
     implements Builder<FeatureGeometry, FeatureGeometryBuilder> {
   _$FeatureGeometry _$v;
 
-  ListBuilder<double> _coordinates;
-  ListBuilder<double> get coordinates =>
-      _$this._coordinates ??= new ListBuilder<double>();
-  set coordinates(ListBuilder<double> coordinates) =>
+  ListBuilder<JsonObject> _coordinates;
+  ListBuilder<JsonObject> get coordinates =>
+      _$this._coordinates ??= new ListBuilder<JsonObject>();
+  set coordinates(ListBuilder<JsonObject> coordinates) =>
       _$this._coordinates = coordinates;
 
   String _type;
