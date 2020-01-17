@@ -31,14 +31,21 @@ class DetailsView extends StatelessWidget {
         ),
         appBar: AppBar(
           title: Text(data.c_Art),
-          bottom: PreferredSize(
-            preferredSize: Provider.of<MapProvider>(context).isLoading ? Size.fromHeight(8) : Size.fromHeight(0),
-            child: Provider.of<MapProvider>(context).isLoading ? LinearProgressIndicator(value: Provider.of<MapProvider>(context).progress,) : Container(),
-          ),
+          // bottom: PreferredSize(
+          //   preferredSize: Provider.of<MapProvider>(context).isLoading ? Size.fromHeight(8) : Size.fromHeight(0),
+          //   child: Provider.of<MapProvider>(context).isLoading ? LinearProgressIndicator(value: Provider.of<MapProvider>(context).progress,) : Container(),
+          // ),
         ),
         body: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
           GradientsView(kaUfGradient: kaUfGradient),
-          MapView(),
+          Stack(
+            children: <Widget>[
+              MapView(),
+              Provider.of<MapProvider>(context).isLoading ? Center(child: CircularProgressIndicator()) : Container(),
+              
+              
+            ],
+          ),
         ]),
       ),
     );
