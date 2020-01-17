@@ -18,14 +18,19 @@ class _MapViewState extends State<MapView> {
     return GoogleMap(
       mapType: MapType.terrain,
       markers: Provider.of<MapProvider>(context).markers,
-      initialCameraPosition:
-          CameraPosition(target: LatLng(63.990556, 12.3077779), zoom: 5),
+      initialCameraPosition: Provider.of<MapProvider>(context, listen: false)
+          .initialCameraPosition,
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
+        Provider.of<MapProvider>(context, listen: false).setController =
+            controller;
         Provider.of<MapProvider>(context, listen: false).loadObservations();
       },
       onCameraMove: (position) async {
-        Provider.of<MapProvider>(context, listen: false).cameraMoved(position.zoom);
+        Provider.of<MapProvider>(context, listen: false).cameraMoved(position);
+      },
+      onCameraIdle: () {
+        Provider.of<MapProvider>(context, listen: false).cameraStopedMoving();
       },
     );
   }
