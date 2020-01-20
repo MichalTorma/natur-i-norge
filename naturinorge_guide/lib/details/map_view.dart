@@ -18,8 +18,7 @@ class _MapViewState extends State<MapView> {
     return GoogleMap(
       mapType: MapType.terrain,
       markers: Provider.of<MapProvider>(context).markers,
-      initialCameraPosition: Provider.of<MapProvider>(context, listen: false)
-          .initialCameraPosition,
+      initialCameraPosition: INITIAL_CAMERA_POSITION,
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
         Provider.of<MapProvider>(context, listen: false).setController =
