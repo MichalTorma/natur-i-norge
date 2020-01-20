@@ -94,6 +94,25 @@ class T4Data extends DataClass implements Insertable<T4Data> {
   final int c_V58;
   final int c_V67;
   final int c_V68;
+  final double c_RU;
+  final double c_SU;
+  final double c_SS;
+  final double c_HI;
+  final double c_VMfmax;
+  final double c_VMfmin;
+  final int c_VFrmax;
+  final int c_VFrmin;
+  final int c_Unnamed93;
+  final String c_Unnamed94;
+  final String c_VM;
+  final String c_HI1;
+  final String c_RU1;
+  final String c_SU1;
+  final String c_SS1;
+  final String c_VS;
+  final String c_UE;
+  final String c_BK;
+  final String c_DK;
   T4Data(
       {@required this.index,
       @required this.c_NyRad,
@@ -180,12 +199,32 @@ class T4Data extends DataClass implements Insertable<T4Data> {
       this.c_V57,
       this.c_V58,
       this.c_V67,
-      this.c_V68});
+      this.c_V68,
+      this.c_RU,
+      this.c_SU,
+      this.c_SS,
+      this.c_HI,
+      this.c_VMfmax,
+      this.c_VMfmin,
+      this.c_VFrmax,
+      this.c_VFrmin,
+      this.c_Unnamed93,
+      this.c_Unnamed94,
+      this.c_VM,
+      this.c_HI1,
+      this.c_RU1,
+      this.c_SU1,
+      this.c_SS1,
+      this.c_VS,
+      this.c_UE,
+      this.c_BK,
+      this.c_DK});
   factory T4Data.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
+    final doubleType = db.typeSystem.forDartType<double>();
     return T4Data(
       index: intType.mapFromDatabaseResponse(data['${effectivePrefix}index']),
       c_NyRad:
@@ -279,6 +318,35 @@ class T4Data extends DataClass implements Insertable<T4Data> {
       c_V58: intType.mapFromDatabaseResponse(data['${effectivePrefix}c_V58']),
       c_V67: intType.mapFromDatabaseResponse(data['${effectivePrefix}c_V67']),
       c_V68: intType.mapFromDatabaseResponse(data['${effectivePrefix}c_V68']),
+      c_RU: doubleType.mapFromDatabaseResponse(data['${effectivePrefix}c_RU']),
+      c_SU: doubleType.mapFromDatabaseResponse(data['${effectivePrefix}c_SU']),
+      c_SS: doubleType.mapFromDatabaseResponse(data['${effectivePrefix}c_SS']),
+      c_HI: doubleType.mapFromDatabaseResponse(data['${effectivePrefix}c_HI']),
+      c_VMfmax: doubleType
+          .mapFromDatabaseResponse(data['${effectivePrefix}c_VMfmax']),
+      c_VMfmin: doubleType
+          .mapFromDatabaseResponse(data['${effectivePrefix}c_VMfmin']),
+      c_VFrmax:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}c_VFrmax']),
+      c_VFrmin:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}c_VFrmin']),
+      c_Unnamed93: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}c_Unnamed93']),
+      c_Unnamed94: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}c_Unnamed94']),
+      c_VM: stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_VM']),
+      c_HI1:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_HI1']),
+      c_RU1:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_RU1']),
+      c_SU1:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_SU1']),
+      c_SS1:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_SS1']),
+      c_VS: stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_VS']),
+      c_UE: stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_UE']),
+      c_BK: stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_BK']),
+      c_DK: stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_DK']),
     );
   }
   factory T4Data.fromJson(Map<String, dynamic> json,
@@ -370,6 +438,25 @@ class T4Data extends DataClass implements Insertable<T4Data> {
       c_V58: serializer.fromJson<int>(json['c_V58']),
       c_V67: serializer.fromJson<int>(json['c_V67']),
       c_V68: serializer.fromJson<int>(json['c_V68']),
+      c_RU: serializer.fromJson<double>(json['c_RU']),
+      c_SU: serializer.fromJson<double>(json['c_SU']),
+      c_SS: serializer.fromJson<double>(json['c_SS']),
+      c_HI: serializer.fromJson<double>(json['c_HI']),
+      c_VMfmax: serializer.fromJson<double>(json['c_VMfmax']),
+      c_VMfmin: serializer.fromJson<double>(json['c_VMfmin']),
+      c_VFrmax: serializer.fromJson<int>(json['c_VFrmax']),
+      c_VFrmin: serializer.fromJson<int>(json['c_VFrmin']),
+      c_Unnamed93: serializer.fromJson<int>(json['c_Unnamed93']),
+      c_Unnamed94: serializer.fromJson<String>(json['c_Unnamed94']),
+      c_VM: serializer.fromJson<String>(json['c_VM']),
+      c_HI1: serializer.fromJson<String>(json['c_HI1']),
+      c_RU1: serializer.fromJson<String>(json['c_RU1']),
+      c_SU1: serializer.fromJson<String>(json['c_SU1']),
+      c_SS1: serializer.fromJson<String>(json['c_SS1']),
+      c_VS: serializer.fromJson<String>(json['c_VS']),
+      c_UE: serializer.fromJson<String>(json['c_UE']),
+      c_BK: serializer.fromJson<String>(json['c_BK']),
+      c_DK: serializer.fromJson<String>(json['c_DK']),
     );
   }
   @override
@@ -462,6 +549,25 @@ class T4Data extends DataClass implements Insertable<T4Data> {
       'c_V58': serializer.toJson<int>(c_V58),
       'c_V67': serializer.toJson<int>(c_V67),
       'c_V68': serializer.toJson<int>(c_V68),
+      'c_RU': serializer.toJson<double>(c_RU),
+      'c_SU': serializer.toJson<double>(c_SU),
+      'c_SS': serializer.toJson<double>(c_SS),
+      'c_HI': serializer.toJson<double>(c_HI),
+      'c_VMfmax': serializer.toJson<double>(c_VMfmax),
+      'c_VMfmin': serializer.toJson<double>(c_VMfmin),
+      'c_VFrmax': serializer.toJson<int>(c_VFrmax),
+      'c_VFrmin': serializer.toJson<int>(c_VFrmin),
+      'c_Unnamed93': serializer.toJson<int>(c_Unnamed93),
+      'c_Unnamed94': serializer.toJson<String>(c_Unnamed94),
+      'c_VM': serializer.toJson<String>(c_VM),
+      'c_HI1': serializer.toJson<String>(c_HI1),
+      'c_RU1': serializer.toJson<String>(c_RU1),
+      'c_SU1': serializer.toJson<String>(c_SU1),
+      'c_SS1': serializer.toJson<String>(c_SS1),
+      'c_VS': serializer.toJson<String>(c_VS),
+      'c_UE': serializer.toJson<String>(c_UE),
+      'c_BK': serializer.toJson<String>(c_BK),
+      'c_DK': serializer.toJson<String>(c_DK),
     };
   }
 
@@ -574,6 +680,41 @@ class T4Data extends DataClass implements Insertable<T4Data> {
           c_V67 == null && nullToAbsent ? const Value.absent() : Value(c_V67),
       c_V68:
           c_V68 == null && nullToAbsent ? const Value.absent() : Value(c_V68),
+      c_RU: c_RU == null && nullToAbsent ? const Value.absent() : Value(c_RU),
+      c_SU: c_SU == null && nullToAbsent ? const Value.absent() : Value(c_SU),
+      c_SS: c_SS == null && nullToAbsent ? const Value.absent() : Value(c_SS),
+      c_HI: c_HI == null && nullToAbsent ? const Value.absent() : Value(c_HI),
+      c_VMfmax: c_VMfmax == null && nullToAbsent
+          ? const Value.absent()
+          : Value(c_VMfmax),
+      c_VMfmin: c_VMfmin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(c_VMfmin),
+      c_VFrmax: c_VFrmax == null && nullToAbsent
+          ? const Value.absent()
+          : Value(c_VFrmax),
+      c_VFrmin: c_VFrmin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(c_VFrmin),
+      c_Unnamed93: c_Unnamed93 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(c_Unnamed93),
+      c_Unnamed94: c_Unnamed94 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(c_Unnamed94),
+      c_VM: c_VM == null && nullToAbsent ? const Value.absent() : Value(c_VM),
+      c_HI1:
+          c_HI1 == null && nullToAbsent ? const Value.absent() : Value(c_HI1),
+      c_RU1:
+          c_RU1 == null && nullToAbsent ? const Value.absent() : Value(c_RU1),
+      c_SU1:
+          c_SU1 == null && nullToAbsent ? const Value.absent() : Value(c_SU1),
+      c_SS1:
+          c_SS1 == null && nullToAbsent ? const Value.absent() : Value(c_SS1),
+      c_VS: c_VS == null && nullToAbsent ? const Value.absent() : Value(c_VS),
+      c_UE: c_UE == null && nullToAbsent ? const Value.absent() : Value(c_UE),
+      c_BK: c_BK == null && nullToAbsent ? const Value.absent() : Value(c_BK),
+      c_DK: c_DK == null && nullToAbsent ? const Value.absent() : Value(c_DK),
     );
   }
 
@@ -663,7 +804,26 @@ class T4Data extends DataClass implements Insertable<T4Data> {
           int c_V57,
           int c_V58,
           int c_V67,
-          int c_V68}) =>
+          int c_V68,
+          double c_RU,
+          double c_SU,
+          double c_SS,
+          double c_HI,
+          double c_VMfmax,
+          double c_VMfmin,
+          int c_VFrmax,
+          int c_VFrmin,
+          int c_Unnamed93,
+          String c_Unnamed94,
+          String c_VM,
+          String c_HI1,
+          String c_RU1,
+          String c_SU1,
+          String c_SS1,
+          String c_VS,
+          String c_UE,
+          String c_BK,
+          String c_DK}) =>
       T4Data(
         index: index ?? this.index,
         c_NyRad: c_NyRad ?? this.c_NyRad,
@@ -751,6 +911,25 @@ class T4Data extends DataClass implements Insertable<T4Data> {
         c_V58: c_V58 ?? this.c_V58,
         c_V67: c_V67 ?? this.c_V67,
         c_V68: c_V68 ?? this.c_V68,
+        c_RU: c_RU ?? this.c_RU,
+        c_SU: c_SU ?? this.c_SU,
+        c_SS: c_SS ?? this.c_SS,
+        c_HI: c_HI ?? this.c_HI,
+        c_VMfmax: c_VMfmax ?? this.c_VMfmax,
+        c_VMfmin: c_VMfmin ?? this.c_VMfmin,
+        c_VFrmax: c_VFrmax ?? this.c_VFrmax,
+        c_VFrmin: c_VFrmin ?? this.c_VFrmin,
+        c_Unnamed93: c_Unnamed93 ?? this.c_Unnamed93,
+        c_Unnamed94: c_Unnamed94 ?? this.c_Unnamed94,
+        c_VM: c_VM ?? this.c_VM,
+        c_HI1: c_HI1 ?? this.c_HI1,
+        c_RU1: c_RU1 ?? this.c_RU1,
+        c_SU1: c_SU1 ?? this.c_SU1,
+        c_SS1: c_SS1 ?? this.c_SS1,
+        c_VS: c_VS ?? this.c_VS,
+        c_UE: c_UE ?? this.c_UE,
+        c_BK: c_BK ?? this.c_BK,
+        c_DK: c_DK ?? this.c_DK,
       );
   @override
   String toString() {
@@ -840,7 +1019,26 @@ class T4Data extends DataClass implements Insertable<T4Data> {
           ..write('c_V57: $c_V57, ')
           ..write('c_V58: $c_V58, ')
           ..write('c_V67: $c_V67, ')
-          ..write('c_V68: $c_V68')
+          ..write('c_V68: $c_V68, ')
+          ..write('c_RU: $c_RU, ')
+          ..write('c_SU: $c_SU, ')
+          ..write('c_SS: $c_SS, ')
+          ..write('c_HI: $c_HI, ')
+          ..write('c_VMfmax: $c_VMfmax, ')
+          ..write('c_VMfmin: $c_VMfmin, ')
+          ..write('c_VFrmax: $c_VFrmax, ')
+          ..write('c_VFrmin: $c_VFrmin, ')
+          ..write('c_Unnamed93: $c_Unnamed93, ')
+          ..write('c_Unnamed94: $c_Unnamed94, ')
+          ..write('c_VM: $c_VM, ')
+          ..write('c_HI1: $c_HI1, ')
+          ..write('c_RU1: $c_RU1, ')
+          ..write('c_SU1: $c_SU1, ')
+          ..write('c_SS1: $c_SS1, ')
+          ..write('c_VS: $c_VS, ')
+          ..write('c_UE: $c_UE, ')
+          ..write('c_BK: $c_BK, ')
+          ..write('c_DK: $c_DK')
           ..write(')'))
         .toString();
   }
@@ -886,7 +1084,7 @@ class T4Data extends DataClass implements Insertable<T4Data> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               c_23.hashCode,
-                                                                              $mrjc(c_24.hashCode, $mrjc(c_25.hashCode, $mrjc(c_26.hashCode, $mrjc(c_27.hashCode, $mrjc(c_28.hashCode, $mrjc(c_31.hashCode, $mrjc(c_32.hashCode, $mrjc(c_33.hashCode, $mrjc(c_34.hashCode, $mrjc(c_35.hashCode, $mrjc(c_36.hashCode, $mrjc(c_37.hashCode, $mrjc(c_38.hashCode, $mrjc(c_41.hashCode, $mrjc(c_42.hashCode, $mrjc(c_43.hashCode, $mrjc(c_44.hashCode, $mrjc(c_45.hashCode, $mrjc(c_46.hashCode, $mrjc(c_47.hashCode, $mrjc(c_48.hashCode, $mrjc(c_51.hashCode, $mrjc(c_52.hashCode, $mrjc(c_53.hashCode, $mrjc(c_54.hashCode, $mrjc(c_55.hashCode, $mrjc(c_56.hashCode, $mrjc(c_57.hashCode, $mrjc(c_58.hashCode, $mrjc(c_61.hashCode, $mrjc(c_62.hashCode, $mrjc(c_63.hashCode, $mrjc(c_64.hashCode, $mrjc(c_65.hashCode, $mrjc(c_66.hashCode, $mrjc(c_67.hashCode, $mrjc(c_68.hashCode, $mrjc(c_71.hashCode, $mrjc(c_72.hashCode, $mrjc(c_73.hashCode, $mrjc(c_74.hashCode, $mrjc(c_75.hashCode, $mrjc(c_76.hashCode, $mrjc(c_77.hashCode, $mrjc(c_78.hashCode, $mrjc(c_81.hashCode, $mrjc(c_82.hashCode, $mrjc(c_83.hashCode, $mrjc(c_84.hashCode, $mrjc(c_85.hashCode, $mrjc(c_86.hashCode, $mrjc(c_87.hashCode, $mrjc(c_88.hashCode, $mrjc(c_K3.hashCode, $mrjc(c_K4.hashCode, $mrjc(c_K5.hashCode, $mrjc(c_K6.hashCode, $mrjc(c_K7.hashCode, $mrjc(c_K8.hashCode, $mrjc(c_V37.hashCode, $mrjc(c_V38.hashCode, $mrjc(c_V47.hashCode, $mrjc(c_V48.hashCode, $mrjc(c_V57.hashCode, $mrjc(c_V58.hashCode, $mrjc(c_V67.hashCode, c_V68.hashCode))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(c_24.hashCode, $mrjc(c_25.hashCode, $mrjc(c_26.hashCode, $mrjc(c_27.hashCode, $mrjc(c_28.hashCode, $mrjc(c_31.hashCode, $mrjc(c_32.hashCode, $mrjc(c_33.hashCode, $mrjc(c_34.hashCode, $mrjc(c_35.hashCode, $mrjc(c_36.hashCode, $mrjc(c_37.hashCode, $mrjc(c_38.hashCode, $mrjc(c_41.hashCode, $mrjc(c_42.hashCode, $mrjc(c_43.hashCode, $mrjc(c_44.hashCode, $mrjc(c_45.hashCode, $mrjc(c_46.hashCode, $mrjc(c_47.hashCode, $mrjc(c_48.hashCode, $mrjc(c_51.hashCode, $mrjc(c_52.hashCode, $mrjc(c_53.hashCode, $mrjc(c_54.hashCode, $mrjc(c_55.hashCode, $mrjc(c_56.hashCode, $mrjc(c_57.hashCode, $mrjc(c_58.hashCode, $mrjc(c_61.hashCode, $mrjc(c_62.hashCode, $mrjc(c_63.hashCode, $mrjc(c_64.hashCode, $mrjc(c_65.hashCode, $mrjc(c_66.hashCode, $mrjc(c_67.hashCode, $mrjc(c_68.hashCode, $mrjc(c_71.hashCode, $mrjc(c_72.hashCode, $mrjc(c_73.hashCode, $mrjc(c_74.hashCode, $mrjc(c_75.hashCode, $mrjc(c_76.hashCode, $mrjc(c_77.hashCode, $mrjc(c_78.hashCode, $mrjc(c_81.hashCode, $mrjc(c_82.hashCode, $mrjc(c_83.hashCode, $mrjc(c_84.hashCode, $mrjc(c_85.hashCode, $mrjc(c_86.hashCode, $mrjc(c_87.hashCode, $mrjc(c_88.hashCode, $mrjc(c_K3.hashCode, $mrjc(c_K4.hashCode, $mrjc(c_K5.hashCode, $mrjc(c_K6.hashCode, $mrjc(c_K7.hashCode, $mrjc(c_K8.hashCode, $mrjc(c_V37.hashCode, $mrjc(c_V38.hashCode, $mrjc(c_V47.hashCode, $mrjc(c_V48.hashCode, $mrjc(c_V57.hashCode, $mrjc(c_V58.hashCode, $mrjc(c_V67.hashCode, $mrjc(c_V68.hashCode, $mrjc(c_RU.hashCode, $mrjc(c_SU.hashCode, $mrjc(c_SS.hashCode, $mrjc(c_HI.hashCode, $mrjc(c_VMfmax.hashCode, $mrjc(c_VMfmin.hashCode, $mrjc(c_VFrmax.hashCode, $mrjc(c_VFrmin.hashCode, $mrjc(c_Unnamed93.hashCode, $mrjc(c_Unnamed94.hashCode, $mrjc(c_VM.hashCode, $mrjc(c_HI1.hashCode, $mrjc(c_RU1.hashCode, $mrjc(c_SU1.hashCode, $mrjc(c_SS1.hashCode, $mrjc(c_VS.hashCode, $mrjc(c_UE.hashCode, $mrjc(c_BK.hashCode, c_DK.hashCode)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -976,7 +1174,26 @@ class T4Data extends DataClass implements Insertable<T4Data> {
           other.c_V57 == this.c_V57 &&
           other.c_V58 == this.c_V58 &&
           other.c_V67 == this.c_V67 &&
-          other.c_V68 == this.c_V68);
+          other.c_V68 == this.c_V68 &&
+          other.c_RU == this.c_RU &&
+          other.c_SU == this.c_SU &&
+          other.c_SS == this.c_SS &&
+          other.c_HI == this.c_HI &&
+          other.c_VMfmax == this.c_VMfmax &&
+          other.c_VMfmin == this.c_VMfmin &&
+          other.c_VFrmax == this.c_VFrmax &&
+          other.c_VFrmin == this.c_VFrmin &&
+          other.c_Unnamed93 == this.c_Unnamed93 &&
+          other.c_Unnamed94 == this.c_Unnamed94 &&
+          other.c_VM == this.c_VM &&
+          other.c_HI1 == this.c_HI1 &&
+          other.c_RU1 == this.c_RU1 &&
+          other.c_SU1 == this.c_SU1 &&
+          other.c_SS1 == this.c_SS1 &&
+          other.c_VS == this.c_VS &&
+          other.c_UE == this.c_UE &&
+          other.c_BK == this.c_BK &&
+          other.c_DK == this.c_DK);
 }
 
 class T4Companion extends UpdateCompanion<T4Data> {
@@ -1066,6 +1283,25 @@ class T4Companion extends UpdateCompanion<T4Data> {
   final Value<int> c_V58;
   final Value<int> c_V67;
   final Value<int> c_V68;
+  final Value<double> c_RU;
+  final Value<double> c_SU;
+  final Value<double> c_SS;
+  final Value<double> c_HI;
+  final Value<double> c_VMfmax;
+  final Value<double> c_VMfmin;
+  final Value<int> c_VFrmax;
+  final Value<int> c_VFrmin;
+  final Value<int> c_Unnamed93;
+  final Value<String> c_Unnamed94;
+  final Value<String> c_VM;
+  final Value<String> c_HI1;
+  final Value<String> c_RU1;
+  final Value<String> c_SU1;
+  final Value<String> c_SS1;
+  final Value<String> c_VS;
+  final Value<String> c_UE;
+  final Value<String> c_BK;
+  final Value<String> c_DK;
   const T4Companion({
     this.index = const Value.absent(),
     this.c_NyRad = const Value.absent(),
@@ -1153,6 +1389,25 @@ class T4Companion extends UpdateCompanion<T4Data> {
     this.c_V58 = const Value.absent(),
     this.c_V67 = const Value.absent(),
     this.c_V68 = const Value.absent(),
+    this.c_RU = const Value.absent(),
+    this.c_SU = const Value.absent(),
+    this.c_SS = const Value.absent(),
+    this.c_HI = const Value.absent(),
+    this.c_VMfmax = const Value.absent(),
+    this.c_VMfmin = const Value.absent(),
+    this.c_VFrmax = const Value.absent(),
+    this.c_VFrmin = const Value.absent(),
+    this.c_Unnamed93 = const Value.absent(),
+    this.c_Unnamed94 = const Value.absent(),
+    this.c_VM = const Value.absent(),
+    this.c_HI1 = const Value.absent(),
+    this.c_RU1 = const Value.absent(),
+    this.c_SU1 = const Value.absent(),
+    this.c_SS1 = const Value.absent(),
+    this.c_VS = const Value.absent(),
+    this.c_UE = const Value.absent(),
+    this.c_BK = const Value.absent(),
+    this.c_DK = const Value.absent(),
   });
   T4Companion.insert({
     this.index = const Value.absent(),
@@ -1241,6 +1496,25 @@ class T4Companion extends UpdateCompanion<T4Data> {
     this.c_V58 = const Value.absent(),
     this.c_V67 = const Value.absent(),
     this.c_V68 = const Value.absent(),
+    this.c_RU = const Value.absent(),
+    this.c_SU = const Value.absent(),
+    this.c_SS = const Value.absent(),
+    this.c_HI = const Value.absent(),
+    this.c_VMfmax = const Value.absent(),
+    this.c_VMfmin = const Value.absent(),
+    this.c_VFrmax = const Value.absent(),
+    this.c_VFrmin = const Value.absent(),
+    this.c_Unnamed93 = const Value.absent(),
+    this.c_Unnamed94 = const Value.absent(),
+    this.c_VM = const Value.absent(),
+    this.c_HI1 = const Value.absent(),
+    this.c_RU1 = const Value.absent(),
+    this.c_SU1 = const Value.absent(),
+    this.c_SS1 = const Value.absent(),
+    this.c_VS = const Value.absent(),
+    this.c_UE = const Value.absent(),
+    this.c_BK = const Value.absent(),
+    this.c_DK = const Value.absent(),
   })  : c_NyRad = Value(c_NyRad),
         c_Artsgruppe = Value(c_Artsgruppe),
         c_Art = Value(c_Art),
@@ -1334,7 +1608,26 @@ class T4Companion extends UpdateCompanion<T4Data> {
       Value<int> c_V57,
       Value<int> c_V58,
       Value<int> c_V67,
-      Value<int> c_V68}) {
+      Value<int> c_V68,
+      Value<double> c_RU,
+      Value<double> c_SU,
+      Value<double> c_SS,
+      Value<double> c_HI,
+      Value<double> c_VMfmax,
+      Value<double> c_VMfmin,
+      Value<int> c_VFrmax,
+      Value<int> c_VFrmin,
+      Value<int> c_Unnamed93,
+      Value<String> c_Unnamed94,
+      Value<String> c_VM,
+      Value<String> c_HI1,
+      Value<String> c_RU1,
+      Value<String> c_SU1,
+      Value<String> c_SS1,
+      Value<String> c_VS,
+      Value<String> c_UE,
+      Value<String> c_BK,
+      Value<String> c_DK}) {
     return T4Companion(
       index: index ?? this.index,
       c_NyRad: c_NyRad ?? this.c_NyRad,
@@ -1422,6 +1715,25 @@ class T4Companion extends UpdateCompanion<T4Data> {
       c_V58: c_V58 ?? this.c_V58,
       c_V67: c_V67 ?? this.c_V67,
       c_V68: c_V68 ?? this.c_V68,
+      c_RU: c_RU ?? this.c_RU,
+      c_SU: c_SU ?? this.c_SU,
+      c_SS: c_SS ?? this.c_SS,
+      c_HI: c_HI ?? this.c_HI,
+      c_VMfmax: c_VMfmax ?? this.c_VMfmax,
+      c_VMfmin: c_VMfmin ?? this.c_VMfmin,
+      c_VFrmax: c_VFrmax ?? this.c_VFrmax,
+      c_VFrmin: c_VFrmin ?? this.c_VFrmin,
+      c_Unnamed93: c_Unnamed93 ?? this.c_Unnamed93,
+      c_Unnamed94: c_Unnamed94 ?? this.c_Unnamed94,
+      c_VM: c_VM ?? this.c_VM,
+      c_HI1: c_HI1 ?? this.c_HI1,
+      c_RU1: c_RU1 ?? this.c_RU1,
+      c_SU1: c_SU1 ?? this.c_SU1,
+      c_SS1: c_SS1 ?? this.c_SS1,
+      c_VS: c_VS ?? this.c_VS,
+      c_UE: c_UE ?? this.c_UE,
+      c_BK: c_BK ?? this.c_BK,
+      c_DK: c_DK ?? this.c_DK,
     );
   }
 }
@@ -2442,6 +2754,237 @@ class $T4Table extends T4 with TableInfo<$T4Table, T4Data> {
     );
   }
 
+  final VerificationMeta _c_RUMeta = const VerificationMeta('c_RU');
+  GeneratedRealColumn _c_RU;
+  @override
+  GeneratedRealColumn get c_RU => _c_RU ??= _constructCRU();
+  GeneratedRealColumn _constructCRU() {
+    return GeneratedRealColumn(
+      'c_RU',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_SUMeta = const VerificationMeta('c_SU');
+  GeneratedRealColumn _c_SU;
+  @override
+  GeneratedRealColumn get c_SU => _c_SU ??= _constructCSU();
+  GeneratedRealColumn _constructCSU() {
+    return GeneratedRealColumn(
+      'c_SU',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_SSMeta = const VerificationMeta('c_SS');
+  GeneratedRealColumn _c_SS;
+  @override
+  GeneratedRealColumn get c_SS => _c_SS ??= _constructCSS();
+  GeneratedRealColumn _constructCSS() {
+    return GeneratedRealColumn(
+      'c_SS',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_HIMeta = const VerificationMeta('c_HI');
+  GeneratedRealColumn _c_HI;
+  @override
+  GeneratedRealColumn get c_HI => _c_HI ??= _constructCHI();
+  GeneratedRealColumn _constructCHI() {
+    return GeneratedRealColumn(
+      'c_HI',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_VMfmaxMeta = const VerificationMeta('c_VMfmax');
+  GeneratedRealColumn _c_VMfmax;
+  @override
+  GeneratedRealColumn get c_VMfmax => _c_VMfmax ??= _constructCVMfmax();
+  GeneratedRealColumn _constructCVMfmax() {
+    return GeneratedRealColumn(
+      'c_VMfmax',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_VMfminMeta = const VerificationMeta('c_VMfmin');
+  GeneratedRealColumn _c_VMfmin;
+  @override
+  GeneratedRealColumn get c_VMfmin => _c_VMfmin ??= _constructCVMfmin();
+  GeneratedRealColumn _constructCVMfmin() {
+    return GeneratedRealColumn(
+      'c_VMfmin',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_VFrmaxMeta = const VerificationMeta('c_VFrmax');
+  GeneratedIntColumn _c_VFrmax;
+  @override
+  GeneratedIntColumn get c_VFrmax => _c_VFrmax ??= _constructCVFrmax();
+  GeneratedIntColumn _constructCVFrmax() {
+    return GeneratedIntColumn(
+      'c_VFrmax',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_VFrminMeta = const VerificationMeta('c_VFrmin');
+  GeneratedIntColumn _c_VFrmin;
+  @override
+  GeneratedIntColumn get c_VFrmin => _c_VFrmin ??= _constructCVFrmin();
+  GeneratedIntColumn _constructCVFrmin() {
+    return GeneratedIntColumn(
+      'c_VFrmin',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_Unnamed93Meta =
+      const VerificationMeta('c_Unnamed93');
+  GeneratedIntColumn _c_Unnamed93;
+  @override
+  GeneratedIntColumn get c_Unnamed93 => _c_Unnamed93 ??= _constructCUnnamed93();
+  GeneratedIntColumn _constructCUnnamed93() {
+    return GeneratedIntColumn(
+      'c_Unnamed93',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_Unnamed94Meta =
+      const VerificationMeta('c_Unnamed94');
+  GeneratedTextColumn _c_Unnamed94;
+  @override
+  GeneratedTextColumn get c_Unnamed94 =>
+      _c_Unnamed94 ??= _constructCUnnamed94();
+  GeneratedTextColumn _constructCUnnamed94() {
+    return GeneratedTextColumn(
+      'c_Unnamed94',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_VMMeta = const VerificationMeta('c_VM');
+  GeneratedTextColumn _c_VM;
+  @override
+  GeneratedTextColumn get c_VM => _c_VM ??= _constructCVM();
+  GeneratedTextColumn _constructCVM() {
+    return GeneratedTextColumn(
+      'c_VM',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_HI1Meta = const VerificationMeta('c_HI1');
+  GeneratedTextColumn _c_HI1;
+  @override
+  GeneratedTextColumn get c_HI1 => _c_HI1 ??= _constructCHI1();
+  GeneratedTextColumn _constructCHI1() {
+    return GeneratedTextColumn(
+      'c_HI1',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_RU1Meta = const VerificationMeta('c_RU1');
+  GeneratedTextColumn _c_RU1;
+  @override
+  GeneratedTextColumn get c_RU1 => _c_RU1 ??= _constructCRU1();
+  GeneratedTextColumn _constructCRU1() {
+    return GeneratedTextColumn(
+      'c_RU1',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_SU1Meta = const VerificationMeta('c_SU1');
+  GeneratedTextColumn _c_SU1;
+  @override
+  GeneratedTextColumn get c_SU1 => _c_SU1 ??= _constructCSU1();
+  GeneratedTextColumn _constructCSU1() {
+    return GeneratedTextColumn(
+      'c_SU1',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_SS1Meta = const VerificationMeta('c_SS1');
+  GeneratedTextColumn _c_SS1;
+  @override
+  GeneratedTextColumn get c_SS1 => _c_SS1 ??= _constructCSS1();
+  GeneratedTextColumn _constructCSS1() {
+    return GeneratedTextColumn(
+      'c_SS1',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_VSMeta = const VerificationMeta('c_VS');
+  GeneratedTextColumn _c_VS;
+  @override
+  GeneratedTextColumn get c_VS => _c_VS ??= _constructCVS();
+  GeneratedTextColumn _constructCVS() {
+    return GeneratedTextColumn(
+      'c_VS',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_UEMeta = const VerificationMeta('c_UE');
+  GeneratedTextColumn _c_UE;
+  @override
+  GeneratedTextColumn get c_UE => _c_UE ??= _constructCUE();
+  GeneratedTextColumn _constructCUE() {
+    return GeneratedTextColumn(
+      'c_UE',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_BKMeta = const VerificationMeta('c_BK');
+  GeneratedTextColumn _c_BK;
+  @override
+  GeneratedTextColumn get c_BK => _c_BK ??= _constructCBK();
+  GeneratedTextColumn _constructCBK() {
+    return GeneratedTextColumn(
+      'c_BK',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _c_DKMeta = const VerificationMeta('c_DK');
+  GeneratedTextColumn _c_DK;
+  @override
+  GeneratedTextColumn get c_DK => _c_DK ??= _constructCDK();
+  GeneratedTextColumn _constructCDK() {
+    return GeneratedTextColumn(
+      'c_DK',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         index,
@@ -2529,7 +3072,26 @@ class $T4Table extends T4 with TableInfo<$T4Table, T4Data> {
         c_V57,
         c_V58,
         c_V67,
-        c_V68
+        c_V68,
+        c_RU,
+        c_SU,
+        c_SS,
+        c_HI,
+        c_VMfmax,
+        c_VMfmin,
+        c_VFrmax,
+        c_VFrmin,
+        c_Unnamed93,
+        c_Unnamed94,
+        c_VM,
+        c_HI1,
+        c_RU1,
+        c_SU1,
+        c_SS1,
+        c_VS,
+        c_UE,
+        c_BK,
+        c_DK
       ];
   @override
   $T4Table get asDslTable => this;
@@ -3058,6 +3620,120 @@ class $T4Table extends T4 with TableInfo<$T4Table, T4Data> {
     } else if (c_V68.isRequired && isInserting) {
       context.missing(_c_V68Meta);
     }
+    if (d.c_RU.present) {
+      context.handle(
+          _c_RUMeta, c_RU.isAcceptableValue(d.c_RU.value, _c_RUMeta));
+    } else if (c_RU.isRequired && isInserting) {
+      context.missing(_c_RUMeta);
+    }
+    if (d.c_SU.present) {
+      context.handle(
+          _c_SUMeta, c_SU.isAcceptableValue(d.c_SU.value, _c_SUMeta));
+    } else if (c_SU.isRequired && isInserting) {
+      context.missing(_c_SUMeta);
+    }
+    if (d.c_SS.present) {
+      context.handle(
+          _c_SSMeta, c_SS.isAcceptableValue(d.c_SS.value, _c_SSMeta));
+    } else if (c_SS.isRequired && isInserting) {
+      context.missing(_c_SSMeta);
+    }
+    if (d.c_HI.present) {
+      context.handle(
+          _c_HIMeta, c_HI.isAcceptableValue(d.c_HI.value, _c_HIMeta));
+    } else if (c_HI.isRequired && isInserting) {
+      context.missing(_c_HIMeta);
+    }
+    if (d.c_VMfmax.present) {
+      context.handle(_c_VMfmaxMeta,
+          c_VMfmax.isAcceptableValue(d.c_VMfmax.value, _c_VMfmaxMeta));
+    } else if (c_VMfmax.isRequired && isInserting) {
+      context.missing(_c_VMfmaxMeta);
+    }
+    if (d.c_VMfmin.present) {
+      context.handle(_c_VMfminMeta,
+          c_VMfmin.isAcceptableValue(d.c_VMfmin.value, _c_VMfminMeta));
+    } else if (c_VMfmin.isRequired && isInserting) {
+      context.missing(_c_VMfminMeta);
+    }
+    if (d.c_VFrmax.present) {
+      context.handle(_c_VFrmaxMeta,
+          c_VFrmax.isAcceptableValue(d.c_VFrmax.value, _c_VFrmaxMeta));
+    } else if (c_VFrmax.isRequired && isInserting) {
+      context.missing(_c_VFrmaxMeta);
+    }
+    if (d.c_VFrmin.present) {
+      context.handle(_c_VFrminMeta,
+          c_VFrmin.isAcceptableValue(d.c_VFrmin.value, _c_VFrminMeta));
+    } else if (c_VFrmin.isRequired && isInserting) {
+      context.missing(_c_VFrminMeta);
+    }
+    if (d.c_Unnamed93.present) {
+      context.handle(_c_Unnamed93Meta,
+          c_Unnamed93.isAcceptableValue(d.c_Unnamed93.value, _c_Unnamed93Meta));
+    } else if (c_Unnamed93.isRequired && isInserting) {
+      context.missing(_c_Unnamed93Meta);
+    }
+    if (d.c_Unnamed94.present) {
+      context.handle(_c_Unnamed94Meta,
+          c_Unnamed94.isAcceptableValue(d.c_Unnamed94.value, _c_Unnamed94Meta));
+    } else if (c_Unnamed94.isRequired && isInserting) {
+      context.missing(_c_Unnamed94Meta);
+    }
+    if (d.c_VM.present) {
+      context.handle(
+          _c_VMMeta, c_VM.isAcceptableValue(d.c_VM.value, _c_VMMeta));
+    } else if (c_VM.isRequired && isInserting) {
+      context.missing(_c_VMMeta);
+    }
+    if (d.c_HI1.present) {
+      context.handle(
+          _c_HI1Meta, c_HI1.isAcceptableValue(d.c_HI1.value, _c_HI1Meta));
+    } else if (c_HI1.isRequired && isInserting) {
+      context.missing(_c_HI1Meta);
+    }
+    if (d.c_RU1.present) {
+      context.handle(
+          _c_RU1Meta, c_RU1.isAcceptableValue(d.c_RU1.value, _c_RU1Meta));
+    } else if (c_RU1.isRequired && isInserting) {
+      context.missing(_c_RU1Meta);
+    }
+    if (d.c_SU1.present) {
+      context.handle(
+          _c_SU1Meta, c_SU1.isAcceptableValue(d.c_SU1.value, _c_SU1Meta));
+    } else if (c_SU1.isRequired && isInserting) {
+      context.missing(_c_SU1Meta);
+    }
+    if (d.c_SS1.present) {
+      context.handle(
+          _c_SS1Meta, c_SS1.isAcceptableValue(d.c_SS1.value, _c_SS1Meta));
+    } else if (c_SS1.isRequired && isInserting) {
+      context.missing(_c_SS1Meta);
+    }
+    if (d.c_VS.present) {
+      context.handle(
+          _c_VSMeta, c_VS.isAcceptableValue(d.c_VS.value, _c_VSMeta));
+    } else if (c_VS.isRequired && isInserting) {
+      context.missing(_c_VSMeta);
+    }
+    if (d.c_UE.present) {
+      context.handle(
+          _c_UEMeta, c_UE.isAcceptableValue(d.c_UE.value, _c_UEMeta));
+    } else if (c_UE.isRequired && isInserting) {
+      context.missing(_c_UEMeta);
+    }
+    if (d.c_BK.present) {
+      context.handle(
+          _c_BKMeta, c_BK.isAcceptableValue(d.c_BK.value, _c_BKMeta));
+    } else if (c_BK.isRequired && isInserting) {
+      context.missing(_c_BKMeta);
+    }
+    if (d.c_DK.present) {
+      context.handle(
+          _c_DKMeta, c_DK.isAcceptableValue(d.c_DK.value, _c_DKMeta));
+    } else if (c_DK.isRequired && isInserting) {
+      context.missing(_c_DKMeta);
+    }
     return context;
   }
 
@@ -3329,6 +4005,63 @@ class $T4Table extends T4 with TableInfo<$T4Table, T4Data> {
     }
     if (d.c_V68.present) {
       map['c_V68'] = Variable<int, IntType>(d.c_V68.value);
+    }
+    if (d.c_RU.present) {
+      map['c_RU'] = Variable<double, RealType>(d.c_RU.value);
+    }
+    if (d.c_SU.present) {
+      map['c_SU'] = Variable<double, RealType>(d.c_SU.value);
+    }
+    if (d.c_SS.present) {
+      map['c_SS'] = Variable<double, RealType>(d.c_SS.value);
+    }
+    if (d.c_HI.present) {
+      map['c_HI'] = Variable<double, RealType>(d.c_HI.value);
+    }
+    if (d.c_VMfmax.present) {
+      map['c_VMfmax'] = Variable<double, RealType>(d.c_VMfmax.value);
+    }
+    if (d.c_VMfmin.present) {
+      map['c_VMfmin'] = Variable<double, RealType>(d.c_VMfmin.value);
+    }
+    if (d.c_VFrmax.present) {
+      map['c_VFrmax'] = Variable<int, IntType>(d.c_VFrmax.value);
+    }
+    if (d.c_VFrmin.present) {
+      map['c_VFrmin'] = Variable<int, IntType>(d.c_VFrmin.value);
+    }
+    if (d.c_Unnamed93.present) {
+      map['c_Unnamed93'] = Variable<int, IntType>(d.c_Unnamed93.value);
+    }
+    if (d.c_Unnamed94.present) {
+      map['c_Unnamed94'] = Variable<String, StringType>(d.c_Unnamed94.value);
+    }
+    if (d.c_VM.present) {
+      map['c_VM'] = Variable<String, StringType>(d.c_VM.value);
+    }
+    if (d.c_HI1.present) {
+      map['c_HI1'] = Variable<String, StringType>(d.c_HI1.value);
+    }
+    if (d.c_RU1.present) {
+      map['c_RU1'] = Variable<String, StringType>(d.c_RU1.value);
+    }
+    if (d.c_SU1.present) {
+      map['c_SU1'] = Variable<String, StringType>(d.c_SU1.value);
+    }
+    if (d.c_SS1.present) {
+      map['c_SS1'] = Variable<String, StringType>(d.c_SS1.value);
+    }
+    if (d.c_VS.present) {
+      map['c_VS'] = Variable<String, StringType>(d.c_VS.value);
+    }
+    if (d.c_UE.present) {
+      map['c_UE'] = Variable<String, StringType>(d.c_UE.value);
+    }
+    if (d.c_BK.present) {
+      map['c_BK'] = Variable<String, StringType>(d.c_BK.value);
+    }
+    if (d.c_DK.present) {
+      map['c_DK'] = Variable<String, StringType>(d.c_DK.value);
     }
     return map;
   }
