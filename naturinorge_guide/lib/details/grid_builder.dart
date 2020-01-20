@@ -23,8 +23,7 @@ Widget gridBuilder(BuildContext context, int index, List<String> hHeaders,
     // numeric values
     else {
       res = NumericalGridValue(
-        value: grid[y - 1][x - 1].value,
-        color: grid[y - 1][x - 1].color,
+        data: grid[y - 1][x - 1],
       );
     }
     return res;

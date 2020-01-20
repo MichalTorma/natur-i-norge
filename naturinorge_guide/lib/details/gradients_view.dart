@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:naturinorge_guide/db/db_description.dart';
 import 'package:naturinorge_guide/details/gradient_data_point.dart';
 import 'package:naturinorge_guide/details/grid_builder.dart';
 import 'package:naturinorge_guide/details/headers.dart';
 import 'package:naturinorge_guide/tools/t4_tools.dart';
 
 class GradientsView extends StatelessWidget {
-  final List<List<GradientDataPoint>> kaUfGradient;
-  const GradientsView({Key key, this.kaUfGradient}) : super(key: key);
+  final T4Data data;
+  
+  const GradientsView({Key key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var kaUfGradient = getKaUfGradient(data);
+    var kaUf2Gradient = getKaUf2Gradient(data);
     return Container(
         child: ListView(
       shrinkWrap: true,
@@ -30,9 +34,16 @@ class GradientsView extends StatelessWidget {
               ),
             ),
             HeaderCard(
-              text: "",
-            )
+              text: "Ka-Uf Gradient 2",
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: KaUfGradient(
+                grid: kaUf2Gradient,
+              ),
+            ),
           ],
+          
         )
       ],
     ));

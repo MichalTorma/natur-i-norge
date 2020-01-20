@@ -11,7 +11,7 @@ class DetailsView extends StatelessWidget {
   const DetailsView({Key key, this.data}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var kaUfGradient = getKaUfGradient(data);
+    
     Provider.of<MapProvider>(context).setSpecies(data.c_Art);
     return DefaultTabController(
       length: 2,
@@ -37,7 +37,7 @@ class DetailsView extends StatelessWidget {
           // ),
         ),
         body: TabBarView(physics: NeverScrollableScrollPhysics(), children: [
-          GradientsView(kaUfGradient: kaUfGradient),
+          GradientsView(data: data),
           Stack(
             children: <Widget>[
               MapView(),
