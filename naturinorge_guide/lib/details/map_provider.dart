@@ -9,6 +9,7 @@ import 'package:naturinorge_guide/serializers/search_location/features.dart';
 import 'package:naturinorge_guide/serializers/taxons/arts_taxon.dart';
 import 'package:naturinorge_guide/tools/crs_converter.dart';
 
+const CameraPosition INITIAL_CAMERA_POSITION = CameraPosition(target: LatLng(63.990556, 12.3077779), zoom: 5);
 const double REPAINT_RATIO = 0.5;
 class MapProvider extends ChangeNotifier {
   
@@ -18,8 +19,8 @@ class MapProvider extends ChangeNotifier {
   List<ArtsTaxon> _taxons;
   Set<Marker> _markers = Set<Marker>();
   List<MapMarker> _flusterMarkers = [];
-  CameraPosition _currentPosition = CameraPosition(target: LatLng(63.990556, 12.3077779), zoom: 5);
-  CameraPosition _newPosition;
+  CameraPosition _currentPosition = INITIAL_CAMERA_POSITION;
+  CameraPosition _newPosition = INITIAL_CAMERA_POSITION;
   GoogleMapController _controller;
   Fluster<MapMarker> fluster;
   List<double> _showingBoundary;
@@ -99,7 +100,7 @@ class MapProvider extends ChangeNotifier {
 
   Future<void> showVisibleClusters() async {
     
-    if (fluster == null){
+    if (fluster == null || _currentPosition == null){
       return;
     }
     toggleLoading(true);
@@ -180,7 +181,6 @@ class MapProvider extends ChangeNotifier {
   Set<Marker> get markers => _markers;
   double get progress => _progress;
   bool get isLoading => _isLoading;
-  CameraPosition get initialCameraPosition => _currentPosition;
 
   set setController(GoogleMapController controller) {
     _controller = controller;
