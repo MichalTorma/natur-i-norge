@@ -90,10 +90,29 @@ class T4 extends Table {
   IntColumn get c_V58 => integer().named('c_V58').nullable()();
   IntColumn get c_V67 => integer().named('c_V67').nullable()();
   IntColumn get c_V68 => integer().named('c_V68').nullable()();
+  RealColumn get c_RU => real().named('c_RU').nullable()();
+  RealColumn get c_SU => real().named('c_SU').nullable()();
+  RealColumn get c_SS => real().named('c_SS').nullable()();
+  RealColumn get c_HI => real().named('c_HI').nullable()();
+  RealColumn get c_VMfmax => real().named('c_VMfmax').nullable()();
+  RealColumn get c_VMfmin => real().named('c_VMfmin').nullable()();
+  IntColumn get c_VFrmax => integer().named('c_VFrmax').nullable()();
+  IntColumn get c_VFrmin => integer().named('c_VFrmin').nullable()();
+  IntColumn get c_Unnamed93 => integer().named('c_Unnamed93').nullable()();
+  TextColumn get c_Unnamed94 => text().named('c_Unnamed94').nullable()();
+  TextColumn get c_VM => text().named('c_VM').nullable()();
+  TextColumn get c_HI1 => text().named('c_HI1').nullable()();
+  TextColumn get c_RU1 => text().named('c_RU1').nullable()();
+  TextColumn get c_SU1 => text().named('c_SU1').nullable()();
+  TextColumn get c_SS1 => text().named('c_SS1').nullable()();
+  TextColumn get c_VS => text().named('c_VS').nullable()();
+  TextColumn get c_UE => text().named('c_UE').nullable()();
+  TextColumn get c_BK => text().named('c_BK').nullable()();
+  TextColumn get c_DK => text().named('c_DK').nullable()();
 }
 
 final executor = FlutterQueryExecutor.inDatabaseFolder(
-  path: 'nin_from_assets4.db',
+  path: 'nin_from_assets7.db',
   singleInstance: true,
   creator: (file) async {
     final content = await rootBundle.load('assets/nin.db');
