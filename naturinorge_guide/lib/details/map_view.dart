@@ -29,7 +29,7 @@ class _MapViewState extends State<MapView> {
       onCameraMove: (position) async {
         Provider.of<MapProvider>(context, listen: false).cameraMoved(position);
       },
-      onCameraIdle: () {
+      onCameraIdle: () async {
         Provider.of<MapProvider>(context, listen: false).cameraStopedMoving();
       },
     );

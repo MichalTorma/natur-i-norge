@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:naturinorge_guide/api/arts_api.dart';
 import 'package:naturinorge_guide/details/map_marker.dart';
+import 'package:naturinorge_guide/details/marker_icon.dart';
 import 'package:naturinorge_guide/serializers/observations/observations.dart';
 import 'package:naturinorge_guide/serializers/search_location/features.dart';
 import 'package:naturinorge_guide/serializers/taxons/arts_taxon.dart';
@@ -22,6 +23,7 @@ class MapProvider extends ChangeNotifier {
   GoogleMapController _controller;
   Fluster<MapMarker> fluster;
   List<double> _showingBoundary;
+  MarkerIconGenerator _iconGenerator = MarkerIconGenerator();
   void setSpecies(String species) {
     _species = species;
   }
@@ -35,7 +37,6 @@ class MapProvider extends ChangeNotifier {
 
   MapMarker _makeMapMarker(Features f) {
     return MapMarker(
-      icon: BitmapDescriptor.defaultMarker,
       id: f.id,
       position: CrsConverter.utmToLatLon(f.geometry.coordinates[0].asNum,
           f.geometry.coordinates[1].asNum, 33, true),
@@ -105,7 +106,7 @@ class MapProvider extends ChangeNotifier {
     _showingBoundary = _getRepaintBoundary(await _controller.getVisibleRegion());
     _markers = fluster
         .clusters(_showingBoundary, _currentPosition.zoom.round())
-        .map((cluster) => cluster.toMarker())
+        .map((cluster) => cluster.toMarker(_iconGenerator.createClusterBitmapDescriptor(cluster)))
         .toSet();
     print("Showing ${_markers.length} markers");
     notifyListeners();
@@ -167,7 +168,6 @@ class MapProvider extends ChangeNotifier {
           MapMarker(
         id: cluster.id.toString(),
         position: LatLng(lat, lng),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
         isCluster: true,
         clusterId: cluster.id,
         pointsSize: cluster.pointsSize,

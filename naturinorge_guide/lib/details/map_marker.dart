@@ -1,15 +1,17 @@
+import 'dart:typed_data';
+
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image/image.dart' as images;
 
 class MapMarker extends Clusterable {
    final String id;
    final LatLng position;
-   final BitmapDescriptor icon;
 MapMarker({
      @required this.id,
      @required this.position,
-     @required this.icon,
      isCluster = false,
      clusterId,
      pointsSize,
@@ -23,7 +25,7 @@ MapMarker({
           pointsSize: pointsSize,
           childMarkerId: childMarkerId,
        );
-Marker toMarker() => Marker(
+Marker toMarker(BitmapDescriptor icon) => Marker(
          markerId: MarkerId(id),
          position: LatLng(
            position.latitude,
@@ -31,4 +33,5 @@ Marker toMarker() => Marker(
          ),
          icon: icon,
         );
+  
 }
