@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_description.dart';
+import 'package:naturinorge_guide/details/extra_gradient_view.dart';
 import 'package:naturinorge_guide/details/gradient_data_point.dart';
 import 'package:naturinorge_guide/details/grid_builder.dart';
 import 'package:naturinorge_guide/details/headers.dart';
@@ -7,13 +8,14 @@ import 'package:naturinorge_guide/tools/t4_tools.dart';
 
 class GradientsView extends StatelessWidget {
   final T4Data data;
-  
+
   const GradientsView({Key key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var kaUfGradient = getKaUfGradient(data);
     var kaUf2Gradient = getKaUf2Gradient(data);
+    var uLKMGradient = getUlkmGradient(data);
     return Container(
         child: ListView(
       shrinkWrap: true,
@@ -42,8 +44,16 @@ class GradientsView extends StatelessWidget {
                 grid: kaUf2Gradient,
               ),
             ),
+            HeaderCard(
+              text: "uLKM Gradient",
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ExtraGradientView(
+                data: uLKMGradient,
+              ),
+            )
           ],
-          
         )
       ],
     ));
@@ -73,7 +83,6 @@ class KaUfGradient extends StatelessWidget {
     'UF-g',
     'UF-h'
   ];
-  
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +97,3 @@ class KaUfGradient extends StatelessWidget {
     );
   }
 }
-
-
-

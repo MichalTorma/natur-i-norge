@@ -112,3 +112,21 @@ List<List<GradientDataPoint>> getKaUf2Gradient(T4Data data) {
 
   return res;
 }
+
+List<SignedGradientDataPoint> getUlkmGradient(T4Data data){
+  var res = List<SignedGradientDataPoint>.generate(9, (_) => null);
+  const Color _pos_color = Colors.green;
+  const Color _neg_color = Colors.red;
+
+  res[0] = SignedGradientDataPoint(data.c_VM, _pos_color, _neg_color);
+  res[1] = SignedGradientDataPoint(data.c_HI1, _pos_color, _neg_color);
+  res[2] = SignedGradientDataPoint(data.c_RU1, _pos_color, _neg_color);
+  res[3] = SignedGradientDataPoint(data.c_SU1, _pos_color, _neg_color);
+  res[4] = SignedGradientDataPoint(data.c_SS1, _pos_color, _neg_color);
+  res[5] = SignedGradientDataPoint(data.c_VS, _pos_color, _neg_color);
+  res[6] = SignedGradientDataPoint(data.c_UE, _pos_color, _neg_color);
+  res[7] = SignedGradientDataPoint(data.c_BK, _pos_color, _neg_color);
+  res[8] = SignedGradientDataPoint(data.c_DK, _pos_color, _neg_color);
+
+  return res;
+}
