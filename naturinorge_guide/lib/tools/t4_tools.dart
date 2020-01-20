@@ -84,3 +84,31 @@ List<List<GradientDataPoint>> getKaUfGradient(T4Data data) {
 
   return res;
 }
+
+List<List<GradientDataPoint>> getKaUf2Gradient(T4Data data) {
+  //List<int> line = [null, null, null, null, null, null, null, null];
+  //List<List<int>> res = [line, line, line, line, line, line, line, line];
+
+  List<List<GradientDataPoint>> res = List.generate(8, (i) => List.generate(8, (j) => null));
+  const Color _k_color = Colors.green;
+  const Color _v_color = Colors.blue;
+
+  res[1][2] = GradientDataPoint(data.c_K3, _k_color);
+  res[1][3] = GradientDataPoint(data.c_K4, _k_color);
+  res[1][4] = GradientDataPoint(data.c_K5, _k_color);
+  res[1][5] = GradientDataPoint(data.c_K6, _k_color);
+  res[1][6] = GradientDataPoint(data.c_K7, _k_color);
+  res[1][7] = GradientDataPoint(data.c_K8, _k_color);
+
+  res[2][6] = GradientDataPoint(data.c_V37, _v_color);
+  res[3][6] = GradientDataPoint(data.c_V47, _v_color);
+  res[4][6] = GradientDataPoint(data.c_V57, _v_color);
+  res[5][6] = GradientDataPoint(data.c_V67, _v_color);
+
+  res[2][7] = GradientDataPoint(data.c_V38, _v_color);
+  res[3][7] = GradientDataPoint(data.c_V48, _v_color);
+  res[4][7] = GradientDataPoint(data.c_V58, _v_color);
+  res[5][7] = GradientDataPoint(data.c_V68, _v_color);
+
+  return res;
+}
