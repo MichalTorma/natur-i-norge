@@ -1,4 +1,4 @@
-package com.example.naturinorge_guide
+package no.naturinorge.naturinorge_guide
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
