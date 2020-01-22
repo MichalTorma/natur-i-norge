@@ -4,7 +4,8 @@ ThemeData myTheme = ThemeData(
   // Define the default brightness and colors.
   brightness: Brightness.light,
   primaryColor: Colors.lightGreen[800],
-  primaryColorDark: Colors.green[800],
+  primaryColorDark: Colors.lightGreen[800],
+  primaryColorLight: Colors.lightGreen[100],
   accentColor: Colors.orangeAccent[600],
 
   // Define the default font family.

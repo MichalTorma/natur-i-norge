@@ -16,18 +16,22 @@ class DetailsView extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        bottomNavigationBar: TabBar(
-          indicatorColor: Theme.of(context).primaryColorDark,
-          unselectedLabelColor: Theme.of(context).primaryColorLight,
-          labelColor: Theme.of(context).primaryColorDark,
-          tabs: <Widget>[
-            Tab(
-              text: "Gradients",
-            ),
-            Tab(
-              text: "Map",
-            )
-          ],
+        bottomNavigationBar: Material(
+          color: Theme.of(context).primaryColorLight,
+                  child: TabBar(
+            
+            indicatorColor: Theme.of(context).primaryColorDark,
+            unselectedLabelColor: Theme.of(context).textTheme.headline.color,
+            labelColor: Theme.of(context).primaryColorDark,
+            tabs: <Widget>[
+              Tab(
+                text: "Gradients",
+              ),
+              Tab(
+                text: "Map",
+              )
+            ],
+          ),
         ),
         appBar: AppBar(
           title: Text(data.c_Art),

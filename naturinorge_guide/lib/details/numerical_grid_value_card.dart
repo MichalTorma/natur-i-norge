@@ -7,11 +7,19 @@ class NumericalGridValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return data == null
-        ? Card(
+    
+    if (data == null)
+      return Card(
             color: Colors.grey.shade100,
-          )
-        : Card(
+          );
+    else if (data.value == 0)
+      return Card(
+            color: Colors.grey.shade200,
+            child: Center(
+              child: Text(data.value.toString(), style: Theme.of(context).textTheme.body1.copyWith(fontWeight: FontWeight.bold),),
+            ),
+          );
+    return Card(
             color: data.color.withAlpha(42 * data.value.abs()),
             child: Center(
               child: Text(data.value.toString(), style: Theme.of(context).textTheme.body1.copyWith(fontWeight: FontWeight.bold),),
