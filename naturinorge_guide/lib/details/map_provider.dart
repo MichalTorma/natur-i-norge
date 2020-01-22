@@ -26,7 +26,12 @@ class MapProvider extends ChangeNotifier {
   List<double> _showingBoundary;
   MarkerIconGenerator _iconGenerator = MarkerIconGenerator();
   void setSpecies(String species) {
-    _species = species;
+    if (_species != species){
+      _species = species;
+    _markers = Set<Marker>();
+    _flusterMarkers = [];
+    }
+    
   }
 
   void toggleLoading(bool isOn) {
@@ -155,10 +160,10 @@ class MapProvider extends ChangeNotifier {
 
     fluster = Fluster<MapMarker>(
       minZoom: 1, // The min zoom at clusters will show
-      maxZoom: 12, // The max zoom at clusters will show
-      radius: 1024, // Cluster radius in pixels
+      maxZoom: 18, // The max zoom at clusters will show
+      radius: 2048, // Cluster radius in pixels
       extent: 8192, // Tile extent. Radius is calculated with it.
-      nodeSize: 64, // Size of the KD-tree leaf node.
+      nodeSize: 512, // Size of the KD-tree leaf node.
       points: _flusterMarkers, // The list of markers created before
       createCluster: (
         // Create cluster marker
