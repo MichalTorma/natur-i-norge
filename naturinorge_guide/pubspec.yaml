@@ -29,6 +29,7 @@ dependencies:
   google_maps_flutter: ^0.5.21+15
   fluster: ^1.1.2
   dart_numerics: ^0.0.5
+  preferences: ^5.0.2
   flutter:
     sdk: flutter
 

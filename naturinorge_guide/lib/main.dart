@@ -3,9 +3,14 @@ import 'package:naturinorge_guide/db/db_description.dart';
 import 'package:naturinorge_guide/details/details_view.dart';
 import 'package:naturinorge_guide/details/map_provider.dart';
 import 'package:naturinorge_guide/filter_provider.dart';
+import 'package:naturinorge_guide/tools/my_theme.dart';
+import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  await PrefService.init(prefix: 'pref_');
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -22,9 +27,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Natur i Norge',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: myTheme,
         home: MyHomePage(title: 'Natur i Norge'),
       ),
     );
@@ -58,11 +61,17 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: <Widget>[
-          TextField(onChanged: (mask) async {
-            await Provider.of<FilterProvider>(context, listen: false)
-                .filterMask(mask);
-            print(mask);
-          }),
+          Card(
+            child: TextField(
+                decoration: InputDecoration(
+                  icon: Icon(Icons.search),
+                ),
+                onChanged: (mask) async {
+                  await Provider.of<FilterProvider>(context, listen: false)
+                      .filterMask(mask);
+                  print(mask);
+                }),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: Provider.of<FilterProvider>(context).data.length,
