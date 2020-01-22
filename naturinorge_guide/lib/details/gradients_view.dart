@@ -35,8 +35,11 @@ class GradientsView extends StatelessWidget {
                 grid: kaUfGradient,
               ),
             ),
-            HeaderCard(
-              text: "Ka-Uf Gradient 2",
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: HeaderCard(
+                text: "Ka-Uf Gradient 2",
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -44,8 +47,11 @@ class GradientsView extends StatelessWidget {
                 grid: kaUf2Gradient,
               ),
             ),
-            HeaderCard(
-              text: "uLKM Gradient",
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: HeaderCard(
+                text: "uLKM Gradient",
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

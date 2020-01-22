@@ -8,7 +8,12 @@ import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await PrefService.init(prefix: 'pref_');
+  PrefService.setDefaultValues({
+    //   PREFS_DARK: false,
+    //   PREFS_CHILD: false,
+  });
   runApp(MyApp());
 }
 
