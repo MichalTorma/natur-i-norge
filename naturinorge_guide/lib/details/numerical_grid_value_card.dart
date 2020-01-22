@@ -14,7 +14,7 @@ class NumericalGridValue extends StatelessWidget {
         : Card(
             color: data.color.withAlpha(42 * data.value.abs()),
             child: Center(
-              child: Text(data.value.toString()),
+              child: Text(data.value.toString(), style: Theme.of(context).textTheme.body1.copyWith(fontWeight: FontWeight.bold),),
             ),
           );
   }
