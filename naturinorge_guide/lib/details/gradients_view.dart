@@ -69,7 +69,7 @@ class GradientsView extends StatelessWidget {
 class KaUfGradient extends StatelessWidget {
   final List<List<GradientDataPoint>> grid;
   const KaUfGradient({Key key, this.grid}) : super(key: key);
-  static final List<String> _vHeaders = [
+  static final List<String> _hHeaders = [
     'KA-ab',
     'KA-c',
     'KA-d',
@@ -79,7 +79,7 @@ class KaUfGradient extends StatelessWidget {
     'KA-h',
     'KA-i'
   ];
-  static final List<String> _hHeaders = [
+  static final List<String> _vHeaders = [
     'UF-c',
     'UF-c',
     'UF-c',
