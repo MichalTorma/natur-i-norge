@@ -80,8 +80,8 @@ class KaUfGradient extends StatelessWidget {
     'KA-i'
   ];
   static final List<String> _vHeaders = [
-    'UF-c',
-    'UF-c',
+    'UF-a',
+    'UF-b',
     'UF-c',
     'UF-d',
     'UF-e',
