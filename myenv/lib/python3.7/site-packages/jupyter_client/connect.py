@@ -7,9 +7,6 @@ related to writing and reading connections files.
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
-
-from __future__ import absolute_import
-
 import errno
 import glob
 import json
@@ -27,18 +24,18 @@ from traitlets.config import LoggingConfigurable
 from .localinterfaces import localhost
 from ipython_genutils.path import filefind
 from ipython_genutils.py3compat import (
-    bytes_to_str, cast_bytes, cast_bytes_py2, string_types,
+    bytes_to_str, cast_bytes, cast_bytes_py2,
 )
 from traitlets import (
-    Bool, Integer, Unicode, CaselessStrEnum, Instance, Type,
+    Bool, Integer, Unicode, CaselessStrEnum, Instance, Type, observe
 )
 from jupyter_core.paths import jupyter_data_dir, jupyter_runtime_dir, secure_write
 
 
 def write_connection_file(fname=None, shell_port=0, iopub_port=0, stdin_port=0, hb_port=0,
-                         control_port=0, ip='', key=b'', transport='tcp',
-                         signature_scheme='hmac-sha256', kernel_name=''
-                         ):
+                          control_port=0, ip='', key=b'', transport='tcp',
+                          signature_scheme='hmac-sha256', kernel_name=''
+                          ):
     """Generates a JSON config file, including the selection of random ports.
 
     Parameters
@@ -195,7 +192,7 @@ def find_connection_file(filename='kernel-*.json', path=None, profile=None):
         warnings.warn("Jupyter has no profiles. profile=%s has been ignored." % profile)
     if path is None:
         path = ['.', jupyter_runtime_dir()]
-    if isinstance(path, string_types):
+    if isinstance(path, str):
         path = [path]
 
     try:
@@ -230,7 +227,7 @@ def find_connection_file(filename='kernel-*.json', path=None, profile=None):
 def tunnel_to_kernel(connection_info, sshserver, sshkey=None):
     """tunnel connections to a kernel via ssh
 
-    This will open four SSH tunnels from localhost on this machine to the
+    This will open five SSH tunnels from localhost on this machine to the
     ports associated with the kernel.  They can be either direct
     localhost-localhost tunnels, or if an intermediate server is necessary,
     the kernel must be listening on a public IP.
@@ -250,19 +247,19 @@ def tunnel_to_kernel(connection_info, sshserver, sshkey=None):
     Returns
     -------
 
-    (shell, iopub, stdin, hb) : ints
-        The four ports on localhost that have been forwarded to the kernel.
+    (shell, iopub, stdin, hb, control) : ints
+        The five ports on localhost that have been forwarded to the kernel.
     """
-    from zmq.ssh import tunnel
-    if isinstance(connection_info, string_types):
+    from .ssh import tunnel
+    if isinstance(connection_info, str):
         # it's a path, unpack it
         with open(connection_info) as f:
             connection_info = json.loads(f.read())
 
     cf = connection_info
 
-    lports = tunnel.select_random_ports(4)
-    rports = cf['shell_port'], cf['iopub_port'], cf['stdin_port'], cf['hb_port']
+    lports = tunnel.select_random_ports(5)
+    rports = cf['shell_port'], cf['iopub_port'], cf['stdin_port'], cf['hb_port'], cf['control_port']
 
     remote_ip = cf['ip']
 
@@ -327,8 +324,9 @@ class ConnectionFileMixin(LoggingConfigurable):
         else:
             return localhost()
 
-    def _ip_changed(self, name, old, new):
-        if new == '*':
+    @observe('ip')
+    def _ip_changed(self, change):
+        if change['new'] == '*':
             self.ip = '0.0.0.0'
 
     # protected traits
