@@ -1,6 +1,7 @@
+import sys
 from abc import abstractmethod, abstractproperty
 
-from parso._compatibility import utf8_repr, encoding, py_version
+from parso._compatibility import utf8_repr, encoding
 from parso.utils import split_lines
 
 
@@ -44,8 +45,12 @@ class NodeOrLeaf(object):
         Returns the node immediately following this node in this parent's
         children list. If this node does not have a next sibling, it is None
         """
+        parent = self.parent
+        if parent is None:
+            return None
+
         # Can't use index(); we need to test by identity
-        for i, child in enumerate(self.parent.children):
+        for i, child in enumerate(parent.children):
             if child is self:
                 try:
                     return self.parent.children[i + 1]
@@ -58,8 +63,12 @@ class NodeOrLeaf(object):
         children list. If this node does not have a previous sibling, it is
         None.
         """
+        parent = self.parent
+        if parent is None:
+            return None
+
         # Can't use index(); we need to test by identity
-        for i, child in enumerate(self.parent.children):
+        for i, child in enumerate(parent.children):
             if child is self:
                 if i == 0:
                     return None
@@ -70,6 +79,9 @@ class NodeOrLeaf(object):
         Returns the previous leaf in the parser tree.
         Returns `None` if this is the first element in the parser tree.
         """
+        if self.parent is None:
+            return None
+
         node = self
         while True:
             c = node.parent.children
@@ -93,6 +105,9 @@ class NodeOrLeaf(object):
         Returns the next leaf in the parser tree.
         Returns None if this is the last element in the parser tree.
         """
+        if self.parent is None:
+            return None
+
         node = self
         while True:
             c = node.parent.children
@@ -321,7 +336,7 @@ class BaseNode(NodeOrLeaf):
     @utf8_repr
     def __repr__(self):
         code = self.get_code().replace('\n', ' ').replace('\r', ' ').strip()
-        if not py_version >= 30:
+        if not sys.version_info.major >= 3:
             code = code.encode(encoding, 'replace')
         return "<%s: %s@%s,%s>" % \
             (type(self).__name__, code, self.start_pos[0], self.start_pos[1])

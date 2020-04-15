@@ -1,0 +1,95 @@
+Co,Major-type group and major type,LECs,#MiT
+M1,Euphotic marine rock,(N) VF4[0ab|cd|ef|gh] DL3[a|bc|d] SA3[a|bc|def] HF[0ab|+] S1[a|b] IF[0ab|¤] VR RU ,29
+M2,Aphotic marine rock,(N) DM5[0|a|b|cd|ef] VF[a|bc] HF[0ab|+] BK[0|a] SA S1 RU DD,20
+M3,Littoral rock,(N) VF4[0ab|cd|efg|h] TV3[ab|cde|fgh] SA3[a|bc|def] HF[0ab|+] IF[0ab|¤] S1 VR RU,19
+M4,Euphotic marine sediment,"(N) S3[E,F,S] DL[abc|d] SA[abc|de] TV[0|ab] IO[0ab|¤] KA[efg|hi] SE[oab|¤] ",44
+M5,Aphotic marine sediment,"(N) S3[E,F,S] DM5[0|a|b|cd|ef] IO[0ab|¤] VF DD",38
+M6,Coral reef seabed,(NS) KY[0|a] LK DM,2
+M7,Seagrass bed,(NS) SA[abc|def] TV[0|ab] S3,4
+M8,Tidal swamp,(NS) SA IO TV ,1
+M9,Tidal rockpool seabed,(SM∙g+) SM3[gh|i|¤] TV3[cdefgh|ij|k] SE[0a|b],9
+M10,Marine cave and overhang,(GS∙a+) DL3[0|abcd|e+] GS[ab|cd¤] ,5
+M11,Marine cold seep,(KI∙e+) DM3[0|a|bcdef] KI[e|¤] KT[d|e] ,7
+M12,Hydrothermal vent,(KI∙e+ JV∙a+) JV3[ab|cd|e¤] DM3[0|a|bcdef],7
+M13,Anoxic marine sediment,(OM∙b+) OM[b|¤] DL[abcd|e¤],4
+M14,Strongly altered or artificial hard marine substrate,(SX∙a) DL3[0|abcd|e+] VF SA,3
+M15,Strongly altered or artificial marine sediment,"(SX∙b) S3[E,F] HS* DL SA",4
+H,Marine waterbody systems,,
+H1,Oceanic waterbody,(N) DM4[0|a|bcd|ef] KY[0|a] JV,5
+H2,"Circulating fjord, estuary, lagoon and rock pool waterbody",(SM∙a+) SM6[a|bc|def|gh|i|¤] SA[abc|def] ,8
+H3,Anoxic marine waterbody,(OM∙¤) 0,1
+H4,Strongly altered or artificial marine waterbody,(SY∙abcd) SY4[a|b|c|d] SM SA,4
+L,Freshwater-bed systems,,
+L1,Euphotic freshwater rock,(N) KA3[abc|def|ghi] VF[0abcde|fgh¤] HU[0|abcd] DL IF,7
+L2,Euphotic freshwater sediment ,"(N) S3[E,F,S] KA3[abc,def,ghi] IO[0a|b¤] VT[ab|c] SE[0ab|¤] VF HU DL IF",19
+L3,Aphotic freshwater sediment,(N) KA[abcde|fghi] IO,2
+L4,Freshwater swamp,(NS) KA3[abc|def|ghi] S3 IO IF,3
+L5,Freshwater spring,(KI∙e+) KT3[a|b|c] KA[cde|fghi] S3 VF,4
+L6,Anoxic freshwater sediment,(OM∙b+) OM[b|¤] KA,2
+L7,Strongly altered or artificial hard freshwater substrate,(SX∙c) HS*3 DL,3
+L8,Strongly altered or artificial freshwater sediment ,(SX∙d) HS*8 DL,8
+F1,River and stream waterbody,(N)VF[bcde|fgh¤] HU[0a|bcd] KA[abcde|fghi] TU,6
+F2,Circulating lake waterbody,(N) SM4[bc|def|ghi|¤] KA3[abc|def|ghi] HU TU KO,21
+F3,Anoxic lake waterbody,(OM∙¤) FK,1
+F4,Strongly altered or artificial river waterbody,(SY∙abc) SY3[a|b|c] VF HU KA TU,3
+F5,Strongly altered or artificial lake waterbody,(SY∙abcd) SY4[a|b|c|d] SM KU HU TU KO,4
+T1,Bare rock,(N) KA5[ab|cd|ef|gh|i] UE4[0a|bc|de|fg] OR3[0|ab|c] HF[0ab|+] VF[a|bcdef] VS[0abcd|e] LA[0abcd|ef+] NG[0a|bcd¤] VI[0a|bc] SV[0|abcd] IF BK,85
+T2,Open shallow-soil ground,(N) KA4[abc|de|fg|hi] UF[def|gh] VM BK HI,8
+T3,Arctic-alpine heath and lee side,(N) KA4[abc|de|fg|hi] UF3[bc|de|fg] KI[0a|bc] BK HI RU VM,14
+T4,Forest,(NS) UF4[ab|cd|ef|gh] KA4[abc|de|fg|hi] KI[0a|bc] BK HI SU RU SS S1 VM VS UE,20
+T5,Cave and overhang,(GS∙a+) GS3[a|bcd|¤] KA3[abc|defg|hi] UE[0abc|defg] BK LA,10
+T6,Rocky shore,(TV∙k– SA∙a+) TV3[i|j|k] KA[bcde|fghi] VF[0abcde|fgh¤] HF[0ab|+] IF[0ab|¤],7
+T7,Snowbed,(SV∙a+) KA5[a|bc|de|fg|hi] SV4[ab|cd|ef|g] KI[0a|bc] VM HI S1,14
+T8,Bird-cliff meadow,(NG∙a+) NG[ab|cd|¤] KI[0a|bc] UF[abcd|efgh] KA HI ,5
+T9,Moss tundra,(NG∙ab PF∙a IO∙b¤) KA[cde|fghi] VM,2
+T10,Arctic steppe,(AS∙a) VI[0|abc],2
+T11,Hypersaline tidal marsh,(TV∙k– SF∙b+) TV[cdefgh|ijk] S1[de|hi],3
+T12,Tidal meadow,(TV∙k– SA∙a+) TV4[cd|ef|gh|ijk] SA HI S1 VM KA,4
+T13,Bare talus slope,(RU∙b+) KA3[abc|defg|hi] S1∙3[b|c|def] UE[abc|defg] RU[bcde|¤] BK VI,18
+T14,Exposed ridge,(VI∙a+) VI[abc|¤] KA[abcde|fghi],3
+T15,Waterfall-sprayed meadow,(VS∙bcd) KA[cde|fgh] VS HI KI,2
+T16,Talus-slope heath and meadow,(RU∙b+) KA4[abc|de|fg|hi] RU[bc|de] KI[0a|bc] UF HI BK VI VM,7
+T17,Open active landslide,(SU∙bc) S1∙4[0|de|fg|hi] SU KA KI,4
+T18,Open alluvial sediment,(VF∙f+) S1∙3[cde|fg|hi] VF[f|gh¤] KA[bcde|fgh] FR[0|a] IF KI HI,6
+T19,Patterned ground,(PF∙a OF∙a) S1[cd|h] KA[bcde|fgh],3
+T20,Kettle-hole frost heath,(IF∙b) KA[cde|fgh],2
+T21,Sand dune,(SS∙i–) SS6[a|bc|d|ef|gh|i] VI[abc|¤] VM[0|ab] HI,8
+T22,Arctic-alpine dry-grass heath,(JF∙ab) KA[bcde|fgh] SV[0|ab] VM,4
+T23,Freshwater driftline,(TV∙k– IO∙¤),1
+T24,Coastal driftline,(TV∙k– IO∙¤ SA∙a+) VF3[cd|e|f] VM,3
+T25,Open historical landslide,(SH∙a) S1∙4[0|de|fg|hi] KA KI,4
+T26,Glacier foreland,(SH∙b) S1∙3[cd|efg|hi] SV[0|abcd] VM[0a|b] LA[0ab|cdef] KA KI                      ,7
+T27,Boulder field,(SH∙c) SV3[0|abcdefd|g] KA[abcde|fghi] VI[0a|bc] LA[0abcd|ef+] BK S1 UE,8
+T28,Polar desert,(SH∙d PF∙a) KA3[abc|defg|hi],3
+T29,Coastal shingle beach,(SH∙e) S1∙3[c|de|j] LA[0ab|cdef] VI[abc|¤] TV[ijk|l+] HI,10
+T30,Alluvial forest,(S VF∙bcde) S1[cde|fghi] VF[bc|de] KI[0a|bc] ER[0a|b] KA HI SA,7
+T31,Boreal heath,(MX∙a) KA4[abc|de|fg|hi] UF3[bc1|de|fgh] KI[0a|bc] BK HI VM,14
+T32,Semi-natural grassland,(HI∙bcde) KA4[bc|de|fg|hi] HI3[b|cd|e] KI[0a|bc] UF[ab|cde] SS[fghi|jk+] SP VM,21
+T33,Semi-natural tidal and salt meadow,(HI∙bcde TV∙k– SA∙a+) TV[fgh|ijk] SA SP VM S1 HI KA,2
+T34,Coastal heath,(HI∙bcde HR∙a) KA4[abc|de|fg|hi] UF3[bc|de|fgh] VM[0a|b] BK,12
+T35,"Wasteland, extracted or deposited surficial deposit",(SX∙e) S1∙4[0|cde|fg|hi] KA,4
+T36,Drained wetland and terrestrialised freshwater sediment,(SX∙f) HS*3 KA,3
+T37,Artificial soft substrate,(SX∙g) HS*3,3
+T38,Tree plantation,(SX∙e) UF KA,1
+T39,Strongly altered or artificial hard substrate,(SX∙h) HS*4 LA[0ab|cdef],8
+T40,Strongly altered ground with semi-natural grassland character,(SX∙i MB∙0) KA UF SP VM SS SA,1
+T41,Agriculturally improved grassland with semi-natural character,(SX∙j MB∙+) KA HI SP VM,1
+T42,Landscaped patch or field,(SX∙k MB∙0) 0,1
+T43,Landscaped grassland,(SX∙k MB∙+) KA HI VM ,1
+T44,Arable field,(SX∙l MB∙0) KA S1 VM,1
+T45,Agriculturally improved grassland,(SX∙l MB∙+) HI3[fg|hi|j] SP[0|a] KA S1 VM,4
+V1,Open fen,(N) KA5[ab|cd|ef|gh|i] TV5[cd|ef|gh|ij|k] MF[cd|ef] KI[0a|bc] SA[0a|bcd] VT TE,32
+V2,Mire and swamp forest,(NS) KA3[abcd|ef|ghi] TV[cdef|ghijk] KI[0a|bc] ,8
+V3,Bog,(VT∙c) TV5[cd|ef|gh|ij|k] MF[cd|ef] VI[0|ab] TE,7
+V4,Spring,(KI∙d+) KA3[cd|ef|ghi] KI[de|¤] KT[a|b],9
+V5,Thermal spring,(KI∙d+ JV∙a+) JV[a|b],2
+V6,Wet snow-bed and snowbed spring,(SV∙a+ IO∙0a) SV3[ab|cd|ef] KA[cdef|ghi] KI[bc|de],9
+V7,Arctic permafrost wetland,(PF∙a) KA[cdef|ghi] TV,2
+V8,Tidal and alluvial swamp forest,(VT∙a) KA[cde|fgh] SA[0a|bcd],3
+V9,Semi-natural fen,(HI∙bcde) KA3[bcd|ef|ghi] TV KI SP,3
+V10,Semi-natural wet meadow,(HI∙bcde IO∙0a) KA[cde|fgh] KI[0a|bc] SP,3
+V11,Peat quarry,(SX∙m) KA[abcd|efghi],2
+V12,Drained mire,(SX∙n) VT[0|c] KA[abcd|efgh]                                                         ,3
+V13,Artificial wetland,(SX∙o) HS*4 IO[0a|b¤] KA,8
+I1,Permanent snow and ice,(N),1
+I2,Polar sea-ice,(N),1
