@@ -2,53 +2,55 @@ from sqlalchemy import Column, Text, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
+preffix = 'nin_'
 
 class Language(Base):
     '''Table defining supported languages - alle tables ending with 'Info'
     reference this table.'''
 
-    __tablename__ = 'Language'
-    _id = Column(Integer, primary_key=True)
+    __tablename__ = f'{preffix}Language'
+    _id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Text)
-    # majorTypeGroupInfo = relationship('MajorTypeGroupInfo', back_populates='language')
-    # majorTypeInfo = relationship('MajorTypeInfo', back_populates='language')
-    # minorTypeInfo = relationship('MinorTypeInfo', back_populates='language')
-    # lecInfo = relationship('LECInfo', back_populates='language')
-    # patternOfVariationInfo = relationship('PatternOfVariationInfo', back_populates='language')
-    # structuringProcessInfo = relationship('StructuringProcessInfo', back_populates='language')
-    # lecCombinationTypeInfo = relationship('LECCombinationTypeInfo', back_populates='language')
+    majorTypeGroupInfo = relationship('MajorTypeGroupInfo', back_populates='language')
+    majorTypeInfo = relationship('MajorTypeInfo', back_populates='language')
+    minorTypeInfo = relationship('MinorTypeInfo', back_populates='language')
+    lecInfo = relationship('LECInfo', back_populates='language')
+    patternOfVariationInfo = relationship('PatternOfVariationInfo', back_populates='language')
+    structuringProcessInfo = relationship('StructuringProcessInfo', back_populates='language')
+    lecCombinationTypeInfo = relationship('LECCombinationTypeInfo', back_populates='language')
 
 class MajorTypeGroup(Base):
     '''Table of Major type groups lie T,V,M etc..'''
 
-    __tablename__ = "MajorTypeGroup"
+    __tablename__ = f'{preffix}MajorTypeGroup'
     _id = Column(Text, primary_key=True)
 
     # References
-    info = relationship('MajorTypeGroupInfo', back_populates='majorTypeGroup')
+    info = relationship('MajorTypeGroupInfo')
     majorType = relationship('MajorType', back_populates='majorTypeGroup')
 
 class MajorTypeGroupInfo(Base):
     '''Language specific information about major type groups.'''
 
-    __tablename__ = 'MajorTypeGroupInfo'
-    majorTypeGroup_id = Column(Text, ForeignKey('MajorTypeGroup._id'), primary_key=True)
-    language_id = Column(Integer, ForeignKey('Language._id'), primary_key=True)
+    __tablename__ = f'{preffix}MajorTypeGroupInfo'
+    majorTypeGroup_id = Column(Text, ForeignKey(f'{preffix}MajorTypeGroup._id'), primary_key=True)
+    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
     name = Column(Text)
     description = Column(Text)
 
     # References
-    language = relationship('Language')
+    language = relationship('Language', back_populates='majorTypeGroupInfo')
     majorTypeGroup = relationship('MajorTypeGroup', back_populates='info')
 
 class MajorType(Base):
     '''Major types like T4,V11 and so on, references major type.'''
 
-    __tablename__ = 'MajorType'
-    _id = Column(Integer, primary_key=True)
-    majorTypeGroup_id = Column(Text, ForeignKey('MajorTypeGroup._id'))
+    __tablename__ = f'{preffix}MajorType'
+    _id = Column(Integer, primary_key=True, autoincrement=True)
+    majorTypeGroup_id = Column(Text, ForeignKey(f'{preffix}MajorTypeGroup._id'))
 
     # References
+    lecCombination = relationship('LECCombination', back_populates='majorType')
     majorTypeGroup = relationship('MajorTypeGroup', back_populates='majorType')
     info = relationship('MajorTypeInfo', back_populates='majorType')
     lec = relationship('MajorTypeLEC', back_populates='majorType')
@@ -56,33 +58,33 @@ class MajorType(Base):
 class MajorTypeInfo(Base):
     '''Language specific information about major types'''
 
-    __tablename__ = 'MajorTypeInfo'
-    language_id = Column(Integer, ForeignKey('Language._id'), primary_key=True)
-    majorType_id = Column(Integer, ForeignKey('MajorType._id'), primary_key=True)
+    __tablename__ = f'{preffix}MajorTypeInfo'
+    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
+    majorType_id = Column(Integer, ForeignKey(f'{preffix}MajorType._id'), primary_key=True)
     name = Column(Text)
     description = Column(Text)
 
     # References
     language = relationship('Language')
-    majorType = relationship('MajorType', back_populates='majorType')
+    majorType = relationship('MajorType', back_populates='info')
 
 class MinorType(Base):
     '''Minor types like T4-1 '''
 
-    __tablename__ = 'MinorType'
+    __tablename__ = f'{preffix}MinorType'
     _id = Column(Integer, primary_key=True)
-    majorType_id = Column(Integer, ForeignKey('MajorType._id'))
+    majorType_id = Column(Integer, ForeignKey(f'{preffix}MajorType._id'))
 
     # References
-    elementarySegment = relationship('elementarySegment', back_populates='minorType')
     info = relationship('MinorTypeInfo', back_populates='minorType')
+    lec = relationship('MinorTypeLEC', back_populates='minorType')
 
 class MinorTypeInfo(Base):
     '''Language specific info about minor types'''
 
-    __tablename__ = 'MinorTypeInfo'
-    minorType_id = Column(Integer, ForeignKey('MinorType._id'), primary_key=True)
-    language_id = Column(Integer, ForeignKey('Language._id'), primary_key=True)
+    __tablename__ = f'{preffix}MinorTypeInfo'
+    minorType_id = Column(Integer, ForeignKey(f'{preffix}MinorType._id'), primary_key=True)
+    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
     name = Column(Text)
 
     # References
@@ -92,25 +94,25 @@ class MinorTypeInfo(Base):
 class LEC(Base):
     '''Local environmental complex-gradients with their descriptions'''
 
-    __tablename__ = 'LEC'
+    __tablename__ = f'{preffix}LEC'
     _id = Column(Text, primary_key=True)
     spatialScale = Column(Integer)
-    structuringProcess_id = Column(Text, ForeignKey('StructuringProcess._id'))
+    structuringProcess_id = Column(Text, ForeignKey(f'{preffix}StructuringProcess._id'))
 
     # References
     elementarySegment = relationship('ElementarySegment', back_populates='lec')
     structuringProcess = relationship('StructuringProcess', back_populates='lec')
     patternOfVariation = relationship('PatternOfVariation', back_populates='lec')
-    info = relationship('LECInfo', backref='lec')
-    majorTypeLEC = relationship('MajorTypeLEC', back_populates='lec')
-    minorTypeLEC = relationship('MajorTypeLEC', back_populates='lec')
+    info = relationship('LECInfo', back_populates='lec')
+    majorType = relationship('MajorTypeLEC', back_populates='lec')
+    minorType = relationship('MinorTypeLEC', back_populates='lec')
 
 class LECInfo(Base):
     '''Language specific info about local environmental complex gradients'''
 
-    __tablename__ = 'LECInfo'
-    language_id = Column(Integer, ForeignKey('Language._id'), primary_key=True)
-    lec_id = Column(Text, ForeignKey('LEC._id'), primary_key=True)
+    __tablename__ = f'{preffix}LECInfo'
+    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
+    lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'), primary_key=True)
     name = Column(Text)
     description = Column(Text)
 
@@ -121,31 +123,31 @@ class LECInfo(Base):
 class StructuringProcess(Base):
     '''category of structuring process of local environmental complex-gradient'''
 
-    __tablename__ = 'StructuringProcess'
+    __tablename__ = f'{preffix}StructuringProcess'
     _id = Column(Text, primary_key=True)
-    lec = relationship('LEC', backref='structuringProcess')
-    info = relationship('StructuringProcessInfo', backref='structuringProcess')
+    lec = relationship('LEC', back_populates='structuringProcess')
+    info = relationship('StructuringProcessInfo', back_populates='structuringProcess')
 
 class StructuringProcessInfo(Base):
     '''Language specific information about category of structuring process'''
 
-    __tablename__ = 'StructuringProcessInfo'
-    language_id = Column(Integer, ForeignKey('Language._id'), primary_key=True)
-    structuringProcess_id = Column(Text, ForeignKey('StructuringProcess._id'), primary_key=True)
+    __tablename__ = f'{preffix}StructuringProcessInfo'
+    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
+    structuringProcess_id = Column(Text, ForeignKey(f'{preffix}StructuringProcess._id'), primary_key=True)
     name = Column(Text)
     description = Column(Text)
 
     # References
     language = relationship('Language')
-    StructuringProcess = relationship('StructuringProcess', back_populates='info')
+    structuringProcess = relationship('StructuringProcess', back_populates='info')
 
 class PatternOfVariation(Base):
     '''pattern of variation (f = factor; g = gradient, ga = gradient that
     ends in a species-thinning situation at high intensity)'''
 
-    __tablename__ = 'PatternOfVariation'
+    __tablename__ = f'{preffix}PatternOfVariation'
     _id = Column(Text, primary_key=True)
-    lec_id = Column(Text, ForeignKey('LEC._id'))
+    lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'))
 
     # References
     lec = relationship('LEC', back_populates='patternOfVariation')
@@ -154,9 +156,9 @@ class PatternOfVariation(Base):
 class PatternOfVariationInfo(Base):
     '''Language specific information about the pattern of variation'''
 
-    __tablename__ = 'PatternOfVariationInfo'
-    language_id = Column(Integer, ForeignKey('Language._id'), primary_key=True)
-    patternOfVariation_id = Column(Text, ForeignKey('PatternOfVariation._id'), primary_key=True)
+    __tablename__ = f'{preffix}PatternOfVariationInfo'
+    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
+    patternOfVariation_id = Column(Text, ForeignKey(f'{preffix}PatternOfVariation._id'), primary_key=True)
     name = Column(Text)
     description = Column(Text)
 
@@ -167,9 +169,9 @@ class PatternOfVariationInfo(Base):
 class MajorTypeLEC(Base):
     '''Association table for LEC and major types'''
 
-    __tablename__ = 'MajorTypeLEC'
-    lec_id = Column(Text, ForeignKey('LEC._id'), primary_key=True)
-    majorType_id = Column(Text, ForeignKey('MajorType._id', primary_key=True))
+    __tablename__ = f'{preffix}MajorTypeLEC'
+    lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'), primary_key=True)
+    majorType_id = Column(Text, ForeignKey(f'{preffix}MajorType._id', primary_key=True))
 
     # References
     majorType = relationship('MajorType', back_populates='lec')
@@ -178,30 +180,31 @@ class MajorTypeLEC(Base):
 class MinorTypeLEC(Base):
     '''Association table for LEC and minor types'''
 
-    __tablename__ = 'MinorTypeLEC'
-    lec_id = Column(Text, ForeignKey('LEC._id'), primary_key=True)
-    minorType_id = Column(Text, ForeignKey('MinorType._id'), primary_key=True)
+    __tablename__ = f'{preffix}MinorTypeLEC'
+    lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'), primary_key=True)
+    minorType_id = Column(Text, ForeignKey(f'{preffix}MinorType._id'), primary_key=True)
 
     # References
     lec = relationship('LEC', back_populates='minorType')
     minorType = relationship('MinorType', back_populates='lec')
-
 class LECCombination(Base):
     ''' Categories of LECs based on their role in type-hierarchy construction'''
 
-    __tablename__ = 'LECCombination'
-    _id = Column(Integer, primary_key=True)
-    lecCombinationType_id = Column(Text, ForeignKey('LECCombinationType._id'))
+    __tablename__ = f'{preffix}LECCombination'
+    _id = Column(Integer, primary_key=True, autoincrement=True)
+    lecCombinationType_id = Column(Text, ForeignKey(f'{preffix}LECCombinationType._id'))
+    majorType_id = Column(Text, ForeignKey(f'{preffix}MajorType._id'))
 
     # References
     lecs = relationship('LECCombinationLEC', back_populates='lecCombination')
+    majorType = relationship('MajorType', back_populates='lecCombination')
 
 class LECCombinationLEC(Base):
     ''' Association table for LEC in every LECCombination'''
 
-    __tablename__ = 'LECCombinationLEC'
-    lecCombination_id = Column(Integer, ForeignKey('LECCombination._id'), primary_key=True)
-    lec_id = Column(Text, ForeignKey('LEC._id'), primary_key=True)
+    __tablename__ = f'{preffix}LECCombinationLEC'
+    lecCombination_id = Column(Integer, ForeignKey(f'{preffix}LECCombination._id'), primary_key=True)
+    lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'), primary_key=True)
     order = Column(Integer)
 
     # References
@@ -211,15 +214,18 @@ class LECCombinationLEC(Base):
 class LECCombinationType(Base):
     ''' LEC categories types like dLEC, mLEC, iLEC and so on'''
 
-    __tablename__ = 'LECCombinationType'
+    __tablename__ = f'{preffix}LECCombinationType'
     _id = Column(Text, primary_key=True)
+
+    # References
+    info = relationship('LECCombinationTypeInfo')
 
 class LECCombinationTypeInfo(Base):
     ''' Language dependant info about LEC categories types'''
 
-    __tablename__ = 'LECCombinationTypeInfo'
-    lecCombinationType_id = Column(Text, ForeignKey('LECCombinationType._id'), primary_key=True)
-    language_id = Column(Integer, ForeignKey('Language._id'), primary_key=True)
+    __tablename__ = f'{preffix}LECCombinationTypeInfo'
+    lecCombinationType_id = Column(Text, ForeignKey(f'{preffix}LECCombinationType._id'), primary_key=True)
+    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
     description = Column(Text)
 
     # References
@@ -229,84 +235,71 @@ class LECCombinationTypeInfo(Base):
 class ElementarySegment(Base):
     '''elementary segments of individual LECs like KA.a, VT.b'''
 
-    __tablename__ = 'ElementarySegment'
-    _id = Column(Integer, primary_key=True)
-    lec_id = Column(Text, ForeignKey('LEC._id'))
+    __tablename__ = f'{preffix}ElementarySegment'
+    _id = Column(Integer, primary_key=True, autoincrement=True)
+    lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'))
+    value = Column(Text)
     order = Column(Integer)
 
     # References
-    lec = relationship('LEC', 'elementarySegment')
-
-class ElementarySegmentKey(Base):
-    ''' Possible GAD values for elementary segments'''
-
-    __tablename__ = 'ElementarySegmentKey'
-    _id = Column(Integer, primary_key=True)
-    elementarySegment_id = Column(Integer, ForeignKey('ElementarySegment._id'))
-    key = Column(Text)
-    value = Column(Integer)
-
-    # References
-    elementarySegment = relationship('ElementarySegment')
+    lec = relationship('LEC', back_populates='elementarySegment')
 
 class StandardSegmentElement(Base):
     ''' Association table that connects standard segments and elementary segments'''
 
-    __tablename__ = 'StandardSegmentElement'
-    standardSegment_id = Column(Integer, ForeignKey('StandardSegment._id'), primary_key=True)
-    elementarySegment_id = Column(Integer, ForeignKey('ElementarySegment._id'), primary_key=True)
+    __tablename__ = f'{preffix}StandardSegmentElement'
+    standardSegment_id = Column(Integer, ForeignKey(f'{preffix}StandardSegment._id'), primary_key=True)
+    elementarySegment_id = Column(Integer, ForeignKey(f'{preffix}ElementarySegment._id'), primary_key=True)
 
     # References
-    elementarySegment = relationship('standardSegment')
+    elementarySegment = relationship('StandardSegment')
 
 class StandardSegment(Base):
     ''' Standard segments for LACCategorie. They consist of Elementary segments'''
 
-    __tablename__ = 'StandardSegment'
-    _id = Column(Integer, primary_key=True)
-    minorType_id = Column(Integer, ForeignKey('MinorType._id'))
-    lec_id = Column(Text, ForeignKey('LEC._id'))
+    __tablename__ = f'{preffix}StandardSegment'
+    _id = Column(Integer, primary_key=True, autoincrement=True)
+    minorType_id = Column(Integer, ForeignKey(f'{preffix}MinorType._id'))
+    lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'))
 
     # References
     elementarySegments = relationship('StandardSegmentElement')
     lec = relationship('LEC')
 
+class GadValueElementarySegment(Base):
+    __tablename__ = f'{preffix}GadValueElementarySegment'
+    gad_id = Column(Integer, ForeignKey(f'{preffix}GadValue._id'), primary_key=True)
+    elementarySegment_id = Column(Integer, ForeignKey(f'{preffix}ElementarySegment._id'), primary_key=True)
+
+    # References
+    gadValue = relationship('GadValue', back_populates='elementarySegment')
+    elementarySegment = relationship('ElementarySegment')
+
 class GadValue(Base):
-    __tablename__ = 'GadValue'
-    _id = Column(Integer, primary_key=True)
-    gad_id = Column(Integer, ForeignKey('GAD._id'))
-    majorType_id = Column(Integer, ForeignKey('MajorType._id'))
-    elementarySegmentGroup_id = Column(Integer, ForeignKey('ElementarySegmentGroup._id'))
-    m7Scale_id = Column(Integer, ForeignKey('GadScale.m7Scale'))
+    __tablename__ = f'{preffix}GadValue'
+    _id = Column(Integer, primary_key=True, autoincrement=True)
+    gad_id = Column(Integer, ForeignKey(f'{preffix}GAD.artsKode'))
+    majorType_id = Column(Integer, ForeignKey(f'{preffix}MajorType._id'))
+    m7Scale_id = Column(Integer, ForeignKey(f'{preffix}GadScale.m7Scale'))
+    lecCombination_id = Column(Integer, ForeignKey(f'{preffix}LECCombination._id'))
 
     # References
     gad = relationship('GAD', back_populates='values')
-    elementarySegmentGroup = relationship('elementarySegmentGroup')
+    elementarySegment = relationship('GadValueElementarySegment', back_populates='gadValue')
     m7Scale = relationship('GadScale')
+    lecCombination = relationship('LECCombination')
 
 class GadScale(Base):
     ''' Collection of M7 and M3 scales with constancy'''
 
-    __tablename__ = 'GadScale'
+    __tablename__ = f'{preffix}GadScale'
     m7Scale = Column(Integer, primary_key=True)
     m3Scale = Column(Integer)
     Constancy = Column(Text)
 
-class ElementarySegmentGroup(Base):
-    ''' Association between elementary segmenta and elementary segment group used in GAD'''
-
-    __tablename__ = 'ElementarySegmentGroup'
-    _id = Column(Integer, primary_key=True)
-    elementarySegment_id = Column(Integer, ForeignKey('ElementarySegment._id'), primary_key=True)
-    lecCombination_id = Column(Integer, ForeignKey('LECCombination._id'), primary_key=True)
-
-    # References
-    elementarySegment = relationship('ElementarySegment')
-
 class GAD(Base):
-    __tablename__ = 'GAD'
-    _id = Column(Integer, primary_key=True)
-    artsKode = Column(Text)
+    __tablename__ = f'{preffix}GAD'
+    artsKode = Column(Text, primary_key=True)
     norskNavn = Column(Text)
     latinName = Column(Text)
 
