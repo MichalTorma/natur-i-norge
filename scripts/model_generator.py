@@ -1,8 +1,8 @@
-##
+# %%
 import model
 import importlib
 from sqlalchemy import Table, Text, Integer, create_engine
-##
+# %%
 sql_file = './sql/create_dump.sql'
 sql_dump = open(sql_file, 'w+')
 def metadata_dump(sql, *multiparams, **params):
