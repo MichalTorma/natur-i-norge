@@ -4,7 +4,7 @@ import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image/image.dart' as images;
+// import 'package:image/image.dart' as images;
 
 class MapMarker extends Clusterable {
    final String id;
