@@ -30,7 +30,7 @@ dependencies:
   fluster: ^1.1.2
   dart_numerics: ^0.0.5
   preferences: ^5.0.2
-  image: ^2.1.13
+  image: ^2.1.12
   
   flutter:
     sdk: flutter
