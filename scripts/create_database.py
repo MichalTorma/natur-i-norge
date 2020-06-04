@@ -1,3 +1,4 @@
+#%%
 import logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -27,8 +28,9 @@ majorType_data = pd.read_excel(types_file, sheet_name='Major type')
 minorType_data = pd.read_excel(types_file, sheet_name='Minor type')
 lec_data = pd.read_excel(types_file, sheet_name='LEC')
 gadScale_data = pd.read_excel(types_file, sheet_name='GAD scale')
+structuring_process_data = pd.read_excel(types_file, sheet_name='Structuring process')
 
-## Populate database functions
+# %% Populate database functions
 
 def populate_major_type_group(data):
     for row in data.itertuples():
@@ -50,16 +52,38 @@ def populate_major_type(data, majorTypeGroup):
     for row in data.itertuples():
         print(row)
 
+def populate_structuring_process():
+    for row in structuring_process_data.itertuples():
+        id = row.Co
+        desc_en = row.Desc_en
+        struct_process = model.StructuringProcess(_id=id)
+        structuring_process_info = model.StructuringProcessInfo(description=desc_en, language=english, structuringProcess=struct_process)
+        session.add(struct_process)
+        session.add(structuring_process_info)
+
+def populate_lec():
+    for row in lec_data.itertuples():
+        id = row.Co
+        name_en = row.LEC
+        desc_en = row.Description
+        structuring_process = row.PC
+        
+
+
 # run populate
 session = sessionmaker(bind=engine)()
 
 # Create languages
 english = model.Language(name='English')
 session.add(english)
-populate_major_type_group(majorTypeGroup_data)
-session.rollback()
+populate_structuring_process()
+#%%
 # session.commit()
-session.close()
+session.query(model.StructuringProcess).first().
+# populate_major_type_group(majorTypeGroup_data)
+# session.rollback()
+# session.commit()
+# session.close()
 
 ##
 # t4_data_file = 'data/GAD3v2.xlsm'
