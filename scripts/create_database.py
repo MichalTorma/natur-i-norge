@@ -79,7 +79,7 @@ session.add(english)
 populate_structuring_process()
 #%%
 # session.commit()
-session.query(model.StructuringProcess).first().
+session.query(model.StructuringProcess).first()
 # populate_major_type_group(majorTypeGroup_data)
 # session.rollback()
 # session.commit()
