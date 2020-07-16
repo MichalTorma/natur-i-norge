@@ -1,12 +1,24 @@
-#%%
+# %%
 from model import LEC
 from model import LECInfo
 from database_fill.language_data import en_language, nb_language
+from database_fill.structuring_process_data import d_structuring_process
+from database_fill.structuring_process_data import r_structuring_process
+from database_fill.structuring_process_data import s_structuring_process
+from database_fill.structuring_process_data import l_structuring_process
+from database_fill.pattern_of_variation_data import f_pattern_of_variation
+from database_fill.pattern_of_variation_data import g_pattern_of_variation
+from database_fill.pattern_of_variation_data import ga_pattern_of_variation
+from database_fill.pattern_of_variation_data import gs_pattern_of_variation
+from database_fill.pattern_of_variation_data import t_pattern_of_variation
 # %% AS
 
 as_lec = LEC(
-    _id = 'AS',
-    
+    _id='AS',
+    structuringProcess=s_structuring_process,
+    paternOfVariation=t_pattern_of_variation,
+    knowledgeBaseRelations=3,
+    knowledgeBaseDivision=2
 )
 as_lec_info_en = LECInfo(
     language=en_language,
@@ -20,4 +32,3 @@ as_lec_info_nb = LECInfo(
     name='Arid terrestrisk salinitet',
     description='Variasjonen fra ’normal’ mark med overveiende nedadgående vannstrøm og maksimale pH-verdier (i rein kalkdominert mineraljord) opp til ca. 8,0, til finjordsrik mark med overveiende oppadgående vannstrøm, som fører til saltanriking i øvre jordlag og pH-verdier helt opp i 10,5. Saltanriket mark kan lettest diagnostiseres ved en kombinasjon av synlig hvitt saltlag på overflaten (som vaskes vekk av regn, men snart kommer tilbake). Saltjord er typisk for ørkener, stepper og halvstepper i alle verdensdeler, men er i Norge bare kjent fra områder ved Wijdefjorden med sidefjorder på Svalbard, der en kombinasjon av regnskygge (svært tørt klima) og uttørkende vinder skaper helt spesielle forhold som gjør utvikling av saltanriket jord mulig også i et kaldt klima.',
 )
-
