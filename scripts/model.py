@@ -98,6 +98,9 @@ class LEC(Base):
     _id = Column(Text, primary_key=True)
     spatialScale = Column(Integer)
     structuringProcess_id = Column(Text, ForeignKey(f'{preffix}StructuringProcess._id'))
+    patternOfVariation_id =  Column(Text, ForeignKey(f'{preffix}PatternOfVariation._id'))
+    knowledgeBaseRelations = Column(Integer)
+    knowledgeBaseDivision = Column(Integer)
 
     # References
     elementarySegment = relationship('ElementarySegment', back_populates='lec')
@@ -147,7 +150,6 @@ class PatternOfVariation(Base):
 
     __tablename__ = f'{preffix}PatternOfVariation'
     _id = Column(Text, primary_key=True)
-    lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'))
 
     # References
     lec = relationship('LEC', back_populates='patternOfVariation')
