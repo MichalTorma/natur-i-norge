@@ -79,3 +79,18 @@ t_pattern_of_variation_nb = PatternOfVariationInfo(
     name='Overgangstype',
     description='Egentlig en gradient, men med tydelig terskelintervall der det skjer en rask utskifting av artssammensetningen slik at det er hensiktsmessig (og ofte naturlig) å behandle den som en faktor'
 )
+
+# %% mf
+mf_pattern_of_variation = PatternOfVariation(
+    _id='mf'
+)
+mf_pattern_of_variation_en = PatternOfVariationInfo(
+    language=en_language,
+    patternOfVariation=mf_pattern_of_variation,
+    name='Multivariate factor'
+)
+mf_pattern_of_variation_nb = PatternOfVariationInfo(
+    language=nb_language,
+    patternOfVariation=mf_pattern_of_variation,
+    name='Multivariat faktor'
+)
