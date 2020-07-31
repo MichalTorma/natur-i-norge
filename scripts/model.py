@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Text, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql.sqltypes import String
 Base = declarative_base()
 preffix = 'nin_'
 
@@ -96,13 +97,15 @@ class LEC(Base):
 
     __tablename__ = f'{preffix}LEC'
     _id = Column(Text, primary_key=True)
-    spatialScale = Column(Integer)
+    parentLec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'))
     structuringProcess_id = Column(Text, ForeignKey(f'{preffix}StructuringProcess._id'))
     patternOfVariation_id =  Column(Text, ForeignKey(f'{preffix}PatternOfVariation._id'))
     knowledgeBaseRelations = Column(Integer)
     knowledgeBaseDivision = Column(Integer)
+    spatialScale = Column(Integer)
 
     # References
+    parentLec = relationship('LEC', back_populates='childLec')
     elementarySegment = relationship('ElementarySegment', back_populates='lec')
     structuringProcess = relationship('StructuringProcess', back_populates='lec')
     patternOfVariation = relationship('PatternOfVariation', back_populates='lec')
@@ -245,6 +248,20 @@ class ElementarySegment(Base):
 
     # References
     lec = relationship('LEC', back_populates='elementarySegment')
+
+class ElementarySegmentInfo(Base):
+    '''Additional language specific information about elementary segments'''
+
+    __tablename__ = f'{preffix}ElementarySegmentInfo'
+    _id = Column(Integer, primary_key=True, autoincrement=True)
+    elementarySegment_id = Column(Integer, ForeignKey(f'{preffix}ElementarySegment._id'))
+    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
+    columnName = Column(Text)
+    columnValue = Column(Text)
+
+    # References
+    elementarySegment = relationship('ElementarySegment', back_populates='info')
+    language = relationship('Language')
 
 class StandardSegmentElement(Base):
     ''' Association table that connects standard segments and elementary segments'''
