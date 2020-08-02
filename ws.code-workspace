@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "naturinorge_guide"
+		},
+		{
+			"path": "scripts/database"
 		}
 	],
 	"settings": {
