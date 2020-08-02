@@ -63,7 +63,7 @@ def getRows(contains, table):
     else:
         return None
 
-# %%
+# %% Convenience function for creating list of lists from word table
 def tableToList(table):
     return [[cell.text for cell in row.cells] for row in table.rows]
 
@@ -102,17 +102,25 @@ def getNorwegianDescriptionTable(id, document):
     return None
 #%% To obtain the actual string from description
 def _getNorwegianDescriptionString(id, description):
-    start_id = getRows([id],description)[0][0] + 1
+    start_id = getRows([id],description)[0][0] + 2
     end_id = getRows(['bK'],description)
     if end_id == None:
         end_id = getRows(['bT'], description) 
     end_id = end_id[0][0]
+    return description[start_id][0]
 
-    print(f'start: {start_id} end: {end_id}')
+    # print(f'start: {start_id} end: {end_id}')
 
-desc = getNorwegianDescriptionTable('BK', nin_nb)
-desc_string = _getNorwegianDescriptionString('BK', desc)
+# desc = getNorwegianDescriptionTable('BK', nin_nb)
+# desc_string = _getNorwegianDescriptionString('BK', desc)
 # print(f'desc string: {desc_string}')
+
+# %% To obtain elementary segments
+def _getElementarySegments(description):
+    bk_rows = getRows(['bK'], description)
+    bt_rows = getRows(['bT'], description)
+    print(f'bk_rows: {bk_rows}')
+    print(f'bt_rows: {bt_rows}')
 # %% get LEC table from norwegian article 3
 lec_tables = getTables(['Kode', 'Navn', 'VM', 'ØSP', 'bK/ bT', 'RS'], nin_nb)
 lec_tables = lec_tables[0:2]
@@ -159,8 +167,10 @@ for lec in lec_desc_no:
     if description_table_nb == None:
         logging.warning(f'Unable to find description table for: {id}')
     else:
-        print(description_table_nb)
+        # print(description_table_nb)
         description_nb = _getNorwegianDescriptionString(id, description_table_nb)
+        # elementary_segments = _getElementarySegments(description_table_nb)
+
 
     print(f'id: {id}')
     # print(f'name_nb: {name_nb}')
@@ -171,7 +181,11 @@ for lec in lec_desc_no:
     # print(f'spatial_scale: {spatial_scale}')
     # print(f'knowledge_base_relations: {knowledge_base_relations}')
     # print(f'knowledge_base_division: {knowledge_base_division}')
-    print(f'description table nb: {description_table_nb}')
+    # print(f'description table nb: {description_table_nb}')
+    # print(f'description  nb: {description_nb[0:100]}')
     print()
 
 # %%
+getTables(['SU'],nin_nb)
+#%%
+tableToList(nin_nb.tables[75])[0]
