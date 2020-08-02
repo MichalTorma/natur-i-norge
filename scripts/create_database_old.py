@@ -21,22 +21,6 @@ except:
 engine = create_engine(f'sqlite:///{database_file}')
 Base.metadata.create_all(engine)
 
-# Load datasets
-t4_data_file = 'data/GAD3v2.xlsm'
-types_file = 'data/types.xlsx'
-gad_data_t4 = pd.read_excel(t4_data_file, sheet_name='GADml3', skiprows=1)
-gad_data_t4.columns = ['c_'+str(x).replace('.', '').replace(
-    ':', '').replace(' ', '') for x in gad_data_t4.columns]
-majorTypeGroup_data = pd.read_excel(types_file, sheet_name='Major-type group')
-majorType_data = pd.read_excel(types_file, sheet_name='Major type')
-minorType_data = pd.read_excel(types_file, sheet_name='Minor type')
-lec_data = pd.read_excel(types_file, sheet_name='LEC')
-gadScale_data = pd.read_excel(types_file, sheet_name='GAD scale')
-structuring_process_data = pd.read_excel(
-    types_file, sheet_name='Structuring process')
-
-# %% Populate database functions
-
 
 def populate_major_type_group(data):
     for row in data.itertuples():
