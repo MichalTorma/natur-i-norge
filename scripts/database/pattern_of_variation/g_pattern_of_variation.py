@@ -1,6 +1,6 @@
 #%%
 from language_data import en_language, nb_language
-from this.model import PatternOfVariation, PatternOfVariationInfo
+from model.model import PatternOfVariation, PatternOfVariationInfo
 
 # %% g
 g_pattern_of_variation = PatternOfVariation(
