@@ -1,5 +1,5 @@
 #%%
-from model import Language
+from model.model import Language
 
 en_language = Language(
     name='English'
