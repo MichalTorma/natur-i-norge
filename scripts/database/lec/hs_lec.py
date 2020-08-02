@@ -1,7 +1,7 @@
 # %%
 from model import LEC
 from model import LECInfo
-from database_fill.language_data import en_language, nb_language
+from language_data import en_language, nb_language
 
 # %% HS
 hs_lec = LEC(
