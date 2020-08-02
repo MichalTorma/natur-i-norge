@@ -105,7 +105,8 @@ class LEC(Base):
     spatialScale = Column(Integer)
 
     # References
-    parentLec = relationship('LEC', back_populates='childLec')
+    childLec = relationship('LEC', back_populates='parentLec')
+    parentLec = relationship('LEC')
     elementarySegment = relationship('ElementarySegment', back_populates='lec')
     structuringProcess = relationship('StructuringProcess', back_populates='lec')
     patternOfVariation = relationship('PatternOfVariation', back_populates='lec')
@@ -247,6 +248,7 @@ class ElementarySegment(Base):
     order = Column(Integer)
 
     # References
+    info = relationship('ElementarySegmentInfo')
     lec = relationship('LEC', back_populates='elementarySegment')
 
 class ElementarySegmentInfo(Base):
@@ -255,7 +257,7 @@ class ElementarySegmentInfo(Base):
     __tablename__ = f'{preffix}ElementarySegmentInfo'
     _id = Column(Integer, primary_key=True, autoincrement=True)
     elementarySegment_id = Column(Integer, ForeignKey(f'{preffix}ElementarySegment._id'))
-    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
+    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'))
     columnName = Column(Text)
     columnValue = Column(Text)
 
