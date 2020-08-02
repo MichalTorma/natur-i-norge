@@ -1,15 +1,13 @@
 # %%
 from model import LEC
 from model import LECInfo
-from database_fill.language_data import en_language, nb_language
-from database_fill.structuring_process_data import d_structuring_process
-from database_fill.pattern_of_variation_data import mf_pattern_of_variation
+from language_data import en_language, nb_language
 
 # %% IO
 io_lec = LEC(
     _id='IO',
-    structuringProcess=d_structuring_process,
-    patternOfVariation=mf_pattern_of_variation, #TODO supposed to be 'mf'
+    structuringProcess_id='D',
+    patternOfVariation='mf', #TODO supposed to be 'mf'
     knowledgeBaseRelations=2,
     knowledgeBaseDivision=2,
     spatialScale=3,

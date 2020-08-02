@@ -1,15 +1,13 @@
 # %%
 from model import LEC
 from model import LECInfo
-from database_fill.language_data import en_language, nb_language
-from database_fill.structuring_process_data import s_structuring_process
-from database_fill.pattern_of_variation_data import f_pattern_of_variation
+from language_data import en_language, nb_language
 
 # %% BK
 bk_lec = LEC(
     _id='BK',
-    structuringProcess=s_structuring_process,
-    patternOfVariation=f_pattern_of_variation,
+    structuringProcess_id='S',
+    patternOfVariation='f',
     knowledgeBaseRelations=3,
     knowledgeBaseDivision=2,
     spatialScale=5,
