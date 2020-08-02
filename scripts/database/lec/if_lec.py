@@ -1,15 +1,13 @@
 # %%
 from model import LEC
 from model import LECInfo
-from database_fill.language_data import en_language, nb_language
-from database_fill.structuring_process_data import d_structuring_process
-from database_fill.pattern_of_variation_data import ga_pattern_of_variation
+from language_data import en_language, nb_language
 
 # %% IF
 if_lec = LEC(
     _id='IF',
-    structuringProcess=d_structuring_process,
-    patternOfVariation=ga_pattern_of_variation,
+    structuringProcess_id='D',
+    patternOfVariation='ga',
     knowledgeBaseRelations=2,
     knowledgeBaseDivision=1,
     spatialScale=2,

@@ -1,15 +1,13 @@
 # %%
-from model import LEC
-from model import LECInfo
-from database_fill.language_data import en_language, nb_language
-from database_fill.structuring_process_data import s_structuring_process
-from database_fill.pattern_of_variation_data import t_pattern_of_variation
+from model.model import LEC, StructuringProcess
+from model.model import LECInfo
+from language_data import en_language, nb_language
 
 # %% AS
 as_lec = LEC(
     _id='AS',
-    structuringProcess=s_structuring_process,
-    patternOfVariation=t_pattern_of_variation,
+    structuringProcess_id='S',
+    patternOfVariation_id='t',
     knowledgeBaseRelations=3,
     knowledgeBaseDivision=2,
     spatialScale=5,
