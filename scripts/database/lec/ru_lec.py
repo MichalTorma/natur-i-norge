@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% RU
@@ -13,13 +13,13 @@ ru_lec = LEC(
     spatialScale=5,
 )
 ru_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=ru_lec,
     name='Avalanche intensity',
     description='Variation in the intensity of regulating disturbance caused by large masses of snow, ice, soil or water moving over a sloping surface; typically bringing about removal of biomass in small patches that are laid open for colonization; at very high frequency ending in a species-thinning situation without perennial vegetation cover',
 )
 ru_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=ru_lec,
     name='Rasutsatthet',
     description='''Med ras menes forstyrrelse av skrånende mark ved at store snø-, is- eller vannmasser passerer over marka (inkludert fonnagufs, det vil si ekstremvinder forårsaket av store snøras). Ras medfører normalt ikke, som skred [spontan utrasing og nedadrettet transport av stedegne materialmasser (jord-, sand-, silt- eller leirskred) i en skråning, forårsaket av erosjon nedenfra eller fra sidene, eller av prosesser i massene], plutselig og omfattende biomassetap, men er et typisk eksempel på regulerende forstyrrelse [forstyrrelse som ved middels intensitet preger artssammensetningen gjennom relativt hyppige påvirkninger og på en slik måte at hver påvirkning verken forårsaker store endringer i artssammensetningen eller initierer en langvarig suksesjon (med flere års varighet)]. Endepunktet for gradienten i rasutsatthet (RU) utgjøres imidlertid av steder med svært høy rasintensitet, der rasene typisk består av grovt materiale som f.eks. store steiner eller inneholder store mengder amorft materiale som store jordblandete snø- eller vannmasser. På slike steder opprettholdes ikke permanente samfunn av flerårige arter, og raspåvirkningen blir disruptiv.

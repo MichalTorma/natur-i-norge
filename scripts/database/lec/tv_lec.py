@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% TV
@@ -13,13 +13,13 @@ tv_lec = LEC(
     spatialScale=0,
 )
 tv_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=tv_lec,
     name='Duration of period without inundation',
     description='Variation in duration of the period emergent above water vs immersed in water; used to characterise variation across river banks, lake shores, tidal belts and in wetlands; In the littoral belt of lake and sea shores divided into hydro-, geo-, supra- and epilitoral belts, in mires divided into carpets, lawns and hummocks',
 )
 tv_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=tv_lec,
     name='Tørrleggingsvarighet',
     description='''Gradienten fra fullstendig til ingen vanndekning er den viktigste årsaken til variasjon i artssammensetning i den fysiske overgangen mellom vann og land, både langs kysten og langs ferskvannsforekomster, på steder der vannet ikke har så stor bevegelsesenergi at forstyrrelseseffekten overstyrer virkningen av alle andre miljøforhold. Denne gradienten har en direkte parallell i mikrotopografivariasjonen på myr, fra de lavestliggende mykmattene til de høyeste tuetoppene. I NiN versjon 1 ble separate ‘lokale basisøkokliner’ benyttet til å beskrive variasjon relatert til oversvømmings- og tørrleggingsvarighet i fjærebelte/flomsone og i myr. Begge disse kan imidlertid beskrives med samme fysiske variabel (tørrleggingsvarighet), og de tradisjonelle trinninndelingene av dem er helt parallelle (sjøl om ulike begrepsapparater har vært brukt). Derfor blir denne variasjonen beskrevet med en og bare en kompleks miljøvariabel i NiN versjon 2. 

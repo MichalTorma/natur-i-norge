@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% SE
@@ -13,13 +13,13 @@ se_lec = LEC(
     spatialScale=6,
 )
 se_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=se_lec,
     name='Sedimentation intensity',
     description='Variation in the intensity of sedimentation in freshwater and marine sites where decelerating river water loses its mass transportation capacity and sedimentation regularly dominates over ero-sion, typically found in the outer parts of deltas; at high intensity ending in a species-thinning situation',
 )
 se_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=se_lec,
     name='Sedimentbasert forstyrrelse',
     description='''Massebalansen (hvorvidt materiale tilføres eller fjernes) er en svært viktig miljøvariabel i mange natursystemer. Massebalansen er negativ når substratet eroderes (i og langs elver først og fremst på steder der vannhastigheten er økende) og positiv når nytt substrat akkumuleres (først og fremst der vannhastigheten er avtakende, hvor transportert suspendert materiale sedimenteres). I havet og i større innsjøer er normalsituasjonen svak sedimentasjon fordi det meste av det tilførte materialet sedimenteres og blir ikke fjernet. Sedimentasjonsbasert forstyrrelse (SE) adresserer forstyrrelseseffekter av vedvarende, sterk sedimentasjon i ferskvannsbunnsystemer og saltvannsbunnsystemer. Sedimentasjon finner først og fremst sted i ytre deler av deltaområder utenfor utløpet av breelver og andre elver som transporterer mye masse. Der finner det sted en gradert sedimentasjon, slik at de største (tyngste) partiklene sedimenteres innerst, det minste (letteste) ytterst. Også forekomsten av moving dunes på saltvannsbunn kan muligens ses på som sedimentbasert forstyrrelse (SE).

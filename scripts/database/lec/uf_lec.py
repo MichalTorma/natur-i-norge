@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% UF
@@ -13,13 +13,13 @@ uf_lec = LEC(
     spatialScale=5,
 )
 uf_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=uf_lec,
     name='Risk of drought',
     description='Variation in the risk of damage during periods with exceptionally low soil moisture content, i.e., the most severe drought spells in 50–100 years; variation along LEC UF is affected by topographic position and soil depth; at low drought risk, herbs, grasses, deciduous dwarf shrubs and mosses dominate while at high drought risk evergreen dwarf shrubs and lichens dominate',
 )
 uf_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=uf_lec,
     name='Uttørkingsfare',
     description='''Uttørkingsfare (UF) beskriver, sammen med vannmetning (VM), variasjon relatert til jordfuktighet på jorddekt fastmark. Miljøvariabelen uttørkingsfare (UF) adresserer faren for ekstrem uttørking, kanskje 50- eller 100-årstørken, og er korrelert med topografi, jorddybde og jordsmonnutvikling, mens vannmetning (VM) adresserer fuktighetsforholdene slik de stort sett er (‘median jordfuktighet’; R. Økland & Eilertsen 1993). Variasjonen langs UF og VM er i stor grad er frikoblet i rom, i tid og med hensyn til artenes responser; i fastmarksskogsmark er f.eks. alle kombinasjoner av UF (variasjonen fra frisk blåbærskog til tørkeutsatt lavskog) og VM [forekomsten av større eller mindre flekker, gjerne i små forsenkninger, av vegetasjon dominert av torvmoser (Sphagnum spp.) og andre arter som foretrekker fuktige voksesteder, men som også tåler langvarig uttørking)] realisert.

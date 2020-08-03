@@ -1,25 +1,25 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% LA
 la_lec = LEC(
     _id='LA',
-    structuringProcess='L',
-    patternOfVariation='gs',
+    structuringProcess_id='L',
+    patternOfVariation_id='gs',
     knowledgeBaseRelations=3,
     knowledgeBaseDivision=2,
     spatialScale=6,
 )
 la_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=la_lec,
     name='Slow primary succession',
     description='Stages along a primary succession that takes more than 100–200 years to complete (rapid successions, lasting <100 years, are considered as short-term environmental variation), from the initial, pioneer stage, via colonization, establishment and consolidation stages to the post-successional stage in which species composition is in a dynamic equilibrium with the environment',
 )
 la_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=la_lec,
     name='Langsom primær suksesjon',
     description='''Primære suksesjoner, dvs. suksesjoner på uorganiske (minerogene) livsmedier, er vanligvis, men ikke alltid, resultatet av en forutgående forstyrrelse. Forstyrrelser, naturlige så vel som menneskebetingete, forårsaker suksesjoner hvis og bare hvis forstyrrelsesfrekvensen er så lav at ’tilbakebetalingen’ av endringsgjelden kommer i gang før neste forstyrrelsesbegivenhet inntreffer. Systemer preget av aktiv destabiliserende forstyrrelse (f.eks. urer og rasmarker, sandskredmarker og sanddynemark), kjennetegnet ved (relativt) høy forstyrrelsesfrekvens, er derfor mer eller mindre kontinuerlig i en dynamisk tidligsuksesjonsfase og framviser derfor i liten grad eller ikke i det hele tatt grad variasjon langs en suksesjonsgradient. Systemer preget av tidligere (historisk) disruptiv og regulerende forstyrrelse (systemer med ekstremverdiregulering, der forstyrrelsen bortimot er en engangsbegivenhet i et økologisk tidsperspektiv på noen tusen år), gjennomgår oftest en langsom suksesjon, definert som ʼprimær suksesjon som forventes ikke å nå ettersuksesjonstilstanden i løpet av (100–)200 årʼ. Det finnes natur som fortsatt, tusener av år etter at marka eller bunnen ble lagt åpen for primær suksesjon, mangler slike, mer eller mindre stabile ettersuksesjonssamfunn. Dette kan skyldes at substratet er hardt, grovkornet, værutsatt eller utsatt for gjentatte forstyrrelser. 

@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% MF
@@ -13,13 +13,13 @@ mf_lec = LEC(
     spatialScale=5,
 )
 mf_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=mf_lec,
     name='Mire expanse character',
     description='Gradient in the species composition of mires, from sites close to adjacent non-wetland ground or with shallow peat typically dominated by generalist and forest species, to sites with deep peet in the interior parts of wetland massifs typically dominated by mire specialist species; the environmental basis of LEC MF is insufficiently understood, variables such as annual range of ground water fluctuations, drainage, peat aeration, nutrient turnover and light have been mentioned as potentially important',
 )
 mf_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=mf_lec,
     name='Myrflatepreg',
     description='''Det er lang tradisjon i Fennoskandia for å betrakte gradienten fra myrflate til myrkant som en av tre (fire) hovedgradienter i myrvegetasjonen. Dette er imidlertid først og fremst en lett gjenkjennbar artssammensetningsgradient som fortsatt står uten sikker økologisk forklaring. Den omfatter variasjonen fra områder på myr som ligger langt fra fastmark, med djup torv, der ei gruppe av typiske ‘myrflatearter’ forekommer rikelig, til fastmarksnære områder eller myr med tynnere torv, der myrkantarter dominerer. Artssammensetningsgradienten fortsetter via skogsmark på torv til fastmark. Myrflateartene er eksklusive myrplanter; de typiske mykmatteartene tilhører denne gruppa. Mange av myrkantartene, for eksempel treslagene og vier (Salix spp.), forekommer også på fastmarksskogsmark og/eller i engpregete økosystemer. Mulige økologiske forklaringer på variasjonen fra myrflate til myrkant er reduksjon i torvdybde, bedre drenering og bedre gjennomlufting av torva nær myrkanten på grunn av større årlige grunnvannsstandsvekslinger med et lavere minimumsnivå, større næringsomsetning og mineralnæringstilførsel, og økende skygge- og strøvirkning fra et tresjikt som ofte finnes.
