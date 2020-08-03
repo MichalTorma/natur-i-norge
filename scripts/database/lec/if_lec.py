@@ -1,25 +1,25 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% IF
 if_lec = LEC(
     _id='IF',
     structuringProcess_id='D',
-    patternOfVariation='ga',
+    patternOfVariation_id='ga',
     knowledgeBaseRelations=2,
     knowledgeBaseDivision=1,
     spatialScale=2,
 )
 if_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=if_lec,
     name='Ice-scouring disturbance',
     description='Variation in the intensity of freezing and ice scouring on littoral belts of coastal and inland lake sites, flooded ground along rivers and in kettle holes, e.g., affecting the establishment of perennial plants; ends in a species-thinning situation',
 )
 if_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=if_lec,
     name='Isbetinget forstyrrelse',
     description='''Adresserer den karakteristiske effekten av regelmessig isinnfrysing og isskuring i fjærebeltet og i flomsonen langs elver og innsjøer, samt effekter av isinnfrysing i bunnen av dødisgroper med gjennomslippelige løsmasser i kontinentale områder, som innebærer at gropene fylles av vann som fryser til is. 

@@ -12,8 +12,6 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-# %%
-
 database_file = 'db/v002.db'
 try:
     os.remove(database_file)
@@ -24,11 +22,9 @@ engine = create_engine(f'sqlite:///{database_file}')
 Base.metadata.create_all(engine)
 
 session = sessionmaker(bind=engine)()
-# %%
 
 savePatternsOfVariation(session)
 saveStructuringProcesses(session)
-#%%
 saveLec(session)
 
 # %%

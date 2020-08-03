@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% VT
@@ -13,7 +13,7 @@ vt_lec = LEC(
     spatialScale=8,
 )
 vt_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=vt_lec,
     name='Vanntilførsel',
     description='''Våtmarkenes vanntilførsel har lenge vært regnet som en viktig kilde til forskjeller mellom ulike kategorier av våtmarkssystemer. Allerede von Post & Granlund (1926) skilte mellom tre typer av ‘markblöta’; topogen (forårsaket av grunnvann med tilnærmet plant grunnvannsspeil), ombrogen (vanntilførsel utelukkende fra nedbøren) og soligen (forårsaket av grunnvann med hellende grunnvannsspeil). Markfuktighetens karakter og betydning drøftes av Sjörs (1948), som benytter samlebetegnelsen geogen for topogen og soligen vanntilførsel (hans engelske oversettelse av ‘markblöta’ er ‘wet of soil’) og peker på at disse går gradvis over i hverandre og ikke resulterer i klart forskjellige effekter på artssammensetningen. Han legger også til en fjerde kategori, limnogen vanntilførsel (tilførsel av flomvann fra innsjøer og elver), men skriver samtidig at det limnogene vannet hovedsakelig stammer fra geogent vann ‘och dess verkan på blötmarkernas vegetation avviker därför föga från det geogena vattnets.’ Som en femte kategori kunne rheogen vanntilførsel (tilførsel av kildevann vært nevnt).
@@ -21,7 +21,7 @@ vt_lec_info_en = LECInfo(
 ''',
 )
 vt_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=vt_lec,
     name='Categories of prevailing water supply',
     description='Complex environmental factor that sorts wetlands into four categories by prevailing water supply: ombrogenous (water from precipitation only), geogenous or minerogenous (some of the supplied water has been in contact with mineral soil), limno-topogenous (lake water), and limno-soligenous (river water)',

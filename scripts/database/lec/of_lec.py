@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% OF
@@ -13,13 +13,13 @@ of_lec = LEC(
     spatialScale=2,
 )
 of_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=of_lec,
     name='Cryoturbation',
     description='Variation in the intensity of disturbance by frost processes, from stable ground via sites slightly affected by frost heaving, to sites strongly disturbed by frost processes, on fine soil typically dominated by small bryophytes',
 )
 of_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=of_lec,
     name='Oppfrysing',
     description='''Oppfrysing (kryoturbasjon) er frostomrøring på ei ujevn markoverflate. Frostfordeling og iskjernedannelse i perioder med temperaturer omkring frysepunktet skjer på ulike vis i forsenkninger og på forhøyninger i terrenget, og jo grovere og mer steinete jorda er, desto lengre ned i bakken trenger frosten. Spenningsforskjeller som oppstår i jorda fører til at materialet sorteres; det groveste materialet skyves unna spenningsfeltet, og det fineste materialet fraktes mot overflata. De fysiske prosessene som er involvert er fortsatt ikke fullstendig forstått, men resultatet blir i typiske tilfeller en strukturmark med strukturer som varierer i formen fra ringer til polygoner, nett og striper. Den typiske polygonmarka består av et nettverk av mangekantete til sirkulære områder med finjord, inntil 6(–10) m i diameter, som omgis av en 0,5–2 m brei (eller breiere), ofte svakt hevet steinkant. Etter en tid (noen årtier eller århundrer) med kraftig frostaktivitet kan jorda stabilisere seg. Det finnes altså en gradient fra polygoner med sterk oppfrysingsaktivitet (og ustabil jord) til stabiliserte systemer. I områder med permafrost forsterkes kryoturbasjonsprosessene av at det aktive laget er tynt. Flekker med aktiv frostsprenging har liten eller ingen påvekst av skorpelav på steinene. Oppfrysing fremmes av regionale faktorer som lav nedbør og lav vintertemperatur, og lokale faktorer som flatt terreng med stein- og blokkrik mineraljord, manglende eller tynt isolerende snødekke (frostvirkningen øker mot rabber) og høy grunnvannstand. Hyppigheten av oppfrysingsfenomener øker derfor mot et mer kontinentalt klima og med økende høyde over havet. 
