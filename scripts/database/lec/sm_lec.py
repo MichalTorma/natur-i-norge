@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% SM
@@ -13,13 +13,13 @@ sm_lec = LEC(
     spatialScale=10,
 )
 sm_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=sm_lec,
     name='Size-related environmental variation in marine and freshwater systems',
     description='Complex-gradient that expresses co-ordinated variation in environmental variables related to the surface area and depth of water masses, such as annual temperature amplitude (and, accordingly, the risk of overheating and freezing), hypersalinity, hypoxia and anoxia; the LEC covers variation from the open sea and large lakes to temporary pools which may lack persistent populations and thus represent a species-thinning situation',
 )
 sm_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=sm_lec,
     name='Størrelsesrelatert miljøvariabilitet (i vannsystemer)',
     description='''Miljøstabilitet (og miljøforutsigbarhet) er en viktig rammebetingelse for hvilke tilpasninger som er nødvendige for å overleve på et levested over tid. I romlig avgrensete vannforekomster (innsjøer, litoralbasseng, poller, fjorder) er størrelse (både horisontal og vertikal utstrekning) en av de viktigste prediktorer for miljøstabilitet. Størrelsen bestemmer langt på veg den årlige temperaturamplituden (maksimums- og minimumstemperaturen), og dermed faren for overoppheting og bunnfrysing, hypersalinitet og anoksi. Ett viktig skille i går mellom vannforekomster som er så grunne at de mangler sjiktning og dypere vannforekomster som to ganger årlig får ‘fornyet’ vannmassene. 

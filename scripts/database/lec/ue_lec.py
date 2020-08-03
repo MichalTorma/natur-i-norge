@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% UE
@@ -13,13 +13,13 @@ ue_lec = LEC(
     spatialScale=3,
 )
 ue_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=ue_lec,
     name='Risk of desiccation ',
     description='Variation in air humidity near the ground at the end of long-lasting dry periods, primarily relevant for poikilohydric species such as bryophytes and lichens, growing on rock; ranges from shaded sites with constant, high air humidity to open, sun-exposed slopes; factors affecting desiccation risk are canopy cover, topographic position and aspect',
 )
 ue_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=ue_lec,
     name='Uttørkingseksponering',
     description='''Poikilohydriske organismer er organismer som mangler eller har svært begrenset evne til å regulere vannutvekslingen med omgivelsene (Hosokawa et al. 1964). Poikilohydrisitet er typisk koblet til ektohydrisitet (det vil si at organismene tar opp vann og næringsstoffer direkte gjennom overflata; Buch 1947). De fleste (men ikke alle) moser og lav er poikilohydriske og ektohydriske. Slike organismer er fysiologisk aktive når de er oppfuktet, og går inn i en dvalemodus når de tørker ut. De fleste (men slett ikke alle) arter tåler uttørking, men toleransen overfor hyppig og gjentatt uttørking og oppfukting varierer mellom betydelig mellom artene.  Også mosenes (og lavenes) evne til å tåle langvarig uttørking (og høye temperaturer i tørr tilstand) varierer mellom arter (Proctor et al. 2007). Også evnen til å holde på vann varierer. Felles for poikilohydriske og ektohydriske organismer er at deres produksjon er positiv når de er fuktige og andre betingelser, som temperatur og stråling over visse minsteverdier, er oppfylt. For disse organismene er varigheten av tilstrekkelig fuktige forhold til å opprettholde fysiologisk aktivitet en av de aller viktigste forekomstbegrensende miljøvariablene. Varigheten av oppfuktet/uttørket tilstand er en av de variablene som best forklarer variasjon i artssammensetningen i mose- og lavdominerte samfunn (Busby & Whitfield 1978, Skre & Oechel 1981, R. Økland 1997a), f.eks. på nakent berg.

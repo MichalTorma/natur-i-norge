@@ -1,25 +1,25 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% KA
 ka_lec = LEC(
     _id='KA',
-    structuringProcess='S',
-    patternOfVariation='g',
+    structuringProcess_id='S',
+    patternOfVariation_id='g',
     knowledgeBaseRelations=4,
     knowledgeBaseDivision=5,
     spatialScale=7,
 )
 ka_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=ka_lec,
     name='Lime richness',
     description='Co-ordinated variation in many chemical charac-teristics of soil and water, such as alkalinity (pH) and availability of micro- and macronutrients such as Ca, K, Na, Mg, often also N and P, which regulate many important biological processes; position along KA is influenced by the mineral composition of bedrock, parallelling a gradient from silicate-rich to carbonate-rich bedrock with different weathering properties',
 )
 ka_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=ka_lec,
     name='Kalkinnhold',
     description='''Variasjonen i markas reaksjon (surhet) og normale innhold av viktige mineralnæringsstoffer er en av de aller viktigste kildene til variasjon i planteartssammensetning og jordfauna, både i fastmarkssystemer og i våtmarkssystemer.  Grunnlaget for variasjon langs kalkinnhold (KA) i naturen er variasjon i kjemisk sammensetning og fotvitringsegenskaper langs en berggrunnsgeologisk gradient fra silikat- til karbonatbergarter. Viktige enkeltvariabler som bidrar til denne komplekse miljøgradienten er surhetsgrad (som kan uttrykkes ved pH i vann, vannekstrakt av jord eller i vannvaskete bergartstuffer) og konsentrasjonen av en rekke mineralnæringsstoffer (viktigst er makronæringsstoffene K, Na, Ca, Mg, men en rekke mikronæringsstoffer som B, Se, Fe og andre er også viktige). Makronæringsstoffene N og P følger i stor grad innholdet i marka av de andre makronæringsstoffene (særlig følger N gjerne Ca). Plantenes tilgang på fosfat (P) avtar ofte når Ca-innholdet (og pH) øker, fordi fosfatet da blir sterkere kjemisk bundet. Det samme gjelder for jern og mangan. Kalkinnhold (KA) er valgt som betegnelse for denne lokale komplekse miljøvariabelen, ikke fordi kalsiuminnhold i seg sjøl er en hovedårsak til variasjonen i artssammensetning, men fordi kalsiumkonsentrasjonen i substratet (jorda, vannet) er et godt uttrykk for variasjon langs den. Kalkinnhold (KA) er også relevant for ferskvannsforekomster; såvel bunnsystemene som vannmassene.

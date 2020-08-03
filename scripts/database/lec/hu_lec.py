@@ -1,25 +1,25 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% HU
 hu_lec = LEC(
     _id='HU',
     structuringProcess_id='S',
-    patternOfVariation='g',
+    patternOfVariation_id='g',
     knowledgeBaseRelations=3,
     knowledgeBaseDivision=2,
     spatialScale=10,
 )
 hu_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=hu_lec,
     name='Freshwater humus content',
     description='Variation in the concentration of particulate and dissolved organic matter in water, from oligohumous and transparent (<2 mg TOC/L; TOC = total organic carbon) via mesohumous to polyhumous, dark-coloured (> 15 mg TOC/L)',
 )
 hu_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=hu_lec,
     name='Humusinnhold',
     description='''Humusinnholdet, eller vannfargen, er et uttrykk for mengden partikulært og løst organisk materiale i ferskvann – økende innhold av organisk materiale gir vannet en mørkere farge. Det organiske materialet kan være produsert i vannsystemet (autoktont, stedegent) eller, oftere, er det tilført (alloktont) fra omgivelsene. De viktigste kildene til høyt humusinnhold i ferskvann er tilførsler fra myrer og skogsmark i nedbørfeltet. Turbiditet (TU) er et uttrykk for mengden suspendert uorganisk materiale i ferskvann.

@@ -1,25 +1,25 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% BK
 bk_lec = LEC(
     _id='BK',
     structuringProcess_id='S',
-    patternOfVariation='f',
+    patternOfVariation_id='f',
     knowledgeBaseRelations=3,
     knowledgeBaseDivision=2,
     spatialScale=5,
 )
 bk_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=bk_lec,
     name='Categories of bedrock with deviating chemical composition',
     description='Complex environmental factor that separates from \'normal\' bedrock four categories of bedrock with systematically deviating elemental composition: ultramafic rock (rich in heavy metals); acidic sulphide mineral- and iron-rich rocks; less acidic sulphide mineral- and copper-rich rocks; and lava.',
 )
 bk_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=bk_lec,
     name='Berggrunn med avvikende kjemisk sammensetning',
     description='''Identifiserer bergarter med systematisk avvikende grunnstoffsammensetning i forhold til ’normalen’, og som gir opphav til avvikende artssammensetning. Tre kategorier av bergarter med avvikende kjemisk sammensetning er identifisert; ultramafiske, jern- og/eller kopper-rike bergarter (de to sistnevnte kan betegnes ‘kis-rike’). 	Ultramafiske bergarter har høyt innhold av en del tungmetaller som jern, krom, kobolt, magnesium og nikkel, mens kalsium mangler (se også NiN[1] Artikkel 19). I Norge er peridotitter de kvantitativt viktigste ultramafiske bergartene. Peridotitter er størkningsbergarter med høyt innhold av mineralet olivin (= peridot), et enkeltsilikat med magnesium og/eller jern. Peridotitter med > 90 % innhold av olivin kalles olivinstein (dunitt). Et omdanningsprodukt fra olivinstein er serpentinstein (serpentinitt). Serpentinstein er dominert av serpentin, som er et magnesium-jern-nikkeldominert sjiktsilikat. Fordi metamorfosegraden varierer mye finnes ofte serpentinitt sammen med peridotitt. Begge inngår i BK∙a, Både olivinstein og serpentinitt har en karakteristisk gulbrun–rødbrunbrun overflatefarge; distinkte landformer (åser, topper) dominert av ultramafiske bergarter som har mye nakent berg og har derfor ofte en karakteristisk rødbrun farge (forstavelsen ’raud-’ inngår ofte i navn på disse, jf. stedsnavnene Rødøy og Raudeberg. Det største sammenhengende området dominert av ultramafiske bergarter i Norge (BK∙a) utgjøres av størsteparten av øyene Leka (Leka, NT) og Rødøy (Rødøy, No), men hovedtyngden av norske olivinsteinforekomster finnes i Møre og Romsdal og tilgrensende områder, der hundrevis av større og mindre olivinsteinforekomster finnes innsprengt som øyer i gneis.

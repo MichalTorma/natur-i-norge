@@ -1,25 +1,25 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% ER
 er_lec = LEC(
     _id='ER',
     structuringProcess_id='D',
-    patternOfVariation='ga',
+    patternOfVariation_id='ga',
     knowledgeBaseRelations=3,
     knowledgeBaseDivision=2,
     spatialScale=8,
 )
 er_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=er_lec,
     name='Erosion intensity',
     description='Variation in the intensity of water-mediated disturbance on river bottoms and the adjacent flooded ground, in sites where erosion clearly dominates over sedimentation (e.g., along seasonal meltwater rivers with negligible sediment transport); ends in a species-thinning situation.',
 )
 er_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=er_lec,
     name='Erosjonsutsatthet',
     description='''Massebalansen (hvorvidt materiale tilføres eller fjernes) er en svært viktig miljøvariabel i mange natursystemer. Massebalansen er negativ når substratet eroderes (i og langs elver først og fremst på steder der vannhastigheten er økende) og positiv når nytt substrat akkumuleres (først og fremst der vannhastigheten er avtakende, hvor transportert suspendert materiale sedimenteres). Erosjonsutsatthet (ER) adresserer effekter av vannforstyrrelse som er relatert til massebalansen i ferskvannsbunnsystemer og flommarker langs rennende vann. Denne LKM skiller steder der vannet tidligere har fjernet alt materialet den enkelt har transportkompetanse til å fjerne (og som nå tilføres små eller ubetydelige sedimentmengder og derfor utsettes for erosjon) fra steder med god balanse mellom tilførsel (sedimentasjon) og fjerning (erosjon) av sedimenter. Den blir benyttet til å beskrive forskjellen i T30 Flomskogsmark mellom erosjonspregete krattsamfunn på grove sedimenter langs store elver, på Østlandet typisk dominert av doggpil (Salix daphnoides), fra mer sedimentasjonsutsatte krattsamfunn typisk dominert av mandelpil (Salix triandra) (se Fremstad 1981). 
