@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% NG
@@ -13,13 +13,13 @@ ng_lec = LEC(
     spatialScale=1,
 )
 ng_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=ng_lec,
     name='Natural manuring',
     description='Variation in the amounts of N and P supplied (to the ground) by wild animals, e.g., seabirds, geese and reindeer; ends in a species-thinning situation typically with few plant species tolerant of hypertrophic conditions present',
 )
 ng_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=ng_lec,
     name='Naturlig gjødsling',
     description='''Naturlig gjødsling forekommer først og fremst i natur med svært høy tetthet av fugl (fuglefjell; natursystem-hovedtypene fugleberg og fuglefjell-eng), men også i annen natur kan artssammensetningen ha svakt eller moderat preg av naturlig gjødsling (for eksempel mosetundra). I noen grad kan også ekskrementer fra andre dyrearter, som for eksempel stasjonære reinsdyrstammer på Svalbard, resultere i lokal variasjon i artssammensetning relatert til gjødslingsintensitet. Uavhengig av hvilken dyregruppe som forårsaker gjødslingseffekten, gjenspeiler naturlig gjødsling (NG) variasjon i totalkonsentrasjonene av nitrogen og fosfor i jordsmonnet, som er mer eller mindre uavhengig av ’normal’ variasjon i mineralnæringstilgang, som kommer til uttrykk langs kalkinnhold (KA). I natur som ikke er påvirket av fuglegjødsling samvarierer imidlertid nitrogen og fosfor (sterkt) med substratets generelle mineralnæringsinnhold (kalkinnholdet). Naturlig gjødsling (NG) må ikke forveksles med tilstandsvariabelen eutrofieringstilstand (EU) som adresserer menneskebetinget variasjon i nitrogentilførsel, ved langtransportert eller fra lokal forurensning, som er en viktig kilde til variasjon i artssammensetning i en rekke natursystemer innenfor natursystem-hovedtypegruppene fastmarkssystemer, våtmarkssystemer og ferskvannssystemer.

@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% SS
@@ -13,13 +13,13 @@ ss_lec = LEC(
     spatialScale=3,
 )
 ss_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=ss_lec,
     name='Sand stabilisation',
     description='Variation in sand-dune stability, brought about by the tendency of sand to become more stable at increasing distances from the sand source (typically the coastline); LEC SS runs from naked sand-dominated littoral seabeds via active sand-dune systems to forests on stabilised sand and thus is a primary successional gradient starting with vascular plants colonising naked sand (this contrasts primary successions on rock substrates, which start with colonisation by mosses and lichens and continues with slow soil accumulation)',
 )
 ss_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=ss_lec,
     name='Sandstabilisering',
     description='''Strender som tilføres store mengder sand fra havsida, som transporteres videre innover land av sterke vinder, vil normalt utvikle seg til sanddynemark. Sandstabilisering (SS) er en kompleks miljøvariabel som gir uttrykk for den økende stabiliseringen av sanddynene med økende avstand fra strandlinja, som er resultatet av primær suksesjon (vegetasjonsetablering). Med økende avstand fra stranda øker tiden siden suksesjonen startet, samtidig som en rekke viktige miljøegenskaper endrer seg: sandtilførselen avtar, vindforstyrrelsen avtar, sanda stabiliseres og en gradvis jordsmonnutvikling finner sted som innebærer akkumulering av humus og økende evne til å holde på jordfuktigheten, men også utvasking av næringsstoffer og forsuring. Artstettheten øker et langt stykke ut i denne primære suksesjonen før det flater ut og etter hvert synker igjen.

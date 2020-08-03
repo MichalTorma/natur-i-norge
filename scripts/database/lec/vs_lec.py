@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% VS
@@ -13,7 +13,7 @@ vs_lec = LEC(
     spatialScale=3,
 )
 vs_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=vs_lec,
     name='Vannsprutintensitet',
     description='''Når elver med jevnt høy vannføring går i stryk og fosser, dannes ‘fosserøyk’ av vannsprut. Denne ‘fosserøyken’ består av dråper og mindre partikler (aerosoler). Fordi store partikler faller til bakken raskere enn små, etableres det en gradient i vannsprutintensitet (VS) fra fossen ut i omkringliggende natur. Størrelsen på området som blir influert av fossesprut øker med økende fallhøyde og økende vannføring i elva, og påvirkes også av lokale topografiske forhold. For eksempel vil sprut fra fosser i trange gjel kunne transporteres mange hundre meter fra fossen, inn i sidedaler etc., når de lokale forholdene ligger til rette for det. Lokale vindforhold kan ha stor betydning. Størrelsen på det fossesprutpåvirkete området er korrelert med vannsprutintensiteten nær fossen.
@@ -22,7 +22,7 @@ vs_lec_info_en = LECInfo(
 ''',
 )
 vs_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=vs_lec,
     name='Water-spray impact',
     description='Variation in the impact of water spray from water-falls and large, fast-flowing rivers, typically forming a distinct zonation of vegetation by gradual loss of woody plants and other frost-sensitive, perennial species that do not tolerate encapsulation in ice crust during wintertime; towards the water source the physical characteristics of the supplied water (from mist via small and large droplets to large drops) changes and the supplied amounts of water increases strongly, ending in absence of soil forma-tion and a species-thinning situation even on rock',

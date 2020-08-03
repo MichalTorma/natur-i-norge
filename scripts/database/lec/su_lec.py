@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% SU
@@ -13,13 +13,13 @@ su_lec = LEC(
     spatialScale=4,
 )
 su_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=su_lec,
     name='Landslide intensity',
     description='Variation in the intensity of disturbance by landslides in clay- to gravel-dominated quaternary deposits; the term ‘landslide’ is used for situations where a part of the substrate with its biomass is detached and new mineral material is exposed; ends in a species-thinning situation at which a primary succession is initiated after each landslide event',
 )
 su_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=su_lec,
     name='Skredutsatthet',
     description='''Med skred menes spontan utrasing og nedadrettet transport av stedegne materialmasser (jord-, sand-, silt- eller leirskred) i en skråning, forårsaket av erosjon nedenfra eller fra sidene, eller av prosesser i massene. Skred, til forskjell fra ras (forstyrrelse i skråning forårsaket av at snø-, is- eller vannmasser passerer over marka), innebærer at marka med sitt innhold av organismer, går tapt og at ny mark eksponeres. Skred innebærer derfor (i utgangspunktet) en mer gjennomgripende forstyrrelse av marka enn ras, og innebærer starten på et primærsuksesjonsforløp.

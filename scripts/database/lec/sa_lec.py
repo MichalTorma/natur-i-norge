@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% SA
@@ -13,13 +13,13 @@ sa_lec = LEC(
     spatialScale=4,
 )
 sa_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=sa_lec,
     name='Marine salinity',
     description='Variation in salinity (halinity), i.e., the concentration of salts, in water-mass and bottom and ground ecosystems in contact with or otherwise influenced by seasalt-enriched water; this LEC runs from hypohaline (fresh) water, defined as water with salinity < 0.5‰, via oligohaline, mesohaline, poly-haline and euhaline waters to metahaline ocean wa-ter with salinity typically in the range 34.2–35.5‰',
 )
 sa_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=sa_lec,
     name='Marin salinitet',
     description='''Variasjon i vannets og bunnen/markas salinitet (saltholdighet) er en viktig årsak til variasjon i artssammensetning i saltvannssystemer og områder i umiddelbar tilknytning til disse (først og fremst i fjærebeltesystemer). Marin salinitet (SA) er viktig over et stort spenn av romlige skalaer og naturtypenivåer. Saliniteten avtar generelt fra det åpne havet innover i fjordene. På lokal skala finnes variasjon i salinitet for eksempel nær utløpet av elver og bekker, og i forsenkninger som i perioder tilføres saltvann som kan stå og fordampe. Marin salinitet (SA) er en kompleks miljøgradient som består av flere enkeltgradienter med variasjon som bare delvis faller sammen. Viktigst er ’normalsaliniteten’, for eksempel definert som gjennomsnittlig saltholdighet i det havvannet som fjærebelte- eller saltvannsbunnen er i kontakt med. Andre viktige enkeltgradienter er maksimums- og minimumssaliniteten, for eksempel definert som den høyeste respektivt laveste saltholdigheten i bunnen/marka på et gitt sted i løpet av en gitt tidsperiode. Minimumssaliniteten har betydning for utbredelsen av dypvannsarter i fjorder. Relasjonen mellom normalsalinitet og maksimalsalinitet kan sammenliknes med relasjonen mellom vannmetning (VM) og uttørkingsfare (UF) i fastmarkssystemer; vannmetning (VM) gir utrykk for normal markfuktighet og uttørkingsfare (UF) gir uttrykk for risikoen for ekstremtørke. Til forskjell fra fuktighetsrelaterte komplekse miljøvariabler i fastmarkssystemer og våtmarkssystemer, er samvariasjonen mellom normal- og maksimalsaliniteten sterk, bortsett fra på steder der periodevis stagnerende saltvann får fordampe (pøler, litoralbasseng og saltenger) slik at saliniteten øker over normalnivået (hypersalinitetsepisoder). 

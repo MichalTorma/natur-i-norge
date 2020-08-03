@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% VI
@@ -13,7 +13,7 @@ vi_lec = LEC(
     spatialScale=3,
 )
 vi_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=vi_lec,
     name='Vindutsatthet',
     description='''Vind gjør seg gjeldende som viktig landformdannende (og økologisk) prosess i sanddynemark der vindprosesser resulterer i stor variasjon langs primærsuksesjonsgradienten sandstabilisering (SS) (se også NiN[1] Artikkel 17). Kraftig lokal vindpåvirkning kan imidlertid også ha en forstyrrelseseffekt som snart, ved moderat økning i påvirkningsintensiteten i forhold til steder uten preg av vindpåvirkning, medfører begynnende artsuttynning og ender i disruptiv forstyrrelse i form av deflasjon (blottlegging av mineraljord etter fysisk ødeleggelse av vegetasjonen). Deflasjonsflekker er vanlig på ekstremt vindutsatte rabber i fjellet, i sanddynemark (eroderte dyner) og på særlig utsatte steder også i kystnær grus- og steinmark, f.eks. på gamle strandvoller dominert av grus på nordsiden av Varangerhalvøya.
@@ -22,7 +22,7 @@ vi_lec_info_en = LECInfo(
 ''',
 )
 vi_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=vi_lec,
     name='Wind-mediated disturbance intensity',
     description='Variation in the intensity of wind-mediated disturbance in open sites such as sand dunes and alpine ridges; ending in a species-thinning situation at disruptively wind-deflated sites; moderately wind-disturbed alpine ridges have a characteristic species composition dominated by yellow lichens'

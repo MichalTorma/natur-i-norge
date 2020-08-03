@@ -1,25 +1,25 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% JV
 jv_lec = LEC(
     _id='JV',
     structuringProcess_id='S',
-    patternOfVariation='ga',
+    patternOfVariation_id='ga',
     knowledgeBaseRelations=3,
     knowledgeBaseDivision=2,
     spatialScale=6,
 )
 jv_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=jv_lec,
     name='Geothermal influence',
     description='Variation in geothermal energy supplies, carried by water or gas, ranging from no influence on the species composition via increasing dominance by specialist organisms (eventually only bacteria), at >100 °C ending in a species-thinning situation; no sessile organism maintains persistent populations in such sites',
 )
 jv_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=jv_lec,
     name='Jordvarmeinnflytelse',
     description='''Jordvarme (JV) er uttrykk for intensitet i tilførsler av geotermisk energi utover det normale for et gitt område. Jordvarmeinfluert natur finnes på land, i våre områder med vann som varmebærer (varm kilde), og på havbunnen (varm havkilde) med vann eller gass som varmebærere. Liksom variasjonen i graden av kildestyrke (konsentrert kildevannstilførsel) fra kildesentrum til kildeperiferi i kaldkilde, varierer graden av jordvarmeinnflytelse fra sentrum til periferi i varm kilde og i varm havkilde. 

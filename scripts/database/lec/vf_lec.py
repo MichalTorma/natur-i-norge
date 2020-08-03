@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% VF
@@ -13,13 +13,13 @@ vf_lec = LEC(
     spatialScale=3,
 )
 vf_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=vf_lec,
     name='Water-mediated disturbance intensity',
     description='Variation in the intensity of water-mediated distur-bance in marine, freshwater and adjacent littoral and flooded-ground systems; from protected sites (still waters, slow-flowing rivers) to strongly exposed sites (large, fast-flowing rivers and strong tidal currents) where not even stone-dominated substrates are stable',
 )
 vf_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=vf_lec,
     name='Vannpåvirkningsintensitet',
     description='''Vann som forstyrrelsesagens er viktig både på fast bunn og på sedimentbunn. På marin sedimentbunn råder gjerne en likevekt mellom ytre påvirkning fra strøm, bølger etc. og sedimentenes dominerende kornstørrelse. I NiN 2 kommer variasjonen relatert til vannforårsaket forstyrrelse til uttrykk gjennom miljøvariabelen erosjonsmotstand (S3E), en av de tre enkeltvariablene som utgjør den flervariable komplekse miljøvariabelen sedimentsortering (S3). På fast bunn og i flomsonen langs elver med stor transportkapasitet, der det er store skiftninger mellom perioder med avsetning (sedimentasjon) og perioder med bortvasking (erosjon) av masser, og følgelig også stor variasjon i toppsedimentenes sammensetning, må vannets maksimale bevegelsesenergi brukes mer direkte til å beskrive vannforstyrrelsesintensiteten. To sett begreper og to uttrykk for vannets bevegelsesenergi blir brukt i NiN; for bølge- og strømenergi langs kysten og på fast bunn i innsjøer og i havet brukes Isæus’ ESWM-indeks og det tilhørende begrepsapparatet for grader av beskyttelse/eksponering, for rennende vann (inkludert flommarker langs elver) brukes begrepsapparatet for bevegelsesenergi i NiN 1, med vannhastighet og størrelse på partikler elva er i stand til å flytte som nøkkelegenskaper. Disse to seriene av begreper kobles sammen ved bruk av vannets evne til å transportere materiale, gitt av ‘Hjulström-figuren’ (NiN[2] Artikkel 2, kapittel B3k).

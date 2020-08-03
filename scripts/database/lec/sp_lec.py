@@ -1,6 +1,6 @@
 # %%
-from model import LEC
-from model import LECInfo
+from model.model import LEC
+from model.model import LECInfo
 from language_data import en_language, nb_language
 
 # %% SP
@@ -13,13 +13,13 @@ sp_lec = LEC(
     spatialScale=6,
 )
 sp_lec_info_en = LECInfo(
-    language=en_language,
+    language_id='en',
     lec=sp_lec,
     name='Hay-meadow character',
     description='Binary variable that separates hayfields from pastures; hayfields are cultivated areas with haymaking, periodic harvesting of biomass (up to three times a year) with no nutrient return; pastures are areas characterised by livestock grazing, trampling, manuring and continuous, selective removal of biomass',
 )
 sp_lec_info_nb = LECInfo(
-    language=nb_language,
+    language_id='nb',
     lec=sp_lec,
     name='Slåttemarkspreg',
     description='''Todelingen i beitemark og slåttemark representerer en grov generalisering av de sammensatte og svært mangfoldige hevdregimene som har gitt opphav til semi-naturlig og sterkt endret jordbruksmark. De to kategoriene omfatter egentlig variasjon i mange andre egenskaper enn bare beiting og/eller slått (f.eks. rydding, brenning, gjødsling, pløying, tilsåing etc.), og kunne (burde?) derfor kanskje heller vært beskrevet som en flervariabel lokal kompleks miljøvariabel (fLKM). Hevdregimene har utviklet seg gjennom mange hundre år i nært samspill mellom befolkningens næringsbehov, kulturelle og økonomiske rammebetingelser, klima og andre naturgitte betingelser for utnyttelse av arealer til matproduksjon. Betegnelsene ‘beitemark’ og ‘slåttemark’ adresserer den dominerende hevdfaktoren. Innenfor hver av de to klassene finnes stor variasjon, for eksempel i beite- eller slåtteintensitet (slåttehyppighet), beite- og slåttetidspunkt (vår- og/eller høstbeite), beitetrykk, mellom ulike beitedyr, intervall mellom avsviinger, omfanget av manuell rydding av vedvekster, etc. Mens slåttemarkspreg (SP) er en lokal kompleks miljøvariabel som adresserer jordbruksmarkas dominerende hevdpreg beitemark eller slåttemark, brukes tilstandsvariabelen aktuelt brukspreg til å beskrive nåtidig bruk. Endret bruk (eller opphør av bruk) vil over år (hvor mange år vil avhenge av en lang rekke forhold) føre til at slåtte- eller beitemarkspreget svekkes og til slutt viskes helt ut.
