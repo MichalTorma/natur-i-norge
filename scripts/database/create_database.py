@@ -6,6 +6,8 @@ from importlib import reload
 from pattern_of_variation.pattern_of_variation import savePatternsOfVariation
 from structuring_process.structuring_process import saveStructuringProcesses
 from lec.lec import saveLec
+from major_type.major_type import saveMajorTypes
+
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 import logging
@@ -26,6 +28,7 @@ session = sessionmaker(bind=engine)()
 savePatternsOfVariation(session)
 saveStructuringProcesses(session)
 saveLec(session)
+saveMajorTypes(session)
 
 # %%
 session.query(model.PatternOfVariation).first()._id
