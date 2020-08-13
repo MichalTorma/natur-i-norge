@@ -47,7 +47,7 @@ class MajorType(Base):
     '''Major types like T4,V11 and so on, references major type.'''
 
     __tablename__ = f'{preffix}MajorType'
-    _id = Column(Integer, primary_key=True, autoincrement=True)
+    _id = Column(Text, primary_key=True,)
     majorTypeGroup_id = Column(Text, ForeignKey(f'{preffix}MajorTypeGroup._id'))
 
     # References
