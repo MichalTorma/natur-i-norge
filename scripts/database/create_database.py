@@ -22,7 +22,6 @@ except:
 
 engine = create_engine(f'sqlite:///{database_file}')
 Base.metadata.create_all(engine)
-
 session = sessionmaker(bind=engine)()
 
 savePatternsOfVariation(session)
