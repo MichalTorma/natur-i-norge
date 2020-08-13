@@ -3,7 +3,7 @@ from model.model import MajorType, MajorTypeInfo
 
 # %% T43
 t43_major_type = MajorType(
-    _id=43,
+    _id='T43',
     majorTypeGroup_id='T',
 )
 t43_major_type_en = MajorTypeInfo(
