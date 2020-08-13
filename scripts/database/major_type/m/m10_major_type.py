@@ -4,7 +4,7 @@ from model.model import MajorType, MajorTypeInfo
 
 # %% m10
 m10_major_type = MajorType(
-    _id=10,
+    _id='M10',
     majorTypeGroup_id='M',
 )
 m10_major_type_en = MajorTypeInfo(
