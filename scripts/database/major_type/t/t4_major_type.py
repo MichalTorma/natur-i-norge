@@ -1,5 +1,5 @@
 # %%
-from model.model import MajorType, MajorTypeInfo
+from model.model import MajorType, MajorTypeInfo, MinorType, MinorTypeInfo, MajorTypeLEC
 
 # %% T4
 t4_major_type = MajorType(
@@ -17,4 +17,16 @@ t4_major_type_nb = MajorTypeInfo(
     majorType=t4_major_type,
     name='Fastmarksskogsmark',
     description='''Fastmarksskogsmark omfatter alle fastmarksarealer som tilfredsstiller skogsmarksdefinisjonen og som ikke påvirkes av flom. Skogsmark er naturlig mark som er sterkt preget av langvarig innflytelse fra trær og som ved et gitt tidspunkt er tresatt eller som i nær fortid har vært og i nær framtid forventes igjen å være tresatt. Mark der gjentatte forstyrrelser, inngrep eller liknende over lengre tid har forhindret utvikling av ny tresatt mark er ikke skogsmark. Fastmarksskogsmark omfatter nesten all skogsmark på fastmark i Norge, og dekker dermed størstedelen av landarealet under skoggrensa. Skogbruksaktivitet og annen bruk gir opphav til stor variasjon langs tilstandsøkokliner og i objektinnhold. Skogsmarksøkosystemets strukturkompleksitet (sjiktning, forekomst av livsmedier på levende og død ved etc.) gjør at det huser en betydelig andel av organismemangfoldet i Norge. Mange arter er spesifikt knyttet til fastmarksskogsmark.'''
+)
+MajorTypeLEC(
+    lec_id='KA',
+    majorType=t4_major_type,
+    lecType_id='mLEC',
+    axis=1,
+)
+MajorTypeLEC(
+    lec_id='UF',
+    majorType=t4_major_type,
+    lecType_id='mLEC',
+    axis=0,
 )

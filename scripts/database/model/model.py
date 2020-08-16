@@ -18,7 +18,7 @@ class Language(Base):
     lecInfo = relationship('LECInfo', back_populates='language')
     patternOfVariationInfo = relationship('PatternOfVariationInfo', back_populates='language')
     structuringProcessInfo = relationship('StructuringProcessInfo', back_populates='language')
-    lecCombinationTypeInfo = relationship('LECCombinationTypeInfo', back_populates='language')
+    lecTypeInfo = relationship('LECTypeInfo', back_populates='language')
 
 class MajorTypeGroup(Base):
     '''Table of Major type groups lie T,V,M etc..'''
@@ -51,7 +51,7 @@ class MajorType(Base):
     majorTypeGroup_id = Column(Text, ForeignKey(f'{preffix}MajorTypeGroup._id'))
 
     # References
-    lecCombination = relationship('LECCombination', back_populates='majorType')
+    # lecCombination = relationship('LECCombination', back_populates='majorType')
     majorTypeGroup = relationship('MajorTypeGroup', back_populates='majorType')
     info = relationship('MajorTypeInfo', back_populates='majorType')
     lec = relationship('MajorTypeLEC', back_populates='majorType')
@@ -176,8 +176,11 @@ class MajorTypeLEC(Base):
     '''Association table for LEC and major types'''
 
     __tablename__ = f'{preffix}MajorTypeLEC'
+    # _id = Column(Integer, primay_key=True, autoincrement=True)
     lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'), primary_key=True)
-    majorType_id = Column(Text, ForeignKey(f'{preffix}MajorType._id', primary_key=True))
+    majorType_id = Column(Text, ForeignKey(f'{preffix}MajorType._id'), primary_key=True)
+    lecType_id = Column(Text, ForeignKey(f'{preffix}LECType._id'))
+    axis = Column(Integer)
 
     # References
     majorType = relationship('MajorType', back_populates='lec')
@@ -193,49 +196,50 @@ class MinorTypeLEC(Base):
     # References
     lec = relationship('LEC', back_populates='minorType')
     minorType = relationship('MinorType', back_populates='lec')
-class LECCombination(Base):
-    ''' Categories of LECs based on their role in type-hierarchy construction'''
+# class LECCombination(Base):
+#     ''' Categories of LECs based on their role in type-hierarchy construction'''
 
-    __tablename__ = f'{preffix}LECCombination'
-    _id = Column(Integer, primary_key=True, autoincrement=True)
-    lecCombinationType_id = Column(Text, ForeignKey(f'{preffix}LECCombinationType._id'))
-    majorType_id = Column(Text, ForeignKey(f'{preffix}MajorType._id'))
+#     __tablename__ = f'{preffix}LECCombination'
+#     _id = Column(Integer, primary_key=True, autoincrement=True)
+#     lecCombinationType_id = Column(Text, ForeignKey(f'{preffix}LECCombinationType._id'))
+#     majorType_id = Column(Text, ForeignKey(f'{preffix}MajorType._id'))
 
-    # References
-    lecs = relationship('LECCombinationLEC', back_populates='lecCombination')
-    majorType = relationship('MajorType', back_populates='lecCombination')
+#     # References
+#     lecs = relationship('LECCombinationLEC', back_populates='lecCombination')
+#     majorType = relationship('MajorType', back_populates='lecCombination')
 
-class LECCombinationLEC(Base):
-    ''' Association table for LEC in every LECCombination'''
+# class LECCombinationLEC(Base):
+#     ''' Association table for LEC in every LECCombination'''
 
-    __tablename__ = f'{preffix}LECCombinationLEC'
-    lecCombination_id = Column(Integer, ForeignKey(f'{preffix}LECCombination._id'), primary_key=True)
-    lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'), primary_key=True)
-    order = Column(Integer)
+#     __tablename__ = f'{preffix}LECCombinationLEC'
+#     lecCombination_id = Column(Integer, ForeignKey(f'{preffix}LECCombination._id'), primary_key=True)
+#     lec_id = Column(Text, ForeignKey(f'{preffix}LEC._id'), primary_key=True)
+#     order = Column(Integer)
 
-    # References
-    lecCombination = relationship('LECCombination', back_populates='lecs')
-    lecs = relationship('LEC')
+#     # References
+#     lecCombination = relationship('LECCombination', back_populates='lecs')
+#     lecs = relationship('LEC')
 
-class LECCombinationType(Base):
+class LECType(Base):
     ''' LEC categories types like dLEC, mLEC, iLEC and so on'''
 
-    __tablename__ = f'{preffix}LECCombinationType'
+    __tablename__ = f'{preffix}LECType'
     _id = Column(Text, primary_key=True)
 
     # References
-    info = relationship('LECCombinationTypeInfo')
+    info = relationship('LECTypeInfo')
 
-class LECCombinationTypeInfo(Base):
+class LECTypeInfo(Base):
     ''' Language dependant info about LEC categories types'''
 
-    __tablename__ = f'{preffix}LECCombinationTypeInfo'
-    lecCombinationType_id = Column(Text, ForeignKey(f'{preffix}LECCombinationType._id'), primary_key=True)
-    language_id = Column(Integer, ForeignKey(f'{preffix}Language._id'), primary_key=True)
-    description = Column(Text)
+    __tablename__ = f'{preffix}LECTypeInfo'
+    lecType_id = Column(Text, ForeignKey(f'{preffix}LECType._id'), primary_key=True)
+    language_id = Column(Text, ForeignKey(f'{preffix}Language._id'), primary_key=True)
+    name = Column(Text)
+    description = Column(Text, nullable=True)
 
     # References
-    lecCombinationTypes = relationship('LECCombinationType', back_populates='info')
+    lecType = relationship('LECType', back_populates='info')
     language = relationship('Language')
 
 class ElementarySegment(Base):
@@ -302,13 +306,13 @@ class GadValue(Base):
     gad_id = Column(Integer, ForeignKey(f'{preffix}GAD.artsKode'))
     majorType_id = Column(Integer, ForeignKey(f'{preffix}MajorType._id'))
     m7Scale_id = Column(Integer, ForeignKey(f'{preffix}GadScale.m7Scale'))
-    lecCombination_id = Column(Integer, ForeignKey(f'{preffix}LECCombination._id'))
+    # lecCombination_id = Column(Integer, ForeignKey(f'{preffix}LECCombination._id'))
 
     # References
     gad = relationship('GAD', back_populates='values')
     elementarySegment = relationship('GadValueElementarySegment', back_populates='gadValue')
     m7Scale = relationship('GadScale')
-    lecCombination = relationship('LECCombination')
+    # lecCombination = relationship('LECCombination')
 
 class GadScale(Base):
     ''' Collection of M7 and M3 scales with constancy'''
