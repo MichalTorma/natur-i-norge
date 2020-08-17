@@ -1,7 +1,8 @@
 # %%
 from model.model import LEC
 from model.model import LECInfo
-from language_data import en_language, nb_language
+from model.model import ElementarySegment
+from model.model import ElementarySegmentInfo
 
 # %% UF
 uf_lec = LEC(
@@ -28,4 +29,164 @@ uf_lec_info_nb = LECInfo(
 	I en serie av sammenliknbare naturtyper som fordeler seg langs uttørkingsfare (UF) fra liten til stor uttørkingsfare, avtar produktiviteten betydelig. Dette gir seg f.eks. utslag i variasjon i trærnes tilvekstrate (f.eks. uttrykt som H40-bonitet).
 	R. Økland & Bendiksen (1985) viser at det omkring skoggrensa finner sted en ’forskyvning’ av artssammensetningen i karplantesjiktet (feltsjiktet) i forhold til i bunnsjiktet (moser og lav) idet en gitt karplanteartssammensetning er assosiert med et bunnsjikt med langt sterkere lavdominans enn under skoggrensa. Dette forklares med at vinden s uttørrende effekt over skoggrensa, og er grunnen til at trinn UF∙a ikke anses å være til stede i særlig grad der; god markfukting innebærer gjerne kildevannspåvirkning. I den motsatte enden av gradienten innebærer sterk tørkeutsatthet også så sterk vindvirkning at vindutsatthet (VI) overtar for uttørkingsfare (UF) som viktig miljøvariabel. Lavheia blir da et overgangstrinn langs UF, mens lesida blir et overgangstrinn mot snøleiene der snødekkebetinget vekstsesongreduksjon overtar som viktigste komplekse miljøvariabel langs ‘rabbe-snøleiegradienten’ (se NiN[2] Artikkel 2, kapittel B11).
 ''',
+)
+
+# a
+a_elem_segment=ElementarySegment(
+    _id='UF.a',
+    lec=uf_lec,
+    value='a',
+    order=0
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='Class',
+    value='fresh'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='frisk'
+)
+
+# b
+b_elem_segment=ElementarySegment(
+    _id='UF.b',
+    lec=uf_lec,
+    value='b',
+    order=1
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='en',
+    key='Class',
+    value='pretty fresh'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='temmelig frisk'
+)
+
+# c
+c_elem_segment=ElementarySegment(
+    _id='UF.c',
+    lec=uf_lec,
+    value='c',
+    order=2
+)
+ElementarySegmentInfo(
+    elementarySegment=c_elem_segment,
+    language_id='en',
+    key='Class',
+    value='a little fresh'
+)
+ElementarySegmentInfo(
+    elementarySegment=c_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='litt frisk'
+)
+
+# d
+d_elem_segment=ElementarySegment(
+    _id='UF.d',
+    lec=uf_lec,
+    value='d',
+    order=3
+)
+ElementarySegmentInfo(
+    elementarySegment=d_elem_segment,
+    language_id='en',
+    key='Class',
+    value='intermediate'
+)
+ElementarySegmentInfo(
+    elementarySegment=d_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='intermediær'
+)
+
+# e
+e_elem_segment=ElementarySegment(
+    _id='UF.e',
+    lec=uf_lec,
+    value='e',
+    order=4
+)
+ElementarySegmentInfo(
+    elementarySegment=e_elem_segment,
+    language_id='en',
+    key='Class',
+    value='slightly exposed to drought'
+)
+ElementarySegmentInfo(
+    elementarySegment=e_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='litt tørkeutsatt'
+)
+
+# f
+f_elem_segment=ElementarySegment(
+    _id='UF.f',
+    lec=uf_lec,
+    value='f',
+    order=5
+)
+ElementarySegmentInfo(
+    elementarySegment=f_elem_segment,
+    language_id='en',
+    key='Class',
+    value='fairly prone to drought'
+)
+ElementarySegmentInfo(
+    elementarySegment=f_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='temmelig tørkeutsatt'
+)
+
+# g
+g_elem_segment=ElementarySegment(
+    _id='UF.g',
+    lec=uf_lec,
+    value='g',
+    order=6
+)
+ElementarySegmentInfo(
+    elementarySegment=g_elem_segment,
+    language_id='en',
+    key='Class',
+    value='very prone to drought'
+)
+ElementarySegmentInfo(
+    elementarySegment=g_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='svært tørkeutsatt'
+)
+
+# h
+h_elem_segment=ElementarySegment(
+    _id='UF.h',
+    lec=uf_lec,
+    value='h',
+    order=7
+)
+ElementarySegmentInfo(
+    elementarySegment=h_elem_segment,
+    language_id='en',
+    key='Class',
+    value='extremely prone to drought'
+)
+ElementarySegmentInfo(
+    elementarySegment=h_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='ekstremt tørkeutsatt'
 )
