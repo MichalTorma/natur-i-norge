@@ -78,7 +78,6 @@ class MinorType(Base):
 
     # References
     info = relationship('MinorTypeInfo', back_populates='minorType')
-    lec = relationship('MinorTypeLEC', back_populates='minorType')
 
 class MinorTypeInfo(Base):
     '''Language specific info about minor types'''
@@ -112,7 +111,6 @@ class LEC(Base):
     patternOfVariation = relationship('PatternOfVariation', back_populates='lec')
     info = relationship('LECInfo', back_populates='lec')
     majorType = relationship('MajorTypeLEC', back_populates='lec')
-    minorType = relationship('MinorTypeLEC', back_populates='lec')
 
 class LECInfo(Base):
     '''Language specific info about local environmental complex gradients'''
@@ -176,26 +174,27 @@ class MajorTypeLEC(Base):
     '''Association table for LEC and major types'''
 
     __tablename__ = f'{prefix}MajorTypeLEC'
-    # _id = Column(Integer, primay_key=True, autoincrement=True)
-    lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'), primary_key=True)
-    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'), primary_key=True)
+    _id = Column(Text, primary_key=True)
+    lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
+    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
     lecType_id = Column(Text, ForeignKey(f'{prefix}LECType._id'))
     axis = Column(Integer)
 
     # References
     majorType = relationship('MajorType', back_populates='lec')
     lec = relationship('LEC', back_populates='majorType')
+    standardSegment = relationship('StandardSegment')
 
-class MinorTypeLEC(Base):
-    '''Association table for LEC and minor types'''
+# class MinorTypeLEC(Base):
+#     '''Association table for LEC and minor types'''
 
-    __tablename__ = f'{prefix}MinorTypeLEC'
-    lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'), primary_key=True)
-    minorType_id = Column(Text, ForeignKey(f'{prefix}MinorType._id'), primary_key=True)
+#     __tablename__ = f'{prefix}MinorTypeLEC'
+#     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'), primary_key=True)
+#     minorType_id = Column(Text, ForeignKey(f'{prefix}MinorType._id'), primary_key=True)
 
-    # References
-    lec = relationship('LEC', back_populates='minorType')
-    minorType = relationship('MinorType', back_populates='lec')
+#     # References
+#     lec = relationship('LEC', back_populates='minorType')
+#     minorType = relationship('MinorType', back_populates='lec')
 # class LECCombination(Base):
 #     ''' Categories of LECs based on their role in type-hierarchy construction'''
 
@@ -273,22 +272,25 @@ class StandardSegmentElement(Base):
     ''' Association table that connects standard segments and elementary segments'''
 
     __tablename__ = f'{prefix}StandardSegmentElement'
-    standardSegment_id = Column(Integer, ForeignKey(f'{prefix}StandardSegment._id'), primary_key=True)
-    elementarySegment_id = Column(Integer, ForeignKey(f'{prefix}ElementarySegment._id'), primary_key=True)
+    standardSegment_id = Column(Text, ForeignKey(f'{prefix}StandardSegment._id'), primary_key=True)
+    elementarySegment_id = Column(Text, ForeignKey(f'{prefix}ElementarySegment._id'), primary_key=True)
 
     # References
-    elementarySegment = relationship('StandardSegment')
+    elementarySegment = relationship('ElementarySegment')
+    standardSegment = relationship('StandardSegment', back_populates='elementarySegment')
 
 class StandardSegment(Base):
     ''' Standard segments for LACCategorie. They consist of Elementary segments'''
 
     __tablename__ = f'{prefix}StandardSegment'
-    _id = Column(Integer, primary_key=True, autoincrement=True)
-    lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
+    _id = Column(Text, primary_key=True)
+    majorTypeLEC_id = Column(Text, ForeignKey(f'{prefix}MajorTypeLEC._id'))
+
 
     # References
-    elementarySegments = relationship('StandardSegmentElement')
-    lec = relationship('LEC')
+    info = relationship('StandardSegmentInfo')
+    elementarySegment = relationship('StandardSegmentElement')
+    majorTypeLEC = relationship('MajorTypeLEC', back_populates='standardSegment')
 
 class StandardSegmentInfo(Base):
     ''' Info about standard segments'''
@@ -299,7 +301,7 @@ class StandardSegmentInfo(Base):
     value = Column(Text)
 
     # References
-    standardSegment = relationship('StandardSegment')
+    standardSegment = relationship('StandardSegment', back_populates='info')
     language = relationship('Language')
     
 class GadValueElementarySegment(Base):
