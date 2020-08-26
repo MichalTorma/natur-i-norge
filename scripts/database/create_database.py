@@ -8,6 +8,8 @@ from structuring_process.structuring_process import saveStructuringProcesses
 from lec.lec import saveLec
 from lec.lec_types.lec_type import saveLecTypes
 from major_type.major_type import saveMajorTypes
+from mapping_scale.mapping_scale import saveMappingScales
+from minor_type.minor_type import saveMinorTypes
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
@@ -30,7 +32,8 @@ saveStructuringProcesses(session)
 saveLec(session)
 saveLecTypes(session)
 saveMajorTypes(session)
-
+saveMappingScales(session)
+saveMinorTypes(session)
 # %%
 session.query(model.PatternOfVariation).first()._id
 # %%

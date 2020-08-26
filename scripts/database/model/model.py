@@ -73,23 +73,54 @@ class MinorType(Base):
     '''Minor types like T4-1 '''
 
     __tablename__ = f'{prefix}MinorType'
-    _id = Column(Integer, primary_key=True)
+    _id = Column(Text, primary_key=True)
     majorType_id = Column(Integer, ForeignKey(f'{prefix}MajorType._id'))
 
     # References
-    info = relationship('MinorTypeInfo', back_populates='minorType')
-
+    info = relationship('MinorTypeInfo')
+    standardSegments = relationship('MinorTypeStandardSegment')
+    minorTypeScaled = relationship('MinorTypeScaled')
+    
 class MinorTypeInfo(Base):
     '''Language specific info about minor types'''
 
     __tablename__ = f'{prefix}MinorTypeInfo'
     minorType_id = Column(Integer, ForeignKey(f'{prefix}MinorType._id'), primary_key=True)
     language_id = Column(Integer, ForeignKey(f'{prefix}Language._id'), primary_key=True)
-    name = Column(Text)
+    key = Column(Text, primary_key=True)
+    value = Column(Text)
 
     # References
     minorType = relationship('MinorType', back_populates='info')
     language = relationship('Language')
+class MinorTypeStandardSegment(Base):
+    '''Minor type association with standard segments and Minor types'''
+
+    __tablename__ = f'{prefix}MinorTypeStandardSegment'
+    minorType_id = Column(Text, ForeignKey(f'{prefix}MinorType._id'), primary_key=True)
+    standardSegment_id = Column(Text, ForeignKey(f'{prefix}StandardSegment._id'), primary_key=True)
+
+    # References
+    minorType = relationship('MinorType', back_populates='standardSegments')
+    standardSegment = relationship('StandardSegment')
+
+class MinorTypeScaled(Base):
+    '''Minor type association with scale'''
+
+    __tablename__ = f'{prefix}MinorTypeScaled'
+    _id = Column(Text, primary_key=True)
+    minorType_id = Column(Integer, ForeignKey(f'{prefix}MinorType._id'))
+    mappingScale_id = Column(Integer, ForeignKey(f'{prefix}MappingScale._id'))
+
+    # References
+    minorType = relationship('MinorType', back_populates='minorTypeScaled')
+
+class MappingScale(Base):
+    '''Mapping scale used'''
+
+    __tablename__ = f'{prefix}MappingScale'
+    _id = Column(Integer, primary_key=True)
+    name = Column(Text)
 
 class LEC(Base):
     '''Local environmental complex-gradients with their descriptions'''
@@ -184,41 +215,6 @@ class MajorTypeLEC(Base):
     majorType = relationship('MajorType', back_populates='lec')
     lec = relationship('LEC', back_populates='majorType')
     standardSegment = relationship('StandardSegment')
-
-# class MinorTypeLEC(Base):
-#     '''Association table for LEC and minor types'''
-
-#     __tablename__ = f'{prefix}MinorTypeLEC'
-#     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'), primary_key=True)
-#     minorType_id = Column(Text, ForeignKey(f'{prefix}MinorType._id'), primary_key=True)
-
-#     # References
-#     lec = relationship('LEC', back_populates='minorType')
-#     minorType = relationship('MinorType', back_populates='lec')
-# class LECCombination(Base):
-#     ''' Categories of LECs based on their role in type-hierarchy construction'''
-
-#     __tablename__ = f'{prefix}LECCombination'
-#     _id = Column(Integer, primary_key=True, autoincrement=True)
-#     lecCombinationType_id = Column(Text, ForeignKey(f'{prefix}LECCombinationType._id'))
-#     majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
-
-#     # References
-#     lecs = relationship('LECCombinationLEC', back_populates='lecCombination')
-#     majorType = relationship('MajorType', back_populates='lecCombination')
-
-# class LECCombinationLEC(Base):
-#     ''' Association table for LEC in every LECCombination'''
-
-#     __tablename__ = f'{prefix}LECCombinationLEC'
-#     lecCombination_id = Column(Integer, ForeignKey(f'{prefix}LECCombination._id'), primary_key=True)
-#     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'), primary_key=True)
-#     order = Column(Integer)
-
-#     # References
-#     lecCombination = relationship('LECCombination', back_populates='lecs')
-#     lecs = relationship('LEC')
-
 class LECType(Base):
     ''' LEC categories types like dLEC, mLEC, iLEC and so on'''
 
@@ -295,8 +291,8 @@ class StandardSegment(Base):
 class StandardSegmentInfo(Base):
     ''' Info about standard segments'''
     __tablename__ = f'{prefix}StandardSegmentInfo'
-    standardSegment_id = Column(Text, ForeignKey(f'{prefix}StandardSegment._id'))
-    language_id = Column(Integer, ForeignKey(f'{prefix}Language._id'), primary_key=True)
+    standardSegment_id = Column(Text, ForeignKey(f'{prefix}StandardSegment._id'), primary_key=True)
+    language_id = Column(Text, ForeignKey(f'{prefix}Language._id'), primary_key=True)
     key = Column(Text),
     value = Column(Text)
 
