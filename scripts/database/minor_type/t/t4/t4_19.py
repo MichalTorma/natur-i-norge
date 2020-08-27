@@ -68,7 +68,6 @@ MinorTypeStandardSegment(
     minorType = t4_19_mt,
     standardSegment_id='T4-KA.hi'
 )
-M
 MinorTypeStandardSegment(
     minorType = t4_19_mt,
     standardSegment_id='T4-KI.bc'
