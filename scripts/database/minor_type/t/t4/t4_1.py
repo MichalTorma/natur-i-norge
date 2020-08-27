@@ -33,7 +33,7 @@ MinorTypeInfo(
     minorType=t4_1_mt,
     language_id='en',
     key='<name>',
-    value='Blueberry forest',
+    value='Lime-poor submesic forest',
 )
 MinorTypeInfo(
     minorType=t4_1_mt,
