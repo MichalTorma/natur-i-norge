@@ -1,6 +1,6 @@
 # %%
 from model.model import LEC
-from model.model import LECInfo
+from model.model import LECInfo, ElementarySegment, ElementarySegmentInfo
 from language_data import en_language, nb_language
 
 # %% BK
@@ -29,4 +29,104 @@ Lavamark finnes først og fremst på Jan Mayen. En naturfaglig beskrivelse av ø
 	Det eneste andre området i Norge med natur som blir typifisert som lavamark, er vulkanen Sverrefjellet ved Bockfjorden på Svalbard. Dette er også en relativt ung vulkan i geologisk tidsperspektiv, som sannsynligvis var aktiv for mellom 100 000 og 250 000 år siden (Skjelkvåle et al. 1989). Sverrefjellet har fremdeles sin regulære kjegleform intakt. Skråningene er dominert av løs og veldrenert porøs tefragrus med store innslag av gulgrønne olivinsteiner, avsatt under tidligere utbrudd. De mest typiske lavafeltene har porøs, størknet lava som ikke er dekket av jord.
  	I og omkring varme havbunnskilder dannes også et substrat med avvikende kjemisk sammensetning. Berggrunnen i havbunnsspredningsområdene består i hovedsak av peridotitter (bergartsgruppa som inneholder olivinstein), som blir brakt opp til havbunnen ved tektoniske prosesser. Dette ultramafiske materialet er rikt på magnesium og jern, og har høyt innhold av H2S-gass. Når varm peridotitt, som består av en blanding av fayalitt (Fe2SiO4) og forsteritt (MgSiO4), kommer i kontakt med vann, reagerer fayalitten med vann og danner magnetitt (Fe3O4) og flytende kvarts (SiO2). Forsteritten reagerer i sin tur med kvartsen og danner serpentin (Mg3Si2O5(OH)4), som er hovedmineralet i den ultramafiske bergarten serpentinitt. Denne prosessen kalles serpentinisering, og er en av de viktigste bergartsdannende prosessene i nåtida. Denne typen ny bergart er knyttet til de kaldere ’hvite havbunnsskorsteinene’, men det finnes også varm havkildebunn med temperatur på 200–400 ºC (’svarte skorsteiner’). ’Hvit’ og ’svart’ refererer til fargen på partiklene som slippes ut. Fra de svarte havbunnsskorsteinene strømmer det ut partikler med sulfidholdige mineraler (inkludert metaller), mens det fra de hvite havbunnsskorsteinene strømmer ut lysere partikler som inneholder barium, kalsium og silisium. Begge disse kategoriene av ny havbunn er samlet i klasse BK∙a ultramafisk.
 ''',
+)
+
+# 0
+nul_elem_segment=ElementarySegment(
+    _id='BK.0',
+    lec=bk_lec,
+    value='0',
+    order=0
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='Class',
+    value='normal'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='normal'
+)
+
+# a
+a_elem_segment=ElementarySegment(
+    _id='BK.a',
+    lec=bk_lec,
+    value='a',
+    order=1
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='Class',
+    value='ultramafic'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='ultramafisk'
+)
+
+# b
+b_elem_segment=ElementarySegment(
+    _id='BK.b',
+    lec=bk_lec,
+    value='b',
+    order=2
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='en',
+    key='Class',
+    value='iron-rich'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='jern-rikt'
+)
+
+# c
+c_elem_segment=ElementarySegment(
+    _id='BK.c',
+    lec=bk_lec,
+    value='c',
+    order=3
+)
+ElementarySegmentInfo(
+    elementarySegment=c_elem_segment,
+    language_id='en',
+    key='Class',
+    value='copper-rich'
+)
+ElementarySegmentInfo(
+    elementarySegment=c_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='kobber-rikt'
+)
+
+# d
+d_elem_segment=ElementarySegment(
+    _id='BK.d',
+    lec=bk_lec,
+    value='d',
+    order=4
+)
+ElementarySegmentInfo(
+    elementarySegment=d_elem_segment,
+    language_id='en',
+    key='Class',
+    value='lava'
+)
+ElementarySegmentInfo(
+    elementarySegment=d_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='lava'
 )

@@ -1,6 +1,6 @@
 # %%
 from model.model import LEC
-from model.model import LECInfo
+from model.model import LECInfo, ElementarySegment, ElementarySegmentInfo
 from language_data import en_language, nb_language
 
 # %% AS
@@ -23,4 +23,44 @@ as_lec_info_nb = LECInfo(
     lec=as_lec,
     name='Arid terrestrisk salinitet',
     description='Variasjonen fra ’normal’ mark med overveiende nedadgående vannstrøm og maksimale pH-verdier (i rein kalkdominert mineraljord) opp til ca. 8,0, til finjordsrik mark med overveiende oppadgående vannstrøm, som fører til saltanriking i øvre jordlag og pH-verdier helt opp i 10,5. Saltanriket mark kan lettest diagnostiseres ved en kombinasjon av synlig hvitt saltlag på overflaten (som vaskes vekk av regn, men snart kommer tilbake). Saltjord er typisk for ørkener, stepper og halvstepper i alle verdensdeler, men er i Norge bare kjent fra områder ved Wijdefjorden med sidefjorder på Svalbard, der en kombinasjon av regnskygge (svært tørt klima) og uttørkende vinder skaper helt spesielle forhold som gjør utvikling av saltanriket jord mulig også i et kaldt klima.',
+)
+
+# 0
+nul_elem_segment=ElementarySegment(
+    _id='AS.0',
+    lec=as_lec,
+    value='0',
+    order=0
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='Class',
+    value='not the salt enrichment'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='ikke saltanriket'
+)
+
+# a
+a_elem_segment=ElementarySegment(
+    _id='AS.a',
+    lec=as_lec,
+    value='a',
+    order=1
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='Class',
+    value='salt enrichment'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='Trinnbetegnelse',
+    value='saltanriket'
 )

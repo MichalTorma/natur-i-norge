@@ -109,7 +109,7 @@ class MinorTypeScaled(Base):
 
     __tablename__ = f'{prefix}MinorTypeScaled'
     _id = Column(Text, primary_key=True)
-    minorType_id = Column(Integer, ForeignKey(f'{prefix}MinorType._id'))
+    minorType_id = Column(Integer, ForeignKey(f'{prefix}MinorType._id'), primary_key=True)
     mappingScale_id = Column(Integer, ForeignKey(f'{prefix}MappingScale._id'))
 
     # References
