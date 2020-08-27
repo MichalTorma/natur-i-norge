@@ -7,6 +7,7 @@ from pattern_of_variation.pattern_of_variation import savePatternsOfVariation
 from structuring_process.structuring_process import saveStructuringProcesses
 from lec.lec import saveLec
 from lec.lec_types.lec_type import saveLecTypes
+from major_type_group.major_type_group import saveMajorTypeGroup
 from major_type.major_type import saveMajorTypes
 from mapping_scale.mapping_scale import saveMappingScales
 from minor_type.minor_type import saveMinorTypes
@@ -24,18 +25,20 @@ except:
     pass
 
 engine = create_engine(f'sqlite:///{database_file}')
-Base.metadata.create_all(engine)
+
+create_query = Base.metadata.create_all(engine)
 session = sessionmaker(bind=engine)()
 
 savePatternsOfVariation(session)
 saveStructuringProcesses(session)
 saveLec(session)
 saveLecTypes(session)
+saveMajorTypeGroup(session)
 saveMajorTypes(session)
 saveMappingScales(session)
 saveMinorTypes(session)
 # %%
-session.query(model.PatternOfVariation).first()._id
+session.query(model.MajorTypeGroup).first().majorType[0].majorTypeGroup._id
 # %%
 session.rollback()
 
