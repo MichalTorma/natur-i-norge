@@ -61,14 +61,14 @@ from .vr_lec import vr_lec
 from .vs_lec import vs_lec
 from .vt_lec import vt_lec
 
-lec_list = [as_lec, bk_lec, dd_lec, dl_lec, dm_lec, er_lec, fk_lec, fr_lec, gs_lec, hf_lec, hi_lec, hr_lec, hs_lec, hu_lec, if_lec, io_lec, jf_lec, jv_lec, ka_lec, ki_lec, ko_lec, kt_lec, ky_lec, la_lec, lk_lec, mb_lec, mf_lec, mx_lec, ng_lec, of_lec, om_lec, or_lec, pf_lec, ru_lec, s1_lec, s3_lec, s3e_lec, s3f_lec, s3s_lec, sa_lec, se_lec, sf_lec, sh_lec, sm_lec, sp_lec, ss_lec, su_lec, sv_lec, sx_lec, sy_lec, te_lec, tu_lec, tv_lec, ue_lec, uf_lec, vf_lec, vi_lec, vm_lec, vr_lec, vs_lec, vt_lec
-            ]
+lec_list = [as_lec, bk_lec, dd_lec, dl_lec, dm_lec, er_lec, fk_lec, fr_lec, gs_lec, hf_lec, hi_lec, hr_lec, hs_lec, hu_lec, if_lec, io_lec, jf_lec, jv_lec, ka_lec, ki_lec, ko_lec, kt_lec, ky_lec, la_lec, lk_lec, mb_lec, mf_lec, mx_lec, ng_lec, of_lec, om_lec, or_lec, pf_lec, ru_lec, s1_lec, s3_lec, s3e_lec, s3f_lec, s3s_lec, sa_lec, se_lec, sf_lec, sh_lec, sm_lec, sp_lec, ss_lec, su_lec, sv_lec, sx_lec, sy_lec, te_lec, tu_lec, tv_lec, ue_lec, uf_lec, vf_lec, vi_lec, vm_lec, vr_lec, vs_lec, vt_lec]
+# lec_list = [dl_lec]
 
 
 def saveLec(session):
     for lec in lec_list:
 
         session.add(lec)
-    session.commit()
+        session.commit()
 
 # %%

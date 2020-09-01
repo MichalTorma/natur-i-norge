@@ -35,14 +35,38 @@ nul_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
+    value='lower sublitoral'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<description>',
     value='Atlantic water in the lower sublitoral'
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='Depth',
+    value='<700m'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='nedre sublitoral'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<description>',
     value='atlantisk vann i nedre sublitoral'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='Dybde',
+    value='<700m'
 )
 
 # a
@@ -55,12 +79,36 @@ a_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
+    value='bathypelagic'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<description>',
     value='Atlantic waters in bathypelagic and bathyal'
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
+    language_id='en',
+    key='Depth',
+    value='>700m'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<class>',
+    value='bathypelagial'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<description>',
     value='atlantisk vann i bathypelagial og bathyal'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='Dybde',
+    value='>700m'
 )
