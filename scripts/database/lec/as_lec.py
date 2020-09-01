@@ -35,16 +35,40 @@ nul_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='not the salt enrichment'
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
-    language_id='nb',
-    key='Trinnbetegnelse',
-    value='ikke saltanriket'
+    language_id='en',
+    key='<description>',
+    value='soil without salt enrichment in the upper layers; dominant water flow downwards (or soil that is too coarse and sand-dominated for the capillary forces to be able to pull salts up to the surface)'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='pH',
+    value='< 8,5'
 )
 
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='ikke saltanriket'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='jordsmonn uten saltanriking i øvre sjikt; dominerende vannstrøm nedadgående (eller jord som er for grov og sanddominert til at kapillærkreftene klarer å trekke salter opp mot overflata)'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='pH',
+    value='< 8,5'
+)
 # a
 a_elem_segment=ElementarySegment(
     _id='AS.a',
@@ -55,12 +79,37 @@ a_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='salt enrichment'
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='soil with salt enrichment in the upper layer as a result of an upward dominant water flow.'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='pH',
+    value='8.5–10.5'
+)
+
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<class>',
     value='saltanriket'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='jordsmonn med saltanriking i øvre sjikt som følge av en oppadgående dominerende vannstrøm.'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='pH',
+    value='8,5–10,5'
 )

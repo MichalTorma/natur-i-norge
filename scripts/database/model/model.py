@@ -257,7 +257,7 @@ class ElementarySegmentInfo(Base):
     # _id = Column(Integer, primary_key=True, autoincrement=True)
     elementarySegment_id = Column(Integer, ForeignKey(f'{prefix}ElementarySegment._id'), primary_key=True)
     language_id = Column(Integer, ForeignKey(f'{prefix}Language._id'), primary_key=True)
-    key = Column(Text)
+    key = Column(Text, primary_key=True)
     value = Column(Text)
 
     # References

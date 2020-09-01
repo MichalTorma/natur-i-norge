@@ -41,13 +41,13 @@ a_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='fresh'
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<description>',
     value='frisk'
 )
 
@@ -61,13 +61,13 @@ b_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='pretty fresh'
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<description>',
     value='temmelig frisk'
 )
 
@@ -81,13 +81,13 @@ c_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=c_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='a little fresh'
 )
 ElementarySegmentInfo(
     elementarySegment=c_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<description>',
     value='litt frisk'
 )
 
@@ -101,13 +101,13 @@ d_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=d_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='intermediate'
 )
 ElementarySegmentInfo(
     elementarySegment=d_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<description>',
     value='intermediær'
 )
 
@@ -121,13 +121,13 @@ e_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=e_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='slightly exposed to drought'
 )
 ElementarySegmentInfo(
     elementarySegment=e_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<description>',
     value='litt tørkeutsatt'
 )
 
@@ -141,13 +141,13 @@ f_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=f_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='fairly prone to drought'
 )
 ElementarySegmentInfo(
     elementarySegment=f_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<description>',
     value='temmelig tørkeutsatt'
 )
 
@@ -161,13 +161,13 @@ g_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=g_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='very prone to drought'
 )
 ElementarySegmentInfo(
     elementarySegment=g_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<description>',
     value='svært tørkeutsatt'
 )
 
@@ -181,12 +181,12 @@ h_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=h_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='extremely prone to drought'
 )
 ElementarySegmentInfo(
     elementarySegment=h_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<description>',
     value='ekstremt tørkeutsatt'
 )

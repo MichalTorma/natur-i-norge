@@ -1,6 +1,6 @@
 # %%
 from model.model import LEC
-from model.model import LECInfo
+from model.model import LECInfo, ElementarySegment, ElementarySegmentInfo
 from language_data import en_language, nb_language
 
 # %% JF
@@ -26,4 +26,98 @@ jf_lec_info_nb = LECInfo(
 	Dahl (1957) bruker begrepet ’solifluksjon’ (som på norsk betyr jordbevegelse) i vid betydning, både om jordflyt i snever betydning (slik begrepet er definert i NiN 2) og om oppfrysing (‘amorphous solifluction’ og ‘structured solifluction’).
 	Vedplanter har en vekstform som gjør dem følsomme for jordustabilitet (langsom vekst, lav toleranse for mekanisk skade) og faller derfor ut mot høyden, både på grunn av lave temperaturer og fordi all jorddekt mark er oppfrysings- eller flytjordsmark. Over vedplantegrensa. Små, forstyrrelsestoleranse levermoser og noen bladmoser og lav dominert på flytjordsmark. Det finner sted en artsuttynning langs JF, men forstyrrelseseffekten av jordflyt er ikke sterk nok til å ende i et disruptivt trinn som f.eks., for erosjonsutsatthet (ER) og vindutsatthet (VI).
 ''',
+)
+
+# nul
+nul_elem_segment=ElementarySegment(
+    _id='JF.0',
+    lec=jf_lec,
+    value='0',
+    order=0
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='stable soil'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='without visible traces of soil flow (on species composition)'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='stabil jord'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='uten synlige spor etter jordflyt (på artssammensetningen) '
+)
+# a
+a_elem_segment=ElementarySegment(
+    _id='JF.a',
+    lec=jf_lec,
+    value='a',
+    order=1
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='observable sign of soil flow'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='faint but observable sign of soil flow; is primarily reflected in a reduced amount of woody plants and other species with low tolerance to soil flow'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='observerbart preg av jordflyt'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='svakt, men observerbart preg av jordflyt; gir seg først og fremst utslag i redusert mengde av vedvekster og andre arter med lav toleranse overfor jordflyt'
+)
+# b
+b_elem_segment=ElementarySegment(
+    _id='JF.b',
+    lec=jf_lec,
+    value='b',
+    order=2
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='floating ground'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='floating soil with dominance of species that have a high tolerance to soil flow (small liverworts, some leaf bogs and lichen), while woody plants and species with low tolerance to soil flow more or less lack'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='flytjord'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='flytjordsmark med dominans av arter som har stor toleranse overfor jordflyt (små levermoser, noen bladmoser og lav), mens vedvekster og arter med lav toleranse overfor jordflyt mer eller mindre mangler'
 )
