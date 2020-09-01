@@ -41,14 +41,26 @@ nul_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
+    value='normal'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='rocks that do not fall into any of the classes below'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<class>',
     value='normal'
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
-    value='normal'
+    key='<description>',
+    value='bergarter som ikke faller inn i noen av klassene nedenfor'
 )
 
 # a
@@ -61,14 +73,26 @@ a_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='ultramafic'
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='ultramafic bedrock (peridotites; dunites, olivine rocks), including new seabed formed by solidification of effluent from hot ocean sources'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<class>',
     value='ultramafisk'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='ultramafisk berggrunn (peridotitter; dunitter, olivinstein), inkludert ny havbunn dannet ved størkning av utstrømmingsmateriale fra varme havkilder'
 )
 
 # b
@@ -81,14 +105,26 @@ b_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='iron-rich'
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='acidic bedrock rich in sulphide minerals, typically with a high content of iron'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<class>',
     value='jern-rikt'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='sur berggrunn rik på kisbergarter (sulfidmineraler), typisk med høyt innhold av jern'
 )
 
 # c
@@ -101,14 +137,26 @@ c_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=c_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
     value='copper-rich'
 )
 ElementarySegmentInfo(
     elementarySegment=c_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='less acidic bedrock rich in sulfide minerals, typically with a high content of copper'
+)
+ElementarySegmentInfo(
+    elementarySegment=c_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
+    key='<class>',
     value='kobber-rikt'
+)
+ElementarySegmentInfo(
+    elementarySegment=c_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='mindre sur berggrunn rik på kisbergarter (sulfidmineraler), typisk med høyt innhold av kobber'
 )
 
 # d
@@ -121,12 +169,24 @@ d_elem_segment=ElementarySegment(
 ElementarySegmentInfo(
     elementarySegment=d_elem_segment,
     language_id='en',
-    key='Class',
+    key='<class>',
+    value='lava'
+)
+ElementarySegmentInfo(
+    elementarySegment=d_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='lava field more or less intact deposits of lava, tephra and slag'
+)
+ElementarySegmentInfo(
+    elementarySegment=d_elem_segment,
+    language_id='nb',
+    key='<class>',
     value='lava'
 )
 ElementarySegmentInfo(
     elementarySegment=d_elem_segment,
     language_id='nb',
-    key='Trinnbetegnelse',
-    value='lava'
+    key='<description>',
+    value='lavamark mer eller mindre intakte avsetninger av lava, tefra og slagg'
 )
