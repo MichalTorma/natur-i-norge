@@ -1,6 +1,6 @@
 # %%
 from model.model import LEC
-from model.model import LECInfo
+from model.model import LECInfo, ElementarySegment, ElementarySegmentInfo
 from language_data import en_language, nb_language
 
 # %% KA
@@ -16,7 +16,7 @@ ka_lec_info_en = LECInfo(
     language_id='en',
     lec=ka_lec,
     name='Lime richness',
-    description='Co-ordinated variation in many chemical charac-teristics of soil and water, such as alkalinity (pH) and availability of micro- and macronutrients such as Ca, K, Na, Mg, often also N and P, which regulate many important biological processes; position along KA is influenced by the mineral composition of bedrock, parallelling a gradient from silicate-rich to carbonate-rich bedrock with different weathering properties',
+    description='Coordinated variation in many chemical characteristics of soil and water, such as alkalinity (pH) and availability of micro- and macronutrients such as Ca, K, Na, Mg, often also N and P, which regulate many important biological processes; position along KA is influenced by the mineral composition of bedrock, parallelling a gradient from silicate-rich to carbonate-rich bedrock with different weathering properties',
 )
 ka_lec_info_nb = LECInfo(
     language_id='nb',

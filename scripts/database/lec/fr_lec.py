@@ -1,6 +1,6 @@
 # %%
 from model.model import LEC
-from model.model import LECInfo
+from model.model import LECInfo, ElementarySegment, ElementarySegmentInfo
 from language_data import en_language, nb_language
 
 # %% FR
@@ -27,4 +27,67 @@ fr_lec_info_nb = LECInfo(
 	I NiN versjon 1 ble dette spesielle flomregimet beskrevet som negativ massebalanse, og i tidlige framlegg til NiN versjon 2 (NiNnot124) som erosjonsutsatthet. Det faktum at flomregimet som preget dødislandskapet på Gardermo-sletta ikke i særlig grad innebærer sedimentasjon (fordi flomvannets transportkapasitet er liten), medfører imidlertid ikke at erosjon er den utslagsgivende prosessen. Mer sannsynlig er det at vannet heller ikke har noen sterk eroderende effekt, men at det er det spesielle flomregimet i seg sjøl, med langvarig oversvømmelse, i kombinasjon med et lettdrenert substrat som i perioder er sterkt uttørkingsutsatt, som er hovedårsakene til den spesielle artssammensetningen.
 	Årssyklusen i dødisgropene på Gardermo-sletta har likhetstrekk med årssyklusen i dødisgropene lengst nord på Østlandet, der klimaet er mer kontinentalt med mindre nedbør og lengre perioder med frossen mark. Der fryser marka raskt inn i is, og den beskjedne nedbøren som kommer har også en tendens til å ende opp som is. Artssammensetningen blir dermed preget av arter som tåler isinnfrysing i stedet for arter som tåler langvarig oversvømming. Dette isforstyrrelsesregimet blir beskrevet ved hjelp av isbetinget forstyrrelse (IF).
 ''',
+)
+
+# nul
+nul_elem_segment=ElementarySegment(
+    _id='FR.0',
+    lec=fr_lec,
+    value='0',
+    order=0
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='normal'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='flood regime characterized by a clear flood peak in the spring during the snowmelt, with a duration of up to a few weeks, and smaller and / or more short-term flood peaks after heavy and / or prolonged rainy episodes'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='normalt'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='flomregime som kjennetegnes ved en tydelig flomtopp om våren under snøsmeltingen, med inntil noen ukers varighet, og mindre og/eller mer kortvarige flomtopper etter kraftige og/eller langvarige regnværsepisoder'
+)
+# a
+a_elem_segment=ElementarySegment(
+    _id='FR.a',
+    lec=fr_lec,
+    value='a',
+    order=1
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='prolonged flooding'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='flood regime characterized by flooding through late winter and spring lasting several months and drying throughout the summer, often also severe dehydration of the field'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='langvarig oversvømmelse'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='flomregime som kjennetegnes ved oversvømming gjennom seinvinteren og våren som varer flere måneder og tørrlegging gjennom hele sommeren, ofte også sterk uttørking av marka'
 )
