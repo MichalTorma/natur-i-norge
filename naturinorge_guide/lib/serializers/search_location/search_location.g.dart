@@ -49,7 +49,7 @@ class _$SearchLocationSerializer
           result.features.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(Features)]))
-              as BuiltList<dynamic>);
+              as BuiltList<Object>);
           break;
         case 'crs':
           result.crs.replace(serializers.deserialize(value,
