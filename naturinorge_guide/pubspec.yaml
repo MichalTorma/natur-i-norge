@@ -11,15 +11,13 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.0.8+8
+version: 0.0.9+9
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  moor: ^2.2.0
-  moor_ffi: ^0.3.1
-  moor_flutter: ^2.0.0
+  moor: ^3.3.1
   path_provider: ^1.5.1
   path: ^1.6.4
   provider: ^4.0.1
@@ -31,6 +29,8 @@ dependencies:
   dart_numerics: ^0.0.5
   preferences: ^5.0.2
   image: ^2.1.12
+  sqlite3_flutter_libs: ^0.2.0
+  moor_flutter: ^3.1.0
   
   flutter:
     sdk: flutter
@@ -40,8 +40,8 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
-  built_value_generator: ^7.0.3
-  moor_generator: ^2.2.0
+  built_value_generator: ^7.1.0
+  moor_generator: ^3.3.1
   build_runner: ^1.7.3
   flutter_test:
     sdk: flutter
