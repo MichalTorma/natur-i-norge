@@ -32,7 +32,8 @@ nul_elem_segment=ElementarySegment(
     _id='HU.0',
     lec=hu_lec,
     value='0',
-    order=0
+    order=0,
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
@@ -87,7 +88,8 @@ a_elem_segment=ElementarySegment(
     _id='HU.a',
     lec=hu_lec,
     value='a',
-    order=1
+    order=1,
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
@@ -142,7 +144,8 @@ b_elem_segment=ElementarySegment(
     _id='HU.b',
     lec=hu_lec,
     value='b',
-    order=2
+    order=2,
+    relative_order=2
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
@@ -197,7 +200,8 @@ c_elem_segment=ElementarySegment(
     _id='HU.c',
     lec=hu_lec,
     value='c',
-    order=3
+    order=3,
+    relative_order=3
 )
 ElementarySegmentInfo(
     elementarySegment=c_elem_segment,
@@ -252,7 +256,8 @@ d_elem_segment=ElementarySegment(
     _id='HU.d',
     lec=hu_lec,
     value='d',
-    order=4
+    order=4,
+    relative_order=4
 )
 ElementarySegmentInfo(
     elementarySegment=d_elem_segment,

@@ -30,7 +30,8 @@ nul_elem_segment=ElementarySegment(
     _id='HR.0',
     lec=hr_lec,
     value='0',
-    order=0
+    order=0,
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
@@ -61,7 +62,8 @@ a_elem_segment=ElementarySegment(
     _id='HR.a',
     lec=hr_lec,
     value='a',
-    order=1
+    order=1,
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,

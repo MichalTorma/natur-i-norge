@@ -1,7 +1,6 @@
 # %%
 from model.model import LEC
-from model.model import LECInfo
-from language_data import en_language, nb_language
+from model.model import LECInfo, ElementarySegment, ElementarySegmentInfo
 
 # %% OF
 of_lec = LEC(
@@ -27,4 +26,101 @@ of_lec_info_nb = LECInfo(
 	Oppfrysing er en blant flere frostprosesser (periglasiale prosesser). Frostprosesser er mest intense i områder med permafrost (tilstand der all jord under et visst djup er permanent frosset), men forekommer også på steder uten permafrost. Permafrost fører til intensivering av alle periglasiale prosesser, kanskje først og fremst oppfrysing (kryoturbasjon).
 	Dahl (1957) bruker begrepet ’solifluksjon’ (som på norsk betyr jordbevegelse) i vid betydning, både om jordflyt i snever betydning (slik begrepet er definert i NiN 2) og om oppfrysing (‘amorphous solifluction’ og ‘structured solifluction’). I NiN er jordflyt (JF) behandlet som egen LKM da den er uttrykk for andre økologiske prosesser med til dels annen effekt på artssammensetningen.
 ''',
+)
+
+# nul
+nul_elem_segment=ElementarySegment(
+    _id='OF.0',
+    lec=of_lec,
+    value='0',
+    order=0,
+    relative_order=0
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='stable soil'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='without visible traces of frost processes (on the species composition)'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='stabil jord'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='uten synlige spor etter frostprosesser (på artssammensetningen)'
+)
+# a
+a_elem_segment=ElementarySegment(
+    _id='OF.a',
+    lec=of_lec,
+    value='a',
+    order=1,
+    relative_order=1
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='slight freezing'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='observable signs of frost processes; is primarily reflected in a reduced number of species with a low tolerance to the effects of frost on the field'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='svak oppfrysing'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='observerbart preg av frostprosesser; gir seg først og fremst utslag i redusert mengde av arter med lav toleranse overfor frostvirkning på marka'
+)
+# b
+b_elem_segment=ElementarySegment(
+    _id='OF.b',
+    lec=of_lec,
+    value='b',
+    order=2,
+    relative_order=2
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='strong freezing'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='freezing land with dominance of species that have a high tolerance to soil agitation (small bogs on fine soil) or sparse species inventory (on rocks and blocks)'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='sterk oppfrysing'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='oppfrysingsmark med dominans av arter som har stor toleranse overfor jordomrøring (små moser på finjord) eller sparsomt artsinventar (på steiner og blokker)'
 )

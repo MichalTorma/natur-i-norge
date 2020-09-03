@@ -30,7 +30,8 @@ nul_elem_segment=ElementarySegment(
     _id='FK.0',
     lec=fk_lec,
     value='0',
-    order=0
+    order=0,
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
@@ -61,7 +62,8 @@ a_elem_segment=ElementarySegment(
     _id='FK.a',
     lec=fk_lec,
     value='a',
-    order=1
+    order=1,
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
@@ -92,7 +94,8 @@ b_elem_segment=ElementarySegment(
     _id='FK.b',
     lec=fk_lec,
     value='b',
-    order=2
+    order=2,
+    relative_order=2
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
@@ -123,7 +126,8 @@ c_elem_segment=ElementarySegment(
     _id='FK.c',
     lec=fk_lec,
     value='c',
-    order=3
+    order=3,
+    relative_order=3
 )
 ElementarySegmentInfo(
     elementarySegment=c_elem_segment,
@@ -154,7 +158,8 @@ d_elem_segment=ElementarySegment(
     _id='FK.d',
     lec=fk_lec,
     value='d',
-    order=4
+    order=4,
+    relative_order=4
 )
 ElementarySegmentInfo(
     elementarySegment=d_elem_segment,
@@ -185,7 +190,8 @@ e_elem_segment=ElementarySegment(
     _id='FK.e',
     lec=fk_lec,
     value='e',
-    order=5
+    order=5,
+    relative_order=5
 )
 ElementarySegmentInfo(
     elementarySegment=e_elem_segment,
