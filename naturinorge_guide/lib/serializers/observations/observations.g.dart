@@ -585,13 +585,13 @@ class _$ObservationsSerializer implements StructuredSerializer<Observations> {
           result.propertyUrls.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(PropertyUrl)]))
-              as BuiltList<dynamic>);
+              as BuiltList<Object>);
           break;
         case 'ThumbImgUrls':
           result.thumbImgUrls.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList<dynamic>);
+              as BuiltList<Object>);
           break;
         case 'Behavior':
           result.behavior = serializers.deserialize(value,

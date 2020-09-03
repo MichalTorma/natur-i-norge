@@ -47,7 +47,7 @@ class _$FeatureGeometrySerializer
           result.coordinates.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(JsonObject)]))
-              as BuiltList<dynamic>);
+              as BuiltList<Object>);
           break;
         case 'type':
           result.type = serializers.deserialize(value,

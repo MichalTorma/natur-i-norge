@@ -57,7 +57,7 @@ class _$ArtsObservationSerializer
           result.observations.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(Observations)]))
-              as BuiltList<dynamic>);
+              as BuiltList<Object>);
           break;
         case 'PageIndex':
           result.pageIndex = serializers.deserialize(value,

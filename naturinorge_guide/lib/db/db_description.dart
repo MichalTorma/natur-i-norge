@@ -5,13 +5,18 @@ part 'db_description.g.dart';
 
 class T4 extends Table {
   IntColumn get index => integer().named('index').autoIncrement()();
-  TextColumn get c_NyRad => text().named('c_NyRad').withLength(min: 1, max: 256)();
-  TextColumn get c_Artsgruppe => text().named('c_Artsgruppe').withLength(min: 1, max: 256)();
+  TextColumn get c_NyRad =>
+      text().named('c_NyRad').withLength(min: 1, max: 256)();
+  TextColumn get c_Artsgruppe =>
+      text().named('c_Artsgruppe').withLength(min: 1, max: 256)();
   TextColumn get c_Art => text().named('c_Art').withLength(min: 1, max: 256)();
-  TextColumn get c_Autor => text().named('c_Autor').withLength(min: 1, max: 256)();
-  TextColumn get c_NorskNavn => text().named('c_NorskNavn').withLength(min: 1, max: 256)();
+  TextColumn get c_Autor =>
+      text().named('c_Autor').withLength(min: 1, max: 256)();
+  TextColumn get c_NorskNavn =>
+      text().named('c_NorskNavn').withLength(min: 1, max: 256)();
   TextColumn get c_X => text().named('c_X').withLength(min: 1, max: 256)();
-  TextColumn get c_Artskode => text().named('c_Artskode').withLength(min: 1, max: 256)();
+  TextColumn get c_Artskode =>
+      text().named('c_Artskode').withLength(min: 1, max: 256)();
   IntColumn get c_11 => integer().nullable()();
   IntColumn get c_12 => integer().nullable()();
   IntColumn get c_13 => integer().nullable()();
@@ -133,7 +138,7 @@ class MyDatabase extends _$MyDatabase {
   //     }, onUpgrade: (Migrator m, int from, int to) async {
   //       // we added the dueDate property in the change from version 1
   //       await m.deleteTable('T4');
-        
+
   //     });
 }
 
@@ -142,6 +147,9 @@ class T4Dao extends DatabaseAccessor<MyDatabase> with _$T4DaoMixin {
   T4Dao(MyDatabase db) : super(db);
   Future<List<T4Data>> get allT4 => select(t4).get();
   Future<List<T4Data>> filteredT4(String mask) {
-    return (select(t4)..where((t) => t.c_Art.like('%$mask%') | t.c_NorskNavn.like('%$mask%'))).get();
+    return (select(t4)
+          ..where(
+              (t) => t.c_Art.like('%$mask%') | t.c_NorskNavn.like('%$mask%')))
+        .get();
   }
 }
