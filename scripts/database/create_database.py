@@ -40,7 +40,9 @@ saveMinorTypes(session)
 # %%
 session.query(model.MajorTypeGroup).first().majorType[0].majorTypeGroup._id
 # %%
-session.rollback()
+dm_lec = session.query(model.LEC).filter(model.LEC._id=='DM').first()
+#%%
+session.query(model.ElementarySegment).filter(model.ElementarySegment.parent!=None).all()
 
 # %%
 session.commit()

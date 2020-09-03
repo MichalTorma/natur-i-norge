@@ -32,7 +32,8 @@ nul_elem_segment=ElementarySegment(
     _id='HI.0',
     lec=hi_lec,
     value='0',
-    order=0
+    order=0,
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
@@ -63,7 +64,8 @@ a_elem_segment=ElementarySegment(
     _id='HI.a',
     lec=hi_lec,
     value='a',
-    order=1
+    order=1,
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
@@ -94,7 +96,8 @@ b_elem_segment=ElementarySegment(
     _id='HI.b',
     lec=hi_lec,
     value='b',
-    order=2
+    order=2,
+    relative_order=2
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
@@ -125,7 +128,23 @@ cd_elem_segment=ElementarySegment(
     _id='HI.cd',
     lec=hi_lec,
     value='cd',
-    order=3
+    relative_order=3
+)
+ElementarySegment(
+    _id='HI.c',
+    lec=hi_lec,
+    value='c',
+    order=3,
+    relative_order=0,
+    parent=cd_elem_segment
+)
+ElementarySegment(
+    _id='HI.d',
+    lec=hi_lec,
+    value='d',
+    order=4,
+    relative_order=1,
+    parent=cd_elem_segment
 )
 ElementarySegmentInfo(
     elementarySegment=cd_elem_segment,
@@ -156,7 +175,8 @@ e_elem_segment=ElementarySegment(
     _id='HI.e',
     lec=hi_lec,
     value='e',
-    order=4
+    order=5,
+    relative_order=4
 )
 ElementarySegmentInfo(
     elementarySegment=e_elem_segment,
@@ -187,7 +207,23 @@ fg_elem_segment=ElementarySegment(
     _id='HI.fg',
     lec=hi_lec,
     value='fg',
-    order=5
+    relative_order=5
+)
+ElementarySegment(
+    _id='HI.f',
+    lec=hi_lec,
+    value='f',
+    order=6,
+    relative_order=0,
+    parent=cd_elem_segment
+)
+ElementarySegment(
+    _id='HI.g',
+    lec=hi_lec,
+    value='g',
+    order=7,
+    relative_order=1,
+    parent=cd_elem_segment
 )
 ElementarySegmentInfo(
     elementarySegment=fg_elem_segment,
@@ -218,7 +254,23 @@ hi_elem_segment=ElementarySegment(
     _id='HI.hi',
     lec=hi_lec,
     value='hi',
-    order=6
+    relative_order=6
+)
+ElementarySegment(
+    _id='HI.h',
+    lec=hi_lec,
+    value='h',
+    order=8,
+    relative_order=0,
+    parent=hi_elem_segment
+)
+ElementarySegment(
+    _id='HI.i',
+    lec=hi_lec,
+    value='i',
+    order=9,
+    relative_order=1,
+    parent=hi_elem_segment
 )
 ElementarySegmentInfo(
     elementarySegment=hi_elem_segment,
@@ -249,7 +301,8 @@ j_elem_segment=ElementarySegment(
     _id='HI.j',
     lec=hi_lec,
     value='j',
-    order=6
+    order=9,
+    relative_order=6
 )
 ElementarySegmentInfo(
     elementarySegment=j_elem_segment,

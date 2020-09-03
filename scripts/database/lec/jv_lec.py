@@ -33,7 +33,8 @@ nul_elem_segment=ElementarySegment(
     _id='JV.0',
     lec=jv_lec,
     value='0',
-    order=0
+    order=0,
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
@@ -76,7 +77,8 @@ a_elem_segment=ElementarySegment(
     _id='JV.a',
     lec=jv_lec,
     value='a',
-    order=1
+    order=1,
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
@@ -119,7 +121,8 @@ b_elem_segment=ElementarySegment(
     _id='JV.b',
     lec=jv_lec,
     value='b',
-    order=2
+    order=2,
+    relative_order=2
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
@@ -162,7 +165,8 @@ c_elem_segment=ElementarySegment(
     _id='JV.c',
     lec=jv_lec,
     value='c',
-    order=3
+    order=3,
+    relative_order=3
 )
 ElementarySegmentInfo(
     elementarySegment=c_elem_segment,
@@ -205,7 +209,23 @@ de_elem_segment=ElementarySegment(
     _id='JV.de',
     lec=jv_lec,
     value='de',
-    order=4
+    relative_order=4
+)
+ElementarySegment(
+    _id='JV.d',
+    lec=jv_lec,
+    value='d',
+    order=4,
+    relative_order=0,
+    parent=de_elem_segment
+)
+ElementarySegment(
+    _id='JV.e',
+    lec=jv_lec,
+    value='e',
+    order=5,
+    relative_order=1,
+    parent=de_elem_segment
 )
 ElementarySegmentInfo(
     elementarySegment=de_elem_segment,
@@ -248,7 +268,8 @@ all_elem_segment=ElementarySegment(
     _id='JV.¤',
     lec=jv_lec,
     value='¤',
-    order=5
+    order=6,
+    relative_order=5
 )
 ElementarySegmentInfo(
     elementarySegment=all_elem_segment,

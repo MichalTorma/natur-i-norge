@@ -33,7 +33,8 @@ nul_elem_segment=ElementarySegment(
     _id='JF.0',
     lec=jf_lec,
     value='0',
-    order=0
+    order=0,
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
@@ -64,7 +65,8 @@ a_elem_segment=ElementarySegment(
     _id='JF.a',
     lec=jf_lec,
     value='a',
-    order=1
+    order=1,
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
@@ -95,7 +97,8 @@ b_elem_segment=ElementarySegment(
     _id='JF.b',
     lec=jf_lec,
     value='b',
-    order=2
+    order=2,
+    relative_order=2
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,

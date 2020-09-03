@@ -36,7 +36,7 @@ a_elem_segment=ElementarySegment(
     _id='UF.a',
     lec=uf_lec,
     value='a',
-    order=0
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
@@ -56,7 +56,7 @@ b_elem_segment=ElementarySegment(
     _id='UF.b',
     lec=uf_lec,
     value='b',
-    order=1
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
@@ -76,7 +76,7 @@ c_elem_segment=ElementarySegment(
     _id='UF.c',
     lec=uf_lec,
     value='c',
-    order=2
+    relative_order=2
 )
 ElementarySegmentInfo(
     elementarySegment=c_elem_segment,
@@ -96,7 +96,7 @@ d_elem_segment=ElementarySegment(
     _id='UF.d',
     lec=uf_lec,
     value='d',
-    order=3
+    relative_order=3
 )
 ElementarySegmentInfo(
     elementarySegment=d_elem_segment,
@@ -116,7 +116,7 @@ e_elem_segment=ElementarySegment(
     _id='UF.e',
     lec=uf_lec,
     value='e',
-    order=4
+    relative_order=4
 )
 ElementarySegmentInfo(
     elementarySegment=e_elem_segment,
@@ -136,7 +136,7 @@ f_elem_segment=ElementarySegment(
     _id='UF.f',
     lec=uf_lec,
     value='f',
-    order=5
+    relative_order=5
 )
 ElementarySegmentInfo(
     elementarySegment=f_elem_segment,
@@ -156,7 +156,7 @@ g_elem_segment=ElementarySegment(
     _id='UF.g',
     lec=uf_lec,
     value='g',
-    order=6
+    relative_order=6
 )
 ElementarySegmentInfo(
     elementarySegment=g_elem_segment,
@@ -176,7 +176,7 @@ h_elem_segment=ElementarySegment(
     _id='UF.h',
     lec=uf_lec,
     value='h',
-    order=7
+    relative_order=7
 )
 ElementarySegmentInfo(
     elementarySegment=h_elem_segment,
