@@ -349,230 +349,328 @@ class T4Data extends DataClass implements Insertable<T4Data> {
       c_DK: stringType.mapFromDatabaseResponse(data['${effectivePrefix}c_DK']),
     );
   }
-  factory T4Data.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return T4Data(
-      index: serializer.fromJson<int>(json['index']),
-      c_NyRad: serializer.fromJson<String>(json['c_NyRad']),
-      c_Artsgruppe: serializer.fromJson<String>(json['c_Artsgruppe']),
-      c_Art: serializer.fromJson<String>(json['c_Art']),
-      c_Autor: serializer.fromJson<String>(json['c_Autor']),
-      c_NorskNavn: serializer.fromJson<String>(json['c_NorskNavn']),
-      c_X: serializer.fromJson<String>(json['c_X']),
-      c_Artskode: serializer.fromJson<String>(json['c_Artskode']),
-      c_11: serializer.fromJson<int>(json['c_11']),
-      c_12: serializer.fromJson<int>(json['c_12']),
-      c_13: serializer.fromJson<int>(json['c_13']),
-      c_14: serializer.fromJson<int>(json['c_14']),
-      c_15: serializer.fromJson<int>(json['c_15']),
-      c_16: serializer.fromJson<int>(json['c_16']),
-      c_17: serializer.fromJson<int>(json['c_17']),
-      c_18: serializer.fromJson<int>(json['c_18']),
-      c_21: serializer.fromJson<int>(json['c_21']),
-      c_22: serializer.fromJson<int>(json['c_22']),
-      c_23: serializer.fromJson<int>(json['c_23']),
-      c_24: serializer.fromJson<int>(json['c_24']),
-      c_25: serializer.fromJson<int>(json['c_25']),
-      c_26: serializer.fromJson<int>(json['c_26']),
-      c_27: serializer.fromJson<int>(json['c_27']),
-      c_28: serializer.fromJson<int>(json['c_28']),
-      c_31: serializer.fromJson<int>(json['c_31']),
-      c_32: serializer.fromJson<int>(json['c_32']),
-      c_33: serializer.fromJson<int>(json['c_33']),
-      c_34: serializer.fromJson<int>(json['c_34']),
-      c_35: serializer.fromJson<int>(json['c_35']),
-      c_36: serializer.fromJson<int>(json['c_36']),
-      c_37: serializer.fromJson<int>(json['c_37']),
-      c_38: serializer.fromJson<int>(json['c_38']),
-      c_41: serializer.fromJson<int>(json['c_41']),
-      c_42: serializer.fromJson<int>(json['c_42']),
-      c_43: serializer.fromJson<int>(json['c_43']),
-      c_44: serializer.fromJson<int>(json['c_44']),
-      c_45: serializer.fromJson<int>(json['c_45']),
-      c_46: serializer.fromJson<int>(json['c_46']),
-      c_47: serializer.fromJson<int>(json['c_47']),
-      c_48: serializer.fromJson<int>(json['c_48']),
-      c_51: serializer.fromJson<int>(json['c_51']),
-      c_52: serializer.fromJson<int>(json['c_52']),
-      c_53: serializer.fromJson<int>(json['c_53']),
-      c_54: serializer.fromJson<int>(json['c_54']),
-      c_55: serializer.fromJson<int>(json['c_55']),
-      c_56: serializer.fromJson<int>(json['c_56']),
-      c_57: serializer.fromJson<int>(json['c_57']),
-      c_58: serializer.fromJson<int>(json['c_58']),
-      c_61: serializer.fromJson<int>(json['c_61']),
-      c_62: serializer.fromJson<int>(json['c_62']),
-      c_63: serializer.fromJson<int>(json['c_63']),
-      c_64: serializer.fromJson<int>(json['c_64']),
-      c_65: serializer.fromJson<int>(json['c_65']),
-      c_66: serializer.fromJson<int>(json['c_66']),
-      c_67: serializer.fromJson<int>(json['c_67']),
-      c_68: serializer.fromJson<int>(json['c_68']),
-      c_71: serializer.fromJson<int>(json['c_71']),
-      c_72: serializer.fromJson<int>(json['c_72']),
-      c_73: serializer.fromJson<int>(json['c_73']),
-      c_74: serializer.fromJson<int>(json['c_74']),
-      c_75: serializer.fromJson<int>(json['c_75']),
-      c_76: serializer.fromJson<int>(json['c_76']),
-      c_77: serializer.fromJson<int>(json['c_77']),
-      c_78: serializer.fromJson<int>(json['c_78']),
-      c_81: serializer.fromJson<int>(json['c_81']),
-      c_82: serializer.fromJson<int>(json['c_82']),
-      c_83: serializer.fromJson<int>(json['c_83']),
-      c_84: serializer.fromJson<int>(json['c_84']),
-      c_85: serializer.fromJson<int>(json['c_85']),
-      c_86: serializer.fromJson<int>(json['c_86']),
-      c_87: serializer.fromJson<int>(json['c_87']),
-      c_88: serializer.fromJson<int>(json['c_88']),
-      c_K3: serializer.fromJson<int>(json['c_K3']),
-      c_K4: serializer.fromJson<int>(json['c_K4']),
-      c_K5: serializer.fromJson<int>(json['c_K5']),
-      c_K6: serializer.fromJson<int>(json['c_K6']),
-      c_K7: serializer.fromJson<int>(json['c_K7']),
-      c_K8: serializer.fromJson<int>(json['c_K8']),
-      c_V37: serializer.fromJson<int>(json['c_V37']),
-      c_V38: serializer.fromJson<int>(json['c_V38']),
-      c_V47: serializer.fromJson<int>(json['c_V47']),
-      c_V48: serializer.fromJson<int>(json['c_V48']),
-      c_V57: serializer.fromJson<int>(json['c_V57']),
-      c_V58: serializer.fromJson<int>(json['c_V58']),
-      c_V67: serializer.fromJson<int>(json['c_V67']),
-      c_V68: serializer.fromJson<int>(json['c_V68']),
-      c_RU: serializer.fromJson<double>(json['c_RU']),
-      c_SU: serializer.fromJson<double>(json['c_SU']),
-      c_SS: serializer.fromJson<double>(json['c_SS']),
-      c_HI: serializer.fromJson<double>(json['c_HI']),
-      c_VMfmax: serializer.fromJson<double>(json['c_VMfmax']),
-      c_VMfmin: serializer.fromJson<double>(json['c_VMfmin']),
-      c_VFrmax: serializer.fromJson<int>(json['c_VFrmax']),
-      c_VFrmin: serializer.fromJson<int>(json['c_VFrmin']),
-      c_Unnamed93: serializer.fromJson<int>(json['c_Unnamed93']),
-      c_Unnamed94: serializer.fromJson<String>(json['c_Unnamed94']),
-      c_VM: serializer.fromJson<String>(json['c_VM']),
-      c_HI1: serializer.fromJson<String>(json['c_HI1']),
-      c_RU1: serializer.fromJson<String>(json['c_RU1']),
-      c_SU1: serializer.fromJson<String>(json['c_SU1']),
-      c_SS1: serializer.fromJson<String>(json['c_SS1']),
-      c_VS: serializer.fromJson<String>(json['c_VS']),
-      c_UE: serializer.fromJson<String>(json['c_UE']),
-      c_BK: serializer.fromJson<String>(json['c_BK']),
-      c_DK: serializer.fromJson<String>(json['c_DK']),
-    );
-  }
   @override
-  Map<String, dynamic> toJson(
-      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return <String, dynamic>{
-      'index': serializer.toJson<int>(index),
-      'c_NyRad': serializer.toJson<String>(c_NyRad),
-      'c_Artsgruppe': serializer.toJson<String>(c_Artsgruppe),
-      'c_Art': serializer.toJson<String>(c_Art),
-      'c_Autor': serializer.toJson<String>(c_Autor),
-      'c_NorskNavn': serializer.toJson<String>(c_NorskNavn),
-      'c_X': serializer.toJson<String>(c_X),
-      'c_Artskode': serializer.toJson<String>(c_Artskode),
-      'c_11': serializer.toJson<int>(c_11),
-      'c_12': serializer.toJson<int>(c_12),
-      'c_13': serializer.toJson<int>(c_13),
-      'c_14': serializer.toJson<int>(c_14),
-      'c_15': serializer.toJson<int>(c_15),
-      'c_16': serializer.toJson<int>(c_16),
-      'c_17': serializer.toJson<int>(c_17),
-      'c_18': serializer.toJson<int>(c_18),
-      'c_21': serializer.toJson<int>(c_21),
-      'c_22': serializer.toJson<int>(c_22),
-      'c_23': serializer.toJson<int>(c_23),
-      'c_24': serializer.toJson<int>(c_24),
-      'c_25': serializer.toJson<int>(c_25),
-      'c_26': serializer.toJson<int>(c_26),
-      'c_27': serializer.toJson<int>(c_27),
-      'c_28': serializer.toJson<int>(c_28),
-      'c_31': serializer.toJson<int>(c_31),
-      'c_32': serializer.toJson<int>(c_32),
-      'c_33': serializer.toJson<int>(c_33),
-      'c_34': serializer.toJson<int>(c_34),
-      'c_35': serializer.toJson<int>(c_35),
-      'c_36': serializer.toJson<int>(c_36),
-      'c_37': serializer.toJson<int>(c_37),
-      'c_38': serializer.toJson<int>(c_38),
-      'c_41': serializer.toJson<int>(c_41),
-      'c_42': serializer.toJson<int>(c_42),
-      'c_43': serializer.toJson<int>(c_43),
-      'c_44': serializer.toJson<int>(c_44),
-      'c_45': serializer.toJson<int>(c_45),
-      'c_46': serializer.toJson<int>(c_46),
-      'c_47': serializer.toJson<int>(c_47),
-      'c_48': serializer.toJson<int>(c_48),
-      'c_51': serializer.toJson<int>(c_51),
-      'c_52': serializer.toJson<int>(c_52),
-      'c_53': serializer.toJson<int>(c_53),
-      'c_54': serializer.toJson<int>(c_54),
-      'c_55': serializer.toJson<int>(c_55),
-      'c_56': serializer.toJson<int>(c_56),
-      'c_57': serializer.toJson<int>(c_57),
-      'c_58': serializer.toJson<int>(c_58),
-      'c_61': serializer.toJson<int>(c_61),
-      'c_62': serializer.toJson<int>(c_62),
-      'c_63': serializer.toJson<int>(c_63),
-      'c_64': serializer.toJson<int>(c_64),
-      'c_65': serializer.toJson<int>(c_65),
-      'c_66': serializer.toJson<int>(c_66),
-      'c_67': serializer.toJson<int>(c_67),
-      'c_68': serializer.toJson<int>(c_68),
-      'c_71': serializer.toJson<int>(c_71),
-      'c_72': serializer.toJson<int>(c_72),
-      'c_73': serializer.toJson<int>(c_73),
-      'c_74': serializer.toJson<int>(c_74),
-      'c_75': serializer.toJson<int>(c_75),
-      'c_76': serializer.toJson<int>(c_76),
-      'c_77': serializer.toJson<int>(c_77),
-      'c_78': serializer.toJson<int>(c_78),
-      'c_81': serializer.toJson<int>(c_81),
-      'c_82': serializer.toJson<int>(c_82),
-      'c_83': serializer.toJson<int>(c_83),
-      'c_84': serializer.toJson<int>(c_84),
-      'c_85': serializer.toJson<int>(c_85),
-      'c_86': serializer.toJson<int>(c_86),
-      'c_87': serializer.toJson<int>(c_87),
-      'c_88': serializer.toJson<int>(c_88),
-      'c_K3': serializer.toJson<int>(c_K3),
-      'c_K4': serializer.toJson<int>(c_K4),
-      'c_K5': serializer.toJson<int>(c_K5),
-      'c_K6': serializer.toJson<int>(c_K6),
-      'c_K7': serializer.toJson<int>(c_K7),
-      'c_K8': serializer.toJson<int>(c_K8),
-      'c_V37': serializer.toJson<int>(c_V37),
-      'c_V38': serializer.toJson<int>(c_V38),
-      'c_V47': serializer.toJson<int>(c_V47),
-      'c_V48': serializer.toJson<int>(c_V48),
-      'c_V57': serializer.toJson<int>(c_V57),
-      'c_V58': serializer.toJson<int>(c_V58),
-      'c_V67': serializer.toJson<int>(c_V67),
-      'c_V68': serializer.toJson<int>(c_V68),
-      'c_RU': serializer.toJson<double>(c_RU),
-      'c_SU': serializer.toJson<double>(c_SU),
-      'c_SS': serializer.toJson<double>(c_SS),
-      'c_HI': serializer.toJson<double>(c_HI),
-      'c_VMfmax': serializer.toJson<double>(c_VMfmax),
-      'c_VMfmin': serializer.toJson<double>(c_VMfmin),
-      'c_VFrmax': serializer.toJson<int>(c_VFrmax),
-      'c_VFrmin': serializer.toJson<int>(c_VFrmin),
-      'c_Unnamed93': serializer.toJson<int>(c_Unnamed93),
-      'c_Unnamed94': serializer.toJson<String>(c_Unnamed94),
-      'c_VM': serializer.toJson<String>(c_VM),
-      'c_HI1': serializer.toJson<String>(c_HI1),
-      'c_RU1': serializer.toJson<String>(c_RU1),
-      'c_SU1': serializer.toJson<String>(c_SU1),
-      'c_SS1': serializer.toJson<String>(c_SS1),
-      'c_VS': serializer.toJson<String>(c_VS),
-      'c_UE': serializer.toJson<String>(c_UE),
-      'c_BK': serializer.toJson<String>(c_BK),
-      'c_DK': serializer.toJson<String>(c_DK),
-    };
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || index != null) {
+      map['index'] = Variable<int>(index);
+    }
+    if (!nullToAbsent || c_NyRad != null) {
+      map['c_NyRad'] = Variable<String>(c_NyRad);
+    }
+    if (!nullToAbsent || c_Artsgruppe != null) {
+      map['c_Artsgruppe'] = Variable<String>(c_Artsgruppe);
+    }
+    if (!nullToAbsent || c_Art != null) {
+      map['c_Art'] = Variable<String>(c_Art);
+    }
+    if (!nullToAbsent || c_Autor != null) {
+      map['c_Autor'] = Variable<String>(c_Autor);
+    }
+    if (!nullToAbsent || c_NorskNavn != null) {
+      map['c_NorskNavn'] = Variable<String>(c_NorskNavn);
+    }
+    if (!nullToAbsent || c_X != null) {
+      map['c_X'] = Variable<String>(c_X);
+    }
+    if (!nullToAbsent || c_Artskode != null) {
+      map['c_Artskode'] = Variable<String>(c_Artskode);
+    }
+    if (!nullToAbsent || c_11 != null) {
+      map['c_11'] = Variable<int>(c_11);
+    }
+    if (!nullToAbsent || c_12 != null) {
+      map['c_12'] = Variable<int>(c_12);
+    }
+    if (!nullToAbsent || c_13 != null) {
+      map['c_13'] = Variable<int>(c_13);
+    }
+    if (!nullToAbsent || c_14 != null) {
+      map['c_14'] = Variable<int>(c_14);
+    }
+    if (!nullToAbsent || c_15 != null) {
+      map['c_15'] = Variable<int>(c_15);
+    }
+    if (!nullToAbsent || c_16 != null) {
+      map['c_16'] = Variable<int>(c_16);
+    }
+    if (!nullToAbsent || c_17 != null) {
+      map['c_17'] = Variable<int>(c_17);
+    }
+    if (!nullToAbsent || c_18 != null) {
+      map['c_18'] = Variable<int>(c_18);
+    }
+    if (!nullToAbsent || c_21 != null) {
+      map['c_21'] = Variable<int>(c_21);
+    }
+    if (!nullToAbsent || c_22 != null) {
+      map['c_22'] = Variable<int>(c_22);
+    }
+    if (!nullToAbsent || c_23 != null) {
+      map['c_23'] = Variable<int>(c_23);
+    }
+    if (!nullToAbsent || c_24 != null) {
+      map['c_24'] = Variable<int>(c_24);
+    }
+    if (!nullToAbsent || c_25 != null) {
+      map['c_25'] = Variable<int>(c_25);
+    }
+    if (!nullToAbsent || c_26 != null) {
+      map['c_26'] = Variable<int>(c_26);
+    }
+    if (!nullToAbsent || c_27 != null) {
+      map['c_27'] = Variable<int>(c_27);
+    }
+    if (!nullToAbsent || c_28 != null) {
+      map['c_28'] = Variable<int>(c_28);
+    }
+    if (!nullToAbsent || c_31 != null) {
+      map['c_31'] = Variable<int>(c_31);
+    }
+    if (!nullToAbsent || c_32 != null) {
+      map['c_32'] = Variable<int>(c_32);
+    }
+    if (!nullToAbsent || c_33 != null) {
+      map['c_33'] = Variable<int>(c_33);
+    }
+    if (!nullToAbsent || c_34 != null) {
+      map['c_34'] = Variable<int>(c_34);
+    }
+    if (!nullToAbsent || c_35 != null) {
+      map['c_35'] = Variable<int>(c_35);
+    }
+    if (!nullToAbsent || c_36 != null) {
+      map['c_36'] = Variable<int>(c_36);
+    }
+    if (!nullToAbsent || c_37 != null) {
+      map['c_37'] = Variable<int>(c_37);
+    }
+    if (!nullToAbsent || c_38 != null) {
+      map['c_38'] = Variable<int>(c_38);
+    }
+    if (!nullToAbsent || c_41 != null) {
+      map['c_41'] = Variable<int>(c_41);
+    }
+    if (!nullToAbsent || c_42 != null) {
+      map['c_42'] = Variable<int>(c_42);
+    }
+    if (!nullToAbsent || c_43 != null) {
+      map['c_43'] = Variable<int>(c_43);
+    }
+    if (!nullToAbsent || c_44 != null) {
+      map['c_44'] = Variable<int>(c_44);
+    }
+    if (!nullToAbsent || c_45 != null) {
+      map['c_45'] = Variable<int>(c_45);
+    }
+    if (!nullToAbsent || c_46 != null) {
+      map['c_46'] = Variable<int>(c_46);
+    }
+    if (!nullToAbsent || c_47 != null) {
+      map['c_47'] = Variable<int>(c_47);
+    }
+    if (!nullToAbsent || c_48 != null) {
+      map['c_48'] = Variable<int>(c_48);
+    }
+    if (!nullToAbsent || c_51 != null) {
+      map['c_51'] = Variable<int>(c_51);
+    }
+    if (!nullToAbsent || c_52 != null) {
+      map['c_52'] = Variable<int>(c_52);
+    }
+    if (!nullToAbsent || c_53 != null) {
+      map['c_53'] = Variable<int>(c_53);
+    }
+    if (!nullToAbsent || c_54 != null) {
+      map['c_54'] = Variable<int>(c_54);
+    }
+    if (!nullToAbsent || c_55 != null) {
+      map['c_55'] = Variable<int>(c_55);
+    }
+    if (!nullToAbsent || c_56 != null) {
+      map['c_56'] = Variable<int>(c_56);
+    }
+    if (!nullToAbsent || c_57 != null) {
+      map['c_57'] = Variable<int>(c_57);
+    }
+    if (!nullToAbsent || c_58 != null) {
+      map['c_58'] = Variable<int>(c_58);
+    }
+    if (!nullToAbsent || c_61 != null) {
+      map['c_61'] = Variable<int>(c_61);
+    }
+    if (!nullToAbsent || c_62 != null) {
+      map['c_62'] = Variable<int>(c_62);
+    }
+    if (!nullToAbsent || c_63 != null) {
+      map['c_63'] = Variable<int>(c_63);
+    }
+    if (!nullToAbsent || c_64 != null) {
+      map['c_64'] = Variable<int>(c_64);
+    }
+    if (!nullToAbsent || c_65 != null) {
+      map['c_65'] = Variable<int>(c_65);
+    }
+    if (!nullToAbsent || c_66 != null) {
+      map['c_66'] = Variable<int>(c_66);
+    }
+    if (!nullToAbsent || c_67 != null) {
+      map['c_67'] = Variable<int>(c_67);
+    }
+    if (!nullToAbsent || c_68 != null) {
+      map['c_68'] = Variable<int>(c_68);
+    }
+    if (!nullToAbsent || c_71 != null) {
+      map['c_71'] = Variable<int>(c_71);
+    }
+    if (!nullToAbsent || c_72 != null) {
+      map['c_72'] = Variable<int>(c_72);
+    }
+    if (!nullToAbsent || c_73 != null) {
+      map['c_73'] = Variable<int>(c_73);
+    }
+    if (!nullToAbsent || c_74 != null) {
+      map['c_74'] = Variable<int>(c_74);
+    }
+    if (!nullToAbsent || c_75 != null) {
+      map['c_75'] = Variable<int>(c_75);
+    }
+    if (!nullToAbsent || c_76 != null) {
+      map['c_76'] = Variable<int>(c_76);
+    }
+    if (!nullToAbsent || c_77 != null) {
+      map['c_77'] = Variable<int>(c_77);
+    }
+    if (!nullToAbsent || c_78 != null) {
+      map['c_78'] = Variable<int>(c_78);
+    }
+    if (!nullToAbsent || c_81 != null) {
+      map['c_81'] = Variable<int>(c_81);
+    }
+    if (!nullToAbsent || c_82 != null) {
+      map['c_82'] = Variable<int>(c_82);
+    }
+    if (!nullToAbsent || c_83 != null) {
+      map['c_83'] = Variable<int>(c_83);
+    }
+    if (!nullToAbsent || c_84 != null) {
+      map['c_84'] = Variable<int>(c_84);
+    }
+    if (!nullToAbsent || c_85 != null) {
+      map['c_85'] = Variable<int>(c_85);
+    }
+    if (!nullToAbsent || c_86 != null) {
+      map['c_86'] = Variable<int>(c_86);
+    }
+    if (!nullToAbsent || c_87 != null) {
+      map['c_87'] = Variable<int>(c_87);
+    }
+    if (!nullToAbsent || c_88 != null) {
+      map['c_88'] = Variable<int>(c_88);
+    }
+    if (!nullToAbsent || c_K3 != null) {
+      map['c_K3'] = Variable<int>(c_K3);
+    }
+    if (!nullToAbsent || c_K4 != null) {
+      map['c_K4'] = Variable<int>(c_K4);
+    }
+    if (!nullToAbsent || c_K5 != null) {
+      map['c_K5'] = Variable<int>(c_K5);
+    }
+    if (!nullToAbsent || c_K6 != null) {
+      map['c_K6'] = Variable<int>(c_K6);
+    }
+    if (!nullToAbsent || c_K7 != null) {
+      map['c_K7'] = Variable<int>(c_K7);
+    }
+    if (!nullToAbsent || c_K8 != null) {
+      map['c_K8'] = Variable<int>(c_K8);
+    }
+    if (!nullToAbsent || c_V37 != null) {
+      map['c_V37'] = Variable<int>(c_V37);
+    }
+    if (!nullToAbsent || c_V38 != null) {
+      map['c_V38'] = Variable<int>(c_V38);
+    }
+    if (!nullToAbsent || c_V47 != null) {
+      map['c_V47'] = Variable<int>(c_V47);
+    }
+    if (!nullToAbsent || c_V48 != null) {
+      map['c_V48'] = Variable<int>(c_V48);
+    }
+    if (!nullToAbsent || c_V57 != null) {
+      map['c_V57'] = Variable<int>(c_V57);
+    }
+    if (!nullToAbsent || c_V58 != null) {
+      map['c_V58'] = Variable<int>(c_V58);
+    }
+    if (!nullToAbsent || c_V67 != null) {
+      map['c_V67'] = Variable<int>(c_V67);
+    }
+    if (!nullToAbsent || c_V68 != null) {
+      map['c_V68'] = Variable<int>(c_V68);
+    }
+    if (!nullToAbsent || c_RU != null) {
+      map['c_RU'] = Variable<double>(c_RU);
+    }
+    if (!nullToAbsent || c_SU != null) {
+      map['c_SU'] = Variable<double>(c_SU);
+    }
+    if (!nullToAbsent || c_SS != null) {
+      map['c_SS'] = Variable<double>(c_SS);
+    }
+    if (!nullToAbsent || c_HI != null) {
+      map['c_HI'] = Variable<double>(c_HI);
+    }
+    if (!nullToAbsent || c_VMfmax != null) {
+      map['c_VMfmax'] = Variable<double>(c_VMfmax);
+    }
+    if (!nullToAbsent || c_VMfmin != null) {
+      map['c_VMfmin'] = Variable<double>(c_VMfmin);
+    }
+    if (!nullToAbsent || c_VFrmax != null) {
+      map['c_VFrmax'] = Variable<int>(c_VFrmax);
+    }
+    if (!nullToAbsent || c_VFrmin != null) {
+      map['c_VFrmin'] = Variable<int>(c_VFrmin);
+    }
+    if (!nullToAbsent || c_Unnamed93 != null) {
+      map['c_Unnamed93'] = Variable<int>(c_Unnamed93);
+    }
+    if (!nullToAbsent || c_Unnamed94 != null) {
+      map['c_Unnamed94'] = Variable<String>(c_Unnamed94);
+    }
+    if (!nullToAbsent || c_VM != null) {
+      map['c_VM'] = Variable<String>(c_VM);
+    }
+    if (!nullToAbsent || c_HI1 != null) {
+      map['c_HI1'] = Variable<String>(c_HI1);
+    }
+    if (!nullToAbsent || c_RU1 != null) {
+      map['c_RU1'] = Variable<String>(c_RU1);
+    }
+    if (!nullToAbsent || c_SU1 != null) {
+      map['c_SU1'] = Variable<String>(c_SU1);
+    }
+    if (!nullToAbsent || c_SS1 != null) {
+      map['c_SS1'] = Variable<String>(c_SS1);
+    }
+    if (!nullToAbsent || c_VS != null) {
+      map['c_VS'] = Variable<String>(c_VS);
+    }
+    if (!nullToAbsent || c_UE != null) {
+      map['c_UE'] = Variable<String>(c_UE);
+    }
+    if (!nullToAbsent || c_BK != null) {
+      map['c_BK'] = Variable<String>(c_BK);
+    }
+    if (!nullToAbsent || c_DK != null) {
+      map['c_DK'] = Variable<String>(c_DK);
+    }
+    return map;
   }
 
-  @override
-  T4Companion createCompanion(bool nullToAbsent) {
+  T4Companion toCompanion(bool nullToAbsent) {
     return T4Companion(
       index:
           index == null && nullToAbsent ? const Value.absent() : Value(index),
@@ -716,6 +814,229 @@ class T4Data extends DataClass implements Insertable<T4Data> {
       c_BK: c_BK == null && nullToAbsent ? const Value.absent() : Value(c_BK),
       c_DK: c_DK == null && nullToAbsent ? const Value.absent() : Value(c_DK),
     );
+  }
+
+  factory T4Data.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return T4Data(
+      index: serializer.fromJson<int>(json['index']),
+      c_NyRad: serializer.fromJson<String>(json['c_NyRad']),
+      c_Artsgruppe: serializer.fromJson<String>(json['c_Artsgruppe']),
+      c_Art: serializer.fromJson<String>(json['c_Art']),
+      c_Autor: serializer.fromJson<String>(json['c_Autor']),
+      c_NorskNavn: serializer.fromJson<String>(json['c_NorskNavn']),
+      c_X: serializer.fromJson<String>(json['c_X']),
+      c_Artskode: serializer.fromJson<String>(json['c_Artskode']),
+      c_11: serializer.fromJson<int>(json['c_11']),
+      c_12: serializer.fromJson<int>(json['c_12']),
+      c_13: serializer.fromJson<int>(json['c_13']),
+      c_14: serializer.fromJson<int>(json['c_14']),
+      c_15: serializer.fromJson<int>(json['c_15']),
+      c_16: serializer.fromJson<int>(json['c_16']),
+      c_17: serializer.fromJson<int>(json['c_17']),
+      c_18: serializer.fromJson<int>(json['c_18']),
+      c_21: serializer.fromJson<int>(json['c_21']),
+      c_22: serializer.fromJson<int>(json['c_22']),
+      c_23: serializer.fromJson<int>(json['c_23']),
+      c_24: serializer.fromJson<int>(json['c_24']),
+      c_25: serializer.fromJson<int>(json['c_25']),
+      c_26: serializer.fromJson<int>(json['c_26']),
+      c_27: serializer.fromJson<int>(json['c_27']),
+      c_28: serializer.fromJson<int>(json['c_28']),
+      c_31: serializer.fromJson<int>(json['c_31']),
+      c_32: serializer.fromJson<int>(json['c_32']),
+      c_33: serializer.fromJson<int>(json['c_33']),
+      c_34: serializer.fromJson<int>(json['c_34']),
+      c_35: serializer.fromJson<int>(json['c_35']),
+      c_36: serializer.fromJson<int>(json['c_36']),
+      c_37: serializer.fromJson<int>(json['c_37']),
+      c_38: serializer.fromJson<int>(json['c_38']),
+      c_41: serializer.fromJson<int>(json['c_41']),
+      c_42: serializer.fromJson<int>(json['c_42']),
+      c_43: serializer.fromJson<int>(json['c_43']),
+      c_44: serializer.fromJson<int>(json['c_44']),
+      c_45: serializer.fromJson<int>(json['c_45']),
+      c_46: serializer.fromJson<int>(json['c_46']),
+      c_47: serializer.fromJson<int>(json['c_47']),
+      c_48: serializer.fromJson<int>(json['c_48']),
+      c_51: serializer.fromJson<int>(json['c_51']),
+      c_52: serializer.fromJson<int>(json['c_52']),
+      c_53: serializer.fromJson<int>(json['c_53']),
+      c_54: serializer.fromJson<int>(json['c_54']),
+      c_55: serializer.fromJson<int>(json['c_55']),
+      c_56: serializer.fromJson<int>(json['c_56']),
+      c_57: serializer.fromJson<int>(json['c_57']),
+      c_58: serializer.fromJson<int>(json['c_58']),
+      c_61: serializer.fromJson<int>(json['c_61']),
+      c_62: serializer.fromJson<int>(json['c_62']),
+      c_63: serializer.fromJson<int>(json['c_63']),
+      c_64: serializer.fromJson<int>(json['c_64']),
+      c_65: serializer.fromJson<int>(json['c_65']),
+      c_66: serializer.fromJson<int>(json['c_66']),
+      c_67: serializer.fromJson<int>(json['c_67']),
+      c_68: serializer.fromJson<int>(json['c_68']),
+      c_71: serializer.fromJson<int>(json['c_71']),
+      c_72: serializer.fromJson<int>(json['c_72']),
+      c_73: serializer.fromJson<int>(json['c_73']),
+      c_74: serializer.fromJson<int>(json['c_74']),
+      c_75: serializer.fromJson<int>(json['c_75']),
+      c_76: serializer.fromJson<int>(json['c_76']),
+      c_77: serializer.fromJson<int>(json['c_77']),
+      c_78: serializer.fromJson<int>(json['c_78']),
+      c_81: serializer.fromJson<int>(json['c_81']),
+      c_82: serializer.fromJson<int>(json['c_82']),
+      c_83: serializer.fromJson<int>(json['c_83']),
+      c_84: serializer.fromJson<int>(json['c_84']),
+      c_85: serializer.fromJson<int>(json['c_85']),
+      c_86: serializer.fromJson<int>(json['c_86']),
+      c_87: serializer.fromJson<int>(json['c_87']),
+      c_88: serializer.fromJson<int>(json['c_88']),
+      c_K3: serializer.fromJson<int>(json['c_K3']),
+      c_K4: serializer.fromJson<int>(json['c_K4']),
+      c_K5: serializer.fromJson<int>(json['c_K5']),
+      c_K6: serializer.fromJson<int>(json['c_K6']),
+      c_K7: serializer.fromJson<int>(json['c_K7']),
+      c_K8: serializer.fromJson<int>(json['c_K8']),
+      c_V37: serializer.fromJson<int>(json['c_V37']),
+      c_V38: serializer.fromJson<int>(json['c_V38']),
+      c_V47: serializer.fromJson<int>(json['c_V47']),
+      c_V48: serializer.fromJson<int>(json['c_V48']),
+      c_V57: serializer.fromJson<int>(json['c_V57']),
+      c_V58: serializer.fromJson<int>(json['c_V58']),
+      c_V67: serializer.fromJson<int>(json['c_V67']),
+      c_V68: serializer.fromJson<int>(json['c_V68']),
+      c_RU: serializer.fromJson<double>(json['c_RU']),
+      c_SU: serializer.fromJson<double>(json['c_SU']),
+      c_SS: serializer.fromJson<double>(json['c_SS']),
+      c_HI: serializer.fromJson<double>(json['c_HI']),
+      c_VMfmax: serializer.fromJson<double>(json['c_VMfmax']),
+      c_VMfmin: serializer.fromJson<double>(json['c_VMfmin']),
+      c_VFrmax: serializer.fromJson<int>(json['c_VFrmax']),
+      c_VFrmin: serializer.fromJson<int>(json['c_VFrmin']),
+      c_Unnamed93: serializer.fromJson<int>(json['c_Unnamed93']),
+      c_Unnamed94: serializer.fromJson<String>(json['c_Unnamed94']),
+      c_VM: serializer.fromJson<String>(json['c_VM']),
+      c_HI1: serializer.fromJson<String>(json['c_HI1']),
+      c_RU1: serializer.fromJson<String>(json['c_RU1']),
+      c_SU1: serializer.fromJson<String>(json['c_SU1']),
+      c_SS1: serializer.fromJson<String>(json['c_SS1']),
+      c_VS: serializer.fromJson<String>(json['c_VS']),
+      c_UE: serializer.fromJson<String>(json['c_UE']),
+      c_BK: serializer.fromJson<String>(json['c_BK']),
+      c_DK: serializer.fromJson<String>(json['c_DK']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'index': serializer.toJson<int>(index),
+      'c_NyRad': serializer.toJson<String>(c_NyRad),
+      'c_Artsgruppe': serializer.toJson<String>(c_Artsgruppe),
+      'c_Art': serializer.toJson<String>(c_Art),
+      'c_Autor': serializer.toJson<String>(c_Autor),
+      'c_NorskNavn': serializer.toJson<String>(c_NorskNavn),
+      'c_X': serializer.toJson<String>(c_X),
+      'c_Artskode': serializer.toJson<String>(c_Artskode),
+      'c_11': serializer.toJson<int>(c_11),
+      'c_12': serializer.toJson<int>(c_12),
+      'c_13': serializer.toJson<int>(c_13),
+      'c_14': serializer.toJson<int>(c_14),
+      'c_15': serializer.toJson<int>(c_15),
+      'c_16': serializer.toJson<int>(c_16),
+      'c_17': serializer.toJson<int>(c_17),
+      'c_18': serializer.toJson<int>(c_18),
+      'c_21': serializer.toJson<int>(c_21),
+      'c_22': serializer.toJson<int>(c_22),
+      'c_23': serializer.toJson<int>(c_23),
+      'c_24': serializer.toJson<int>(c_24),
+      'c_25': serializer.toJson<int>(c_25),
+      'c_26': serializer.toJson<int>(c_26),
+      'c_27': serializer.toJson<int>(c_27),
+      'c_28': serializer.toJson<int>(c_28),
+      'c_31': serializer.toJson<int>(c_31),
+      'c_32': serializer.toJson<int>(c_32),
+      'c_33': serializer.toJson<int>(c_33),
+      'c_34': serializer.toJson<int>(c_34),
+      'c_35': serializer.toJson<int>(c_35),
+      'c_36': serializer.toJson<int>(c_36),
+      'c_37': serializer.toJson<int>(c_37),
+      'c_38': serializer.toJson<int>(c_38),
+      'c_41': serializer.toJson<int>(c_41),
+      'c_42': serializer.toJson<int>(c_42),
+      'c_43': serializer.toJson<int>(c_43),
+      'c_44': serializer.toJson<int>(c_44),
+      'c_45': serializer.toJson<int>(c_45),
+      'c_46': serializer.toJson<int>(c_46),
+      'c_47': serializer.toJson<int>(c_47),
+      'c_48': serializer.toJson<int>(c_48),
+      'c_51': serializer.toJson<int>(c_51),
+      'c_52': serializer.toJson<int>(c_52),
+      'c_53': serializer.toJson<int>(c_53),
+      'c_54': serializer.toJson<int>(c_54),
+      'c_55': serializer.toJson<int>(c_55),
+      'c_56': serializer.toJson<int>(c_56),
+      'c_57': serializer.toJson<int>(c_57),
+      'c_58': serializer.toJson<int>(c_58),
+      'c_61': serializer.toJson<int>(c_61),
+      'c_62': serializer.toJson<int>(c_62),
+      'c_63': serializer.toJson<int>(c_63),
+      'c_64': serializer.toJson<int>(c_64),
+      'c_65': serializer.toJson<int>(c_65),
+      'c_66': serializer.toJson<int>(c_66),
+      'c_67': serializer.toJson<int>(c_67),
+      'c_68': serializer.toJson<int>(c_68),
+      'c_71': serializer.toJson<int>(c_71),
+      'c_72': serializer.toJson<int>(c_72),
+      'c_73': serializer.toJson<int>(c_73),
+      'c_74': serializer.toJson<int>(c_74),
+      'c_75': serializer.toJson<int>(c_75),
+      'c_76': serializer.toJson<int>(c_76),
+      'c_77': serializer.toJson<int>(c_77),
+      'c_78': serializer.toJson<int>(c_78),
+      'c_81': serializer.toJson<int>(c_81),
+      'c_82': serializer.toJson<int>(c_82),
+      'c_83': serializer.toJson<int>(c_83),
+      'c_84': serializer.toJson<int>(c_84),
+      'c_85': serializer.toJson<int>(c_85),
+      'c_86': serializer.toJson<int>(c_86),
+      'c_87': serializer.toJson<int>(c_87),
+      'c_88': serializer.toJson<int>(c_88),
+      'c_K3': serializer.toJson<int>(c_K3),
+      'c_K4': serializer.toJson<int>(c_K4),
+      'c_K5': serializer.toJson<int>(c_K5),
+      'c_K6': serializer.toJson<int>(c_K6),
+      'c_K7': serializer.toJson<int>(c_K7),
+      'c_K8': serializer.toJson<int>(c_K8),
+      'c_V37': serializer.toJson<int>(c_V37),
+      'c_V38': serializer.toJson<int>(c_V38),
+      'c_V47': serializer.toJson<int>(c_V47),
+      'c_V48': serializer.toJson<int>(c_V48),
+      'c_V57': serializer.toJson<int>(c_V57),
+      'c_V58': serializer.toJson<int>(c_V58),
+      'c_V67': serializer.toJson<int>(c_V67),
+      'c_V68': serializer.toJson<int>(c_V68),
+      'c_RU': serializer.toJson<double>(c_RU),
+      'c_SU': serializer.toJson<double>(c_SU),
+      'c_SS': serializer.toJson<double>(c_SS),
+      'c_HI': serializer.toJson<double>(c_HI),
+      'c_VMfmax': serializer.toJson<double>(c_VMfmax),
+      'c_VMfmin': serializer.toJson<double>(c_VMfmin),
+      'c_VFrmax': serializer.toJson<int>(c_VFrmax),
+      'c_VFrmin': serializer.toJson<int>(c_VFrmin),
+      'c_Unnamed93': serializer.toJson<int>(c_Unnamed93),
+      'c_Unnamed94': serializer.toJson<String>(c_Unnamed94),
+      'c_VM': serializer.toJson<String>(c_VM),
+      'c_HI1': serializer.toJson<String>(c_HI1),
+      'c_RU1': serializer.toJson<String>(c_RU1),
+      'c_SU1': serializer.toJson<String>(c_SU1),
+      'c_SS1': serializer.toJson<String>(c_SS1),
+      'c_VS': serializer.toJson<String>(c_VS),
+      'c_UE': serializer.toJson<String>(c_UE),
+      'c_BK': serializer.toJson<String>(c_BK),
+      'c_DK': serializer.toJson<String>(c_DK),
+    };
   }
 
   T4Data copyWith(
@@ -1522,6 +1843,222 @@ class T4Companion extends UpdateCompanion<T4Data> {
         c_NorskNavn = Value(c_NorskNavn),
         c_X = Value(c_X),
         c_Artskode = Value(c_Artskode);
+  static Insertable<T4Data> custom({
+    Expression<int> index,
+    Expression<String> c_NyRad,
+    Expression<String> c_Artsgruppe,
+    Expression<String> c_Art,
+    Expression<String> c_Autor,
+    Expression<String> c_NorskNavn,
+    Expression<String> c_X,
+    Expression<String> c_Artskode,
+    Expression<int> c_11,
+    Expression<int> c_12,
+    Expression<int> c_13,
+    Expression<int> c_14,
+    Expression<int> c_15,
+    Expression<int> c_16,
+    Expression<int> c_17,
+    Expression<int> c_18,
+    Expression<int> c_21,
+    Expression<int> c_22,
+    Expression<int> c_23,
+    Expression<int> c_24,
+    Expression<int> c_25,
+    Expression<int> c_26,
+    Expression<int> c_27,
+    Expression<int> c_28,
+    Expression<int> c_31,
+    Expression<int> c_32,
+    Expression<int> c_33,
+    Expression<int> c_34,
+    Expression<int> c_35,
+    Expression<int> c_36,
+    Expression<int> c_37,
+    Expression<int> c_38,
+    Expression<int> c_41,
+    Expression<int> c_42,
+    Expression<int> c_43,
+    Expression<int> c_44,
+    Expression<int> c_45,
+    Expression<int> c_46,
+    Expression<int> c_47,
+    Expression<int> c_48,
+    Expression<int> c_51,
+    Expression<int> c_52,
+    Expression<int> c_53,
+    Expression<int> c_54,
+    Expression<int> c_55,
+    Expression<int> c_56,
+    Expression<int> c_57,
+    Expression<int> c_58,
+    Expression<int> c_61,
+    Expression<int> c_62,
+    Expression<int> c_63,
+    Expression<int> c_64,
+    Expression<int> c_65,
+    Expression<int> c_66,
+    Expression<int> c_67,
+    Expression<int> c_68,
+    Expression<int> c_71,
+    Expression<int> c_72,
+    Expression<int> c_73,
+    Expression<int> c_74,
+    Expression<int> c_75,
+    Expression<int> c_76,
+    Expression<int> c_77,
+    Expression<int> c_78,
+    Expression<int> c_81,
+    Expression<int> c_82,
+    Expression<int> c_83,
+    Expression<int> c_84,
+    Expression<int> c_85,
+    Expression<int> c_86,
+    Expression<int> c_87,
+    Expression<int> c_88,
+    Expression<int> c_K3,
+    Expression<int> c_K4,
+    Expression<int> c_K5,
+    Expression<int> c_K6,
+    Expression<int> c_K7,
+    Expression<int> c_K8,
+    Expression<int> c_V37,
+    Expression<int> c_V38,
+    Expression<int> c_V47,
+    Expression<int> c_V48,
+    Expression<int> c_V57,
+    Expression<int> c_V58,
+    Expression<int> c_V67,
+    Expression<int> c_V68,
+    Expression<double> c_RU,
+    Expression<double> c_SU,
+    Expression<double> c_SS,
+    Expression<double> c_HI,
+    Expression<double> c_VMfmax,
+    Expression<double> c_VMfmin,
+    Expression<int> c_VFrmax,
+    Expression<int> c_VFrmin,
+    Expression<int> c_Unnamed93,
+    Expression<String> c_Unnamed94,
+    Expression<String> c_VM,
+    Expression<String> c_HI1,
+    Expression<String> c_RU1,
+    Expression<String> c_SU1,
+    Expression<String> c_SS1,
+    Expression<String> c_VS,
+    Expression<String> c_UE,
+    Expression<String> c_BK,
+    Expression<String> c_DK,
+  }) {
+    return RawValuesInsertable({
+      if (index != null) 'index': index,
+      if (c_NyRad != null) 'c_NyRad': c_NyRad,
+      if (c_Artsgruppe != null) 'c_Artsgruppe': c_Artsgruppe,
+      if (c_Art != null) 'c_Art': c_Art,
+      if (c_Autor != null) 'c_Autor': c_Autor,
+      if (c_NorskNavn != null) 'c_NorskNavn': c_NorskNavn,
+      if (c_X != null) 'c_X': c_X,
+      if (c_Artskode != null) 'c_Artskode': c_Artskode,
+      if (c_11 != null) 'c_11': c_11,
+      if (c_12 != null) 'c_12': c_12,
+      if (c_13 != null) 'c_13': c_13,
+      if (c_14 != null) 'c_14': c_14,
+      if (c_15 != null) 'c_15': c_15,
+      if (c_16 != null) 'c_16': c_16,
+      if (c_17 != null) 'c_17': c_17,
+      if (c_18 != null) 'c_18': c_18,
+      if (c_21 != null) 'c_21': c_21,
+      if (c_22 != null) 'c_22': c_22,
+      if (c_23 != null) 'c_23': c_23,
+      if (c_24 != null) 'c_24': c_24,
+      if (c_25 != null) 'c_25': c_25,
+      if (c_26 != null) 'c_26': c_26,
+      if (c_27 != null) 'c_27': c_27,
+      if (c_28 != null) 'c_28': c_28,
+      if (c_31 != null) 'c_31': c_31,
+      if (c_32 != null) 'c_32': c_32,
+      if (c_33 != null) 'c_33': c_33,
+      if (c_34 != null) 'c_34': c_34,
+      if (c_35 != null) 'c_35': c_35,
+      if (c_36 != null) 'c_36': c_36,
+      if (c_37 != null) 'c_37': c_37,
+      if (c_38 != null) 'c_38': c_38,
+      if (c_41 != null) 'c_41': c_41,
+      if (c_42 != null) 'c_42': c_42,
+      if (c_43 != null) 'c_43': c_43,
+      if (c_44 != null) 'c_44': c_44,
+      if (c_45 != null) 'c_45': c_45,
+      if (c_46 != null) 'c_46': c_46,
+      if (c_47 != null) 'c_47': c_47,
+      if (c_48 != null) 'c_48': c_48,
+      if (c_51 != null) 'c_51': c_51,
+      if (c_52 != null) 'c_52': c_52,
+      if (c_53 != null) 'c_53': c_53,
+      if (c_54 != null) 'c_54': c_54,
+      if (c_55 != null) 'c_55': c_55,
+      if (c_56 != null) 'c_56': c_56,
+      if (c_57 != null) 'c_57': c_57,
+      if (c_58 != null) 'c_58': c_58,
+      if (c_61 != null) 'c_61': c_61,
+      if (c_62 != null) 'c_62': c_62,
+      if (c_63 != null) 'c_63': c_63,
+      if (c_64 != null) 'c_64': c_64,
+      if (c_65 != null) 'c_65': c_65,
+      if (c_66 != null) 'c_66': c_66,
+      if (c_67 != null) 'c_67': c_67,
+      if (c_68 != null) 'c_68': c_68,
+      if (c_71 != null) 'c_71': c_71,
+      if (c_72 != null) 'c_72': c_72,
+      if (c_73 != null) 'c_73': c_73,
+      if (c_74 != null) 'c_74': c_74,
+      if (c_75 != null) 'c_75': c_75,
+      if (c_76 != null) 'c_76': c_76,
+      if (c_77 != null) 'c_77': c_77,
+      if (c_78 != null) 'c_78': c_78,
+      if (c_81 != null) 'c_81': c_81,
+      if (c_82 != null) 'c_82': c_82,
+      if (c_83 != null) 'c_83': c_83,
+      if (c_84 != null) 'c_84': c_84,
+      if (c_85 != null) 'c_85': c_85,
+      if (c_86 != null) 'c_86': c_86,
+      if (c_87 != null) 'c_87': c_87,
+      if (c_88 != null) 'c_88': c_88,
+      if (c_K3 != null) 'c_K3': c_K3,
+      if (c_K4 != null) 'c_K4': c_K4,
+      if (c_K5 != null) 'c_K5': c_K5,
+      if (c_K6 != null) 'c_K6': c_K6,
+      if (c_K7 != null) 'c_K7': c_K7,
+      if (c_K8 != null) 'c_K8': c_K8,
+      if (c_V37 != null) 'c_V37': c_V37,
+      if (c_V38 != null) 'c_V38': c_V38,
+      if (c_V47 != null) 'c_V47': c_V47,
+      if (c_V48 != null) 'c_V48': c_V48,
+      if (c_V57 != null) 'c_V57': c_V57,
+      if (c_V58 != null) 'c_V58': c_V58,
+      if (c_V67 != null) 'c_V67': c_V67,
+      if (c_V68 != null) 'c_V68': c_V68,
+      if (c_RU != null) 'c_RU': c_RU,
+      if (c_SU != null) 'c_SU': c_SU,
+      if (c_SS != null) 'c_SS': c_SS,
+      if (c_HI != null) 'c_HI': c_HI,
+      if (c_VMfmax != null) 'c_VMfmax': c_VMfmax,
+      if (c_VMfmin != null) 'c_VMfmin': c_VMfmin,
+      if (c_VFrmax != null) 'c_VFrmax': c_VFrmax,
+      if (c_VFrmin != null) 'c_VFrmin': c_VFrmin,
+      if (c_Unnamed93 != null) 'c_Unnamed93': c_Unnamed93,
+      if (c_Unnamed94 != null) 'c_Unnamed94': c_Unnamed94,
+      if (c_VM != null) 'c_VM': c_VM,
+      if (c_HI1 != null) 'c_HI1': c_HI1,
+      if (c_RU1 != null) 'c_RU1': c_RU1,
+      if (c_SU1 != null) 'c_SU1': c_SU1,
+      if (c_SS1 != null) 'c_SS1': c_SS1,
+      if (c_VS != null) 'c_VS': c_VS,
+      if (c_UE != null) 'c_UE': c_UE,
+      if (c_BK != null) 'c_BK': c_BK,
+      if (c_DK != null) 'c_DK': c_DK,
+    });
+  }
+
   T4Companion copyWith(
       {Value<int> index,
       Value<String> c_NyRad,
@@ -1735,6 +2272,439 @@ class T4Companion extends UpdateCompanion<T4Data> {
       c_BK: c_BK ?? this.c_BK,
       c_DK: c_DK ?? this.c_DK,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (index.present) {
+      map['index'] = Variable<int>(index.value);
+    }
+    if (c_NyRad.present) {
+      map['c_NyRad'] = Variable<String>(c_NyRad.value);
+    }
+    if (c_Artsgruppe.present) {
+      map['c_Artsgruppe'] = Variable<String>(c_Artsgruppe.value);
+    }
+    if (c_Art.present) {
+      map['c_Art'] = Variable<String>(c_Art.value);
+    }
+    if (c_Autor.present) {
+      map['c_Autor'] = Variable<String>(c_Autor.value);
+    }
+    if (c_NorskNavn.present) {
+      map['c_NorskNavn'] = Variable<String>(c_NorskNavn.value);
+    }
+    if (c_X.present) {
+      map['c_X'] = Variable<String>(c_X.value);
+    }
+    if (c_Artskode.present) {
+      map['c_Artskode'] = Variable<String>(c_Artskode.value);
+    }
+    if (c_11.present) {
+      map['c_11'] = Variable<int>(c_11.value);
+    }
+    if (c_12.present) {
+      map['c_12'] = Variable<int>(c_12.value);
+    }
+    if (c_13.present) {
+      map['c_13'] = Variable<int>(c_13.value);
+    }
+    if (c_14.present) {
+      map['c_14'] = Variable<int>(c_14.value);
+    }
+    if (c_15.present) {
+      map['c_15'] = Variable<int>(c_15.value);
+    }
+    if (c_16.present) {
+      map['c_16'] = Variable<int>(c_16.value);
+    }
+    if (c_17.present) {
+      map['c_17'] = Variable<int>(c_17.value);
+    }
+    if (c_18.present) {
+      map['c_18'] = Variable<int>(c_18.value);
+    }
+    if (c_21.present) {
+      map['c_21'] = Variable<int>(c_21.value);
+    }
+    if (c_22.present) {
+      map['c_22'] = Variable<int>(c_22.value);
+    }
+    if (c_23.present) {
+      map['c_23'] = Variable<int>(c_23.value);
+    }
+    if (c_24.present) {
+      map['c_24'] = Variable<int>(c_24.value);
+    }
+    if (c_25.present) {
+      map['c_25'] = Variable<int>(c_25.value);
+    }
+    if (c_26.present) {
+      map['c_26'] = Variable<int>(c_26.value);
+    }
+    if (c_27.present) {
+      map['c_27'] = Variable<int>(c_27.value);
+    }
+    if (c_28.present) {
+      map['c_28'] = Variable<int>(c_28.value);
+    }
+    if (c_31.present) {
+      map['c_31'] = Variable<int>(c_31.value);
+    }
+    if (c_32.present) {
+      map['c_32'] = Variable<int>(c_32.value);
+    }
+    if (c_33.present) {
+      map['c_33'] = Variable<int>(c_33.value);
+    }
+    if (c_34.present) {
+      map['c_34'] = Variable<int>(c_34.value);
+    }
+    if (c_35.present) {
+      map['c_35'] = Variable<int>(c_35.value);
+    }
+    if (c_36.present) {
+      map['c_36'] = Variable<int>(c_36.value);
+    }
+    if (c_37.present) {
+      map['c_37'] = Variable<int>(c_37.value);
+    }
+    if (c_38.present) {
+      map['c_38'] = Variable<int>(c_38.value);
+    }
+    if (c_41.present) {
+      map['c_41'] = Variable<int>(c_41.value);
+    }
+    if (c_42.present) {
+      map['c_42'] = Variable<int>(c_42.value);
+    }
+    if (c_43.present) {
+      map['c_43'] = Variable<int>(c_43.value);
+    }
+    if (c_44.present) {
+      map['c_44'] = Variable<int>(c_44.value);
+    }
+    if (c_45.present) {
+      map['c_45'] = Variable<int>(c_45.value);
+    }
+    if (c_46.present) {
+      map['c_46'] = Variable<int>(c_46.value);
+    }
+    if (c_47.present) {
+      map['c_47'] = Variable<int>(c_47.value);
+    }
+    if (c_48.present) {
+      map['c_48'] = Variable<int>(c_48.value);
+    }
+    if (c_51.present) {
+      map['c_51'] = Variable<int>(c_51.value);
+    }
+    if (c_52.present) {
+      map['c_52'] = Variable<int>(c_52.value);
+    }
+    if (c_53.present) {
+      map['c_53'] = Variable<int>(c_53.value);
+    }
+    if (c_54.present) {
+      map['c_54'] = Variable<int>(c_54.value);
+    }
+    if (c_55.present) {
+      map['c_55'] = Variable<int>(c_55.value);
+    }
+    if (c_56.present) {
+      map['c_56'] = Variable<int>(c_56.value);
+    }
+    if (c_57.present) {
+      map['c_57'] = Variable<int>(c_57.value);
+    }
+    if (c_58.present) {
+      map['c_58'] = Variable<int>(c_58.value);
+    }
+    if (c_61.present) {
+      map['c_61'] = Variable<int>(c_61.value);
+    }
+    if (c_62.present) {
+      map['c_62'] = Variable<int>(c_62.value);
+    }
+    if (c_63.present) {
+      map['c_63'] = Variable<int>(c_63.value);
+    }
+    if (c_64.present) {
+      map['c_64'] = Variable<int>(c_64.value);
+    }
+    if (c_65.present) {
+      map['c_65'] = Variable<int>(c_65.value);
+    }
+    if (c_66.present) {
+      map['c_66'] = Variable<int>(c_66.value);
+    }
+    if (c_67.present) {
+      map['c_67'] = Variable<int>(c_67.value);
+    }
+    if (c_68.present) {
+      map['c_68'] = Variable<int>(c_68.value);
+    }
+    if (c_71.present) {
+      map['c_71'] = Variable<int>(c_71.value);
+    }
+    if (c_72.present) {
+      map['c_72'] = Variable<int>(c_72.value);
+    }
+    if (c_73.present) {
+      map['c_73'] = Variable<int>(c_73.value);
+    }
+    if (c_74.present) {
+      map['c_74'] = Variable<int>(c_74.value);
+    }
+    if (c_75.present) {
+      map['c_75'] = Variable<int>(c_75.value);
+    }
+    if (c_76.present) {
+      map['c_76'] = Variable<int>(c_76.value);
+    }
+    if (c_77.present) {
+      map['c_77'] = Variable<int>(c_77.value);
+    }
+    if (c_78.present) {
+      map['c_78'] = Variable<int>(c_78.value);
+    }
+    if (c_81.present) {
+      map['c_81'] = Variable<int>(c_81.value);
+    }
+    if (c_82.present) {
+      map['c_82'] = Variable<int>(c_82.value);
+    }
+    if (c_83.present) {
+      map['c_83'] = Variable<int>(c_83.value);
+    }
+    if (c_84.present) {
+      map['c_84'] = Variable<int>(c_84.value);
+    }
+    if (c_85.present) {
+      map['c_85'] = Variable<int>(c_85.value);
+    }
+    if (c_86.present) {
+      map['c_86'] = Variable<int>(c_86.value);
+    }
+    if (c_87.present) {
+      map['c_87'] = Variable<int>(c_87.value);
+    }
+    if (c_88.present) {
+      map['c_88'] = Variable<int>(c_88.value);
+    }
+    if (c_K3.present) {
+      map['c_K3'] = Variable<int>(c_K3.value);
+    }
+    if (c_K4.present) {
+      map['c_K4'] = Variable<int>(c_K4.value);
+    }
+    if (c_K5.present) {
+      map['c_K5'] = Variable<int>(c_K5.value);
+    }
+    if (c_K6.present) {
+      map['c_K6'] = Variable<int>(c_K6.value);
+    }
+    if (c_K7.present) {
+      map['c_K7'] = Variable<int>(c_K7.value);
+    }
+    if (c_K8.present) {
+      map['c_K8'] = Variable<int>(c_K8.value);
+    }
+    if (c_V37.present) {
+      map['c_V37'] = Variable<int>(c_V37.value);
+    }
+    if (c_V38.present) {
+      map['c_V38'] = Variable<int>(c_V38.value);
+    }
+    if (c_V47.present) {
+      map['c_V47'] = Variable<int>(c_V47.value);
+    }
+    if (c_V48.present) {
+      map['c_V48'] = Variable<int>(c_V48.value);
+    }
+    if (c_V57.present) {
+      map['c_V57'] = Variable<int>(c_V57.value);
+    }
+    if (c_V58.present) {
+      map['c_V58'] = Variable<int>(c_V58.value);
+    }
+    if (c_V67.present) {
+      map['c_V67'] = Variable<int>(c_V67.value);
+    }
+    if (c_V68.present) {
+      map['c_V68'] = Variable<int>(c_V68.value);
+    }
+    if (c_RU.present) {
+      map['c_RU'] = Variable<double>(c_RU.value);
+    }
+    if (c_SU.present) {
+      map['c_SU'] = Variable<double>(c_SU.value);
+    }
+    if (c_SS.present) {
+      map['c_SS'] = Variable<double>(c_SS.value);
+    }
+    if (c_HI.present) {
+      map['c_HI'] = Variable<double>(c_HI.value);
+    }
+    if (c_VMfmax.present) {
+      map['c_VMfmax'] = Variable<double>(c_VMfmax.value);
+    }
+    if (c_VMfmin.present) {
+      map['c_VMfmin'] = Variable<double>(c_VMfmin.value);
+    }
+    if (c_VFrmax.present) {
+      map['c_VFrmax'] = Variable<int>(c_VFrmax.value);
+    }
+    if (c_VFrmin.present) {
+      map['c_VFrmin'] = Variable<int>(c_VFrmin.value);
+    }
+    if (c_Unnamed93.present) {
+      map['c_Unnamed93'] = Variable<int>(c_Unnamed93.value);
+    }
+    if (c_Unnamed94.present) {
+      map['c_Unnamed94'] = Variable<String>(c_Unnamed94.value);
+    }
+    if (c_VM.present) {
+      map['c_VM'] = Variable<String>(c_VM.value);
+    }
+    if (c_HI1.present) {
+      map['c_HI1'] = Variable<String>(c_HI1.value);
+    }
+    if (c_RU1.present) {
+      map['c_RU1'] = Variable<String>(c_RU1.value);
+    }
+    if (c_SU1.present) {
+      map['c_SU1'] = Variable<String>(c_SU1.value);
+    }
+    if (c_SS1.present) {
+      map['c_SS1'] = Variable<String>(c_SS1.value);
+    }
+    if (c_VS.present) {
+      map['c_VS'] = Variable<String>(c_VS.value);
+    }
+    if (c_UE.present) {
+      map['c_UE'] = Variable<String>(c_UE.value);
+    }
+    if (c_BK.present) {
+      map['c_BK'] = Variable<String>(c_BK.value);
+    }
+    if (c_DK.present) {
+      map['c_DK'] = Variable<String>(c_DK.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('T4Companion(')
+          ..write('index: $index, ')
+          ..write('c_NyRad: $c_NyRad, ')
+          ..write('c_Artsgruppe: $c_Artsgruppe, ')
+          ..write('c_Art: $c_Art, ')
+          ..write('c_Autor: $c_Autor, ')
+          ..write('c_NorskNavn: $c_NorskNavn, ')
+          ..write('c_X: $c_X, ')
+          ..write('c_Artskode: $c_Artskode, ')
+          ..write('c_11: $c_11, ')
+          ..write('c_12: $c_12, ')
+          ..write('c_13: $c_13, ')
+          ..write('c_14: $c_14, ')
+          ..write('c_15: $c_15, ')
+          ..write('c_16: $c_16, ')
+          ..write('c_17: $c_17, ')
+          ..write('c_18: $c_18, ')
+          ..write('c_21: $c_21, ')
+          ..write('c_22: $c_22, ')
+          ..write('c_23: $c_23, ')
+          ..write('c_24: $c_24, ')
+          ..write('c_25: $c_25, ')
+          ..write('c_26: $c_26, ')
+          ..write('c_27: $c_27, ')
+          ..write('c_28: $c_28, ')
+          ..write('c_31: $c_31, ')
+          ..write('c_32: $c_32, ')
+          ..write('c_33: $c_33, ')
+          ..write('c_34: $c_34, ')
+          ..write('c_35: $c_35, ')
+          ..write('c_36: $c_36, ')
+          ..write('c_37: $c_37, ')
+          ..write('c_38: $c_38, ')
+          ..write('c_41: $c_41, ')
+          ..write('c_42: $c_42, ')
+          ..write('c_43: $c_43, ')
+          ..write('c_44: $c_44, ')
+          ..write('c_45: $c_45, ')
+          ..write('c_46: $c_46, ')
+          ..write('c_47: $c_47, ')
+          ..write('c_48: $c_48, ')
+          ..write('c_51: $c_51, ')
+          ..write('c_52: $c_52, ')
+          ..write('c_53: $c_53, ')
+          ..write('c_54: $c_54, ')
+          ..write('c_55: $c_55, ')
+          ..write('c_56: $c_56, ')
+          ..write('c_57: $c_57, ')
+          ..write('c_58: $c_58, ')
+          ..write('c_61: $c_61, ')
+          ..write('c_62: $c_62, ')
+          ..write('c_63: $c_63, ')
+          ..write('c_64: $c_64, ')
+          ..write('c_65: $c_65, ')
+          ..write('c_66: $c_66, ')
+          ..write('c_67: $c_67, ')
+          ..write('c_68: $c_68, ')
+          ..write('c_71: $c_71, ')
+          ..write('c_72: $c_72, ')
+          ..write('c_73: $c_73, ')
+          ..write('c_74: $c_74, ')
+          ..write('c_75: $c_75, ')
+          ..write('c_76: $c_76, ')
+          ..write('c_77: $c_77, ')
+          ..write('c_78: $c_78, ')
+          ..write('c_81: $c_81, ')
+          ..write('c_82: $c_82, ')
+          ..write('c_83: $c_83, ')
+          ..write('c_84: $c_84, ')
+          ..write('c_85: $c_85, ')
+          ..write('c_86: $c_86, ')
+          ..write('c_87: $c_87, ')
+          ..write('c_88: $c_88, ')
+          ..write('c_K3: $c_K3, ')
+          ..write('c_K4: $c_K4, ')
+          ..write('c_K5: $c_K5, ')
+          ..write('c_K6: $c_K6, ')
+          ..write('c_K7: $c_K7, ')
+          ..write('c_K8: $c_K8, ')
+          ..write('c_V37: $c_V37, ')
+          ..write('c_V38: $c_V38, ')
+          ..write('c_V47: $c_V47, ')
+          ..write('c_V48: $c_V48, ')
+          ..write('c_V57: $c_V57, ')
+          ..write('c_V58: $c_V58, ')
+          ..write('c_V67: $c_V67, ')
+          ..write('c_V68: $c_V68, ')
+          ..write('c_RU: $c_RU, ')
+          ..write('c_SU: $c_SU, ')
+          ..write('c_SS: $c_SS, ')
+          ..write('c_HI: $c_HI, ')
+          ..write('c_VMfmax: $c_VMfmax, ')
+          ..write('c_VMfmin: $c_VMfmin, ')
+          ..write('c_VFrmax: $c_VFrmax, ')
+          ..write('c_VFrmin: $c_VFrmin, ')
+          ..write('c_Unnamed93: $c_Unnamed93, ')
+          ..write('c_Unnamed94: $c_Unnamed94, ')
+          ..write('c_VM: $c_VM, ')
+          ..write('c_HI1: $c_HI1, ')
+          ..write('c_RU1: $c_RU1, ')
+          ..write('c_SU1: $c_SU1, ')
+          ..write('c_SS1: $c_SS1, ')
+          ..write('c_VS: $c_VS, ')
+          ..write('c_UE: $c_UE, ')
+          ..write('c_BK: $c_BK, ')
+          ..write('c_DK: $c_DK')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -3100,639 +4070,453 @@ class $T4Table extends T4 with TableInfo<$T4Table, T4Data> {
   @override
   final String actualTableName = 't4';
   @override
-  VerificationContext validateIntegrity(T4Companion d,
+  VerificationContext validateIntegrity(Insertable<T4Data> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.index.present) {
+    final data = instance.toColumns(true);
+    if (data.containsKey('index')) {
       context.handle(
-          _indexMeta, index.isAcceptableValue(d.index.value, _indexMeta));
-    } else if (index.isRequired && isInserting) {
-      context.missing(_indexMeta);
+          _indexMeta, index.isAcceptableOrUnknown(data['index'], _indexMeta));
     }
-    if (d.c_NyRad.present) {
+    if (data.containsKey('c_NyRad')) {
       context.handle(_c_NyRadMeta,
-          c_NyRad.isAcceptableValue(d.c_NyRad.value, _c_NyRadMeta));
-    } else if (c_NyRad.isRequired && isInserting) {
+          c_NyRad.isAcceptableOrUnknown(data['c_NyRad'], _c_NyRadMeta));
+    } else if (isInserting) {
       context.missing(_c_NyRadMeta);
     }
-    if (d.c_Artsgruppe.present) {
+    if (data.containsKey('c_Artsgruppe')) {
       context.handle(
           _c_ArtsgruppeMeta,
-          c_Artsgruppe.isAcceptableValue(
-              d.c_Artsgruppe.value, _c_ArtsgruppeMeta));
-    } else if (c_Artsgruppe.isRequired && isInserting) {
+          c_Artsgruppe.isAcceptableOrUnknown(
+              data['c_Artsgruppe'], _c_ArtsgruppeMeta));
+    } else if (isInserting) {
       context.missing(_c_ArtsgruppeMeta);
     }
-    if (d.c_Art.present) {
+    if (data.containsKey('c_Art')) {
       context.handle(
-          _c_ArtMeta, c_Art.isAcceptableValue(d.c_Art.value, _c_ArtMeta));
-    } else if (c_Art.isRequired && isInserting) {
+          _c_ArtMeta, c_Art.isAcceptableOrUnknown(data['c_Art'], _c_ArtMeta));
+    } else if (isInserting) {
       context.missing(_c_ArtMeta);
     }
-    if (d.c_Autor.present) {
+    if (data.containsKey('c_Autor')) {
       context.handle(_c_AutorMeta,
-          c_Autor.isAcceptableValue(d.c_Autor.value, _c_AutorMeta));
-    } else if (c_Autor.isRequired && isInserting) {
+          c_Autor.isAcceptableOrUnknown(data['c_Autor'], _c_AutorMeta));
+    } else if (isInserting) {
       context.missing(_c_AutorMeta);
     }
-    if (d.c_NorskNavn.present) {
-      context.handle(_c_NorskNavnMeta,
-          c_NorskNavn.isAcceptableValue(d.c_NorskNavn.value, _c_NorskNavnMeta));
-    } else if (c_NorskNavn.isRequired && isInserting) {
+    if (data.containsKey('c_NorskNavn')) {
+      context.handle(
+          _c_NorskNavnMeta,
+          c_NorskNavn.isAcceptableOrUnknown(
+              data['c_NorskNavn'], _c_NorskNavnMeta));
+    } else if (isInserting) {
       context.missing(_c_NorskNavnMeta);
     }
-    if (d.c_X.present) {
-      context.handle(_c_XMeta, c_X.isAcceptableValue(d.c_X.value, _c_XMeta));
-    } else if (c_X.isRequired && isInserting) {
+    if (data.containsKey('c_X')) {
+      context.handle(
+          _c_XMeta, c_X.isAcceptableOrUnknown(data['c_X'], _c_XMeta));
+    } else if (isInserting) {
       context.missing(_c_XMeta);
     }
-    if (d.c_Artskode.present) {
-      context.handle(_c_ArtskodeMeta,
-          c_Artskode.isAcceptableValue(d.c_Artskode.value, _c_ArtskodeMeta));
-    } else if (c_Artskode.isRequired && isInserting) {
+    if (data.containsKey('c_Artskode')) {
+      context.handle(
+          _c_ArtskodeMeta,
+          c_Artskode.isAcceptableOrUnknown(
+              data['c_Artskode'], _c_ArtskodeMeta));
+    } else if (isInserting) {
       context.missing(_c_ArtskodeMeta);
     }
-    if (d.c_11.present) {
+    if (data.containsKey('c_11')) {
       context.handle(
-          _c_11Meta, c_11.isAcceptableValue(d.c_11.value, _c_11Meta));
-    } else if (c_11.isRequired && isInserting) {
-      context.missing(_c_11Meta);
+          _c_11Meta, c_11.isAcceptableOrUnknown(data['c_11'], _c_11Meta));
     }
-    if (d.c_12.present) {
+    if (data.containsKey('c_12')) {
       context.handle(
-          _c_12Meta, c_12.isAcceptableValue(d.c_12.value, _c_12Meta));
-    } else if (c_12.isRequired && isInserting) {
-      context.missing(_c_12Meta);
+          _c_12Meta, c_12.isAcceptableOrUnknown(data['c_12'], _c_12Meta));
     }
-    if (d.c_13.present) {
+    if (data.containsKey('c_13')) {
       context.handle(
-          _c_13Meta, c_13.isAcceptableValue(d.c_13.value, _c_13Meta));
-    } else if (c_13.isRequired && isInserting) {
-      context.missing(_c_13Meta);
+          _c_13Meta, c_13.isAcceptableOrUnknown(data['c_13'], _c_13Meta));
     }
-    if (d.c_14.present) {
+    if (data.containsKey('c_14')) {
       context.handle(
-          _c_14Meta, c_14.isAcceptableValue(d.c_14.value, _c_14Meta));
-    } else if (c_14.isRequired && isInserting) {
-      context.missing(_c_14Meta);
+          _c_14Meta, c_14.isAcceptableOrUnknown(data['c_14'], _c_14Meta));
     }
-    if (d.c_15.present) {
+    if (data.containsKey('c_15')) {
       context.handle(
-          _c_15Meta, c_15.isAcceptableValue(d.c_15.value, _c_15Meta));
-    } else if (c_15.isRequired && isInserting) {
-      context.missing(_c_15Meta);
+          _c_15Meta, c_15.isAcceptableOrUnknown(data['c_15'], _c_15Meta));
     }
-    if (d.c_16.present) {
+    if (data.containsKey('c_16')) {
       context.handle(
-          _c_16Meta, c_16.isAcceptableValue(d.c_16.value, _c_16Meta));
-    } else if (c_16.isRequired && isInserting) {
-      context.missing(_c_16Meta);
+          _c_16Meta, c_16.isAcceptableOrUnknown(data['c_16'], _c_16Meta));
     }
-    if (d.c_17.present) {
+    if (data.containsKey('c_17')) {
       context.handle(
-          _c_17Meta, c_17.isAcceptableValue(d.c_17.value, _c_17Meta));
-    } else if (c_17.isRequired && isInserting) {
-      context.missing(_c_17Meta);
+          _c_17Meta, c_17.isAcceptableOrUnknown(data['c_17'], _c_17Meta));
     }
-    if (d.c_18.present) {
+    if (data.containsKey('c_18')) {
       context.handle(
-          _c_18Meta, c_18.isAcceptableValue(d.c_18.value, _c_18Meta));
-    } else if (c_18.isRequired && isInserting) {
-      context.missing(_c_18Meta);
+          _c_18Meta, c_18.isAcceptableOrUnknown(data['c_18'], _c_18Meta));
     }
-    if (d.c_21.present) {
+    if (data.containsKey('c_21')) {
       context.handle(
-          _c_21Meta, c_21.isAcceptableValue(d.c_21.value, _c_21Meta));
-    } else if (c_21.isRequired && isInserting) {
-      context.missing(_c_21Meta);
+          _c_21Meta, c_21.isAcceptableOrUnknown(data['c_21'], _c_21Meta));
     }
-    if (d.c_22.present) {
+    if (data.containsKey('c_22')) {
       context.handle(
-          _c_22Meta, c_22.isAcceptableValue(d.c_22.value, _c_22Meta));
-    } else if (c_22.isRequired && isInserting) {
-      context.missing(_c_22Meta);
+          _c_22Meta, c_22.isAcceptableOrUnknown(data['c_22'], _c_22Meta));
     }
-    if (d.c_23.present) {
+    if (data.containsKey('c_23')) {
       context.handle(
-          _c_23Meta, c_23.isAcceptableValue(d.c_23.value, _c_23Meta));
-    } else if (c_23.isRequired && isInserting) {
-      context.missing(_c_23Meta);
+          _c_23Meta, c_23.isAcceptableOrUnknown(data['c_23'], _c_23Meta));
     }
-    if (d.c_24.present) {
+    if (data.containsKey('c_24')) {
       context.handle(
-          _c_24Meta, c_24.isAcceptableValue(d.c_24.value, _c_24Meta));
-    } else if (c_24.isRequired && isInserting) {
-      context.missing(_c_24Meta);
+          _c_24Meta, c_24.isAcceptableOrUnknown(data['c_24'], _c_24Meta));
     }
-    if (d.c_25.present) {
+    if (data.containsKey('c_25')) {
       context.handle(
-          _c_25Meta, c_25.isAcceptableValue(d.c_25.value, _c_25Meta));
-    } else if (c_25.isRequired && isInserting) {
-      context.missing(_c_25Meta);
+          _c_25Meta, c_25.isAcceptableOrUnknown(data['c_25'], _c_25Meta));
     }
-    if (d.c_26.present) {
+    if (data.containsKey('c_26')) {
       context.handle(
-          _c_26Meta, c_26.isAcceptableValue(d.c_26.value, _c_26Meta));
-    } else if (c_26.isRequired && isInserting) {
-      context.missing(_c_26Meta);
+          _c_26Meta, c_26.isAcceptableOrUnknown(data['c_26'], _c_26Meta));
     }
-    if (d.c_27.present) {
+    if (data.containsKey('c_27')) {
       context.handle(
-          _c_27Meta, c_27.isAcceptableValue(d.c_27.value, _c_27Meta));
-    } else if (c_27.isRequired && isInserting) {
-      context.missing(_c_27Meta);
+          _c_27Meta, c_27.isAcceptableOrUnknown(data['c_27'], _c_27Meta));
     }
-    if (d.c_28.present) {
+    if (data.containsKey('c_28')) {
       context.handle(
-          _c_28Meta, c_28.isAcceptableValue(d.c_28.value, _c_28Meta));
-    } else if (c_28.isRequired && isInserting) {
-      context.missing(_c_28Meta);
+          _c_28Meta, c_28.isAcceptableOrUnknown(data['c_28'], _c_28Meta));
     }
-    if (d.c_31.present) {
+    if (data.containsKey('c_31')) {
       context.handle(
-          _c_31Meta, c_31.isAcceptableValue(d.c_31.value, _c_31Meta));
-    } else if (c_31.isRequired && isInserting) {
-      context.missing(_c_31Meta);
+          _c_31Meta, c_31.isAcceptableOrUnknown(data['c_31'], _c_31Meta));
     }
-    if (d.c_32.present) {
+    if (data.containsKey('c_32')) {
       context.handle(
-          _c_32Meta, c_32.isAcceptableValue(d.c_32.value, _c_32Meta));
-    } else if (c_32.isRequired && isInserting) {
-      context.missing(_c_32Meta);
+          _c_32Meta, c_32.isAcceptableOrUnknown(data['c_32'], _c_32Meta));
     }
-    if (d.c_33.present) {
+    if (data.containsKey('c_33')) {
       context.handle(
-          _c_33Meta, c_33.isAcceptableValue(d.c_33.value, _c_33Meta));
-    } else if (c_33.isRequired && isInserting) {
-      context.missing(_c_33Meta);
+          _c_33Meta, c_33.isAcceptableOrUnknown(data['c_33'], _c_33Meta));
     }
-    if (d.c_34.present) {
+    if (data.containsKey('c_34')) {
       context.handle(
-          _c_34Meta, c_34.isAcceptableValue(d.c_34.value, _c_34Meta));
-    } else if (c_34.isRequired && isInserting) {
-      context.missing(_c_34Meta);
+          _c_34Meta, c_34.isAcceptableOrUnknown(data['c_34'], _c_34Meta));
     }
-    if (d.c_35.present) {
+    if (data.containsKey('c_35')) {
       context.handle(
-          _c_35Meta, c_35.isAcceptableValue(d.c_35.value, _c_35Meta));
-    } else if (c_35.isRequired && isInserting) {
-      context.missing(_c_35Meta);
+          _c_35Meta, c_35.isAcceptableOrUnknown(data['c_35'], _c_35Meta));
     }
-    if (d.c_36.present) {
+    if (data.containsKey('c_36')) {
       context.handle(
-          _c_36Meta, c_36.isAcceptableValue(d.c_36.value, _c_36Meta));
-    } else if (c_36.isRequired && isInserting) {
-      context.missing(_c_36Meta);
+          _c_36Meta, c_36.isAcceptableOrUnknown(data['c_36'], _c_36Meta));
     }
-    if (d.c_37.present) {
+    if (data.containsKey('c_37')) {
       context.handle(
-          _c_37Meta, c_37.isAcceptableValue(d.c_37.value, _c_37Meta));
-    } else if (c_37.isRequired && isInserting) {
-      context.missing(_c_37Meta);
+          _c_37Meta, c_37.isAcceptableOrUnknown(data['c_37'], _c_37Meta));
     }
-    if (d.c_38.present) {
+    if (data.containsKey('c_38')) {
       context.handle(
-          _c_38Meta, c_38.isAcceptableValue(d.c_38.value, _c_38Meta));
-    } else if (c_38.isRequired && isInserting) {
-      context.missing(_c_38Meta);
+          _c_38Meta, c_38.isAcceptableOrUnknown(data['c_38'], _c_38Meta));
     }
-    if (d.c_41.present) {
+    if (data.containsKey('c_41')) {
       context.handle(
-          _c_41Meta, c_41.isAcceptableValue(d.c_41.value, _c_41Meta));
-    } else if (c_41.isRequired && isInserting) {
-      context.missing(_c_41Meta);
+          _c_41Meta, c_41.isAcceptableOrUnknown(data['c_41'], _c_41Meta));
     }
-    if (d.c_42.present) {
+    if (data.containsKey('c_42')) {
       context.handle(
-          _c_42Meta, c_42.isAcceptableValue(d.c_42.value, _c_42Meta));
-    } else if (c_42.isRequired && isInserting) {
-      context.missing(_c_42Meta);
+          _c_42Meta, c_42.isAcceptableOrUnknown(data['c_42'], _c_42Meta));
     }
-    if (d.c_43.present) {
+    if (data.containsKey('c_43')) {
       context.handle(
-          _c_43Meta, c_43.isAcceptableValue(d.c_43.value, _c_43Meta));
-    } else if (c_43.isRequired && isInserting) {
-      context.missing(_c_43Meta);
+          _c_43Meta, c_43.isAcceptableOrUnknown(data['c_43'], _c_43Meta));
     }
-    if (d.c_44.present) {
+    if (data.containsKey('c_44')) {
       context.handle(
-          _c_44Meta, c_44.isAcceptableValue(d.c_44.value, _c_44Meta));
-    } else if (c_44.isRequired && isInserting) {
-      context.missing(_c_44Meta);
+          _c_44Meta, c_44.isAcceptableOrUnknown(data['c_44'], _c_44Meta));
     }
-    if (d.c_45.present) {
+    if (data.containsKey('c_45')) {
       context.handle(
-          _c_45Meta, c_45.isAcceptableValue(d.c_45.value, _c_45Meta));
-    } else if (c_45.isRequired && isInserting) {
-      context.missing(_c_45Meta);
+          _c_45Meta, c_45.isAcceptableOrUnknown(data['c_45'], _c_45Meta));
     }
-    if (d.c_46.present) {
+    if (data.containsKey('c_46')) {
       context.handle(
-          _c_46Meta, c_46.isAcceptableValue(d.c_46.value, _c_46Meta));
-    } else if (c_46.isRequired && isInserting) {
-      context.missing(_c_46Meta);
+          _c_46Meta, c_46.isAcceptableOrUnknown(data['c_46'], _c_46Meta));
     }
-    if (d.c_47.present) {
+    if (data.containsKey('c_47')) {
       context.handle(
-          _c_47Meta, c_47.isAcceptableValue(d.c_47.value, _c_47Meta));
-    } else if (c_47.isRequired && isInserting) {
-      context.missing(_c_47Meta);
+          _c_47Meta, c_47.isAcceptableOrUnknown(data['c_47'], _c_47Meta));
     }
-    if (d.c_48.present) {
+    if (data.containsKey('c_48')) {
       context.handle(
-          _c_48Meta, c_48.isAcceptableValue(d.c_48.value, _c_48Meta));
-    } else if (c_48.isRequired && isInserting) {
-      context.missing(_c_48Meta);
+          _c_48Meta, c_48.isAcceptableOrUnknown(data['c_48'], _c_48Meta));
     }
-    if (d.c_51.present) {
+    if (data.containsKey('c_51')) {
       context.handle(
-          _c_51Meta, c_51.isAcceptableValue(d.c_51.value, _c_51Meta));
-    } else if (c_51.isRequired && isInserting) {
-      context.missing(_c_51Meta);
+          _c_51Meta, c_51.isAcceptableOrUnknown(data['c_51'], _c_51Meta));
     }
-    if (d.c_52.present) {
+    if (data.containsKey('c_52')) {
       context.handle(
-          _c_52Meta, c_52.isAcceptableValue(d.c_52.value, _c_52Meta));
-    } else if (c_52.isRequired && isInserting) {
-      context.missing(_c_52Meta);
+          _c_52Meta, c_52.isAcceptableOrUnknown(data['c_52'], _c_52Meta));
     }
-    if (d.c_53.present) {
+    if (data.containsKey('c_53')) {
       context.handle(
-          _c_53Meta, c_53.isAcceptableValue(d.c_53.value, _c_53Meta));
-    } else if (c_53.isRequired && isInserting) {
-      context.missing(_c_53Meta);
+          _c_53Meta, c_53.isAcceptableOrUnknown(data['c_53'], _c_53Meta));
     }
-    if (d.c_54.present) {
+    if (data.containsKey('c_54')) {
       context.handle(
-          _c_54Meta, c_54.isAcceptableValue(d.c_54.value, _c_54Meta));
-    } else if (c_54.isRequired && isInserting) {
-      context.missing(_c_54Meta);
+          _c_54Meta, c_54.isAcceptableOrUnknown(data['c_54'], _c_54Meta));
     }
-    if (d.c_55.present) {
+    if (data.containsKey('c_55')) {
       context.handle(
-          _c_55Meta, c_55.isAcceptableValue(d.c_55.value, _c_55Meta));
-    } else if (c_55.isRequired && isInserting) {
-      context.missing(_c_55Meta);
+          _c_55Meta, c_55.isAcceptableOrUnknown(data['c_55'], _c_55Meta));
     }
-    if (d.c_56.present) {
+    if (data.containsKey('c_56')) {
       context.handle(
-          _c_56Meta, c_56.isAcceptableValue(d.c_56.value, _c_56Meta));
-    } else if (c_56.isRequired && isInserting) {
-      context.missing(_c_56Meta);
+          _c_56Meta, c_56.isAcceptableOrUnknown(data['c_56'], _c_56Meta));
     }
-    if (d.c_57.present) {
+    if (data.containsKey('c_57')) {
       context.handle(
-          _c_57Meta, c_57.isAcceptableValue(d.c_57.value, _c_57Meta));
-    } else if (c_57.isRequired && isInserting) {
-      context.missing(_c_57Meta);
+          _c_57Meta, c_57.isAcceptableOrUnknown(data['c_57'], _c_57Meta));
     }
-    if (d.c_58.present) {
+    if (data.containsKey('c_58')) {
       context.handle(
-          _c_58Meta, c_58.isAcceptableValue(d.c_58.value, _c_58Meta));
-    } else if (c_58.isRequired && isInserting) {
-      context.missing(_c_58Meta);
+          _c_58Meta, c_58.isAcceptableOrUnknown(data['c_58'], _c_58Meta));
     }
-    if (d.c_61.present) {
+    if (data.containsKey('c_61')) {
       context.handle(
-          _c_61Meta, c_61.isAcceptableValue(d.c_61.value, _c_61Meta));
-    } else if (c_61.isRequired && isInserting) {
-      context.missing(_c_61Meta);
+          _c_61Meta, c_61.isAcceptableOrUnknown(data['c_61'], _c_61Meta));
     }
-    if (d.c_62.present) {
+    if (data.containsKey('c_62')) {
       context.handle(
-          _c_62Meta, c_62.isAcceptableValue(d.c_62.value, _c_62Meta));
-    } else if (c_62.isRequired && isInserting) {
-      context.missing(_c_62Meta);
+          _c_62Meta, c_62.isAcceptableOrUnknown(data['c_62'], _c_62Meta));
     }
-    if (d.c_63.present) {
+    if (data.containsKey('c_63')) {
       context.handle(
-          _c_63Meta, c_63.isAcceptableValue(d.c_63.value, _c_63Meta));
-    } else if (c_63.isRequired && isInserting) {
-      context.missing(_c_63Meta);
+          _c_63Meta, c_63.isAcceptableOrUnknown(data['c_63'], _c_63Meta));
     }
-    if (d.c_64.present) {
+    if (data.containsKey('c_64')) {
       context.handle(
-          _c_64Meta, c_64.isAcceptableValue(d.c_64.value, _c_64Meta));
-    } else if (c_64.isRequired && isInserting) {
-      context.missing(_c_64Meta);
+          _c_64Meta, c_64.isAcceptableOrUnknown(data['c_64'], _c_64Meta));
     }
-    if (d.c_65.present) {
+    if (data.containsKey('c_65')) {
       context.handle(
-          _c_65Meta, c_65.isAcceptableValue(d.c_65.value, _c_65Meta));
-    } else if (c_65.isRequired && isInserting) {
-      context.missing(_c_65Meta);
+          _c_65Meta, c_65.isAcceptableOrUnknown(data['c_65'], _c_65Meta));
     }
-    if (d.c_66.present) {
+    if (data.containsKey('c_66')) {
       context.handle(
-          _c_66Meta, c_66.isAcceptableValue(d.c_66.value, _c_66Meta));
-    } else if (c_66.isRequired && isInserting) {
-      context.missing(_c_66Meta);
+          _c_66Meta, c_66.isAcceptableOrUnknown(data['c_66'], _c_66Meta));
     }
-    if (d.c_67.present) {
+    if (data.containsKey('c_67')) {
       context.handle(
-          _c_67Meta, c_67.isAcceptableValue(d.c_67.value, _c_67Meta));
-    } else if (c_67.isRequired && isInserting) {
-      context.missing(_c_67Meta);
+          _c_67Meta, c_67.isAcceptableOrUnknown(data['c_67'], _c_67Meta));
     }
-    if (d.c_68.present) {
+    if (data.containsKey('c_68')) {
       context.handle(
-          _c_68Meta, c_68.isAcceptableValue(d.c_68.value, _c_68Meta));
-    } else if (c_68.isRequired && isInserting) {
-      context.missing(_c_68Meta);
+          _c_68Meta, c_68.isAcceptableOrUnknown(data['c_68'], _c_68Meta));
     }
-    if (d.c_71.present) {
+    if (data.containsKey('c_71')) {
       context.handle(
-          _c_71Meta, c_71.isAcceptableValue(d.c_71.value, _c_71Meta));
-    } else if (c_71.isRequired && isInserting) {
-      context.missing(_c_71Meta);
+          _c_71Meta, c_71.isAcceptableOrUnknown(data['c_71'], _c_71Meta));
     }
-    if (d.c_72.present) {
+    if (data.containsKey('c_72')) {
       context.handle(
-          _c_72Meta, c_72.isAcceptableValue(d.c_72.value, _c_72Meta));
-    } else if (c_72.isRequired && isInserting) {
-      context.missing(_c_72Meta);
+          _c_72Meta, c_72.isAcceptableOrUnknown(data['c_72'], _c_72Meta));
     }
-    if (d.c_73.present) {
+    if (data.containsKey('c_73')) {
       context.handle(
-          _c_73Meta, c_73.isAcceptableValue(d.c_73.value, _c_73Meta));
-    } else if (c_73.isRequired && isInserting) {
-      context.missing(_c_73Meta);
+          _c_73Meta, c_73.isAcceptableOrUnknown(data['c_73'], _c_73Meta));
     }
-    if (d.c_74.present) {
+    if (data.containsKey('c_74')) {
       context.handle(
-          _c_74Meta, c_74.isAcceptableValue(d.c_74.value, _c_74Meta));
-    } else if (c_74.isRequired && isInserting) {
-      context.missing(_c_74Meta);
+          _c_74Meta, c_74.isAcceptableOrUnknown(data['c_74'], _c_74Meta));
     }
-    if (d.c_75.present) {
+    if (data.containsKey('c_75')) {
       context.handle(
-          _c_75Meta, c_75.isAcceptableValue(d.c_75.value, _c_75Meta));
-    } else if (c_75.isRequired && isInserting) {
-      context.missing(_c_75Meta);
+          _c_75Meta, c_75.isAcceptableOrUnknown(data['c_75'], _c_75Meta));
     }
-    if (d.c_76.present) {
+    if (data.containsKey('c_76')) {
       context.handle(
-          _c_76Meta, c_76.isAcceptableValue(d.c_76.value, _c_76Meta));
-    } else if (c_76.isRequired && isInserting) {
-      context.missing(_c_76Meta);
+          _c_76Meta, c_76.isAcceptableOrUnknown(data['c_76'], _c_76Meta));
     }
-    if (d.c_77.present) {
+    if (data.containsKey('c_77')) {
       context.handle(
-          _c_77Meta, c_77.isAcceptableValue(d.c_77.value, _c_77Meta));
-    } else if (c_77.isRequired && isInserting) {
-      context.missing(_c_77Meta);
+          _c_77Meta, c_77.isAcceptableOrUnknown(data['c_77'], _c_77Meta));
     }
-    if (d.c_78.present) {
+    if (data.containsKey('c_78')) {
       context.handle(
-          _c_78Meta, c_78.isAcceptableValue(d.c_78.value, _c_78Meta));
-    } else if (c_78.isRequired && isInserting) {
-      context.missing(_c_78Meta);
+          _c_78Meta, c_78.isAcceptableOrUnknown(data['c_78'], _c_78Meta));
     }
-    if (d.c_81.present) {
+    if (data.containsKey('c_81')) {
       context.handle(
-          _c_81Meta, c_81.isAcceptableValue(d.c_81.value, _c_81Meta));
-    } else if (c_81.isRequired && isInserting) {
-      context.missing(_c_81Meta);
+          _c_81Meta, c_81.isAcceptableOrUnknown(data['c_81'], _c_81Meta));
     }
-    if (d.c_82.present) {
+    if (data.containsKey('c_82')) {
       context.handle(
-          _c_82Meta, c_82.isAcceptableValue(d.c_82.value, _c_82Meta));
-    } else if (c_82.isRequired && isInserting) {
-      context.missing(_c_82Meta);
+          _c_82Meta, c_82.isAcceptableOrUnknown(data['c_82'], _c_82Meta));
     }
-    if (d.c_83.present) {
+    if (data.containsKey('c_83')) {
       context.handle(
-          _c_83Meta, c_83.isAcceptableValue(d.c_83.value, _c_83Meta));
-    } else if (c_83.isRequired && isInserting) {
-      context.missing(_c_83Meta);
+          _c_83Meta, c_83.isAcceptableOrUnknown(data['c_83'], _c_83Meta));
     }
-    if (d.c_84.present) {
+    if (data.containsKey('c_84')) {
       context.handle(
-          _c_84Meta, c_84.isAcceptableValue(d.c_84.value, _c_84Meta));
-    } else if (c_84.isRequired && isInserting) {
-      context.missing(_c_84Meta);
+          _c_84Meta, c_84.isAcceptableOrUnknown(data['c_84'], _c_84Meta));
     }
-    if (d.c_85.present) {
+    if (data.containsKey('c_85')) {
       context.handle(
-          _c_85Meta, c_85.isAcceptableValue(d.c_85.value, _c_85Meta));
-    } else if (c_85.isRequired && isInserting) {
-      context.missing(_c_85Meta);
+          _c_85Meta, c_85.isAcceptableOrUnknown(data['c_85'], _c_85Meta));
     }
-    if (d.c_86.present) {
+    if (data.containsKey('c_86')) {
       context.handle(
-          _c_86Meta, c_86.isAcceptableValue(d.c_86.value, _c_86Meta));
-    } else if (c_86.isRequired && isInserting) {
-      context.missing(_c_86Meta);
+          _c_86Meta, c_86.isAcceptableOrUnknown(data['c_86'], _c_86Meta));
     }
-    if (d.c_87.present) {
+    if (data.containsKey('c_87')) {
       context.handle(
-          _c_87Meta, c_87.isAcceptableValue(d.c_87.value, _c_87Meta));
-    } else if (c_87.isRequired && isInserting) {
-      context.missing(_c_87Meta);
+          _c_87Meta, c_87.isAcceptableOrUnknown(data['c_87'], _c_87Meta));
     }
-    if (d.c_88.present) {
+    if (data.containsKey('c_88')) {
       context.handle(
-          _c_88Meta, c_88.isAcceptableValue(d.c_88.value, _c_88Meta));
-    } else if (c_88.isRequired && isInserting) {
-      context.missing(_c_88Meta);
+          _c_88Meta, c_88.isAcceptableOrUnknown(data['c_88'], _c_88Meta));
     }
-    if (d.c_K3.present) {
+    if (data.containsKey('c_K3')) {
       context.handle(
-          _c_K3Meta, c_K3.isAcceptableValue(d.c_K3.value, _c_K3Meta));
-    } else if (c_K3.isRequired && isInserting) {
-      context.missing(_c_K3Meta);
+          _c_K3Meta, c_K3.isAcceptableOrUnknown(data['c_K3'], _c_K3Meta));
     }
-    if (d.c_K4.present) {
+    if (data.containsKey('c_K4')) {
       context.handle(
-          _c_K4Meta, c_K4.isAcceptableValue(d.c_K4.value, _c_K4Meta));
-    } else if (c_K4.isRequired && isInserting) {
-      context.missing(_c_K4Meta);
+          _c_K4Meta, c_K4.isAcceptableOrUnknown(data['c_K4'], _c_K4Meta));
     }
-    if (d.c_K5.present) {
+    if (data.containsKey('c_K5')) {
       context.handle(
-          _c_K5Meta, c_K5.isAcceptableValue(d.c_K5.value, _c_K5Meta));
-    } else if (c_K5.isRequired && isInserting) {
-      context.missing(_c_K5Meta);
+          _c_K5Meta, c_K5.isAcceptableOrUnknown(data['c_K5'], _c_K5Meta));
     }
-    if (d.c_K6.present) {
+    if (data.containsKey('c_K6')) {
       context.handle(
-          _c_K6Meta, c_K6.isAcceptableValue(d.c_K6.value, _c_K6Meta));
-    } else if (c_K6.isRequired && isInserting) {
-      context.missing(_c_K6Meta);
+          _c_K6Meta, c_K6.isAcceptableOrUnknown(data['c_K6'], _c_K6Meta));
     }
-    if (d.c_K7.present) {
+    if (data.containsKey('c_K7')) {
       context.handle(
-          _c_K7Meta, c_K7.isAcceptableValue(d.c_K7.value, _c_K7Meta));
-    } else if (c_K7.isRequired && isInserting) {
-      context.missing(_c_K7Meta);
+          _c_K7Meta, c_K7.isAcceptableOrUnknown(data['c_K7'], _c_K7Meta));
     }
-    if (d.c_K8.present) {
+    if (data.containsKey('c_K8')) {
       context.handle(
-          _c_K8Meta, c_K8.isAcceptableValue(d.c_K8.value, _c_K8Meta));
-    } else if (c_K8.isRequired && isInserting) {
-      context.missing(_c_K8Meta);
+          _c_K8Meta, c_K8.isAcceptableOrUnknown(data['c_K8'], _c_K8Meta));
     }
-    if (d.c_V37.present) {
+    if (data.containsKey('c_V37')) {
       context.handle(
-          _c_V37Meta, c_V37.isAcceptableValue(d.c_V37.value, _c_V37Meta));
-    } else if (c_V37.isRequired && isInserting) {
-      context.missing(_c_V37Meta);
+          _c_V37Meta, c_V37.isAcceptableOrUnknown(data['c_V37'], _c_V37Meta));
     }
-    if (d.c_V38.present) {
+    if (data.containsKey('c_V38')) {
       context.handle(
-          _c_V38Meta, c_V38.isAcceptableValue(d.c_V38.value, _c_V38Meta));
-    } else if (c_V38.isRequired && isInserting) {
-      context.missing(_c_V38Meta);
+          _c_V38Meta, c_V38.isAcceptableOrUnknown(data['c_V38'], _c_V38Meta));
     }
-    if (d.c_V47.present) {
+    if (data.containsKey('c_V47')) {
       context.handle(
-          _c_V47Meta, c_V47.isAcceptableValue(d.c_V47.value, _c_V47Meta));
-    } else if (c_V47.isRequired && isInserting) {
-      context.missing(_c_V47Meta);
+          _c_V47Meta, c_V47.isAcceptableOrUnknown(data['c_V47'], _c_V47Meta));
     }
-    if (d.c_V48.present) {
+    if (data.containsKey('c_V48')) {
       context.handle(
-          _c_V48Meta, c_V48.isAcceptableValue(d.c_V48.value, _c_V48Meta));
-    } else if (c_V48.isRequired && isInserting) {
-      context.missing(_c_V48Meta);
+          _c_V48Meta, c_V48.isAcceptableOrUnknown(data['c_V48'], _c_V48Meta));
     }
-    if (d.c_V57.present) {
+    if (data.containsKey('c_V57')) {
       context.handle(
-          _c_V57Meta, c_V57.isAcceptableValue(d.c_V57.value, _c_V57Meta));
-    } else if (c_V57.isRequired && isInserting) {
-      context.missing(_c_V57Meta);
+          _c_V57Meta, c_V57.isAcceptableOrUnknown(data['c_V57'], _c_V57Meta));
     }
-    if (d.c_V58.present) {
+    if (data.containsKey('c_V58')) {
       context.handle(
-          _c_V58Meta, c_V58.isAcceptableValue(d.c_V58.value, _c_V58Meta));
-    } else if (c_V58.isRequired && isInserting) {
-      context.missing(_c_V58Meta);
+          _c_V58Meta, c_V58.isAcceptableOrUnknown(data['c_V58'], _c_V58Meta));
     }
-    if (d.c_V67.present) {
+    if (data.containsKey('c_V67')) {
       context.handle(
-          _c_V67Meta, c_V67.isAcceptableValue(d.c_V67.value, _c_V67Meta));
-    } else if (c_V67.isRequired && isInserting) {
-      context.missing(_c_V67Meta);
+          _c_V67Meta, c_V67.isAcceptableOrUnknown(data['c_V67'], _c_V67Meta));
     }
-    if (d.c_V68.present) {
+    if (data.containsKey('c_V68')) {
       context.handle(
-          _c_V68Meta, c_V68.isAcceptableValue(d.c_V68.value, _c_V68Meta));
-    } else if (c_V68.isRequired && isInserting) {
-      context.missing(_c_V68Meta);
+          _c_V68Meta, c_V68.isAcceptableOrUnknown(data['c_V68'], _c_V68Meta));
     }
-    if (d.c_RU.present) {
+    if (data.containsKey('c_RU')) {
       context.handle(
-          _c_RUMeta, c_RU.isAcceptableValue(d.c_RU.value, _c_RUMeta));
-    } else if (c_RU.isRequired && isInserting) {
-      context.missing(_c_RUMeta);
+          _c_RUMeta, c_RU.isAcceptableOrUnknown(data['c_RU'], _c_RUMeta));
     }
-    if (d.c_SU.present) {
+    if (data.containsKey('c_SU')) {
       context.handle(
-          _c_SUMeta, c_SU.isAcceptableValue(d.c_SU.value, _c_SUMeta));
-    } else if (c_SU.isRequired && isInserting) {
-      context.missing(_c_SUMeta);
+          _c_SUMeta, c_SU.isAcceptableOrUnknown(data['c_SU'], _c_SUMeta));
     }
-    if (d.c_SS.present) {
+    if (data.containsKey('c_SS')) {
       context.handle(
-          _c_SSMeta, c_SS.isAcceptableValue(d.c_SS.value, _c_SSMeta));
-    } else if (c_SS.isRequired && isInserting) {
-      context.missing(_c_SSMeta);
+          _c_SSMeta, c_SS.isAcceptableOrUnknown(data['c_SS'], _c_SSMeta));
     }
-    if (d.c_HI.present) {
+    if (data.containsKey('c_HI')) {
       context.handle(
-          _c_HIMeta, c_HI.isAcceptableValue(d.c_HI.value, _c_HIMeta));
-    } else if (c_HI.isRequired && isInserting) {
-      context.missing(_c_HIMeta);
+          _c_HIMeta, c_HI.isAcceptableOrUnknown(data['c_HI'], _c_HIMeta));
     }
-    if (d.c_VMfmax.present) {
+    if (data.containsKey('c_VMfmax')) {
       context.handle(_c_VMfmaxMeta,
-          c_VMfmax.isAcceptableValue(d.c_VMfmax.value, _c_VMfmaxMeta));
-    } else if (c_VMfmax.isRequired && isInserting) {
-      context.missing(_c_VMfmaxMeta);
+          c_VMfmax.isAcceptableOrUnknown(data['c_VMfmax'], _c_VMfmaxMeta));
     }
-    if (d.c_VMfmin.present) {
+    if (data.containsKey('c_VMfmin')) {
       context.handle(_c_VMfminMeta,
-          c_VMfmin.isAcceptableValue(d.c_VMfmin.value, _c_VMfminMeta));
-    } else if (c_VMfmin.isRequired && isInserting) {
-      context.missing(_c_VMfminMeta);
+          c_VMfmin.isAcceptableOrUnknown(data['c_VMfmin'], _c_VMfminMeta));
     }
-    if (d.c_VFrmax.present) {
+    if (data.containsKey('c_VFrmax')) {
       context.handle(_c_VFrmaxMeta,
-          c_VFrmax.isAcceptableValue(d.c_VFrmax.value, _c_VFrmaxMeta));
-    } else if (c_VFrmax.isRequired && isInserting) {
-      context.missing(_c_VFrmaxMeta);
+          c_VFrmax.isAcceptableOrUnknown(data['c_VFrmax'], _c_VFrmaxMeta));
     }
-    if (d.c_VFrmin.present) {
+    if (data.containsKey('c_VFrmin')) {
       context.handle(_c_VFrminMeta,
-          c_VFrmin.isAcceptableValue(d.c_VFrmin.value, _c_VFrminMeta));
-    } else if (c_VFrmin.isRequired && isInserting) {
-      context.missing(_c_VFrminMeta);
+          c_VFrmin.isAcceptableOrUnknown(data['c_VFrmin'], _c_VFrminMeta));
     }
-    if (d.c_Unnamed93.present) {
-      context.handle(_c_Unnamed93Meta,
-          c_Unnamed93.isAcceptableValue(d.c_Unnamed93.value, _c_Unnamed93Meta));
-    } else if (c_Unnamed93.isRequired && isInserting) {
-      context.missing(_c_Unnamed93Meta);
-    }
-    if (d.c_Unnamed94.present) {
-      context.handle(_c_Unnamed94Meta,
-          c_Unnamed94.isAcceptableValue(d.c_Unnamed94.value, _c_Unnamed94Meta));
-    } else if (c_Unnamed94.isRequired && isInserting) {
-      context.missing(_c_Unnamed94Meta);
-    }
-    if (d.c_VM.present) {
+    if (data.containsKey('c_Unnamed93')) {
       context.handle(
-          _c_VMMeta, c_VM.isAcceptableValue(d.c_VM.value, _c_VMMeta));
-    } else if (c_VM.isRequired && isInserting) {
-      context.missing(_c_VMMeta);
+          _c_Unnamed93Meta,
+          c_Unnamed93.isAcceptableOrUnknown(
+              data['c_Unnamed93'], _c_Unnamed93Meta));
     }
-    if (d.c_HI1.present) {
+    if (data.containsKey('c_Unnamed94')) {
       context.handle(
-          _c_HI1Meta, c_HI1.isAcceptableValue(d.c_HI1.value, _c_HI1Meta));
-    } else if (c_HI1.isRequired && isInserting) {
-      context.missing(_c_HI1Meta);
+          _c_Unnamed94Meta,
+          c_Unnamed94.isAcceptableOrUnknown(
+              data['c_Unnamed94'], _c_Unnamed94Meta));
     }
-    if (d.c_RU1.present) {
+    if (data.containsKey('c_VM')) {
       context.handle(
-          _c_RU1Meta, c_RU1.isAcceptableValue(d.c_RU1.value, _c_RU1Meta));
-    } else if (c_RU1.isRequired && isInserting) {
-      context.missing(_c_RU1Meta);
+          _c_VMMeta, c_VM.isAcceptableOrUnknown(data['c_VM'], _c_VMMeta));
     }
-    if (d.c_SU1.present) {
+    if (data.containsKey('c_HI1')) {
       context.handle(
-          _c_SU1Meta, c_SU1.isAcceptableValue(d.c_SU1.value, _c_SU1Meta));
-    } else if (c_SU1.isRequired && isInserting) {
-      context.missing(_c_SU1Meta);
+          _c_HI1Meta, c_HI1.isAcceptableOrUnknown(data['c_HI1'], _c_HI1Meta));
     }
-    if (d.c_SS1.present) {
+    if (data.containsKey('c_RU1')) {
       context.handle(
-          _c_SS1Meta, c_SS1.isAcceptableValue(d.c_SS1.value, _c_SS1Meta));
-    } else if (c_SS1.isRequired && isInserting) {
-      context.missing(_c_SS1Meta);
+          _c_RU1Meta, c_RU1.isAcceptableOrUnknown(data['c_RU1'], _c_RU1Meta));
     }
-    if (d.c_VS.present) {
+    if (data.containsKey('c_SU1')) {
       context.handle(
-          _c_VSMeta, c_VS.isAcceptableValue(d.c_VS.value, _c_VSMeta));
-    } else if (c_VS.isRequired && isInserting) {
-      context.missing(_c_VSMeta);
+          _c_SU1Meta, c_SU1.isAcceptableOrUnknown(data['c_SU1'], _c_SU1Meta));
     }
-    if (d.c_UE.present) {
+    if (data.containsKey('c_SS1')) {
       context.handle(
-          _c_UEMeta, c_UE.isAcceptableValue(d.c_UE.value, _c_UEMeta));
-    } else if (c_UE.isRequired && isInserting) {
-      context.missing(_c_UEMeta);
+          _c_SS1Meta, c_SS1.isAcceptableOrUnknown(data['c_SS1'], _c_SS1Meta));
     }
-    if (d.c_BK.present) {
+    if (data.containsKey('c_VS')) {
       context.handle(
-          _c_BKMeta, c_BK.isAcceptableValue(d.c_BK.value, _c_BKMeta));
-    } else if (c_BK.isRequired && isInserting) {
-      context.missing(_c_BKMeta);
+          _c_VSMeta, c_VS.isAcceptableOrUnknown(data['c_VS'], _c_VSMeta));
     }
-    if (d.c_DK.present) {
+    if (data.containsKey('c_UE')) {
       context.handle(
-          _c_DKMeta, c_DK.isAcceptableValue(d.c_DK.value, _c_DKMeta));
-    } else if (c_DK.isRequired && isInserting) {
-      context.missing(_c_DKMeta);
+          _c_UEMeta, c_UE.isAcceptableOrUnknown(data['c_UE'], _c_UEMeta));
+    }
+    if (data.containsKey('c_BK')) {
+      context.handle(
+          _c_BKMeta, c_BK.isAcceptableOrUnknown(data['c_BK'], _c_BKMeta));
+    }
+    if (data.containsKey('c_DK')) {
+      context.handle(
+          _c_DKMeta, c_DK.isAcceptableOrUnknown(data['c_DK'], _c_DKMeta));
     }
     return context;
   }
@@ -3743,327 +4527,6 @@ class $T4Table extends T4 with TableInfo<$T4Table, T4Data> {
   T4Data map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return T4Data.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(T4Companion d) {
-    final map = <String, Variable>{};
-    if (d.index.present) {
-      map['index'] = Variable<int, IntType>(d.index.value);
-    }
-    if (d.c_NyRad.present) {
-      map['c_NyRad'] = Variable<String, StringType>(d.c_NyRad.value);
-    }
-    if (d.c_Artsgruppe.present) {
-      map['c_Artsgruppe'] = Variable<String, StringType>(d.c_Artsgruppe.value);
-    }
-    if (d.c_Art.present) {
-      map['c_Art'] = Variable<String, StringType>(d.c_Art.value);
-    }
-    if (d.c_Autor.present) {
-      map['c_Autor'] = Variable<String, StringType>(d.c_Autor.value);
-    }
-    if (d.c_NorskNavn.present) {
-      map['c_NorskNavn'] = Variable<String, StringType>(d.c_NorskNavn.value);
-    }
-    if (d.c_X.present) {
-      map['c_X'] = Variable<String, StringType>(d.c_X.value);
-    }
-    if (d.c_Artskode.present) {
-      map['c_Artskode'] = Variable<String, StringType>(d.c_Artskode.value);
-    }
-    if (d.c_11.present) {
-      map['c_11'] = Variable<int, IntType>(d.c_11.value);
-    }
-    if (d.c_12.present) {
-      map['c_12'] = Variable<int, IntType>(d.c_12.value);
-    }
-    if (d.c_13.present) {
-      map['c_13'] = Variable<int, IntType>(d.c_13.value);
-    }
-    if (d.c_14.present) {
-      map['c_14'] = Variable<int, IntType>(d.c_14.value);
-    }
-    if (d.c_15.present) {
-      map['c_15'] = Variable<int, IntType>(d.c_15.value);
-    }
-    if (d.c_16.present) {
-      map['c_16'] = Variable<int, IntType>(d.c_16.value);
-    }
-    if (d.c_17.present) {
-      map['c_17'] = Variable<int, IntType>(d.c_17.value);
-    }
-    if (d.c_18.present) {
-      map['c_18'] = Variable<int, IntType>(d.c_18.value);
-    }
-    if (d.c_21.present) {
-      map['c_21'] = Variable<int, IntType>(d.c_21.value);
-    }
-    if (d.c_22.present) {
-      map['c_22'] = Variable<int, IntType>(d.c_22.value);
-    }
-    if (d.c_23.present) {
-      map['c_23'] = Variable<int, IntType>(d.c_23.value);
-    }
-    if (d.c_24.present) {
-      map['c_24'] = Variable<int, IntType>(d.c_24.value);
-    }
-    if (d.c_25.present) {
-      map['c_25'] = Variable<int, IntType>(d.c_25.value);
-    }
-    if (d.c_26.present) {
-      map['c_26'] = Variable<int, IntType>(d.c_26.value);
-    }
-    if (d.c_27.present) {
-      map['c_27'] = Variable<int, IntType>(d.c_27.value);
-    }
-    if (d.c_28.present) {
-      map['c_28'] = Variable<int, IntType>(d.c_28.value);
-    }
-    if (d.c_31.present) {
-      map['c_31'] = Variable<int, IntType>(d.c_31.value);
-    }
-    if (d.c_32.present) {
-      map['c_32'] = Variable<int, IntType>(d.c_32.value);
-    }
-    if (d.c_33.present) {
-      map['c_33'] = Variable<int, IntType>(d.c_33.value);
-    }
-    if (d.c_34.present) {
-      map['c_34'] = Variable<int, IntType>(d.c_34.value);
-    }
-    if (d.c_35.present) {
-      map['c_35'] = Variable<int, IntType>(d.c_35.value);
-    }
-    if (d.c_36.present) {
-      map['c_36'] = Variable<int, IntType>(d.c_36.value);
-    }
-    if (d.c_37.present) {
-      map['c_37'] = Variable<int, IntType>(d.c_37.value);
-    }
-    if (d.c_38.present) {
-      map['c_38'] = Variable<int, IntType>(d.c_38.value);
-    }
-    if (d.c_41.present) {
-      map['c_41'] = Variable<int, IntType>(d.c_41.value);
-    }
-    if (d.c_42.present) {
-      map['c_42'] = Variable<int, IntType>(d.c_42.value);
-    }
-    if (d.c_43.present) {
-      map['c_43'] = Variable<int, IntType>(d.c_43.value);
-    }
-    if (d.c_44.present) {
-      map['c_44'] = Variable<int, IntType>(d.c_44.value);
-    }
-    if (d.c_45.present) {
-      map['c_45'] = Variable<int, IntType>(d.c_45.value);
-    }
-    if (d.c_46.present) {
-      map['c_46'] = Variable<int, IntType>(d.c_46.value);
-    }
-    if (d.c_47.present) {
-      map['c_47'] = Variable<int, IntType>(d.c_47.value);
-    }
-    if (d.c_48.present) {
-      map['c_48'] = Variable<int, IntType>(d.c_48.value);
-    }
-    if (d.c_51.present) {
-      map['c_51'] = Variable<int, IntType>(d.c_51.value);
-    }
-    if (d.c_52.present) {
-      map['c_52'] = Variable<int, IntType>(d.c_52.value);
-    }
-    if (d.c_53.present) {
-      map['c_53'] = Variable<int, IntType>(d.c_53.value);
-    }
-    if (d.c_54.present) {
-      map['c_54'] = Variable<int, IntType>(d.c_54.value);
-    }
-    if (d.c_55.present) {
-      map['c_55'] = Variable<int, IntType>(d.c_55.value);
-    }
-    if (d.c_56.present) {
-      map['c_56'] = Variable<int, IntType>(d.c_56.value);
-    }
-    if (d.c_57.present) {
-      map['c_57'] = Variable<int, IntType>(d.c_57.value);
-    }
-    if (d.c_58.present) {
-      map['c_58'] = Variable<int, IntType>(d.c_58.value);
-    }
-    if (d.c_61.present) {
-      map['c_61'] = Variable<int, IntType>(d.c_61.value);
-    }
-    if (d.c_62.present) {
-      map['c_62'] = Variable<int, IntType>(d.c_62.value);
-    }
-    if (d.c_63.present) {
-      map['c_63'] = Variable<int, IntType>(d.c_63.value);
-    }
-    if (d.c_64.present) {
-      map['c_64'] = Variable<int, IntType>(d.c_64.value);
-    }
-    if (d.c_65.present) {
-      map['c_65'] = Variable<int, IntType>(d.c_65.value);
-    }
-    if (d.c_66.present) {
-      map['c_66'] = Variable<int, IntType>(d.c_66.value);
-    }
-    if (d.c_67.present) {
-      map['c_67'] = Variable<int, IntType>(d.c_67.value);
-    }
-    if (d.c_68.present) {
-      map['c_68'] = Variable<int, IntType>(d.c_68.value);
-    }
-    if (d.c_71.present) {
-      map['c_71'] = Variable<int, IntType>(d.c_71.value);
-    }
-    if (d.c_72.present) {
-      map['c_72'] = Variable<int, IntType>(d.c_72.value);
-    }
-    if (d.c_73.present) {
-      map['c_73'] = Variable<int, IntType>(d.c_73.value);
-    }
-    if (d.c_74.present) {
-      map['c_74'] = Variable<int, IntType>(d.c_74.value);
-    }
-    if (d.c_75.present) {
-      map['c_75'] = Variable<int, IntType>(d.c_75.value);
-    }
-    if (d.c_76.present) {
-      map['c_76'] = Variable<int, IntType>(d.c_76.value);
-    }
-    if (d.c_77.present) {
-      map['c_77'] = Variable<int, IntType>(d.c_77.value);
-    }
-    if (d.c_78.present) {
-      map['c_78'] = Variable<int, IntType>(d.c_78.value);
-    }
-    if (d.c_81.present) {
-      map['c_81'] = Variable<int, IntType>(d.c_81.value);
-    }
-    if (d.c_82.present) {
-      map['c_82'] = Variable<int, IntType>(d.c_82.value);
-    }
-    if (d.c_83.present) {
-      map['c_83'] = Variable<int, IntType>(d.c_83.value);
-    }
-    if (d.c_84.present) {
-      map['c_84'] = Variable<int, IntType>(d.c_84.value);
-    }
-    if (d.c_85.present) {
-      map['c_85'] = Variable<int, IntType>(d.c_85.value);
-    }
-    if (d.c_86.present) {
-      map['c_86'] = Variable<int, IntType>(d.c_86.value);
-    }
-    if (d.c_87.present) {
-      map['c_87'] = Variable<int, IntType>(d.c_87.value);
-    }
-    if (d.c_88.present) {
-      map['c_88'] = Variable<int, IntType>(d.c_88.value);
-    }
-    if (d.c_K3.present) {
-      map['c_K3'] = Variable<int, IntType>(d.c_K3.value);
-    }
-    if (d.c_K4.present) {
-      map['c_K4'] = Variable<int, IntType>(d.c_K4.value);
-    }
-    if (d.c_K5.present) {
-      map['c_K5'] = Variable<int, IntType>(d.c_K5.value);
-    }
-    if (d.c_K6.present) {
-      map['c_K6'] = Variable<int, IntType>(d.c_K6.value);
-    }
-    if (d.c_K7.present) {
-      map['c_K7'] = Variable<int, IntType>(d.c_K7.value);
-    }
-    if (d.c_K8.present) {
-      map['c_K8'] = Variable<int, IntType>(d.c_K8.value);
-    }
-    if (d.c_V37.present) {
-      map['c_V37'] = Variable<int, IntType>(d.c_V37.value);
-    }
-    if (d.c_V38.present) {
-      map['c_V38'] = Variable<int, IntType>(d.c_V38.value);
-    }
-    if (d.c_V47.present) {
-      map['c_V47'] = Variable<int, IntType>(d.c_V47.value);
-    }
-    if (d.c_V48.present) {
-      map['c_V48'] = Variable<int, IntType>(d.c_V48.value);
-    }
-    if (d.c_V57.present) {
-      map['c_V57'] = Variable<int, IntType>(d.c_V57.value);
-    }
-    if (d.c_V58.present) {
-      map['c_V58'] = Variable<int, IntType>(d.c_V58.value);
-    }
-    if (d.c_V67.present) {
-      map['c_V67'] = Variable<int, IntType>(d.c_V67.value);
-    }
-    if (d.c_V68.present) {
-      map['c_V68'] = Variable<int, IntType>(d.c_V68.value);
-    }
-    if (d.c_RU.present) {
-      map['c_RU'] = Variable<double, RealType>(d.c_RU.value);
-    }
-    if (d.c_SU.present) {
-      map['c_SU'] = Variable<double, RealType>(d.c_SU.value);
-    }
-    if (d.c_SS.present) {
-      map['c_SS'] = Variable<double, RealType>(d.c_SS.value);
-    }
-    if (d.c_HI.present) {
-      map['c_HI'] = Variable<double, RealType>(d.c_HI.value);
-    }
-    if (d.c_VMfmax.present) {
-      map['c_VMfmax'] = Variable<double, RealType>(d.c_VMfmax.value);
-    }
-    if (d.c_VMfmin.present) {
-      map['c_VMfmin'] = Variable<double, RealType>(d.c_VMfmin.value);
-    }
-    if (d.c_VFrmax.present) {
-      map['c_VFrmax'] = Variable<int, IntType>(d.c_VFrmax.value);
-    }
-    if (d.c_VFrmin.present) {
-      map['c_VFrmin'] = Variable<int, IntType>(d.c_VFrmin.value);
-    }
-    if (d.c_Unnamed93.present) {
-      map['c_Unnamed93'] = Variable<int, IntType>(d.c_Unnamed93.value);
-    }
-    if (d.c_Unnamed94.present) {
-      map['c_Unnamed94'] = Variable<String, StringType>(d.c_Unnamed94.value);
-    }
-    if (d.c_VM.present) {
-      map['c_VM'] = Variable<String, StringType>(d.c_VM.value);
-    }
-    if (d.c_HI1.present) {
-      map['c_HI1'] = Variable<String, StringType>(d.c_HI1.value);
-    }
-    if (d.c_RU1.present) {
-      map['c_RU1'] = Variable<String, StringType>(d.c_RU1.value);
-    }
-    if (d.c_SU1.present) {
-      map['c_SU1'] = Variable<String, StringType>(d.c_SU1.value);
-    }
-    if (d.c_SS1.present) {
-      map['c_SS1'] = Variable<String, StringType>(d.c_SS1.value);
-    }
-    if (d.c_VS.present) {
-      map['c_VS'] = Variable<String, StringType>(d.c_VS.value);
-    }
-    if (d.c_UE.present) {
-      map['c_UE'] = Variable<String, StringType>(d.c_UE.value);
-    }
-    if (d.c_BK.present) {
-      map['c_BK'] = Variable<String, StringType>(d.c_BK.value);
-    }
-    if (d.c_DK.present) {
-      map['c_DK'] = Variable<String, StringType>(d.c_DK.value);
-    }
-    return map;
   }
 
   @override
@@ -4079,7 +4542,9 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   T4Dao _t4Dao;
   T4Dao get t4Dao => _t4Dao ??= T4Dao(this as MyDatabase);
   @override
-  List<TableInfo> get allTables => [t4];
+  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities => [t4];
 }
 
 // **************************************************************************
@@ -4087,5 +4552,5 @@ abstract class _$MyDatabase extends GeneratedDatabase {
 // **************************************************************************
 
 mixin _$T4DaoMixin on DatabaseAccessor<MyDatabase> {
-  $T4Table get t4 => db.t4;
+  $T4Table get t4 => attachedDatabase.t4;
 }
