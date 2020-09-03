@@ -30,7 +30,8 @@ nul_elem_segment=ElementarySegment(
     _id='DL.0',
     lec=dl_lec,
     value='0',
-    order=0
+    order=0,
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
@@ -87,7 +88,8 @@ a_elem_segment=ElementarySegment(
     _id='DL.a',
     lec=dl_lec,
     value='a',
-    order=1
+    order=1,
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
@@ -143,7 +145,8 @@ b_elem_segment=ElementarySegment(
     _id='DL.b',
     lec=dl_lec,
     value='b',
-    order=3
+    order=3,
+    relative_order=3
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
@@ -199,7 +202,8 @@ c_elem_segment=ElementarySegment(
     _id='DL.c',
     lec=dl_lec,
     value='c',
-    order=4
+    order=4,
+    relative_order=4
 )
 ElementarySegmentInfo(
     elementarySegment=c_elem_segment,
@@ -256,7 +260,8 @@ d_elem_segment=ElementarySegment(
     _id='DL.d',
     lec=dl_lec,
     value='d',
-    order=5
+    order=5,
+    relative_order=5
 )
 ElementarySegmentInfo(
     elementarySegment=d_elem_segment,
@@ -313,7 +318,8 @@ e_elem_segment=ElementarySegment(
     _id='DL.e',
     lec=dl_lec,
     value='e',
-    order=6
+    order=6,
+    relative_order=6
 )
 ElementarySegmentInfo(
     elementarySegment=e_elem_segment,
@@ -370,7 +376,8 @@ plus_elem_segment=ElementarySegment(
     _id='DL.+',
     lec=dl_lec,
     value='+',
-    order=6
+    order=6,
+    relative_order=6
 )
 ElementarySegmentInfo(
     elementarySegment=plus_elem_segment,

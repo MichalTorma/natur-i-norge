@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Text, Integer, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relation, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.sqltypes import String
 Base = declarative_base()
@@ -244,11 +244,14 @@ class ElementarySegment(Base):
     _id = Column(Text, primary_key=True)
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
     value = Column(Text)
-    order = Column(Integer)
+    order = Column(Integer, nullable=True)
+    relative_order = Column(Integer)
+    parent_id = Column(Text, ForeignKey(f'{prefix}ElementarySegment._id'), nullable=True)
 
     # References
     info = relationship('ElementarySegmentInfo')
     lec = relationship('LEC', back_populates='elementarySegment')
+    parent = relationship('ElementarySegment', remote_side=[_id])
 
 class ElementarySegmentInfo(Base):
     '''Additional language specific information about elementary segments'''

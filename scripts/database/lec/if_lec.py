@@ -34,7 +34,8 @@ nul_elem_segment=ElementarySegment(
     _id='IF.0',
     lec=if_lec,
     value='0',
-    order=0
+    order=0,
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
@@ -65,7 +66,8 @@ a_elem_segment=ElementarySegment(
     _id='IF.a',
     lec=if_lec,
     value='a',
-    order=1
+    order=1,
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
@@ -96,7 +98,8 @@ b_elem_segment=ElementarySegment(
     _id='IF.b',
     lec=if_lec,
     value='b',
-    order=2
+    order=2,
+    relative_order=2
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
@@ -127,7 +130,8 @@ all_elem_segment=ElementarySegment(
     _id='IF.¤',
     lec=if_lec,
     value='¤',
-    order=3
+    order=3,
+    relative_order=3
 )
 ElementarySegmentInfo(
     elementarySegment=all_elem_segment,
