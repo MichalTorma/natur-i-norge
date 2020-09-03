@@ -1,7 +1,6 @@
 # %%
 from model.model import LEC
-from model.model import LECInfo
-from language_data import en_language, nb_language
+from model.model import LECInfo, ElementarySegment, ElementarySegmentInfo
 
 # %% MF
 mf_lec = LEC(
@@ -29,4 +28,178 @@ mf_lec_info_nb = LECInfo(
 En grundig drøfting av økologiske årsaker til variasjon langs myrflatepreg (MF) [under betegnelsen ‘myrflate-myrkant’ (MM)] finnes hos R. Økland (1989a), som ikke fant grunnlag i litteraturen (eller egne data) for at det finnes viktige torvkjemiske forskjeller mellom myrflate og myrkant. Han mente i stedet at bedre gjennomlufting av torva i myrkanten kan være utslagsgivende for karplanter (inkludert trær), mens lys- og strøforhold kan være utslagsgivende for moser og lav. Moen (1990) sine studier på Sølendet (Brekken, Røros, STr) gir støtte til denne forklaringen. Han viser at myrkantsamfunn finnes på steder med mye lavere grunnvannsspeil (bedre gjennomlufting av torva) i tørre perioder (og større veksling i grunnvannsnivået gjennom vekstsesongen) enn myrflatesamfunnene. Dersom grundige økologiske undersøkelser bekrefter denne hypotesen, er det grunner for å betrakte flytematter som et ekstremtrinn langs gradienten. I sin beskrivelse av torvmoseartenes autøkologi, inkluderer Flatberg (2013) flytematter som egen kategori. Fordi det kan vise seg nødvendig å inkludere flytematter som eget trinn, er det hensiktsmessig å reversere retningen på gradienten i forhold til arbeidsdokumenter fram mot NiN 2 og tidligere versjoner av NiN[2] Artikkel 2 fra ‘myrkantpreg’ til myrflatepreg (MF) der flytematter kan hektes på som et siste trinn (eventuelt som en tolkning av MF∙f).
 	Anerkjennelse av myrflatepreg (MF) som en viktig gradient i myrvegetasjonen har sterk rot i Fennoskandisk (og særlig skandinavisk) myrvitenskap, mens Wheeler & Proctor (2000) i sin oversikt over gradienter i nordvesteuropeiske våtmarker ikke anerkjenner dette som en viktig gradient. Argumenter for det skandinaviske synet er oppsummert og drøftet i større bredde av R. Økland et al. (2001b)
 ''',
+)
+
+# nul
+nul_elem_segment=ElementarySegment(
+    _id='MF.0',
+    lec=mf_lec,
+    value='0',
+    order=0,
+    relative_order=0
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='solid ground'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='areas which by definition belong to mainland systems'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='fastmark'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='områder som etter definisjonen tilhører fastmarkssystemer'
+)
+# ab
+ab_elem_segment=ElementarySegment(
+    _id='MF.ab',
+    lec=mf_lec,
+    value='ab',
+    relative_order=1
+)
+ElementarySegment(
+    _id='MF.a',
+    lec=mf_lec,
+    value='a',
+    order=1,
+    relative_order=0,
+    parent=ab_elem_segment
+)
+ElementarySegment(
+    _id='MF.b',
+    lec=mf_lec,
+    value='b',
+    order=2,
+    relative_order=1,
+    parent=ab_elem_segment
+)
+ElementarySegmentInfo(
+    elementarySegment=ab_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='bog and swamp forest land'
+)
+ElementarySegmentInfo(
+    elementarySegment=ab_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='woodland on peatland'
+)
+ElementarySegmentInfo(
+    elementarySegment=ab_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='myr- og sumpskogsmark'
+)
+ElementarySegmentInfo(
+    elementarySegment=ab_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='skogsmark på torvmark'
+)
+# cd
+cd_elem_segment=ElementarySegment(
+    _id='MF.cd',
+    lec=mf_lec,
+    value='cd',
+    relative_order=2
+)
+ElementarySegment(
+    _id='MF.c',
+    lec=mf_lec,
+    value='c',
+    order=3,
+    relative_order=0,
+    parent=cd_elem_segment
+)
+ElementarySegment(
+    _id='MF.d',
+    lec=mf_lec,
+    value='d',
+    order=4,
+    relative_order=1,
+    parent=cd_elem_segment
+)
+ElementarySegmentInfo(
+    elementarySegment=cd_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='open mire edge'
+)
+ElementarySegmentInfo(
+    elementarySegment=cd_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='open peatland (bog) with dominance of species that are also found on solid ground or that are often associated with parts of the bog close to the mainland (so-called ‘mire edge species’)'
+)
+ElementarySegmentInfo(
+    elementarySegment=cd_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='åpen myrkant'
+)
+ElementarySegmentInfo(
+    elementarySegment=cd_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='åpen torvmark (myr) med dominans av arter som også finnes på fastmark eller som ofte er knyttet til fastmarksnære deler av myra (såkalte ‘myrkantarter’)'
+)
+# ef
+ef_elem_segment=ElementarySegment(
+    _id='MF.ef',
+    lec=mf_lec,
+    value='ef',
+    relative_order=3
+)
+ElementarySegment(
+    _id='MF.e',
+    lec=mf_lec,
+    value='e',
+    order=5,
+    relative_order=0,
+    parent=ef_elem_segment
+)
+ElementarySegment(
+    _id='MF.f',
+    lec=mf_lec,
+    value='f',
+    order=6,
+    relative_order=1,
+    parent=ef_elem_segment
+)
+ElementarySegmentInfo(
+    elementarySegment=ef_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='open mire expanse'
+)
+ElementarySegmentInfo(
+    elementarySegment=ef_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='open peatland (bog) with dominance of species that are not found on solid ground and that shepherd near the mainland cover of the bog (so-called ‘bog expanse species’)'
+)
+ElementarySegmentInfo(
+    elementarySegment=ef_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='åpen myrflate'
+)
+ElementarySegmentInfo(
+    elementarySegment=ef_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='åpen torvmark (myr) med dominans av arter som ikke finnes på fastmark og som skyr fastmarksnære deker av myra (såkalte ‘myrflatearter’)'
 )

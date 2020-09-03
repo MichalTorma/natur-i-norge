@@ -32,7 +32,8 @@ nul_elem_segment=ElementarySegment(
     _id='GS.0',
     lec=gs_lec,
     value='0',
-    order=0
+    order=0,
+    relative_order=0
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
@@ -63,7 +64,8 @@ a_elem_segment=ElementarySegment(
     _id='GS.a',
     lec=gs_lec,
     value='a',
-    order=1
+    order=1,
+    relative_order=1
 )
 ElementarySegmentInfo(
     elementarySegment=a_elem_segment,
@@ -94,7 +96,8 @@ b_elem_segment=ElementarySegment(
     _id='GS.b',
     lec=gs_lec,
     value='b',
-    order=2
+    order=2,
+    relative_order=2
 )
 ElementarySegmentInfo(
     elementarySegment=b_elem_segment,
@@ -125,7 +128,23 @@ cd_elem_segment=ElementarySegment(
     _id='GS.cd',
     lec=gs_lec,
     value='cd',
-    order=3
+    relative_order=3
+)
+ElementarySegment(
+    _id='GS.c',
+    lec=gs_lec,
+    value='c',
+    order=3,
+    relative_order=0,
+    parent=cd_elem_segment
+)
+ElementarySegment(
+    _id='GS.d',
+    lec=gs_lec,
+    value='d',
+    order=4,
+    relative_order=2,
+    parent=cd_elem_segment
 )
 ElementarySegmentInfo(
     elementarySegment=cd_elem_segment,
@@ -156,7 +175,8 @@ all_elem_segment=ElementarySegment(
     _id='GS.¤',
     lec=gs_lec,
     value='¤',
-    order=4
+    order=5,
+    relative_order=4
 )
 ElementarySegmentInfo(
     elementarySegment=all_elem_segment,
