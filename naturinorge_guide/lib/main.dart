@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/db_description.dart';
 import 'package:naturinorge_guide/details/details_view.dart';
 import 'package:naturinorge_guide/details/map_provider.dart';
 import 'package:naturinorge_guide/filter_provider.dart';
+import 'package:naturinorge_guide/pages/home_page.dart';
 import 'package:naturinorge_guide/tools/my_theme.dart';
 import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
+
+import 'depriciated/t4_old_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,82 +26,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<FilterProvider>(
-          create: (_) => FilterProvider(MyDatabase().t4Dao),
-        ),
-        ChangeNotifierProvider<MapProvider>(
-          create: (_) => MapProvider(),
-        )
-      ],
-      child: MaterialApp(
-        title: 'Natur i Norge',
-        theme: myTheme,
-        home: MyHomePage(title: 'Natur i Norge'),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  // List<T4Data> data = [];
-
-  @override
-  Widget build(BuildContext context) {
-    // if (data.length == 0){
-    //   Provider.of<T4Dao>(context).allT4.then((allEntries) => {
-    //       setState(() {
-    //         data = allEntries;
-    //       })
-    //     });
-    // }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: <Widget>[
-          Card(
-            child: TextField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.search),
-                ),
-                onChanged: (mask) async {
-                  await Provider.of<FilterProvider>(context, listen: false)
-                      .filterMask(mask);
-                  print(mask);
-                }),
+        providers: [
+          ChangeNotifierProvider<FilterProvider>(
+            create: (_) => FilterProvider(MyDatabase().t4Dao),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: Provider.of<FilterProvider>(context).data.length,
-              itemBuilder: (context, index) => ListTile(
-                title: Text(
-                    Provider.of<FilterProvider>(context).data[index].c_Art),
-                subtitle: Text(Provider.of<FilterProvider>(context)
-                    .data[index]
-                    .c_NorskNavn),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DetailsView(
-                            data: Provider.of<FilterProvider>(context)
-                                .data[index]))),
-              ),
-            ),
-          ),
-	  
+          ChangeNotifierProvider<MapProvider>(
+            create: (_) => MapProvider(),
+          )
         ],
-      ),
-    );
+        child: NeumorphicApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            themeMode: ThemeMode.light,
+            theme: NeumorphicThemeData(
+              baseColor: Color(0xFFFFFFFF),
+              lightSource: LightSource.topLeft,
+              depth: 10,
+            ),
+            darkTheme: NeumorphicThemeData(
+              baseColor: Color(0xFF3E3E3E),
+              lightSource: LightSource.topLeft,
+              depth: 6,
+            ),
+            home: HomePage()));
   }
 }
