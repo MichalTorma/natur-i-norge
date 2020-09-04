@@ -31,6 +31,7 @@ dependencies:
   image: ^2.1.12
   sqlite3_flutter_libs: ^0.2.0
   moor_flutter: ^3.1.0
+  flutter_neumorphic: ^3.0.1
   
   flutter:
     sdk: flutter
