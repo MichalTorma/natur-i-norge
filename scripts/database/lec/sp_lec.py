@@ -1,7 +1,6 @@
 # %%
 from model.model import LEC
-from model.model import LECInfo
-from language_data import en_language, nb_language
+from model.model import LECInfo, ElementarySegment, ElementarySegmentInfo
 
 # %% SP
 sp_lec = LEC(
@@ -35,4 +34,69 @@ sp_lec_info_nb = LECInfo(
 	Selv om forskjellen i påvirkningsregime mellom beitemark og slåttemark i bruk gjenspeiles i en rekke egenskaper, blant annet artenes fordeling innenfor hver eng og vegetasjonsstrukturen, kan det være vanskelig å skille slåttemark og beitemark fra hverandre. Forskjellene blir dessuten gradvis mindre desto lengre tid som har gått siden siste gang et engstykke var i bruk. En hovedgrunn til at det i praktisk kartlegging i dag oftest er vanskelig å skille semi-naturlig beitemark og slåttemark fra hverandre, er at store arealer som tidligere var slåttemark ble lagt ut til beite i løpet av det forrige århundret, etter hvert som produksjon av fôr ble konsentrert til oppdyrka mark (varig oppdyrket eng) og etter hvert som kunstgjødsel overtok for husdyrgjødsel som viktigste gjødselkilde for innmarka. De gamle semi-naturlige beitemarkene, som ofte hadde lavere produksjonsevne enn slåttemarkene, ble da mange steder overlatt til gjengroing med trær mens semi-naturlige slåtteenger, som gjerne også lå nærmere gårdene, ble brukt som beitemarker. Slåtteenger kan beholde ’slåttemarkspreget’ relativt lenge, særlig hvis de beites av storfe og beitetrykket ikke er for hardt. Etter hvert vil imidlertid de ’beiteømfintlige’ artene som karakteriserte slåttemarka forsvinne, mens arter som begunstiges av beite vil øke i mengde. Også i tidligere tider fant det sted endringer i hvordan jordbruksarealer ble utnyttet, og arealer kan derfor ha blitt brukt på ulike måter i ulike perioder. Noen slike forskjeller reflekteres i artssammensetningen den dag i dag (Gustavsson 2007).
 	Analyser av generaliserte artslistedatasett fra semi-naturlige enger og varig oppdyrket mark (B07, se NiN[2] Artikkel 2, kapittel B7], viser en observerbar forskjell mellom beitemark og slåttemark. Slåttemarkspreg (SP) er derfor delt i to basisklasser.
 ''',
+)
+
+# nul
+nul_elem_segment=ElementarySegment(
+    _id='SP.0',
+    lec=sp_lec,
+    value='0',
+    order=0,
+    relative_order=0
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='grazing'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='characterized by grazing as the dominant form of claim'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='beitepreget'
+)
+ElementarySegmentInfo(
+    elementarySegment=nul_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='preget av beite som dominerende hevdform'
+)
+# a
+a_elem_segment=ElementarySegment(
+    _id='SP.a',
+    lec=sp_lec,
+    value='a',
+    order=1,
+    relative_order=1
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='mowing'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='characterized by beaten as the dominant form of assertion'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='slåttepreget'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='preget av slått som dominerende hevdform'
 )
