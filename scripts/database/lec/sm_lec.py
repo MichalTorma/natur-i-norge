@@ -243,17 +243,17 @@ ef_elem_segment=ElementarySegment(
     relative_order=5
 )
 ElementarySegment(
-    _id='SM.ef',
+    _id='SM.e',
     lec=sm_lec,
-    value='ef',
+    value='e',
     order=5,
     relative_order=0,
     parent=ef_elem_segment
 )
 ElementarySegment(
-    _id='SM.ef',
+    _id='SM.f',
     lec=sm_lec,
-    value='ef',
+    value='f',
     order=6,
     relative_order=1,
     parent=ef_elem_segment

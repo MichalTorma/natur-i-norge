@@ -2,7 +2,6 @@
 import os
 from model.model import Base
 import model.model as model
-from importlib import reload
 from pattern_of_variation.pattern_of_variation import savePatternsOfVariation
 from structuring_process.structuring_process import saveStructuringProcesses
 from lec.lec import saveLec
@@ -38,12 +37,49 @@ saveMajorTypes(session)
 saveMappingScales(session)
 saveMinorTypes(session)
 # %%
-session.query(model.MajorTypeGroup).first().majorType[0].majorTypeGroup._id
+# session.query(model.MajorTypeGroup).first().majorType[0].majorTypeGroup._id
+# # %%
+# dm_lec = session.query(model.LEC).filter(model.LEC._id=='DM').first()
+# #%%
+# session.query(model.ElementarySegment).filter(model.ElementarySegment.parent!=None).all()
+
+# # %%
+# session.commit()
+#%% Create schema.png
+import sadisplay
+desc = sadisplay.describe(
+    [getattr(model, attr) for attr in dir(model)],
+    show_methods=True,
+    show_properties=True,
+    show_indexes=True,
+)
+import codecs
+with codecs.open('schema.dot', 'w', encoding='utf-8') as f:
+    f.write(sadisplay.dot(desc))
+
+import subprocess
+subprocess.getoutput('dot -Tpng schema.dot > schema.png')
+
+
+# %% Export CREATE query into moor file
+res = session.execute('SELECT sql FROM sqlite_master').fetchall()
+with open('db/schema.moor', 'w') as f:
+    for row in res:
+        if row['sql'] !=  None:
+            f.write(row['sql'])
+            f.write(';\n')
+        # print(row['sql'])
+
+
 # %%
-dm_lec = session.query(model.LEC).filter(model.LEC._id=='DM').first()
+import subprocess
+
+subprocess.getoutput('rm -f ../../naturinorge_guide/lib/db/schema.moor')
 #%%
-session.query(model.ElementarySegment).filter(model.ElementarySegment.parent!=None).all()
+subprocess.getoutput('cp -f db/schema.moor ../../naturinorge_guide/lib/db/schema.moor')
 
 # %%
-session.commit()
+subprocess.getoutput(f'cp {database_file} ../../naturinorge_guide/assets/nin_database.db')
 
+
+# %%

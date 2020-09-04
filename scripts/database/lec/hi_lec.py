@@ -215,7 +215,7 @@ ElementarySegment(
     value='f',
     order=6,
     relative_order=0,
-    parent=cd_elem_segment
+    parent=fg_elem_segment
 )
 ElementarySegment(
     _id='HI.g',
@@ -223,7 +223,7 @@ ElementarySegment(
     value='g',
     order=7,
     relative_order=1,
-    parent=cd_elem_segment
+    parent=fg_elem_segment
 )
 ElementarySegmentInfo(
     elementarySegment=fg_elem_segment,
