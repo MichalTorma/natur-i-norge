@@ -58,3 +58,99 @@ ElementarySegmentInfo(
     key='<description>',
     value='episoder med lavt oksygeninnhold (< 2 ml O2/L vann) inntreffer aldri'
 )
+# a
+a_elem_segment=ElementarySegment(
+    _id='OM.a',
+    lec=om_lec,
+    value='a',
+    order=1,
+    relative_order=1
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='periodically hypoxic'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='periodic low oxygen content (<2 ml O2 / L water) occurs at least once every 6 years; the species composition contains species with tolerance to anoxic conditions to an extent that makes it observably different from oxic environments'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='periodisk hypoksisk'
+)
+ElementarySegmentInfo(
+    elementarySegment=a_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='periodisk lavt oksygeninnhold (< 2 ml O2/L vann) inntreffer minst én gang hvert 6. år; artssammensetningen inneholder arter med toleranse for anoksiske forhold i et omfang som gjør den observerbart forskjellig fra oksiske miljøer'
+)
+# b
+b_elem_segment=ElementarySegment(
+    _id='OM.b',
+    lec=om_lec,
+    value='b',
+    order=2,
+    relative_order=2
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='periodically anoxic'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='periodisk oksygenmangel (oksygenfrie forhold) inntreffer minst hvert 6. år; arter med stor toleranse for anoksiske forhold dominerer'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='periodisk anoksisk'
+)
+ElementarySegmentInfo(
+    elementarySegment=b_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='periodisk oksygenmangel (oksygenfrie forhold) inntreffer minst hvert 6. år; arter med stor toleranse for anoksiske forhold dominerer'
+)
+# all
+all_elem_segment=ElementarySegment(
+    _id='OM.¤',
+    lec=om_lec,
+    value='¤',
+    order=3,
+    relative_order=3
+)
+ElementarySegmentInfo(
+    elementarySegment=all_elem_segment,
+    language_id='en',
+    key='<class>',
+    value='anoxic'
+)
+ElementarySegmentInfo(
+    elementarySegment=all_elem_segment,
+    language_id='en',
+    key='<description>',
+    value='at least 6 years between each time the bottom is in contact with water with an oxygen content above the limit value of 2 ml O2 / L water; species that are sensitive to anoxic conditions are completely missing'
+)
+ElementarySegmentInfo(
+    elementarySegment=all_elem_segment,
+    language_id='nb',
+    key='<class>',
+    value='anoksisk'
+)
+ElementarySegmentInfo(
+    elementarySegment=all_elem_segment,
+    language_id='nb',
+    key='<description>',
+    value='minst 6 år mellom hver gang bunnen er i kontakt med vann med oksygeninnhold over grenseverdien 2 ml O2/L vann; arter som er følsomme for anoksiske forhold mangler fullstendig'
+)
