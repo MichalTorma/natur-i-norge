@@ -32,6 +32,8 @@ dependencies:
   sqlite3_flutter_libs: ^0.2.0
   moor_flutter: ^3.1.0
   flutter_neumorphic: ^3.0.1
+  easy_localization: ^2.3.3
+  easy_localization_loader: ^0.0.2
   
   flutter:
     sdk: flutter
@@ -65,6 +67,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/
+    - local/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

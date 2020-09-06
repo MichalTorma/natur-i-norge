@@ -7065,8 +7065,8 @@ class NinStandardSegmentInfo extends Table
   bool get dontWriteConstraints => true;
 }
 
-abstract class _$AppDb extends GeneratedDatabase {
-  _$AppDb(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+abstract class _$NiNDatabase extends GeneratedDatabase {
+  _$NiNDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   NinLanguage _ninLanguage;
   NinLanguage get ninLanguage => _ninLanguage ??= NinLanguage(this);
   NinMajorTypeGroup _ninMajorTypeGroup;

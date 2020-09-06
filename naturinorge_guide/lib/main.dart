@@ -1,15 +1,20 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/db_description.dart';
+import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/details_view.dart';
 import 'package:naturinorge_guide/details/map_provider.dart';
 import 'package:naturinorge_guide/filter_provider.dart';
 import 'package:naturinorge_guide/pages/home_page.dart';
+import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:naturinorge_guide/tools/my_theme.dart';
 import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
 import 'depriciated/t4_old_helper.dart';
+import 'generated/codegen_loader.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +23,29 @@ void main() async {
     //   PREFS_DARK: false,
     //   PREFS_CHILD: false,
   });
-  runApp(MyApp());
+  runApp(EasyLocalization(
+    child: MyApp(),
+    supportedLocales: [Locale('en', 'US'), Locale('nb', 'NO')],
+    path: 'local', //'resources/langs',
+    fallbackLocale: Locale('nb', 'NO'),
+    startLocale: Locale('nb', 'NO'),
+    // saveLocale: false,
+    // useOnlyLangCode: true,
+    // preloaderColor: Colors.black,
+    // preloaderWidget: CustomPreloaderWidget(),
+
+    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+    // install easy_localization_loader for enable custom loaders
+    // assetLoader: RootBundleAssetLoader()
+    // assetLoader: HttpAssetLoader()
+    // assetLoader: FileAssetLoader()
+    // assetLoader: CsvAssetLoader()
+    // assetLoader: YamlAssetLoader() //multiple files
+    // assetLoader: YamlSingleAssetLoader() //single file
+    // assetLoader: XmlAssetLoader() //multiple files
+    // assetLoader: XmlSingleAssetLoader() //single file
+    // assetLoader: CodegenLoader()
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -32,11 +59,17 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<MapProvider>(
             create: (_) => MapProvider(),
+          ),
+          ChangeNotifierProvider<NinStructureProvider>(
+            create: (_) => NinStructureProvider(),
           )
         ],
         child: NeumorphicApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
             debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
+            title: LocaleKeys.name.tr(),
             themeMode: ThemeMode.light,
             theme: NeumorphicThemeData(
               baseColor: Color(0xFFFFFFFF),
