@@ -12,10 +12,13 @@ part 'nin_db.g.dart';
 @UseMoor(
   // relative import for the moor file. Moor also supports `package:`
   // imports
+  daos: [],
   include: {'schema.moor'},
 )
-class AppDb extends _$AppDb {
-  AppDb() : super(_openConnection());
+class NiNDatabase extends _$NiNDatabase {
+  NiNDatabase() : super(_openConnection());
+  Future<List<NinMajorTypeGroupData>> get allMajorTypeGroups =>
+      select(ninMajorTypeGroup).get();
 
   @override
   int get schemaVersion => 1;
