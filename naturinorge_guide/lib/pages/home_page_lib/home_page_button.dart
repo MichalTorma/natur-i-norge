@@ -19,26 +19,24 @@ class HomePageButton extends StatelessWidget {
           shape: NeumorphicShape.convex,
           boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
         ),
-        child: Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Flex(
-                direction: Axis.vertical,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(child: Icon(icon)),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      text,
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                  )
-                ],
-              ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Flex(
+              direction: Axis.vertical,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(child: Icon(icon)),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    text,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                )
+              ],
             ),
           ),
         ),

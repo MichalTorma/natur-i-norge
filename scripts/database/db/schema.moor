@@ -38,7 +38,7 @@ CREATE TABLE "nin_GAD" (
 );
 CREATE TABLE "nin_MajorTypeGroupInfo" (
 	"majorTypeGroup_id" TEXT NOT NULL, 
-	language_id INTEGER NOT NULL, 
+	language_id TEXT NOT NULL, 
 	name TEXT, 
 	description TEXT, 
 	PRIMARY KEY ("majorTypeGroup_id", language_id), 
@@ -92,8 +92,8 @@ CREATE TABLE "nin_LECTypeInfo" (
 	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
 );
 CREATE TABLE "nin_MajorTypeInfo" (
-	language_id INTEGER NOT NULL, 
-	"majorType_id" INTEGER NOT NULL, 
+	language_id TEXT NOT NULL, 
+	"majorType_id" TEXT NOT NULL, 
 	name TEXT, 
 	description TEXT, 
 	PRIMARY KEY (language_id, "majorType_id"), 
