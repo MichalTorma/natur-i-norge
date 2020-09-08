@@ -35,7 +35,7 @@ class MajorTypeGroupInfo(Base):
 
     __tablename__ = f'{prefix}MajorTypeGroupInfo'
     majorTypeGroup_id = Column(Text, ForeignKey(f'{prefix}MajorTypeGroup._id'), primary_key=True)
-    language_id = Column(Integer, ForeignKey(f'{prefix}Language._id'), primary_key=True)
+    language_id = Column(Text, ForeignKey(f'{prefix}Language._id'), primary_key=True)
     name = Column(Text)
     description = Column(Text)
 
@@ -60,8 +60,8 @@ class MajorTypeInfo(Base):
     '''Language specific information about major types'''
 
     __tablename__ = f'{prefix}MajorTypeInfo'
-    language_id = Column(Integer, ForeignKey(f'{prefix}Language._id'), primary_key=True)
-    majorType_id = Column(Integer, ForeignKey(f'{prefix}MajorType._id'), primary_key=True)
+    language_id = Column(Text, ForeignKey(f'{prefix}Language._id'), primary_key=True)
+    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'), primary_key=True)
     name = Column(Text)
     description = Column(Text)
 

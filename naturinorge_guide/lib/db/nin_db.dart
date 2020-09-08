@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/services.dart';
+// import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:moor/moor.dart';
 // These imports are only needed to open the database
 import 'package:moor/ffi.dart';
@@ -17,11 +19,20 @@ part 'nin_db.g.dart';
 )
 class NiNDatabase extends _$NiNDatabase {
   NiNDatabase() : super(_openConnection());
+  // query's definitions
   Future<List<NinMajorTypeGroupData>> get allMajorTypeGroups =>
       select(ninMajorTypeGroup).get();
 
+  Future<NinMajorTypeGroupInfoData> getMajorTypeGroupInfoData(
+      NinMajorTypeGroupData mtg, Locale locale) async {
+    var res = (select(ninMajorTypeGroupInfo)
+      ..where((tbl) => tbl.majorTypeGroupId.equals(mtg.id))
+      ..where((tbl) => tbl._languageId.equals(locale.languageCode)));
+    return res.getSingle();
+  }
+
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 }
 
 LazyDatabase _openConnection() {
