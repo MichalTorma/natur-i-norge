@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => T4HelpPageOld(
-                            title: 'T4 helper',
+                            title: LocaleKeys.T4_helper.tr(),
                           ))),
             ),
             HomePageButton(
