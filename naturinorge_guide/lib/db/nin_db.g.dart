@@ -1471,7 +1471,7 @@ class NinGAD extends Table with TableInfo<NinGAD, NinGADData> {
 class NinMajorTypeGroupInfoData extends DataClass
     implements Insertable<NinMajorTypeGroupInfoData> {
   final String majorTypeGroupId;
-  final int languageId;
+  final String languageId;
   final String name;
   final String description;
   NinMajorTypeGroupInfoData(
@@ -1484,11 +1484,10 @@ class NinMajorTypeGroupInfoData extends DataClass
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
-    final intType = db.typeSystem.forDartType<int>();
     return NinMajorTypeGroupInfoData(
       majorTypeGroupId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}majorTypeGroup_id']),
-      languageId: intType
+      languageId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}language_id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       description: stringType
@@ -1502,7 +1501,7 @@ class NinMajorTypeGroupInfoData extends DataClass
       map['majorTypeGroup_id'] = Variable<String>(majorTypeGroupId);
     }
     if (!nullToAbsent || languageId != null) {
-      map['language_id'] = Variable<int>(languageId);
+      map['language_id'] = Variable<String>(languageId);
     }
     if (!nullToAbsent || name != null) {
       map['name'] = Variable<String>(name);
@@ -1533,7 +1532,7 @@ class NinMajorTypeGroupInfoData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinMajorTypeGroupInfoData(
       majorTypeGroupId: serializer.fromJson<String>(json['majorTypeGroup_id']),
-      languageId: serializer.fromJson<int>(json['language_id']),
+      languageId: serializer.fromJson<String>(json['language_id']),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String>(json['description']),
     );
@@ -1543,7 +1542,7 @@ class NinMajorTypeGroupInfoData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'majorTypeGroup_id': serializer.toJson<String>(majorTypeGroupId),
-      'language_id': serializer.toJson<int>(languageId),
+      'language_id': serializer.toJson<String>(languageId),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String>(description),
     };
@@ -1551,7 +1550,7 @@ class NinMajorTypeGroupInfoData extends DataClass
 
   NinMajorTypeGroupInfoData copyWith(
           {String majorTypeGroupId,
-          int languageId,
+          String languageId,
           String name,
           String description}) =>
       NinMajorTypeGroupInfoData(
@@ -1587,7 +1586,7 @@ class NinMajorTypeGroupInfoData extends DataClass
 class NinMajorTypeGroupInfoCompanion
     extends UpdateCompanion<NinMajorTypeGroupInfoData> {
   final Value<String> majorTypeGroupId;
-  final Value<int> languageId;
+  final Value<String> languageId;
   final Value<String> name;
   final Value<String> description;
   const NinMajorTypeGroupInfoCompanion({
@@ -1598,14 +1597,14 @@ class NinMajorTypeGroupInfoCompanion
   });
   NinMajorTypeGroupInfoCompanion.insert({
     @required String majorTypeGroupId,
-    @required int languageId,
+    @required String languageId,
     this.name = const Value.absent(),
     this.description = const Value.absent(),
   })  : majorTypeGroupId = Value(majorTypeGroupId),
         languageId = Value(languageId);
   static Insertable<NinMajorTypeGroupInfoData> custom({
     Expression<String> majorTypeGroupId,
-    Expression<int> languageId,
+    Expression<String> languageId,
     Expression<String> name,
     Expression<String> description,
   }) {
@@ -1619,7 +1618,7 @@ class NinMajorTypeGroupInfoCompanion
 
   NinMajorTypeGroupInfoCompanion copyWith(
       {Value<String> majorTypeGroupId,
-      Value<int> languageId,
+      Value<String> languageId,
       Value<String> name,
       Value<String> description}) {
     return NinMajorTypeGroupInfoCompanion(
@@ -1637,7 +1636,7 @@ class NinMajorTypeGroupInfoCompanion
       map['majorTypeGroup_id'] = Variable<String>(majorTypeGroupId.value);
     }
     if (languageId.present) {
-      map['language_id'] = Variable<int>(languageId.value);
+      map['language_id'] = Variable<String>(languageId.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -1676,10 +1675,10 @@ class NinMajorTypeGroupInfo extends Table
   }
 
   final VerificationMeta _languageIdMeta = const VerificationMeta('languageId');
-  GeneratedIntColumn _languageId;
-  GeneratedIntColumn get languageId => _languageId ??= _constructLanguageId();
-  GeneratedIntColumn _constructLanguageId() {
-    return GeneratedIntColumn('language_id', $tableName, false,
+  GeneratedTextColumn _languageId;
+  GeneratedTextColumn get languageId => _languageId ??= _constructLanguageId();
+  GeneratedTextColumn _constructLanguageId() {
+    return GeneratedTextColumn('language_id', $tableName, false,
         $customConstraints: 'NOT NULL');
   }
 
@@ -3335,8 +3334,8 @@ class NinLECTypeInfo extends Table
 
 class NinMajorTypeInfoData extends DataClass
     implements Insertable<NinMajorTypeInfoData> {
-  final int languageId;
-  final int majorTypeId;
+  final String languageId;
+  final String majorTypeId;
   final String name;
   final String description;
   NinMajorTypeInfoData(
@@ -3348,12 +3347,11 @@ class NinMajorTypeInfoData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     return NinMajorTypeInfoData(
-      languageId: intType
+      languageId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}language_id']),
-      majorTypeId: intType
+      majorTypeId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       description: stringType
@@ -3364,10 +3362,10 @@ class NinMajorTypeInfoData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (!nullToAbsent || languageId != null) {
-      map['language_id'] = Variable<int>(languageId);
+      map['language_id'] = Variable<String>(languageId);
     }
     if (!nullToAbsent || majorTypeId != null) {
-      map['majorType_id'] = Variable<int>(majorTypeId);
+      map['majorType_id'] = Variable<String>(majorTypeId);
     }
     if (!nullToAbsent || name != null) {
       map['name'] = Variable<String>(name);
@@ -3397,8 +3395,8 @@ class NinMajorTypeInfoData extends DataClass
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinMajorTypeInfoData(
-      languageId: serializer.fromJson<int>(json['language_id']),
-      majorTypeId: serializer.fromJson<int>(json['majorType_id']),
+      languageId: serializer.fromJson<String>(json['language_id']),
+      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String>(json['description']),
     );
@@ -3407,15 +3405,18 @@ class NinMajorTypeInfoData extends DataClass
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'language_id': serializer.toJson<int>(languageId),
-      'majorType_id': serializer.toJson<int>(majorTypeId),
+      'language_id': serializer.toJson<String>(languageId),
+      'majorType_id': serializer.toJson<String>(majorTypeId),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String>(description),
     };
   }
 
   NinMajorTypeInfoData copyWith(
-          {int languageId, int majorTypeId, String name, String description}) =>
+          {String languageId,
+          String majorTypeId,
+          String name,
+          String description}) =>
       NinMajorTypeInfoData(
         languageId: languageId ?? this.languageId,
         majorTypeId: majorTypeId ?? this.majorTypeId,
@@ -3447,8 +3448,8 @@ class NinMajorTypeInfoData extends DataClass
 }
 
 class NinMajorTypeInfoCompanion extends UpdateCompanion<NinMajorTypeInfoData> {
-  final Value<int> languageId;
-  final Value<int> majorTypeId;
+  final Value<String> languageId;
+  final Value<String> majorTypeId;
   final Value<String> name;
   final Value<String> description;
   const NinMajorTypeInfoCompanion({
@@ -3458,15 +3459,15 @@ class NinMajorTypeInfoCompanion extends UpdateCompanion<NinMajorTypeInfoData> {
     this.description = const Value.absent(),
   });
   NinMajorTypeInfoCompanion.insert({
-    @required int languageId,
-    @required int majorTypeId,
+    @required String languageId,
+    @required String majorTypeId,
     this.name = const Value.absent(),
     this.description = const Value.absent(),
   })  : languageId = Value(languageId),
         majorTypeId = Value(majorTypeId);
   static Insertable<NinMajorTypeInfoData> custom({
-    Expression<int> languageId,
-    Expression<int> majorTypeId,
+    Expression<String> languageId,
+    Expression<String> majorTypeId,
     Expression<String> name,
     Expression<String> description,
   }) {
@@ -3479,8 +3480,8 @@ class NinMajorTypeInfoCompanion extends UpdateCompanion<NinMajorTypeInfoData> {
   }
 
   NinMajorTypeInfoCompanion copyWith(
-      {Value<int> languageId,
-      Value<int> majorTypeId,
+      {Value<String> languageId,
+      Value<String> majorTypeId,
       Value<String> name,
       Value<String> description}) {
     return NinMajorTypeInfoCompanion(
@@ -3495,10 +3496,10 @@ class NinMajorTypeInfoCompanion extends UpdateCompanion<NinMajorTypeInfoData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (languageId.present) {
-      map['language_id'] = Variable<int>(languageId.value);
+      map['language_id'] = Variable<String>(languageId.value);
     }
     if (majorTypeId.present) {
-      map['majorType_id'] = Variable<int>(majorTypeId.value);
+      map['majorType_id'] = Variable<String>(majorTypeId.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -3527,20 +3528,20 @@ class NinMajorTypeInfo extends Table
   final String _alias;
   NinMajorTypeInfo(this._db, [this._alias]);
   final VerificationMeta _languageIdMeta = const VerificationMeta('languageId');
-  GeneratedIntColumn _languageId;
-  GeneratedIntColumn get languageId => _languageId ??= _constructLanguageId();
-  GeneratedIntColumn _constructLanguageId() {
-    return GeneratedIntColumn('language_id', $tableName, false,
+  GeneratedTextColumn _languageId;
+  GeneratedTextColumn get languageId => _languageId ??= _constructLanguageId();
+  GeneratedTextColumn _constructLanguageId() {
+    return GeneratedTextColumn('language_id', $tableName, false,
         $customConstraints: 'NOT NULL');
   }
 
   final VerificationMeta _majorTypeIdMeta =
       const VerificationMeta('majorTypeId');
-  GeneratedIntColumn _majorTypeId;
-  GeneratedIntColumn get majorTypeId =>
+  GeneratedTextColumn _majorTypeId;
+  GeneratedTextColumn get majorTypeId =>
       _majorTypeId ??= _constructMajorTypeId();
-  GeneratedIntColumn _constructMajorTypeId() {
-    return GeneratedIntColumn('majorType_id', $tableName, false,
+  GeneratedTextColumn _constructMajorTypeId() {
+    return GeneratedTextColumn('majorType_id', $tableName, false,
         $customConstraints: 'NOT NULL');
   }
 

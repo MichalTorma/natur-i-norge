@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
             create: (_) => MapProvider(),
           ),
           ChangeNotifierProvider<NinStructureProvider>(
-            create: (_) => NinStructureProvider(),
+            create: (_) => NinStructureProvider(context.locale),
           )
         ],
         child: NeumorphicApp(
