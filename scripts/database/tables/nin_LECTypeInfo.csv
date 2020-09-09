@@ -1,0 +1,9 @@
+lecType_id|language_id|name|description
+dLEC|en|Defining local environmental complex-variable|Local environmental complex-variable that forms the basis for separating a special major type from normal variation within a major-type group
+dLEC|nb|Definerende lokale komplekse miljøvariabler|For (spesielle) hovedtyper betinget av miljøstress eller forstyrrelse, er i den definerende LKM (dLKM), det vil si den sLKM som skiller hovedtypen fra tilsvarende normale hovedtype.
+iLEC|en|Minor local environmental complex-variable|Local environmental complex-variable associated with gradient lengths between 2 and 3 EDU–E (‘substantial variation’) within a major-type
+iLEC|nb|Tilleggskompleksmiljøvariabler|
+mLEC|en|Major local environmental complex-variable|Local environmental complex-variable associated with gradient lengths that exceed 3 EDU–E (‘considerable variation’) within a major-type
+mLEC|nb|Hovde lokale komplekse miljøvariabler|hLKM er angitt med rød skrift i rekkefølge etter antatt avtakende variasjon i artssammensetning forklart
+uLEC|en|Subordinate local environmental complex-variable|Local environmental complex-variable associated with gradient lengths between 1 and 2 EDU–E (‘observable variation’) within a major-type
+uLEC|nb|Underordnete miljøvariabler |
