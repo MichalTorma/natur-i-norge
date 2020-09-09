@@ -16,6 +16,33 @@
             ]
     
 
+        Detail [label=<
+        <TABLE BGCOLOR="lightyellow" BORDER="0"
+            CELLBORDER="0" CELLSPACING="0">
+                <TR><TD COLSPAN="2" CELLPADDING="4"
+                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
+                ><FONT FACE="Helvetica Bold" COLOR="black"
+                >Detail</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ key</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR>
+        </TABLE>
+    >]
+    
+
         ElementarySegment [label=<
         <TABLE BGCOLOR="lightyellow" BORDER="0"
             CELLBORDER="0" CELLSPACING="0">
@@ -24,6 +51,10 @@
                 ><FONT FACE="Helvetica Bold" COLOR="black"
                 >ElementarySegment</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
@@ -48,54 +79,12 @@
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ info</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ lec</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ parent</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
-        ElementarySegmentInfo [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >ElementarySegmentInfo</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ elementarySegment_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ key</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ elementarySegment</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ language</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR>
@@ -236,6 +225,10 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">☆ parentLec_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
@@ -271,11 +264,6 @@
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ info</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ majorType</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
@@ -299,43 +287,6 @@
     >]
     
 
-        LECInfo [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >LECInfo</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ lec_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ description</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ name</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ language</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ lec</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
         LECType [label=<
         <TABLE BGCOLOR="lightyellow" BORDER="0"
             CELLBORDER="0" CELLSPACING="0">
@@ -346,48 +297,10 @@
         ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ info</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
-        LECTypeInfo [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >LECTypeInfo</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ lecType_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ description</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ name</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ language</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ lecType</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -407,41 +320,6 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ name</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ lecInfo</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ lecTypeInfo</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ majorTypeGroupInfo</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ majorTypeInfo</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ minorTypeInfo</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ patternOfVariationInfo</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ structuringProcessInfo</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -458,15 +336,14 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">☆ majorTypeGroup_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ info</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ lec</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
@@ -491,86 +368,11 @@
         ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ info</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ majorType</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
-        MajorTypeGroupInfo [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >MajorTypeGroupInfo</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ majorTypeGroup_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ description</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ name</FONT
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ language</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ majorTypeGroup</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
-        MajorTypeInfo [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >MajorTypeInfo</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ majorType_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ description</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ name</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ language</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ majorType</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
@@ -656,15 +458,14 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">☆ majorType_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ info</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ minorTypeScaled</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
@@ -672,43 +473,6 @@
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ standardSegments</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
-        MinorTypeInfo [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >MinorTypeInfo</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ key</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ minorType_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ language</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ minorType</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR>
@@ -783,51 +547,13 @@
         ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ info</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ lec</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
-        PatternOfVariationInfo [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >PatternOfVariationInfo</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ patternOfVariation_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ description</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ name</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ language</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ patternOfVariation</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR>
@@ -846,17 +572,16 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">☆ majorTypeLEC_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ elementarySegment</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ info</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
@@ -898,39 +623,6 @@
     >]
     
 
-        StandardSegmentInfo [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >StandardSegmentInfo</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ standardSegment_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ language</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ standardSegment</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
         StructuringProcess [label=<
         <TABLE BGCOLOR="lightyellow" BORDER="0"
             CELLBORDER="0" CELLSPACING="0">
@@ -941,51 +633,13 @@
         ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ info</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ lec</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
-        StructuringProcessInfo [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >StructuringProcessInfo</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ language_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ structuringProcess_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ description</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ name</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ language</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ structuringProcess</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR>
@@ -999,10 +653,10 @@
 		arrowhead = ediamond
 		arrowtail = open
 	]
+	"Detail" -> "Language" [label = "language_id"]
 	"ElementarySegment" -> "LEC" [label = "lec_id"]
 	"ElementarySegment" -> "ElementarySegment" [label = "parent_id"]
-	"ElementarySegmentInfo" -> "ElementarySegment" [label = "elementarySegment_id"]
-	"ElementarySegmentInfo" -> "Language" [label = "language_id"]
+	"ElementarySegment" -> "Detail" [label = "detail_id"]
 	"GadValue" -> "GAD" [label = "gad_id"]
 	"GadValue" -> "MajorType" [label = "majorType_id"]
 	"GadValue" -> "GadScale" [label = "m7Scale_id"]
@@ -1011,32 +665,24 @@
 	"LEC" -> "LEC" [label = "parentLec_id"]
 	"LEC" -> "StructuringProcess" [label = "structuringProcess_id"]
 	"LEC" -> "PatternOfVariation" [label = "patternOfVariation_id"]
-	"LECInfo" -> "Language" [label = "language_id"]
-	"LECInfo" -> "LEC" [label = "lec_id"]
-	"LECTypeInfo" -> "LECType" [label = "lecType_id"]
-	"LECTypeInfo" -> "Language" [label = "language_id"]
+	"LEC" -> "Detail" [label = "detail_id"]
+	"LECType" -> "Detail" [label = "detail_id"]
 	"MajorType" -> "MajorTypeGroup" [label = "majorTypeGroup_id"]
-	"MajorTypeGroupInfo" -> "MajorTypeGroup" [label = "majorTypeGroup_id"]
-	"MajorTypeGroupInfo" -> "Language" [label = "language_id"]
-	"MajorTypeInfo" -> "Language" [label = "language_id"]
-	"MajorTypeInfo" -> "MajorType" [label = "majorType_id"]
+	"MajorType" -> "Detail" [label = "detail_id"]
+	"MajorTypeGroup" -> "Detail" [label = "detail_id"]
 	"MajorTypeLEC" -> "LEC" [label = "lec_id"]
 	"MajorTypeLEC" -> "MajorType" [label = "majorType_id"]
 	"MajorTypeLEC" -> "LECType" [label = "lecType_id"]
 	"MinorType" -> "MajorType" [label = "majorType_id"]
-	"MinorTypeInfo" -> "MinorType" [label = "minorType_id"]
-	"MinorTypeInfo" -> "Language" [label = "language_id"]
+	"MinorType" -> "Detail" [label = "detail_id"]
 	"MinorTypeScaled" -> "MinorType" [label = "minorType_id"]
 	"MinorTypeScaled" -> "MappingScale" [label = "mappingScale_id"]
 	"MinorTypeStandardSegment" -> "MinorType" [label = "minorType_id"]
 	"MinorTypeStandardSegment" -> "StandardSegment" [label = "standardSegment_id"]
-	"PatternOfVariationInfo" -> "Language" [label = "language_id"]
-	"PatternOfVariationInfo" -> "PatternOfVariation" [label = "patternOfVariation_id"]
+	"PatternOfVariation" -> "Detail" [label = "detail_id"]
 	"StandardSegment" -> "MajorTypeLEC" [label = "majorTypeLEC_id"]
+	"StandardSegment" -> "Detail" [label = "detail_id"]
 	"StandardSegmentElement" -> "StandardSegment" [label = "standardSegment_id"]
 	"StandardSegmentElement" -> "ElementarySegment" [label = "elementarySegment_id"]
-	"StandardSegmentInfo" -> "StandardSegment" [label = "standardSegment_id"]
-	"StandardSegmentInfo" -> "Language" [label = "language_id"]
-	"StructuringProcessInfo" -> "Language" [label = "language_id"]
-	"StructuringProcessInfo" -> "StructuringProcess" [label = "structuringProcess_id"]
+	"StructuringProcess" -> "Detail" [label = "detail_id"]
 }
