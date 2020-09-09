@@ -47,7 +47,7 @@ ElementarySegmentInfo(
 )
 ElementarySegmentInfo(
     elementarySegment=nul_elem_segment,
-    language_id='nb',
+    language_id='en',
     key='Depth',
     value='<700m'
 )
