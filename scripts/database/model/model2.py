@@ -11,7 +11,7 @@ class Language(Base):
     reference this table.'''
 
     __tablename__ = f'{prefix}Language'
-    _id = Column(Integer, primary_key=True, autoincrement=True)
+    _id = Column(Text, primary_key=True)
     name = Column(Text)
     
 class Detail(Base):
@@ -22,6 +22,7 @@ class Detail(Base):
     language_id = Column(Text, ForeignKey(f'{prefix}Language._id'), primary_key=True)
     key = Column(Text, primary_key=True)
     value = Column(Text)
+    order = Column(Integer, nullable=True)
 
 class MajorTypeGroup(Base):
     '''Table of Major type groups lie T,V,M etc..'''
@@ -39,6 +40,7 @@ class MajorType(Base):
     __tablename__ = f'{prefix}MajorType'
     _id = Column(Text, primary_key=True,)
     majorTypeGroup_id = Column(Text, ForeignKey(f'{prefix}MajorTypeGroup._id'))
+    order = Column(Integer)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
     # References
@@ -50,7 +52,8 @@ class MinorType(Base):
 
     __tablename__ = f'{prefix}MinorType'
     _id = Column(Text, primary_key=True)
-    majorType_id = Column(Integer, ForeignKey(f'{prefix}MajorType._id'))
+    order = Column(Integer)
+    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
     # References
@@ -73,7 +76,7 @@ class MinorTypeScaled(Base):
 
     __tablename__ = f'{prefix}MinorTypeScaled'
     _id = Column(Text, primary_key=True)
-    minorType_id = Column(Integer, ForeignKey(f'{prefix}MinorType._id'), primary_key=True)
+    minorType_id = Column(Text, ForeignKey(f'{prefix}MinorType._id'), primary_key=True)
     mappingScale_id = Column(Integer, ForeignKey(f'{prefix}MappingScale._id'))
 
     # References
