@@ -22,7 +22,6 @@ class Detail(Base):
     language_id = Column(Text, ForeignKey(f'{prefix}Language._id'), primary_key=True)
     key = Column(Text, primary_key=True)
     value = Column(Text)
-    order = Column(Integer, nullable=True)
 
 class MajorTypeGroup(Base):
     '''Table of Major type groups lie T,V,M etc..'''
