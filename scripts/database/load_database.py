@@ -5,8 +5,8 @@ import codecs
 import sadisplay
 import subprocess
 import os
-from model.model2 import Base
-import model.model2 as model
+from model.model import Base
+import model.model as model
 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
@@ -498,4 +498,7 @@ for detail_tuple in detail.iterrows():
     )
     session.commit()
 
+# %%
+from lib.tools.moor_exporter import generate_moor
+generate_moor(session,'db/schema.moor')
 # %%
