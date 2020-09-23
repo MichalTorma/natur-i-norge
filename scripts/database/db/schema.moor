@@ -14,11 +14,12 @@ CREATE TABLE "nin_GadScale" (
 	"Constancy" TEXT, 
 	PRIMARY KEY ("m7Scale")
 );
-CREATE TABLE "nin_GAD" (
-	"artsKode" TEXT NOT NULL, 
-	"norskNavn" TEXT, 
-	"latinName" TEXT, 
-	PRIMARY KEY ("artsKode")
+CREATE TABLE "nin_Species" (
+	"scientificNameId" INTEGER NOT NULL, 
+	"scientificName" TEXT, 
+	author TEXT, 
+	"vernacularName" TEXT, 
+	PRIMARY KEY ("scientificNameId")
 );
 CREATE TABLE "nin_Detail" (
 	_id TEXT NOT NULL, 
@@ -111,11 +112,11 @@ CREATE TABLE "nin_ElementarySegment" (
 );
 CREATE TABLE "nin_GadValue" (
 	_id INTEGER NOT NULL, 
-	gad_id INTEGER, 
+	species_id INTEGER, 
 	"majorType_id" INTEGER, 
 	"m7Scale_id" INTEGER, 
 	PRIMARY KEY (_id), 
-	FOREIGN KEY(gad_id) REFERENCES "nin_GAD" ("artsKode"), 
+	FOREIGN KEY(species_id) REFERENCES "nin_Species" ("scientificNameId"), 
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
 	FOREIGN KEY("m7Scale_id") REFERENCES "nin_GadScale" ("m7Scale")
 );

@@ -54,6 +54,52 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ value</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ lec_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">⚪ order</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
+        ></TD></TR>
+        </TABLE>
+    >]
+    
+
+        ElementarySegmentGroup [label=<
+        <TABLE BGCOLOR="lightyellow" BORDER="0"
+            CELLBORDER="0" CELLSPACING="0">
+                <TR><TD COLSPAN="2" CELLPADDING="4"
+                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
+                ><FONT FACE="Helvetica Bold" COLOR="black"
+                >ElementarySegmentGroup</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ elementarySegment_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR>
+        </TABLE>
+    >]
+    
+
+        ElementarySegmentGroupDetail [label=<
+        <TABLE BGCOLOR="lightyellow" BORDER="0"
+            CELLBORDER="0" CELLSPACING="0">
+                <TR><TD COLSPAN="2" CELLPADDING="4"
+                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
+                ><FONT FACE="Helvetica Bold" COLOR="black"
+                >ElementarySegmentGroupDetail</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ elementarySegmentGroup_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
@@ -62,59 +108,9 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">☆ parent_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ order</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ relative_order</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ lec</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ parent</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
-        GAD [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >GAD</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ artsKode</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ latinName</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ norskNavn</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ values</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -152,63 +148,46 @@
                 >GadValue</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
         ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">☆ gad_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">☆ m7Scale_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">☆ majorType_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ elementarySegment</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ gad</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
+        ><FONT FACE="Bitstream Vera Sans">☆ species_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ m7Scale</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
+        ><FONT FACE="Bitstream Vera Sans">☆ valueM3Scale_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ valueM7Scale_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">⚪ valueModifier</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR>
         </TABLE>
     >]
     
 
-        GadValueElementarySegment [label=<
+        GadValueElementarySegmentGroup [label=<
         <TABLE BGCOLOR="lightyellow" BORDER="0"
             CELLBORDER="0" CELLSPACING="0">
                 <TR><TD COLSPAN="2" CELLPADDING="4"
                         ALIGN="CENTER" BGCOLOR="palegoldenrod"
                 ><FONT FACE="Helvetica Bold" COLOR="black"
-                >GadValueElementarySegment</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ elementarySegment_id</FONT
+                >GadValueElementarySegmentGroup</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ elementarySegmentGroup_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ gadValue_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ gad_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ elementarySegment</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ gadValue</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -255,11 +234,6 @@
         ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ childLec</FONT></TD
-        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        BGCOLOR="palegoldenrod"
-        ><FONT FACE="Bitstream Vera Sans">⚪ elementarySegment</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
@@ -569,6 +543,33 @@
     >]
     
 
+        Species [label=<
+        <TABLE BGCOLOR="lightyellow" BORDER="0"
+            CELLBORDER="0" CELLSPACING="0">
+                <TR><TD COLSPAN="2" CELLPADDING="4"
+                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
+                ><FONT FACE="Helvetica Bold" COLOR="black"
+                >Species</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ scientificNameId</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">⚪ author</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">⚪ scientificName</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">⚪ vernacularName</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR>
+        </TABLE>
+    >]
+    
+
         StandardSegment [label=<
         <TABLE BGCOLOR="lightyellow" BORDER="0"
             CELLBORDER="0" CELLSPACING="0">
@@ -663,13 +664,16 @@
 	]
 	"Detail" -> "Language" [label = "language_id"]
 	"ElementarySegment" -> "LEC" [label = "lec_id"]
-	"ElementarySegment" -> "ElementarySegment" [label = "parent_id"]
-	"ElementarySegment" -> "Detail" [label = "detail_id"]
-	"GadValue" -> "GAD" [label = "gad_id"]
+	"ElementarySegmentGroup" -> "ElementarySegment" [label = "elementarySegment_id"]
+	"ElementarySegmentGroupDetail" -> "ElementarySegmentGroup" [label = "elementarySegmentGroup_id"]
+	"ElementarySegmentGroupDetail" -> "LEC" [label = "lec_id"]
+	"ElementarySegmentGroupDetail" -> "Detail" [label = "detail_id"]
+	"GadValue" -> "Species" [label = "species_id"]
 	"GadValue" -> "MajorType" [label = "majorType_id"]
-	"GadValue" -> "GadScale" [label = "m7Scale_id"]
-	"GadValueElementarySegment" -> "GadValue" [label = "gad_id"]
-	"GadValueElementarySegment" -> "ElementarySegment" [label = "elementarySegment_id"]
+	"GadValue" -> "GadScale" [label = "valueM7Scale_id"]
+	"GadValue" -> "GadScale" [label = "valueM3Scale_id"]
+	"GadValueElementarySegmentGroup" -> "GadValue" [label = "gadValue_id"]
+	"GadValueElementarySegmentGroup" -> "ElementarySegmentGroup" [label = "elementarySegmentGroup_id"]
 	"LEC" -> "LEC" [label = "parentLec_id"]
 	"LEC" -> "StructuringProcess" [label = "structuringProcess_id"]
 	"LEC" -> "PatternOfVariation" [label = "patternOfVariation_id"]

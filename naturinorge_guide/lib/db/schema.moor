@@ -1,27 +1,11 @@
 CREATE TABLE "nin_Language" (
-	_id INTEGER NOT NULL, 
-	name TEXT, 
-	PRIMARY KEY (_id)
-);
-CREATE TABLE "nin_MajorTypeGroup" (
 	_id TEXT NOT NULL, 
+	name TEXT, 
 	PRIMARY KEY (_id)
 );
 CREATE TABLE "nin_MappingScale" (
 	_id INTEGER NOT NULL, 
 	name TEXT, 
-	PRIMARY KEY (_id)
-);
-CREATE TABLE "nin_StructuringProcess" (
-	_id TEXT NOT NULL, 
-	PRIMARY KEY (_id)
-);
-CREATE TABLE "nin_PatternOfVariation" (
-	_id TEXT NOT NULL, 
-	PRIMARY KEY (_id)
-);
-CREATE TABLE "nin_LECType" (
-	_id TEXT NOT NULL, 
 	PRIMARY KEY (_id)
 );
 CREATE TABLE "nin_GadScale" (
@@ -30,26 +14,53 @@ CREATE TABLE "nin_GadScale" (
 	"Constancy" TEXT, 
 	PRIMARY KEY ("m7Scale")
 );
-CREATE TABLE "nin_GAD" (
-	"artsKode" TEXT NOT NULL, 
-	"norskNavn" TEXT, 
-	"latinName" TEXT, 
-	PRIMARY KEY ("artsKode")
+CREATE TABLE "nin_Species" (
+	"scientificNameId" INTEGER NOT NULL, 
+	"scientificName" TEXT, 
+	author TEXT, 
+	"vernacularName" TEXT, 
+	PRIMARY KEY ("scientificNameId")
 );
-CREATE TABLE "nin_MajorTypeGroupInfo" (
-	"majorTypeGroup_id" TEXT NOT NULL, 
+CREATE TABLE "nin_Detail" (
+	_id TEXT NOT NULL, 
 	language_id TEXT NOT NULL, 
-	name TEXT, 
-	description TEXT, 
-	PRIMARY KEY ("majorTypeGroup_id", language_id), 
-	FOREIGN KEY("majorTypeGroup_id") REFERENCES "nin_MajorTypeGroup" (_id), 
+	"key" TEXT NOT NULL, 
+	value TEXT, 
+	PRIMARY KEY (_id, language_id, "key"), 
 	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
+);
+CREATE TABLE "nin_MajorTypeGroup" (
+	_id TEXT NOT NULL, 
+	detail_id TEXT, 
+	PRIMARY KEY (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
+);
+CREATE TABLE "nin_StructuringProcess" (
+	_id TEXT NOT NULL, 
+	detail_id TEXT, 
+	PRIMARY KEY (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
+);
+CREATE TABLE "nin_PatternOfVariation" (
+	_id TEXT NOT NULL, 
+	detail_id TEXT, 
+	PRIMARY KEY (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
+);
+CREATE TABLE "nin_LECType" (
+	_id TEXT NOT NULL, 
+	detail_id TEXT, 
+	PRIMARY KEY (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_MajorType" (
 	_id TEXT NOT NULL, 
 	"majorTypeGroup_id" TEXT, 
+	"order" INTEGER, 
+	detail_id TEXT, 
 	PRIMARY KEY (_id), 
-	FOREIGN KEY("majorTypeGroup_id") REFERENCES "nin_MajorTypeGroup" (_id)
+	FOREIGN KEY("majorTypeGroup_id") REFERENCES "nin_MajorTypeGroup" (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_LEC" (
 	_id TEXT NOT NULL, 
@@ -59,61 +70,21 @@ CREATE TABLE "nin_LEC" (
 	"knowledgeBaseRelations" INTEGER, 
 	"knowledgeBaseDivision" INTEGER, 
 	"spatialScale" INTEGER, 
+	detail_id TEXT, 
 	PRIMARY KEY (_id), 
 	FOREIGN KEY("parentLec_id") REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY("structuringProcess_id") REFERENCES "nin_StructuringProcess" (_id), 
-	FOREIGN KEY("patternOfVariation_id") REFERENCES "nin_PatternOfVariation" (_id)
-);
-CREATE TABLE "nin_StructuringProcessInfo" (
-	language_id INTEGER NOT NULL, 
-	"structuringProcess_id" TEXT NOT NULL, 
-	name TEXT, 
-	description TEXT, 
-	PRIMARY KEY (language_id, "structuringProcess_id"), 
-	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id), 
-	FOREIGN KEY("structuringProcess_id") REFERENCES "nin_StructuringProcess" (_id)
-);
-CREATE TABLE "nin_PatternOfVariationInfo" (
-	language_id INTEGER NOT NULL, 
-	"patternOfVariation_id" TEXT NOT NULL, 
-	name TEXT, 
-	description TEXT, 
-	PRIMARY KEY (language_id, "patternOfVariation_id"), 
-	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id), 
-	FOREIGN KEY("patternOfVariation_id") REFERENCES "nin_PatternOfVariation" (_id)
-);
-CREATE TABLE "nin_LECTypeInfo" (
-	"lecType_id" TEXT NOT NULL, 
-	language_id TEXT NOT NULL, 
-	name TEXT, 
-	description TEXT, 
-	PRIMARY KEY ("lecType_id", language_id), 
-	FOREIGN KEY("lecType_id") REFERENCES "nin_LECType" (_id), 
-	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
-);
-CREATE TABLE "nin_MajorTypeInfo" (
-	language_id TEXT NOT NULL, 
-	"majorType_id" TEXT NOT NULL, 
-	name TEXT, 
-	description TEXT, 
-	PRIMARY KEY (language_id, "majorType_id"), 
-	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id), 
-	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)
+	FOREIGN KEY("patternOfVariation_id") REFERENCES "nin_PatternOfVariation" (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_MinorType" (
 	_id TEXT NOT NULL, 
-	"majorType_id" INTEGER, 
+	"order" INTEGER, 
+	"majorType_id" TEXT, 
+	detail_id TEXT, 
 	PRIMARY KEY (_id), 
-	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)
-);
-CREATE TABLE "nin_LECInfo" (
-	language_id INTEGER NOT NULL, 
-	lec_id TEXT NOT NULL, 
-	name TEXT, 
-	description TEXT, 
-	PRIMARY KEY (language_id, lec_id), 
-	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id), 
-	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)
+	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_MajorTypeLEC" (
 	_id TEXT NOT NULL, 
@@ -129,62 +100,45 @@ CREATE TABLE "nin_MajorTypeLEC" (
 CREATE TABLE "nin_ElementarySegment" (
 	_id TEXT NOT NULL, 
 	lec_id TEXT, 
-	value TEXT, 
+	value TEXT NOT NULL, 
 	"order" INTEGER, 
-	relative_order INTEGER, 
-	parent_id TEXT, 
-	PRIMARY KEY (_id), 
-	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
-	FOREIGN KEY(parent_id) REFERENCES "nin_ElementarySegment" (_id)
+	PRIMARY KEY (_id, value), 
+	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)
 );
 CREATE TABLE "nin_GadValue" (
-	_id INTEGER NOT NULL, 
-	gad_id INTEGER, 
+	_id TEXT NOT NULL, 
+	species_id INTEGER, 
 	"majorType_id" INTEGER, 
-	"m7Scale_id" INTEGER, 
+	"valueM7Scale_id" INTEGER, 
+	"valueM3Scale_id" INTEGER, 
+	"valueModifier" INTEGER, 
 	PRIMARY KEY (_id), 
-	FOREIGN KEY(gad_id) REFERENCES "nin_GAD" ("artsKode"), 
+	FOREIGN KEY(species_id) REFERENCES "nin_Species" ("scientificNameId"), 
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
-	FOREIGN KEY("m7Scale_id") REFERENCES "nin_GadScale" ("m7Scale")
-);
-CREATE TABLE "nin_MinorTypeInfo" (
-	"minorType_id" INTEGER NOT NULL, 
-	language_id INTEGER NOT NULL, 
-	"key" TEXT NOT NULL, 
-	value TEXT, 
-	PRIMARY KEY ("minorType_id", language_id, "key"), 
-	FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id), 
-	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
+	FOREIGN KEY("valueM7Scale_id") REFERENCES "nin_GadScale" ("m7Scale"), 
+	FOREIGN KEY("valueM3Scale_id") REFERENCES "nin_GadScale" ("m3Scale")
 );
 CREATE TABLE "nin_MinorTypeScaled" (
 	_id TEXT NOT NULL, 
-	"minorType_id" INTEGER NOT NULL, 
+	"minorType_id" TEXT NOT NULL, 
 	"mappingScale_id" INTEGER, 
 	PRIMARY KEY (_id, "minorType_id"), 
 	FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id), 
 	FOREIGN KEY("mappingScale_id") REFERENCES "nin_MappingScale" (_id)
 );
-CREATE TABLE "nin_ElementarySegmentInfo" (
-	"elementarySegment_id" INTEGER NOT NULL, 
-	language_id INTEGER NOT NULL, 
-	"key" TEXT NOT NULL, 
-	value TEXT, 
-	PRIMARY KEY ("elementarySegment_id", language_id, "key"), 
-	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id), 
-	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
+CREATE TABLE "nin_ElementarySegmentGroup" (
+	_id TEXT NOT NULL, 
+	"elementarySegment_id" TEXT NOT NULL, 
+	PRIMARY KEY (_id, "elementarySegment_id"), 
+	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
 );
 CREATE TABLE "nin_StandardSegment" (
 	_id TEXT NOT NULL, 
 	"majorTypeLEC_id" TEXT, 
+	detail_id TEXT, 
 	PRIMARY KEY (_id), 
-	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id)
-);
-CREATE TABLE "nin_GadValueElementarySegment" (
-	gad_id INTEGER NOT NULL, 
-	"elementarySegment_id" INTEGER NOT NULL, 
-	PRIMARY KEY (gad_id, "elementarySegment_id"), 
-	FOREIGN KEY(gad_id) REFERENCES "nin_GadValue" (_id), 
-	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
+	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_MinorTypeStandardSegment" (
 	"minorType_id" TEXT NOT NULL, 
@@ -193,6 +147,16 @@ CREATE TABLE "nin_MinorTypeStandardSegment" (
 	FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id), 
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)
 );
+CREATE TABLE "nin_ElementarySegmentGroupDetail" (
+	"elementarySegmentGroup_id" TEXT NOT NULL, 
+	lec_id TEXT, 
+	value TEXT, 
+	detail_id TEXT, 
+	PRIMARY KEY ("elementarySegmentGroup_id"), 
+	FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" ("elementarySegment_id"), 
+	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
+);
 CREATE TABLE "nin_StandardSegmentElement" (
 	"standardSegment_id" TEXT NOT NULL, 
 	"elementarySegment_id" TEXT NOT NULL, 
@@ -200,11 +164,10 @@ CREATE TABLE "nin_StandardSegmentElement" (
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id), 
 	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
 );
-CREATE TABLE "nin_StandardSegmentInfo" (
-	"standardSegment_id" TEXT NOT NULL, 
-	language_id TEXT NOT NULL, 
-	value TEXT, 
-	PRIMARY KEY ("standardSegment_id", language_id), 
-	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id), 
-	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
+CREATE TABLE "nin_GadValueElementarySegmentGroup" (
+	"gadValue_id" INTEGER NOT NULL, 
+	"elementarySegmentGroup_id" TEXT NOT NULL, 
+	PRIMARY KEY ("gadValue_id", "elementarySegmentGroup_id"), 
+	FOREIGN KEY("gadValue_id") REFERENCES "nin_GadValue" (_id), 
+	FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" (_id)
 );
