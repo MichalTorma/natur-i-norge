@@ -105,7 +105,7 @@ def insert_gad_value(specie, elementary_segments, value):
             _id=gad_value_id,
             species_id=specie.scientificNameId,
             majorType_id=major_type,
-            valueM7Scale_id=value
+            valueM7Scale_id=int(value)
         )
     )
 
@@ -174,6 +174,7 @@ def insert_ki(specie, local):
         value=local['K8'].values[0]
     )
     # print(local['K8'].values[0])
+    session.commit()
 
 # %%
 
@@ -185,7 +186,8 @@ def add_local_supplement(specie):
 
 local = add_local_supplement(session.query(model.Species).first())
 # %%
-for specie in session.query(model.Species).all():
+all_species = session.query(model.Species).all()
+for specie in all_species:
     # print(specie)
     try:
         add_local_supplement(specie)
