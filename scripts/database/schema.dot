@@ -89,6 +89,25 @@
     >]
     
 
+        ElementarySegmentGroupCombination [label=<
+        <TABLE BGCOLOR="lightyellow" BORDER="0"
+            CELLBORDER="0" CELLSPACING="0">
+                <TR><TD COLSPAN="2" CELLPADDING="4"
+                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
+                ><FONT FACE="Helvetica Bold" COLOR="black"
+                >ElementarySegmentGroupCombination</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">★ elementarySegmentGroup_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR>
+        </TABLE>
+    >]
+    
+
         ElementarySegmentGroupDetail [label=<
         <TABLE BGCOLOR="lightyellow" BORDER="0"
             CELLBORDER="0" CELLSPACING="0">
@@ -146,15 +165,15 @@
                         ALIGN="CENTER" BGCOLOR="palegoldenrod"
                 ><FONT FACE="Helvetica Bold" COLOR="black"
                 >GadValue</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ _id</FONT
+        ><FONT FACE="Bitstream Vera Sans">★ elementarySegmentGroupCombination_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">☆ majorType_id</FONT
+        ><FONT FACE="Bitstream Vera Sans">★ species_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">☆ species_id</FONT
+        ><FONT FACE="Bitstream Vera Sans">☆ majorType_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
@@ -167,25 +186,6 @@
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">⚪ valueModifier</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
-        ></TD></TR>
-        </TABLE>
-    >]
-    
-
-        GadValueElementarySegmentGroup [label=<
-        <TABLE BGCOLOR="lightyellow" BORDER="0"
-            CELLBORDER="0" CELLSPACING="0">
-                <TR><TD COLSPAN="2" CELLPADDING="4"
-                        ALIGN="CENTER" BGCOLOR="palegoldenrod"
-                ><FONT FACE="Helvetica Bold" COLOR="black"
-                >GadValueElementarySegmentGroup</FONT></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ elementarySegmentGroup_id</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">★ gadValue_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR>
@@ -665,15 +665,15 @@
 	"Detail" -> "Language" [label = "language_id"]
 	"ElementarySegment" -> "LEC" [label = "lec_id"]
 	"ElementarySegmentGroup" -> "ElementarySegment" [label = "elementarySegment_id"]
+	"ElementarySegmentGroupCombination" -> "ElementarySegmentGroup" [label = "elementarySegmentGroup_id"]
 	"ElementarySegmentGroupDetail" -> "ElementarySegmentGroup" [label = "elementarySegmentGroup_id"]
 	"ElementarySegmentGroupDetail" -> "LEC" [label = "lec_id"]
 	"ElementarySegmentGroupDetail" -> "Detail" [label = "detail_id"]
+	"GadValue" -> "ElementarySegmentGroupCombination" [label = "elementarySegmentGroupCombination_id"]
 	"GadValue" -> "Species" [label = "species_id"]
 	"GadValue" -> "MajorType" [label = "majorType_id"]
 	"GadValue" -> "GadScale" [label = "valueM7Scale_id"]
 	"GadValue" -> "GadScale" [label = "valueM3Scale_id"]
-	"GadValueElementarySegmentGroup" -> "GadValue" [label = "gadValue_id"]
-	"GadValueElementarySegmentGroup" -> "ElementarySegmentGroup" [label = "elementarySegmentGroup_id"]
 	"LEC" -> "LEC" [label = "parentLec_id"]
 	"LEC" -> "StructuringProcess" [label = "structuringProcess_id"]
 	"LEC" -> "PatternOfVariation" [label = "patternOfVariation_id"]

@@ -173,12 +173,14 @@ class LECType(Base):
     _id = Column(Text, primary_key=True)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
+
 class ElementarySegment(Base):
-    __tablename__=f'{prefix}ElementarySegment'
+    __tablename__ = f'{prefix}ElementarySegment'
     _id = Column(Text, primary_key=True)
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
     value = Column(Text, primary_key=True)
     order = Column(Integer)
+
 
 class ElementarySegmentGroup(Base):
     __tablename__ = f'{prefix}ElementarySegmentGroup'
@@ -186,11 +188,13 @@ class ElementarySegmentGroup(Base):
     elementarySegment_id = Column(Text, ForeignKey(
         f'{prefix}ElementarySegment._id'), primary_key=True)
 
+
 class ElementarySegmentGroupDetail(Base):
     '''elementary segments of individual LECs like KA.a, VT.b'''
 
     __tablename__ = f'{prefix}ElementarySegmentGroupDetail'
-    elementarySegmentGroup_id = Column(Text, ForeignKey(f'{prefix}ElementarySegmentGroup.elementarySegment_id'), primary_key=True)
+    elementarySegmentGroup_id = Column(Text, ForeignKey(
+        f'{prefix}ElementarySegmentGroup.elementarySegment_id'), primary_key=True)
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
     value = Column(Text)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
@@ -230,9 +234,10 @@ class StandardSegment(Base):
 
 class GadValue(Base):
     __tablename__ = f'{prefix}GadValue'
-    _id = Column(Text, primary_key=True)
+    elementarySegmentGroupCombination_id = Column(Text, ForeignKey(
+        f'{prefix}ElementarySegmentGroupCombination._id'), primary_key=True)
     species_id = Column(Integer, ForeignKey(
-        f'{prefix}Species.scientificNameId'))
+        f'{prefix}Species.scientificNameId'), primary_key=True)
     majorType_id = Column(Integer, ForeignKey(f'{prefix}MajorType._id'))
     valueM7Scale_id = Column(Integer, ForeignKey(
         f'{prefix}GadScale.m7Scale'), nullable=True)
@@ -246,12 +251,9 @@ class GadValue(Base):
     #     'GadValueElementarySegment', back_populates='gadValue')
 
 
-
-
-class GadValueElementarySegmentGroup(Base):
-    __tablename__ = f'{prefix}GadValueElementarySegmentGroup'
-    gadValue_id = Column(Integer, ForeignKey(
-        f'{prefix}GadValue._id'), primary_key=True)
+class ElementarySegmentGroupCombination(Base):
+    __tablename__ = f'{prefix}ElementarySegmentGroupCombination'
+    _id = Column(Text, primary_key=True)
     elementarySegmentGroup_id = Column(Text, ForeignKey(
         f'{prefix}ElementarySegmentGroup._id'), primary_key=True)
 
