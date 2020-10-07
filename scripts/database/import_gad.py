@@ -39,11 +39,9 @@ session = Session()
 # %%
 session.query(model.GadValue).delete()
 session.query(model.Species).delete()
-session.query(model.GadValueElementarySegmentGroup).delete()
+session.query(model.ElementarySegmentGroupCombination).delete()
 session.commit()
 # %%
-
-
 def insert_specie_gad(specie):
     traits_api = get_traits_api(specie)['speciesNaturetypeResource']
     session.add(
@@ -59,22 +57,23 @@ def insert_specie_gad(specie):
         elementary_segments = trait['naturetypeResource']['ninCode'].replace(
             ' ', '').replace('UT', 'UF').replace('-', '.').split(',')
         elementary_segments.append('KI.0a')
-        gad_value_id = f'{specie["scientificNameId"]}-{major_type}-{"/".join(elementary_segments)}'
+        combination_id = "/".join(elementary_segments)
+        for es in elementary_segments:
+            session.merge(
+                model.ElementarySegmentGroupCombination(
+                    _id=combination_id,
+                    elementarySegmentGroup_id=es
+                )
+            )
         session.add(
             model.GadValue(
-                _id=gad_value_id,
+                elementarySegmentGroupCombination_id=combination_id,
                 species_id=specie["scientificNameId"],
                 majorType_id=major_type,
                 valueM7Scale_id=value
             )
         )
-        for es in elementary_segments:
-            session.add(
-                model.GadValueElementarySegmentGroup(
-                    gadValue_id=gad_value_id,
-                    elementarySegmentGroup_id=es
-                )
-            )
+        
     session.commit()
 
 
@@ -99,10 +98,17 @@ def get_local(specie):
 
 
 def insert_gad_value(specie, elementary_segments, value):
-    gad_value_id = f'{specie.scientificNameId}-{major_type}-{"/".join(elementary_segments)}'
+    combination_id = "/".join(elementary_segments)
+    for es in elementary_segments:
+        session.merge(
+            model.ElementarySegmentGroupCombination(
+                _id = combination_id,
+                elementarySegmentGroup_id=es
+            )
+        )
     session.add(
         model.GadValue(
-            _id=gad_value_id,
+            elementarySegmentGroupCombination_id=combination_id,
             species_id=specie.scientificNameId,
             majorType_id=major_type,
             valueM7Scale_id=int(value)
@@ -184,7 +190,7 @@ def add_local_supplement(specie):
     return local
 
 
-local = add_local_supplement(session.query(model.Species).first())
+# local = add_local_supplement(session.query(model.Species).first())
 # %%
 all_species = session.query(model.Species).all()
 for specie in all_species:
@@ -193,14 +199,4 @@ for specie in all_species:
         add_local_supplement(specie)
     except Exception as e:
         print(f'{specie.scientificName}\n{e}')
-# %%
-sp = session.query(model.Species).join(model.GadValue).first()
-# %%
-local = get_local(sp)
-# %%
-sp.scientificName
-# %%
-sp.gadValues
-# %%
-local['K3'].values[0]
 # %%
