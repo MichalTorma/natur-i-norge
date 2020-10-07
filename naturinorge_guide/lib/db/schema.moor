@@ -105,19 +105,6 @@ CREATE TABLE "nin_ElementarySegment" (
 	PRIMARY KEY (_id, value), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)
 );
-CREATE TABLE "nin_GadValue" (
-	_id TEXT NOT NULL, 
-	species_id INTEGER, 
-	"majorType_id" INTEGER, 
-	"valueM7Scale_id" INTEGER, 
-	"valueM3Scale_id" INTEGER, 
-	"valueModifier" INTEGER, 
-	PRIMARY KEY (_id), 
-	FOREIGN KEY(species_id) REFERENCES "nin_Species" ("scientificNameId"), 
-	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
-	FOREIGN KEY("valueM7Scale_id") REFERENCES "nin_GadScale" ("m7Scale"), 
-	FOREIGN KEY("valueM3Scale_id") REFERENCES "nin_GadScale" ("m3Scale")
-);
 CREATE TABLE "nin_MinorTypeScaled" (
 	_id TEXT NOT NULL, 
 	"minorType_id" TEXT NOT NULL, 
@@ -164,10 +151,23 @@ CREATE TABLE "nin_StandardSegmentElement" (
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id), 
 	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
 );
-CREATE TABLE "nin_GadValueElementarySegmentGroup" (
-	"gadValue_id" INTEGER NOT NULL, 
+CREATE TABLE "nin_ElementarySegmentGroupCombination" (
+	_id TEXT NOT NULL, 
 	"elementarySegmentGroup_id" TEXT NOT NULL, 
-	PRIMARY KEY ("gadValue_id", "elementarySegmentGroup_id"), 
-	FOREIGN KEY("gadValue_id") REFERENCES "nin_GadValue" (_id), 
+	PRIMARY KEY (_id, "elementarySegmentGroup_id"), 
 	FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" (_id)
+);
+CREATE TABLE "nin_GadValue" (
+	"elementarySegmentGroupCombination_id" TEXT NOT NULL, 
+	species_id INTEGER NOT NULL, 
+	"majorType_id" INTEGER, 
+	"valueM7Scale_id" INTEGER, 
+	"valueM3Scale_id" INTEGER, 
+	"valueModifier" INTEGER, 
+	PRIMARY KEY ("elementarySegmentGroupCombination_id", species_id), 
+	FOREIGN KEY("elementarySegmentGroupCombination_id") REFERENCES "nin_ElementarySegmentGroupCombination" (_id), 
+	FOREIGN KEY(species_id) REFERENCES "nin_Species" ("scientificNameId"), 
+	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
+	FOREIGN KEY("valueM7Scale_id") REFERENCES "nin_GadScale" ("m7Scale"), 
+	FOREIGN KEY("valueM3Scale_id") REFERENCES "nin_GadScale" ("m3Scale")
 );
