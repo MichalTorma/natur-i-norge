@@ -256,12 +256,16 @@ class GadModifier(Base):
     __tablename__ = f'{prefix}GadModifier'
     majorTypeLEC_id = Column(
         Text,
-        ForeignKey(f'{prefix}MajorTypeLEC._id')
+        ForeignKey(f'{prefix}MajorTypeLEC._id'),
+        primary_key=True
+    )
+    lec_id = Column(
+        Text,
+        ForeignKey(f'{prefix}LEC._id')
     )
     species_id = Column(Integer, ForeignKey(
         f'{prefix}Species.scientificNameId'), primary_key=True)
     value = Column(Integer)
-    
 
 
 class ElementarySegmentCombination(Base):
