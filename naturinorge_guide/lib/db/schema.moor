@@ -128,11 +128,13 @@ CREATE TABLE "nin_StandardSegment" (
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_GadModifier" (
-	"majorTypeLEC_id" TEXT, 
+	"majorTypeLEC_id" TEXT NOT NULL, 
+	lec_id TEXT, 
 	species_id INTEGER NOT NULL, 
 	value INTEGER, 
-	PRIMARY KEY (species_id), 
+	PRIMARY KEY ("majorTypeLEC_id", species_id), 
 	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id), 
+	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY(species_id) REFERENCES "nin_Species" ("scientificNameId")
 );
 CREATE TABLE "nin_MinorTypeStandardSegment" (
