@@ -1,31 +1,28 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
-import 'package:tuple/tuple.dart';
+import 'package:naturinorge_guide/details/detailed_adapter.dart';
 
 enum ButtonState { AVAILABLE, SELECTED, UNAVAILABLE }
 
 class NinStructureProvider extends ChangeNotifier {
   NiNDatabase db;
-  var _ninMajorTypeGroups =
-      Map<NinMajorTypeGroupData, NinMajorTypeGroupInfoData>();
-  var _ninMajorTypes = List<NinMajorTypeInfoData>();
+  var _ninMajorTypeGroups = List<Detailed<NinMajorTypeGroupData>>();
+  var _ninMajorTypes = List<Detailed<NinMajorTypeData>>();
 
-  NinMajorTypeGroupInfoData _selectedMajorTypeGroupInfoData;
+  Detailed<NinMajorTypeGroupData> _selectedMajorTypeGroupData;
   Locale _locale;
 
   NinStructureProvider(Locale locale) {
     _locale = locale;
     db = NiNDatabase();
-    loadMajorTypeGroups();
+    _loadMajorTypeGroups();
   }
 
-  Future setSelectedMajorTypeGroup(NinMajorTypeGroupInfoData data) async {
-    _selectedMajorTypeGroupInfoData = data;
-    notifyListeners();
-  }
+  set selectedMajorTypeGroup(Detailed<NinMajorTypeGroupData> data) =>
+      _selectedMajorTypeGroupData = data;
 
-  NinMajorTypeGroupInfoData get selectedMajorTypeGroupInfo =>
-      _selectedMajorTypeGroupInfoData;
+  Detailed<NinMajorTypeGroupData> get selectedMajorTypeGroup =>
+      _selectedMajorTypeGroupData;
 
   int get getMajorTypeGroupLength {
     if (_ninMajorTypeGroups == null)
@@ -34,19 +31,19 @@ class NinStructureProvider extends ChangeNotifier {
       return _ninMajorTypeGroups.length;
   }
 
-  NinMajorTypeGroupInfoData get getSelectedMajorTypeGroup =>
-      _selectedMajorTypeGroupInfoData;
-
-  Map<NinMajorTypeGroupData, NinMajorTypeGroupInfoData> get majorTypeGroups =>
+  List<Detailed<NinMajorTypeGroupData>> get majorTypeGroups =>
       _ninMajorTypeGroups;
-  Future loadMajorTypeGroups({String filter = ''}) async {
-    var groups = await db.allMajorTypeGroups;
-    _ninMajorTypeGroups.clear();
-    for (var group in groups) {
-      _ninMajorTypeGroups[group] =
-          await db.getMajorTypeGroupInfoData(group, _locale);
-    }
 
+  Future _loadMajorTypeGroups({String filter = ''}) async {
+    var majorTypeGroups = await db.allMajorTypeGroups;
+    _ninMajorTypeGroups = majorTypeGroups
+        .map((e) => Detailed(
+              data: e,
+              db: db,
+              locale: _locale,
+              detailId: e.detailId,
+            ))
+        .toList();
     notifyListeners();
   }
 }

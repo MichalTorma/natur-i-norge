@@ -23,12 +23,11 @@ class NiNDatabase extends _$NiNDatabase {
   Future<List<NinMajorTypeGroupData>> get allMajorTypeGroups =>
       select(ninMajorTypeGroup).get();
 
-  Future<NinMajorTypeGroupInfoData> getMajorTypeGroupInfoData(
-      NinMajorTypeGroupData mtg, Locale locale) async {
-    var res = (select(ninMajorTypeGroupInfo)
-      ..where((tbl) => tbl.majorTypeGroupId.equals(mtg.id))
+  Future<List<NinDetailData>> getDetails(String detailId, Locale locale) async {
+    var res = (select(ninDetail)
+      ..where((tbl) => tbl._id.equals(detailId))
       ..where((tbl) => tbl._languageId.equals(locale.languageCode)));
-    return res.getSingle();
+    return res.get();
   }
 
   @override
@@ -42,7 +41,7 @@ LazyDatabase _openConnection() {
     // for your app.
     final dbFile = await rootBundle.load('assets/nin_database.db');
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'nin_database.sqlite'));
+    final file = File(p.join(dbFolder.path, 'nin.sqlite'));
     await file.writeAsBytes(dbFile.buffer.asUint8List());
     return VmDatabase(file);
   });
