@@ -1,13 +1,13 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
+import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:provider/provider.dart';
 
 class MajorTypeGroupButton extends StatefulWidget {
-  MajorTypeGroupButton({Key key, this.ninMajorTypeGroupInfoData})
-      : super(key: key);
+  MajorTypeGroupButton({Key key, this.ninMajorTypeGroup}) : super(key: key);
 
-  final NinMajorTypeGroupInfoData ninMajorTypeGroupInfoData;
+  final Detailed<NinMajorTypeGroupData> ninMajorTypeGroup;
 
   @override
   _MajorTypeGroupButtonState createState() => _MajorTypeGroupButtonState();
@@ -19,16 +19,14 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
   Color _bgColor;
   _initialize(BuildContext context) {
     var selected =
-        Provider.of<NinStructureProvider>(context).selectedMajorTypeGroupInfo;
+        Provider.of<NinStructureProvider>(context).selectedMajorTypeGroup;
 
     if (selected == null) {
       _onPressed = () {
         Provider.of<NinStructureProvider>(context, listen: false)
-            .setSelectedMajorTypeGroup(widget.ninMajorTypeGroupInfoData);
+            .selectedMajorTypeGroup = widget.ninMajorTypeGroup;
       };
-    }
-    if (selected.majorTypeGroupId ==
-        widget.ninMajorTypeGroupInfoData.majorTypeGroupId) {
+    } else if (selected.data.id == widget.ninMajorTypeGroup.data.id) {
       _shape = NeumorphicShape.flat;
       _onPressed = null;
     } else {
@@ -52,17 +50,17 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
           Expanded(
             child: Center(
                 child: Text(
-              widget.ninMajorTypeGroupInfoData.majorTypeGroupId,
+              widget.ninMajorTypeGroup.data.id,
               style: Theme.of(context).textTheme.headline6,
             )),
           ),
-          // Center(
-          //     child: Text(
-          //   widget.ninMajorTypeGroupInfoData.name,
-          //   maxLines: 3,
-          //   softWrap: true,
-          //   textAlign: TextAlign.center,
-          // ))
+          Center(
+              child: Text(
+            widget.ninMajorTypeGroup.name,
+            maxLines: 3,
+            softWrap: true,
+            textAlign: TextAlign.center,
+          ))
         ],
       ),
       onPressed: _onPressed,
