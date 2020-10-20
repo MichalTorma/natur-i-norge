@@ -10,7 +10,7 @@ class MajorTypeGroupDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Provider.of<NinStructureProvider>(context).selectedMajorTypeGroupInfo ==
+    if (Provider.of<NinStructureProvider>(context).selectedMajorTypeGroup ==
         null) {
       return Container();
     }
@@ -21,14 +21,14 @@ class MajorTypeGroupDetails extends StatelessWidget {
           children: [
             Text(
               Provider.of<NinStructureProvider>(context)
-                  .selectedMajorTypeGroupInfo
+                  .selectedMajorTypeGroup
                   .name,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.subtitle1,
             ),
             Divider(),
             Text(Provider.of<NinStructureProvider>(context)
-                .selectedMajorTypeGroupInfo
+                .selectedMajorTypeGroup
                 .description),
           ],
         ),
