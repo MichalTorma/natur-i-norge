@@ -92,8 +92,6 @@ for specie in species:
     insert_specie_gad(specie)
 # %% Get local excel file to supplement API data
 
-
-
 def insert_gad_value(specie, elementary_segments, m7_value=None):
     combination_id = "/".join(elementary_segments)
     for es in elementary_segments:
@@ -195,28 +193,46 @@ for specie in all_species:
     except Exception as e:
         print(f'{specie.scientificName}\n{e}')
 # %% Insert supplementary LEC
-def insert_modifier(value, lec_id, specie_id):
-    if value != None or value != '-x':
-        session.add(
+def insert_modifier(str_value, lec_id, specie_id):
+    value = None
+    try:
+        value = int(str_value)
+    except:
+        return
+    if value != None:
+        print(value)
+        session.merge(
             model.GadModifier(
                 lec_id=lec_id,
-                specie_id=specie_id,
+                majorTypeLEC_id=f'T4-{lec_id}',
+                species_id=specie_id,
                 value=value
             )
         )
 
 def insert_modifiers(specie, local):
-    insert_modifier(
-        value=local['VM'],
-        lec_id='VM',
-        specie_id=specie.scientificNameId
-    )    
+    col_ids=['VM', 'HI', 'RU', 'SU', 'SS', 'VS', 'UE', 'BK']
+    for col_id in col_ids:
+        insert_modifier(
+            str_value=local[col_id].iloc[0],
+            lec_id=col_id,
+            
+            specie_id=specie.scientificNameId
+        )
+    session.commit()
 
 def add_local_modifier(specie):
     local = get_local(specie)
     insert_modifiers(specie,local)
-    return local
 
-local = add_local_modifier(session.query(model.Species).first())
+# local = add_local_modifier(session.query(model.Species).first())
 
+# %%
+all_species = session.query(model.Species).all()
+for specie in all_species:
+    # print(specie)
+    try:
+        add_local_modifier(specie)
+    except Exception as e:
+        print(f'{specie.scientificName}\n{e}')
 # %%
