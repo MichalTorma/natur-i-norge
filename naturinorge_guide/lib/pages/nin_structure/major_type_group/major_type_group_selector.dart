@@ -18,9 +18,8 @@ class MajorTypeGroupSelector extends StatelessWidget {
       mainAxisSpacing: 24,
       children: Provider.of<NinStructureProvider>(context)
           .majorTypeGroups
-          .entries
           .map((e) => MajorTypeGroupButton(
-                ninMajorTypeGroupInfoData: e.value,
+                ninMajorTypeGroup: e,
               ))
           .toList(),
     );
