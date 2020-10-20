@@ -234,8 +234,8 @@ class StandardSegment(Base):
 
 class GadValue(Base):
     __tablename__ = f'{prefix}GadValue'
-    elementarySegmentGroupCombination_id = Column(Text, ForeignKey(
-        f'{prefix}ElementarySegmentGroupCombination._id'), primary_key=True)
+    elementarySegmentCombination_id = Column(Text, ForeignKey(
+        f'{prefix}ElementarySegmentCombination._id'), primary_key=True)
     species_id = Column(Integer, ForeignKey(
         f'{prefix}Species.scientificNameId'), primary_key=True)
     majorType_id = Column(Integer, ForeignKey(f'{prefix}MajorType._id'))
@@ -243,7 +243,7 @@ class GadValue(Base):
         f'{prefix}GadScale.m7Scale'), nullable=True)
     valueM3Scale_id = Column(Integer, ForeignKey(
         f'{prefix}GadScale.m3Scale'), nullable=True)
-    valueModifier = Column(Integer, nullable=True)
+    # valueModifier = Column(Integer, nullable=True)
     # lecCombination_id = Column(Integer, ForeignKey(f'{prefix}LECCombination._id'))
 
     # References
@@ -251,11 +251,28 @@ class GadValue(Base):
     #     'GadValueElementarySegment', back_populates='gadValue')
 
 
-class ElementarySegmentGroupCombination(Base):
-    __tablename__ = f'{prefix}ElementarySegmentGroupCombination'
+class GadModifier(Base):
+    '''uLKM value'''
+    __tablename__ = f'{prefix}GadModifier'
+    majorTypeLEC_id = Column(
+        Text,
+        ForeignKey(f'{prefix}MajorTypeLEC._id')
+    )
+    species_id = Column(Integer, ForeignKey(
+        f'{prefix}Species.scientificNameId'), primary_key=True)
+    value = Column(Integer)
+    
+
+
+class ElementarySegmentCombination(Base):
+    __tablename__ = f'{prefix}ElementarySegmentCombination'
     _id = Column(Text, primary_key=True)
     elementarySegmentGroup_id = Column(Text, ForeignKey(
         f'{prefix}ElementarySegmentGroup._id'), primary_key=True)
+    majorTypeLEC_id = Column(
+        Text,
+        ForeignKey(f'{prefix}MajorTypeLEC._id')
+    )
 
     # References
     # gadValue = relationship('GadValue', back_populates='elementarySegment')
