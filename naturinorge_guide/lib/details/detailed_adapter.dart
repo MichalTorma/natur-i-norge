@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:moor/moor.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 
 class Detailed<K> {
@@ -10,7 +11,11 @@ class Detailed<K> {
   String description;
   String descriptionHeader;
   Map<String, String> other;
-  Detailed({this.data, Locale locale, String detailId, NiNDatabase db}) {
+  Detailed(
+      {@required this.data,
+      @required Locale locale,
+      @required String detailId,
+      @required NiNDatabase db}) {
     db.getDetails(detailId, locale).then((details) {
       name = details.firstWhere((element) => element.key == '<name>').value;
       nameHeader = tr('<name>');
