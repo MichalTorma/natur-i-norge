@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:moor/moor.dart';
 // These imports are only needed to open the database
 import 'package:moor/ffi.dart';
+import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -22,6 +23,18 @@ class NiNDatabase extends _$NiNDatabase {
   // query's definitions
   Future<List<NinMajorTypeGroupData>> get allMajorTypeGroups =>
       select(ninMajorTypeGroup).get();
+
+  Future<List<Detailed<NinMajorTypeData>>> filteredMajorTypes(
+      String majorTypeGroupId, Locale locale) async {
+    var majorTypes = await (select(ninMajorType)
+          ..where((tbl) => tbl._majorTypeGroupId.equals(majorTypeGroupId)))
+        .get();
+    var res = majorTypes
+        .map((e) =>
+            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
+        .toList();
+    return res;
+  }
 
   Future<List<NinDetailData>> getDetails(String detailId, Locale locale) async {
     var res = (select(ninDetail)

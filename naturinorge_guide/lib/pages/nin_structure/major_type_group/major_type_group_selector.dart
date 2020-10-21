@@ -11,11 +11,13 @@ class MajorTypeGroupSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.extent(
+      primary: false,
       shrinkWrap: true,
-      maxCrossAxisExtent: 50,
+      maxCrossAxisExtent: 140,
+      childAspectRatio: 1,
       clipBehavior: Clip.none,
-      crossAxisSpacing: 24,
-      mainAxisSpacing: 24,
+      crossAxisSpacing: 12,
+      mainAxisSpacing: 12,
       children: Provider.of<NinStructureProvider>(context)
           .majorTypeGroups
           .map((e) => MajorTypeGroupButton(
