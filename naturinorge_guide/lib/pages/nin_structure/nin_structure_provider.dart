@@ -12,14 +12,21 @@ class NinStructureProvider extends ChangeNotifier {
   Detailed<NinMajorTypeGroupData> _selectedMajorTypeGroupData;
   Locale _locale;
 
+// MajorTypeGroup
+
   NinStructureProvider(Locale locale) {
     _locale = locale;
     db = NiNDatabase();
     _loadMajorTypeGroups();
   }
 
-  set selectedMajorTypeGroup(Detailed<NinMajorTypeGroupData> data) =>
+  setSelectedMajorTypeGroup(Detailed<NinMajorTypeGroupData> data) async {
+    if (_selectedMajorTypeGroupData != data) {
       _selectedMajorTypeGroupData = data;
+      _ninMajorTypes = await db.filteredMajorTypes(data.data.id, _locale);
+      notifyListeners();
+    }
+  }
 
   Detailed<NinMajorTypeGroupData> get selectedMajorTypeGroup =>
       _selectedMajorTypeGroupData;
@@ -46,4 +53,7 @@ class NinStructureProvider extends ChangeNotifier {
         .toList();
     notifyListeners();
   }
+
+  // MajorType
+  List<Detailed<NinMajorTypeData>> get majorTypes => _ninMajorTypes;
 }

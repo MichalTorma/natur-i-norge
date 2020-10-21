@@ -35,11 +35,17 @@ class StructurePage extends StatelessWidget {
               ),
             ),
           ),
-          // Neumorphic(
-          //   child: Column(
-          //     children: [MajorTypeSelector()],
-          //   ),
-          // )
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Neumorphic(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [MajorTypeSelector()],
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
