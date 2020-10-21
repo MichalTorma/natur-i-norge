@@ -34,8 +34,7 @@ dependencies:
   flutter_neumorphic: ^3.0.1
   easy_localization: ^2.3.3
   easy_localization_loader: ^0.0.2
-  tuple: 1.0.3
-  
+  auto_size_text: ^2.1.0 
   flutter:
     sdk: flutter
 

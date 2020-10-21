@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
@@ -15,22 +16,18 @@ class MajorTypeGroupButton extends StatefulWidget {
 
 class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
   var _shape = NeumorphicShape.convex;
-  Function _onPressed;
   Color _bgColor;
   _initialize(BuildContext context) {
     var selected =
         Provider.of<NinStructureProvider>(context).selectedMajorTypeGroup;
 
-    if (selected == null) {
-      _onPressed = () {
-        Provider.of<NinStructureProvider>(context, listen: false)
-            .selectedMajorTypeGroup = widget.ninMajorTypeGroup;
-      };
-    } else if (selected.data.id == widget.ninMajorTypeGroup.data.id) {
-      _shape = NeumorphicShape.flat;
-      _onPressed = null;
+    if (selected != null &&
+        selected.data.id == widget.ninMajorTypeGroup.data.id) {
+      _shape = NeumorphicShape.concave;
+      _bgColor = NeumorphicTheme.of(context).current.accentColor;
     } else {
-      return ButtonState.AVAILABLE;
+      _shape = NeumorphicShape.convex;
+      _bgColor = NeumorphicTheme.of(context).current.baseColor;
     }
   }
 
@@ -43,9 +40,9 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
         shape: _shape,
         boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
       ),
-      child: Flex(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        direction: Axis.vertical,
+        mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
             child: Center(
@@ -54,16 +51,20 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
               style: Theme.of(context).textTheme.headline6,
             )),
           ),
-          Center(
-              child: Text(
-            widget.ninMajorTypeGroup.name,
-            maxLines: 3,
-            softWrap: true,
-            textAlign: TextAlign.center,
-          ))
+          Flexible(
+              fit: FlexFit.tight,
+              child: AutoSizeText(
+                widget.ninMajorTypeGroup.name,
+                maxLines: 2,
+                softWrap: true,
+                textAlign: TextAlign.center,
+              ))
         ],
       ),
-      onPressed: _onPressed,
+      onPressed: () {
+        Provider.of<NinStructureProvider>(context, listen: false)
+            .setSelectedMajorTypeGroup(widget.ninMajorTypeGroup);
+      },
     );
   }
 }
