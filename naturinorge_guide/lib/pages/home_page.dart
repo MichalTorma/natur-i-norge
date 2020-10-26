@@ -42,18 +42,6 @@ class HomePage extends StatelessWidget {
                     NeumorphicTheme.isUsingDark(context)
                         ? ThemeMode.light
                         : ThemeMode.dark),
-            Neumorphic(
-                child: Column(
-              children: [
-                Text('hw'),
-                NeumorphicButton(
-                  child: Text('This is button'),
-                  onPressed: () {
-                    print('button pressed');
-                  },
-                )
-              ],
-            ))
           ],
         ),
       ),
