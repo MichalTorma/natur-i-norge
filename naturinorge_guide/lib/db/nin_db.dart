@@ -27,7 +27,7 @@ class NiNDatabase extends _$NiNDatabase {
   Future<List<Detailed<NinMajorTypeData>>> filteredMajorTypes(
       String majorTypeGroupId, Locale locale) async {
     var majorTypes = await (select(ninMajorType)
-          ..where((tbl) => tbl._majorTypeGroupId.equals(majorTypeGroupId)))
+          ..where((tbl) => tbl.majorTypeGroupId.equals(majorTypeGroupId)))
         .get();
     var res = majorTypes
         .map((e) =>
@@ -38,15 +38,15 @@ class NiNDatabase extends _$NiNDatabase {
 
   Future<List<NinDetailData>> getDetails(String detailId, Locale locale) async {
     var res = (select(ninDetail)
-      ..where((tbl) => tbl._id.equals(detailId))
-      ..where((tbl) => tbl._languageId.equals(locale.languageCode)));
+      ..where((tbl) => tbl.id.equals(detailId))
+      ..where((tbl) => tbl.languageId.equals(locale.languageCode)));
     return res.get();
   }
 
   Future<List<NinMajorTypeLECData>> getMajorTypeLecByMajorTypeId(
       String majorTypeId) {
     return (select(ninMajorTypeLEC)
-          ..where((tbl) => tbl._majorTypeId.equals(majorTypeId)))
+          ..where((tbl) => tbl.majorTypeId.equals(majorTypeId)))
         .get();
   }
 
