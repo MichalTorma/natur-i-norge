@@ -75,10 +75,10 @@ class MajorTypeProvider extends ChangeNotifier {
     });
   }
 
-  get numberOfAxis => _majorTypeAdapter.lecs.length;
-  get xAxis => _xAxis;
-  get yAxis => _yAxis;
-  get otherAxis => _otherAxis;
+  int get numberOfAxis => _majorTypeAdapter.lecs.length;
+  AxisBlock get xAxis => _xAxis;
+  AxisBlock get yAxis => _yAxis;
+  List<AxisBlock> get otherAxis => _otherAxis;
 
   // Widget gridBuilder(int index){
   //   List<int> coordinates = getCoordinatesFromIndex(index);

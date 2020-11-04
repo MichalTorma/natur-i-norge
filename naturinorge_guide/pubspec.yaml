@@ -31,7 +31,10 @@ dependencies:
   image: ^2.1.12
   sqlite3_flutter_libs: ^0.2.0
   moor_flutter: ^3.1.0
-  flutter_neumorphic: ^3.0.1
+  # flutter_neumorphic: ^3.0.1
+  flutter_neumorphic:
+    git: 
+      url: 'https://github.com/MichalTorma/Flutter-Neumorphic.git'
   easy_localization: ^2.3.3
   easy_localization_loader: ^0.0.2
   auto_size_text: ^2.1.0
