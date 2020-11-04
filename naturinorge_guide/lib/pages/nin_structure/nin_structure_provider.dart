@@ -72,5 +72,7 @@ class NinStructureProvider extends ChangeNotifier {
     }
   }
 
+  Locale get locale => _locale;
+
   Detailed<NinMajorTypeData> get selectedMajorType => _selectedMajorTypeData;
 }
