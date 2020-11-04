@@ -43,6 +43,100 @@ class NiNDatabase extends _$NiNDatabase {
     return res.get();
   }
 
+  Future<List<NinMajorTypeLECData>> getMajorTypeLecByMajorTypeId(
+      String majorTypeId) {
+    return (select(ninMajorTypeLEC)
+          ..where((tbl) => tbl._majorTypeId.equals(majorTypeId)))
+        .get();
+  }
+
+  Future<NinMajorTypeLECData> getMajorTypeLecByStandardSegment(
+          NinStandardSegmentData standardSegment) =>
+      (select(ninMajorTypeLEC)
+            ..where((tbl) => tbl.id.equals(standardSegment.majorTypeLECId)))
+          .getSingle();
+
+  Future<List<NinMappingScaleData>> getMappingScales() =>
+      select(ninMappingScale).get();
+
+  Future<NinMappingScaleData> getMappingScaleById(int id) =>
+      (select(ninMappingScale)..where((tbl) => tbl.id.equals(id))).getSingle();
+
+  Future<List<Detailed<NinMinorTypeData>>> getMinorTypesByMajorTypeId(
+      String majorTypeId, Locale locale) async {
+    var minorTypes = await (select(ninMinorType)
+          ..where((tbl) => tbl.majorTypeId.equals(majorTypeId)))
+        .get();
+    return minorTypes
+        .map((e) =>
+            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
+        .toList();
+  }
+
+  Future<List<Detailed<NinStandardSegmentData>>>
+      getStandardSegmentsByMajorTypeLec(
+          NinMajorTypeLECData majorTypeLEC, Locale locale) async {
+    var standardSegments = await (select(ninStandardSegment)
+          ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLEC.id)))
+        .get();
+    return standardSegments
+        .map((e) =>
+            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
+        .toList();
+  }
+
+  Future<List<Detailed<NinStandardSegmentData>>> getStandardSegmentsByMinorType(
+      NinMinorTypeData minorType, Locale locale) async {
+    var minorTypeStandardSegments = await (select(ninMinorTypeStandardSegment)
+          ..where((tbl) => tbl.minorTypeId.equals(minorType.id)))
+        .get();
+    var standardSegments = await (select(ninStandardSegment)
+          ..where((tbl) => tbl.id
+              .isIn(minorTypeStandardSegments.map((e) => e.standardSegmentId))))
+        .get();
+    return standardSegments
+        .map((e) =>
+            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
+        .toList();
+  }
+
+  Future<List<Detailed<NinStandardSegmentData>>> getStandardSegmentsByMajorType(
+      NinMajorTypeData majorType, Locale locale) async {
+    var majorTypeLec = await (select(ninMajorTypeLEC)
+          ..where((tbl) => tbl.majorTypeId.equals(majorType.id)))
+        .get();
+    var standardSegments = await (select(ninStandardSegment)
+          ..where((tbl) =>
+              tbl.majorTypeLECId.isIn(majorTypeLec.map((e) => e.id).toList())))
+        .get();
+    return standardSegments
+        .map((e) =>
+            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
+        .toList();
+  }
+
+  Future<NinElementarySegmentData> getElementarySegmentById(String id) =>
+      (select(ninElementarySegment)..where((tbl) => tbl.id.equals(id)))
+          .getSingle();
+
+  Future<List<NinElementarySegmentData>> getElementarySegmentByStandardSegment(
+      NinStandardSegmentData standardSegment) async {
+    var standardSegmentElements = await (select(ninStandardSegmentElement)
+          ..where((tbl) => tbl.standardSegmentId.equals(standardSegment.id)))
+        .get();
+    return await Future.forEach(
+        standardSegmentElements,
+        (e) async =>
+            await this.getElementarySegmentById(e.elementarySegmentId));
+  }
+
+  Future<Detailed<NinLECData>> getLecById(String lecId, Locale locale) async {
+    var lec = await (select(ninLEC)..where((tbl) => tbl.id.equals(lecId)))
+        .getSingle();
+    return Detailed(
+        data: lec, db: this, detailId: lec.detailId, locale: locale);
+  }
+
   @override
   int get schemaVersion => 2;
 }
