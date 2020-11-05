@@ -14,9 +14,12 @@ class MajorTypeDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<NinStructureProvider>(context).selectedMajorType;
-    return Provider<MajorTypeProvider>(
+    return ChangeNotifierProvider<MajorTypeProvider>(
       create: (_) => MajorTypeProvider(
-          ninMajorType, Provider.of<NinStructureProvider>(context).locale),
+        ninMajorType,
+        Provider.of<NinStructureProvider>(context).locale,
+        Provider.of<NinStructureProvider>(context).db,
+      ),
       child: Container(
         child: Column(children: [
           Center(

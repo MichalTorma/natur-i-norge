@@ -29,7 +29,7 @@ class LecAdapter {
 
   LecAdapter(this.db, this.locale, this.majorTypeLECData);
   Future getRelations() async {
-    lec = await db.getLecById(majorTypeLECData.lecTypeId, locale);
+    lec = await db.getLecById(majorTypeLECData.lecId, locale);
   }
 }
 
