@@ -8,34 +8,69 @@ import 'package:provider/provider.dart';
 class MinorTypeTable extends StatelessWidget {
   const MinorTypeTable({Key key}) : super(key: key);
 
+  List<StaggeredTile> _getStageredTiles(BuildContext context) => [
+        StaggeredTile.count(
+            1,
+            Provider.of<MajorTypeProvider>(context)
+                .yAxis
+                .standardSegments
+                .length),
+        StaggeredTile.count(
+            Provider.of<MajorTypeProvider>(context)
+                .xAxis
+                .standardSegments
+                .length,
+            Provider.of<MajorTypeProvider>(context)
+                .yAxis
+                .standardSegments
+                .length),
+        StaggeredTile.count(1, 1),
+        StaggeredTile.count(
+            Provider.of<MajorTypeProvider>(context)
+                .xAxis
+                .standardSegments
+                .length,
+            1)
+      ];
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.count(crossAxisCount: 2, children: [
-      AxisLabel(
-        axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
-      ),
-      Container(),
-      Container(),
-      AxisLabel(
-        axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
-      ),
-    ], staggeredTiles: [
-      StaggeredTile.count(
-          1,
-          Provider.of<MajorTypeProvider>(context)
-              .yAxis
-              .standardSegments
-              .length),
-      StaggeredTile.count(
-          Provider.of<MajorTypeProvider>(context).xAxis.standardSegments.length,
-          Provider.of<MajorTypeProvider>(context)
-              .yAxis
-              .standardSegments
-              .length),
-      StaggeredTile.count(1, 1),
-      StaggeredTile.count(
-          Provider.of<MajorTypeProvider>(context).xAxis.standardSegments.length,
-          1),
-    ]);
+    if (Provider.of<MajorTypeProvider>(context).isLoading) {
+      return Container();
+    }
+    return Container(
+      color: Colors.amber,
+      child: StaggeredGridView.count(
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          crossAxisCount: Provider.of<MajorTypeProvider>(context)
+                  .xAxis
+                  .standardSegments
+                  .length +
+              1,
+          shrinkWrap: true,
+          primary: false,
+          scrollDirection: Axis.vertical,
+          children: [
+            Container(
+              color: Colors.green,
+              child: AxisLabel(
+                axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
+                orientation: Axis.vertical,
+              ),
+            ),
+            Neumorphic(),
+            Container(
+              color: Colors.blue,
+            ),
+            Container(
+              color: Colors.black,
+              child: AxisLabel(
+                axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
+                orientation: Axis.horizontal,
+              ),
+            ),
+          ],
+          staggeredTiles: _getStageredTiles(context)),
+    );
   }
 }
