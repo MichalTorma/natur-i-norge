@@ -29,11 +29,8 @@ class NiNDatabase extends _$NiNDatabase {
     var majorTypes = await (select(ninMajorType)
           ..where((tbl) => tbl.majorTypeGroupId.equals(majorTypeGroupId)))
         .get();
-    var res = majorTypes
-        .map((e) =>
-            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
-        .toList();
-    return res;
+    return await Detailed<NinMajorTypeData>()
+        .fromList(majorTypes, locale, this);
   }
 
   Future<List<NinDetailData>> getDetails(String detailId, Locale locale) async {
@@ -64,13 +61,11 @@ class NiNDatabase extends _$NiNDatabase {
 
   Future<List<Detailed<NinMinorTypeData>>> getMinorTypesByMajorTypeId(
       String majorTypeId, Locale locale) async {
-    var minorTypes = await (select(ninMinorType)
-          ..where((tbl) => tbl.majorTypeId.equals(majorTypeId)))
-        .get();
-    return minorTypes
-        .map((e) =>
-            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
-        .toList();
+    var minorTypesQuery = select(ninMinorType)
+      ..where((tbl) => tbl.majorTypeId.equals(majorTypeId));
+    var minorTypes = await minorTypesQuery.get();
+    var res = Detailed<NinMinorTypeData>().fromList(minorTypes, locale, this);
+    return await res;
   }
 
   Future<List<Detailed<NinStandardSegmentData>>>
@@ -79,11 +74,8 @@ class NiNDatabase extends _$NiNDatabase {
     var standardSegments = await (select(ninStandardSegment)
           ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLEC.id)))
         .get();
-    var res = standardSegments
-        .map((e) =>
-            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
-        .toList();
-    return res;
+    return await Detailed<NinStandardSegmentData>()
+        .fromList(standardSegments, locale, this);
   }
 
   Future<List<Detailed<NinStandardSegmentData>>> getStandardSegmentsByMinorType(
@@ -95,10 +87,8 @@ class NiNDatabase extends _$NiNDatabase {
           ..where((tbl) => tbl.id
               .isIn(minorTypeStandardSegments.map((e) => e.standardSegmentId))))
         .get();
-    return standardSegments
-        .map((e) =>
-            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
-        .toList();
+    return await Detailed<NinStandardSegmentData>()
+        .fromList(standardSegments, locale, this);
   }
 
   Future<List<Detailed<NinStandardSegmentData>>> getStandardSegmentsByMajorType(
@@ -110,10 +100,8 @@ class NiNDatabase extends _$NiNDatabase {
           ..where((tbl) =>
               tbl.majorTypeLECId.isIn(majorTypeLec.map((e) => e.id).toList())))
         .get();
-    return standardSegments
-        .map((e) =>
-            Detailed(data: e, db: this, detailId: e.detailId, locale: locale))
-        .toList();
+    return await Detailed<NinStandardSegmentData>()
+        .fromList(standardSegments, locale, this);
   }
 
   Future<NinElementarySegmentData> getElementarySegmentById(String id) =>
@@ -134,12 +122,11 @@ class NiNDatabase extends _$NiNDatabase {
   Future<Detailed<NinLECData>> getLecById(String lecId, Locale locale) async {
     var lec = await (select(ninLEC)..where((tbl) => tbl.id.equals(lecId)))
         .getSingle();
-    return Detailed(
-        data: lec, db: this, detailId: lec.detailId, locale: locale);
+    return await Detailed<NinLECData>().initialize(lec, locale, this);
   }
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 1;
 }
 
 LazyDatabase _openConnection() {

@@ -13,27 +13,23 @@ class MajorTypeDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<NinStructureProvider>(context).selectedMajorType;
-    return ChangeNotifierProvider<MajorTypeProvider>(
-      create: (_) => MajorTypeProvider(
-        ninMajorType,
-        Provider.of<NinStructureProvider>(context).locale,
-        Provider.of<NinStructureProvider>(context).db,
-      ),
-      child: Container(
-        child: Column(children: [
-          Center(
-            child: Text(
-              ninMajorType.name,
-              style: Theme.of(context).textTheme.headline2,
-              textAlign: TextAlign.center,
-            ),
+    // Provider.of<NinStructureProvider>(context).selectedMajorType;
+    if (Provider.of<MajorTypeProvider>(context).isLoading) {
+      return Container();
+    }
+    return Container(
+      child: Column(children: [
+        Center(
+          child: Text(
+            ninMajorType.name,
+            style: Theme.of(context).textTheme.headline2,
+            textAlign: TextAlign.center,
           ),
-          Divider(),
-          Text(ninMajorType.description),
-          MinorTypeTable(),
-        ]),
-      ),
+        ),
+        Divider(),
+        Text(ninMajorType.description),
+        MinorTypeTable(),
+      ]),
     );
   }
 }

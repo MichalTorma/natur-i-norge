@@ -52,7 +52,7 @@ class _MajorTypeButtonState extends State<MajorTypeButton> {
         ),
         onPressed: () =>
             Provider.of<NinStructureProvider>(context, listen: false)
-                .setMajorType(widget.ninMajorType),
+                .setMajorType(context, widget.ninMajorType),
       ),
     );
   }
