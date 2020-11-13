@@ -20,18 +20,15 @@ class AxisBlock {
 }
 
 class MajorTypeProvider extends ChangeNotifier {
-  final Detailed<NinMajorTypeData> majorType;
   final Locale locale;
   final NiNDatabase _db;
 
   MajorTypeProvider(
-    this.majorType,
     this.locale,
     this._db,
-  ) {
-    initialze();
-  }
+  );
 
+  Detailed<NinMajorTypeData> _majorType;
   NinMappingScaleData _activeMappingScale;
   MajorTypeAdapter _majorTypeAdapter;
   int _numberOfAxis = 0;
@@ -41,8 +38,9 @@ class MajorTypeProvider extends ChangeNotifier {
   List<AxisBlock> _otherAxis;
   bool _isLoading = true;
 
-  initialze() async {
+  Future load(Detailed<NinMajorTypeData> majorType) async {
     _isLoading = true;
+    _majorType = majorType;
     _majorTypeAdapter = MajorTypeAdapter(majorType, _db, locale);
     await _majorTypeAdapter.getRelations();
     await _populateAllAxis();
@@ -53,6 +51,9 @@ class MajorTypeProvider extends ChangeNotifier {
 
   Future _organizeAxis() {
     // todo implement changing axis
+    if (_allAxis.length < 1) {
+      throw Exception('allAxis is empty');
+    }
     _xAxis =
         _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLECData.axis == 0);
     _yAxis =
@@ -63,7 +64,7 @@ class MajorTypeProvider extends ChangeNotifier {
 
   Future _populateAllAxis() async {
     var majorTypeLecs =
-        await _db.getMajorTypeLecByMajorTypeId(majorType.data.id);
+        await _db.getMajorTypeLecByMajorTypeId(_majorType.data.id);
     for (var element in majorTypeLecs) {
       var lecAdapter = LecAdapter(_db, locale, element);
       await lecAdapter.getRelations();

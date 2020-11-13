@@ -37,8 +37,7 @@ class MinorTypeTable extends StatelessWidget {
     if (Provider.of<MajorTypeProvider>(context).isLoading) {
       return Container();
     }
-    return Container(
-      color: Colors.amber,
+    return Neumorphic(
       child: StaggeredGridView.count(
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
@@ -51,19 +50,15 @@ class MinorTypeTable extends StatelessWidget {
           primary: false,
           scrollDirection: Axis.vertical,
           children: [
-            Container(
-              color: Colors.green,
+            Neumorphic(
               child: AxisLabel(
                 axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
                 orientation: Axis.vertical,
               ),
             ),
             Neumorphic(),
-            Container(
-              color: Colors.blue,
-            ),
-            Container(
-              color: Colors.black,
+            Neumorphic(),
+            Neumorphic(
               child: AxisLabel(
                 axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
                 orientation: Axis.horizontal,
