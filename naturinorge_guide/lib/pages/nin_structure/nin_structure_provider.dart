@@ -1,12 +1,14 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 enum ButtonState { AVAILABLE, SELECTED, UNAVAILABLE }
 
 class NinStructureProvider extends ChangeNotifier {
-  NiNDatabase db;
+  final NiNDatabase db;
   var _ninMajorTypeGroups = List<Detailed<NinMajorTypeGroupData>>();
   var _ninMajorTypes = List<Detailed<NinMajorTypeData>>();
 
@@ -19,9 +21,9 @@ class NinStructureProvider extends ChangeNotifier {
   int get scrollIndex => _scrollIndex;
 // MajorTypeGroup
 
-  NinStructureProvider(Locale locale) {
+  NinStructureProvider(Locale locale, this.db) {
     _locale = locale;
-    db = NiNDatabase();
+
     _loadMajorTypeGroups();
   }
 
@@ -50,26 +52,21 @@ class NinStructureProvider extends ChangeNotifier {
 
   Future _loadMajorTypeGroups({String filter = ''}) async {
     var majorTypeGroups = await db.allMajorTypeGroups;
-    _ninMajorTypeGroups = majorTypeGroups
-        .map((e) => Detailed(
-              data: e,
-              db: db,
-              locale: _locale,
-              detailId: e.detailId,
-            ))
-        .toList();
+    _ninMajorTypeGroups = await Detailed<NinMajorTypeGroupData>()
+        .fromList(majorTypeGroups, locale, db);
     notifyListeners();
   }
 
   // MajorType
   List<Detailed<NinMajorTypeData>> get majorTypes => _ninMajorTypes;
 
-  setMajorType(Detailed<NinMajorTypeData> data) async {
-    if (_selectedMajorTypeData != data) {
-      _selectedMajorTypeData = data;
-      _scrollIndex = 2;
-      notifyListeners();
-    }
+  setMajorType(BuildContext context, Detailed<NinMajorTypeData> data) async {
+    // if (_selectedMajorTypeData != data) {
+    _selectedMajorTypeData = data;
+    await Provider.of<MajorTypeProvider>(context, listen: false).load(data);
+    _scrollIndex = 2;
+    notifyListeners();
+    // }
   }
 
   Locale get locale => _locale;

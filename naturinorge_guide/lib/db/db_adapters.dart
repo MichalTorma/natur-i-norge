@@ -62,6 +62,7 @@ class MajorTypeAdapter {
   MajorTypeAdapter(this.majorType, this.db, this.locale);
 
   Future getRelations() async {
+    print('Start getting relations for ${majorType.data.id}');
     var minorTypeDatas =
         await db.getMinorTypesByMajorTypeId(majorType.data.id, locale);
     minorTypes = await Future.forEach(minorTypeDatas, (e) async {
@@ -80,5 +81,6 @@ class MajorTypeAdapter {
         await db.getStandardSegmentsByMajorType(majorType.data, locale);
     standardSegments = await Future.forEach(
         standardSegmentsData, (e) => StandardSegmentAdapter(e, db, locale));
+    return;
   }
 }
