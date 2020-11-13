@@ -259,6 +259,10 @@ class GadModifier(Base):
         ForeignKey(f'{prefix}MajorTypeLEC._id'),
         primary_key=True
     )
+    majorType_id = Column(
+        Text,
+        ForeignKey(f'{prefix}MajorType._id'),
+    ) 
     lec_id = Column(
         Text,
         ForeignKey(f'{prefix}LEC._id')

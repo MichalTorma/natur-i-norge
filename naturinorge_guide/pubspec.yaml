@@ -17,7 +17,7 @@ environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  moor: ^3.3.1
+  moor: ^3.4.0
   path_provider: ^1.5.1
   path: ^1.6.4
   provider: ^4.0.1
@@ -32,9 +32,9 @@ dependencies:
   sqlite3_flutter_libs: ^0.2.0
   moor_flutter: ^3.1.0
   # flutter_neumorphic: ^3.0.1
-  flutter_neumorphic:
-    git: 
-      url: 'https://github.com/MichalTorma/Flutter-Neumorphic.git'
+  flutter_neumorphic: any
+    # git: 
+    #   url: 'https://github.com/MichalTorma/Flutter-Neumorphic.git'
   easy_localization: ^2.3.3
   easy_localization_loader: ^0.0.2
   auto_size_text: ^2.1.0
@@ -49,10 +49,13 @@ dependencies:
 
 dev_dependencies:
   built_value_generator: ^7.1.0
-  moor_generator: ^3.3.1
+  moor_generator: ^3.4.0
   build_runner: ^1.7.3
   flutter_test:
     sdk: flutter
+    
+dependency_overrides:
+  analyzer: ^0.40.0
 
 
 # For information on the generic Dart part of this file, see the

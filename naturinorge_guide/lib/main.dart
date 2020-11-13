@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/db_description.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
+import 'package:naturinorge_guide/db/nin_db_provider.dart';
 import 'package:naturinorge_guide/details/details_view.dart';
 import 'package:naturinorge_guide/details/map_provider.dart';
 import 'package:naturinorge_guide/filter_provider.dart';
 import 'package:naturinorge_guide/pages/home_page.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:naturinorge_guide/tools/my_theme.dart';
 import 'package:preferences/preferences.dart';
@@ -54,15 +56,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          // DEP
           ChangeNotifierProvider<FilterProvider>(
             create: (_) => FilterProvider(MyDatabase().t4Dao),
           ),
           ChangeNotifierProvider<MapProvider>(
             create: (_) => MapProvider(),
           ),
-          ChangeNotifierProvider<NinStructureProvider>(
-            create: (_) => NinStructureProvider(context.locale),
-          )
+
+          // ACTIVE
+          ChangeNotifierProvider<NinDatabaseProvider>(
+              create: (_) => NinDatabaseProvider(NiNDatabase())),
+          ChangeNotifierProxyProvider<NinDatabaseProvider,
+                  NinStructureProvider>(
+              update: (context, dbProvider, previousMessages) =>
+                  NinStructureProvider(context.locale, dbProvider.db),
+              create: (_) => null),
+          ChangeNotifierProxyProvider<NinDatabaseProvider, MajorTypeProvider>(
+              update: (context, dbProvider, previousMessages) =>
+                  MajorTypeProvider(context.locale, dbProvider.db),
+              create: (_) => null),
         ],
         child: NeumorphicApp(
             localizationsDelegates: context.localizationDelegates,

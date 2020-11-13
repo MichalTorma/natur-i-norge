@@ -158,6 +158,10 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ majorType_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
@@ -698,6 +702,7 @@
 	"ElementarySegmentGroupDetail" -> "LEC" [label = "lec_id"]
 	"ElementarySegmentGroupDetail" -> "Detail" [label = "detail_id"]
 	"GadModifier" -> "MajorTypeLEC" [label = "majorTypeLEC_id"]
+	"GadModifier" -> "MajorType" [label = "majorType_id"]
 	"GadModifier" -> "LEC" [label = "lec_id"]
 	"GadModifier" -> "Species" [label = "species_id"]
 	"GadValue" -> "ElementarySegmentCombination" [label = "elementarySegmentCombination_id"]

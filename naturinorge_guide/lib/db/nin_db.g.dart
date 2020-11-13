@@ -4358,11 +4358,13 @@ class NinStandardSegment extends Table
 class NinGadModifierData extends DataClass
     implements Insertable<NinGadModifierData> {
   final String majorTypeLECId;
+  final String majorTypeId;
   final String lecId;
   final int speciesId;
   final int value;
   NinGadModifierData(
       {@required this.majorTypeLECId,
+      this.majorTypeId,
       this.lecId,
       @required this.speciesId,
       this.value});
@@ -4375,6 +4377,8 @@ class NinGadModifierData extends DataClass
     return NinGadModifierData(
       majorTypeLECId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}majorTypeLEC_id']),
+      majorTypeId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
       lecId:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
       speciesId:
@@ -4387,6 +4391,9 @@ class NinGadModifierData extends DataClass
     final map = <String, Expression>{};
     if (!nullToAbsent || majorTypeLECId != null) {
       map['majorTypeLEC_id'] = Variable<String>(majorTypeLECId);
+    }
+    if (!nullToAbsent || majorTypeId != null) {
+      map['majorType_id'] = Variable<String>(majorTypeId);
     }
     if (!nullToAbsent || lecId != null) {
       map['lec_id'] = Variable<String>(lecId);
@@ -4405,6 +4412,9 @@ class NinGadModifierData extends DataClass
       majorTypeLECId: majorTypeLECId == null && nullToAbsent
           ? const Value.absent()
           : Value(majorTypeLECId),
+      majorTypeId: majorTypeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(majorTypeId),
       lecId:
           lecId == null && nullToAbsent ? const Value.absent() : Value(lecId),
       speciesId: speciesId == null && nullToAbsent
@@ -4420,6 +4430,7 @@ class NinGadModifierData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinGadModifierData(
       majorTypeLECId: serializer.fromJson<String>(json['majorTypeLEC_id']),
+      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
       lecId: serializer.fromJson<String>(json['lec_id']),
       speciesId: serializer.fromJson<int>(json['species_id']),
       value: serializer.fromJson<int>(json['value']),
@@ -4430,6 +4441,7 @@ class NinGadModifierData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'majorTypeLEC_id': serializer.toJson<String>(majorTypeLECId),
+      'majorType_id': serializer.toJson<String>(majorTypeId),
       'lec_id': serializer.toJson<String>(lecId),
       'species_id': serializer.toJson<int>(speciesId),
       'value': serializer.toJson<int>(value),
@@ -4437,9 +4449,14 @@ class NinGadModifierData extends DataClass
   }
 
   NinGadModifierData copyWith(
-          {String majorTypeLECId, String lecId, int speciesId, int value}) =>
+          {String majorTypeLECId,
+          String majorTypeId,
+          String lecId,
+          int speciesId,
+          int value}) =>
       NinGadModifierData(
         majorTypeLECId: majorTypeLECId ?? this.majorTypeLECId,
+        majorTypeId: majorTypeId ?? this.majorTypeId,
         lecId: lecId ?? this.lecId,
         speciesId: speciesId ?? this.speciesId,
         value: value ?? this.value,
@@ -4448,6 +4465,7 @@ class NinGadModifierData extends DataClass
   String toString() {
     return (StringBuffer('NinGadModifierData(')
           ..write('majorTypeLECId: $majorTypeLECId, ')
+          ..write('majorTypeId: $majorTypeId, ')
           ..write('lecId: $lecId, ')
           ..write('speciesId: $speciesId, ')
           ..write('value: $value')
@@ -4456,13 +4474,16 @@ class NinGadModifierData extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(majorTypeLECId.hashCode,
-      $mrjc(lecId.hashCode, $mrjc(speciesId.hashCode, value.hashCode))));
+  int get hashCode => $mrjf($mrjc(
+      majorTypeLECId.hashCode,
+      $mrjc(majorTypeId.hashCode,
+          $mrjc(lecId.hashCode, $mrjc(speciesId.hashCode, value.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is NinGadModifierData &&
           other.majorTypeLECId == this.majorTypeLECId &&
+          other.majorTypeId == this.majorTypeId &&
           other.lecId == this.lecId &&
           other.speciesId == this.speciesId &&
           other.value == this.value);
@@ -4470,17 +4491,20 @@ class NinGadModifierData extends DataClass
 
 class NinGadModifierCompanion extends UpdateCompanion<NinGadModifierData> {
   final Value<String> majorTypeLECId;
+  final Value<String> majorTypeId;
   final Value<String> lecId;
   final Value<int> speciesId;
   final Value<int> value;
   const NinGadModifierCompanion({
     this.majorTypeLECId = const Value.absent(),
+    this.majorTypeId = const Value.absent(),
     this.lecId = const Value.absent(),
     this.speciesId = const Value.absent(),
     this.value = const Value.absent(),
   });
   NinGadModifierCompanion.insert({
     @required String majorTypeLECId,
+    this.majorTypeId = const Value.absent(),
     this.lecId = const Value.absent(),
     @required int speciesId,
     this.value = const Value.absent(),
@@ -4488,12 +4512,14 @@ class NinGadModifierCompanion extends UpdateCompanion<NinGadModifierData> {
         speciesId = Value(speciesId);
   static Insertable<NinGadModifierData> custom({
     Expression<String> majorTypeLECId,
+    Expression<String> majorTypeId,
     Expression<String> lecId,
     Expression<int> speciesId,
     Expression<int> value,
   }) {
     return RawValuesInsertable({
       if (majorTypeLECId != null) 'majorTypeLEC_id': majorTypeLECId,
+      if (majorTypeId != null) 'majorType_id': majorTypeId,
       if (lecId != null) 'lec_id': lecId,
       if (speciesId != null) 'species_id': speciesId,
       if (value != null) 'value': value,
@@ -4502,11 +4528,13 @@ class NinGadModifierCompanion extends UpdateCompanion<NinGadModifierData> {
 
   NinGadModifierCompanion copyWith(
       {Value<String> majorTypeLECId,
+      Value<String> majorTypeId,
       Value<String> lecId,
       Value<int> speciesId,
       Value<int> value}) {
     return NinGadModifierCompanion(
       majorTypeLECId: majorTypeLECId ?? this.majorTypeLECId,
+      majorTypeId: majorTypeId ?? this.majorTypeId,
       lecId: lecId ?? this.lecId,
       speciesId: speciesId ?? this.speciesId,
       value: value ?? this.value,
@@ -4518,6 +4546,9 @@ class NinGadModifierCompanion extends UpdateCompanion<NinGadModifierData> {
     final map = <String, Expression>{};
     if (majorTypeLECId.present) {
       map['majorTypeLEC_id'] = Variable<String>(majorTypeLECId.value);
+    }
+    if (majorTypeId.present) {
+      map['majorType_id'] = Variable<String>(majorTypeId.value);
     }
     if (lecId.present) {
       map['lec_id'] = Variable<String>(lecId.value);
@@ -4535,6 +4566,7 @@ class NinGadModifierCompanion extends UpdateCompanion<NinGadModifierData> {
   String toString() {
     return (StringBuffer('NinGadModifierCompanion(')
           ..write('majorTypeLECId: $majorTypeLECId, ')
+          ..write('majorTypeId: $majorTypeId, ')
           ..write('lecId: $lecId, ')
           ..write('speciesId: $speciesId, ')
           ..write('value: $value')
@@ -4556,6 +4588,16 @@ class NinGadModifier extends Table
   GeneratedTextColumn _constructMajorTypeLECId() {
     return GeneratedTextColumn('majorTypeLEC_id', $tableName, false,
         $customConstraints: 'NOT NULL');
+  }
+
+  final VerificationMeta _majorTypeIdMeta =
+      const VerificationMeta('majorTypeId');
+  GeneratedTextColumn _majorTypeId;
+  GeneratedTextColumn get majorTypeId =>
+      _majorTypeId ??= _constructMajorTypeId();
+  GeneratedTextColumn _constructMajorTypeId() {
+    return GeneratedTextColumn('majorType_id', $tableName, true,
+        $customConstraints: '');
   }
 
   final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
@@ -4584,7 +4626,7 @@ class NinGadModifier extends Table
 
   @override
   List<GeneratedColumn> get $columns =>
-      [majorTypeLECId, lecId, speciesId, value];
+      [majorTypeLECId, majorTypeId, lecId, speciesId, value];
   @override
   NinGadModifier get asDslTable => this;
   @override
@@ -4603,6 +4645,12 @@ class NinGadModifier extends Table
               data['majorTypeLEC_id'], _majorTypeLECIdMeta));
     } else if (isInserting) {
       context.missing(_majorTypeLECIdMeta);
+    }
+    if (data.containsKey('majorType_id')) {
+      context.handle(
+          _majorTypeIdMeta,
+          majorTypeId.isAcceptableOrUnknown(
+              data['majorType_id'], _majorTypeIdMeta));
     }
     if (data.containsKey('lec_id')) {
       context.handle(
@@ -4638,6 +4686,7 @@ class NinGadModifier extends Table
   List<String> get customConstraints => const [
         'PRIMARY KEY ("majorTypeLEC_id", species_id)',
         'FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id)',
+        'FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)',
         'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)',
         'FOREIGN KEY(species_id) REFERENCES "nin_Species" ("scientificNameId")'
       ];
