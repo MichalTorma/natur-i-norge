@@ -44,38 +44,36 @@ class MinorTypeTable extends StatelessWidget {
     return ConstrainedBox(
       constraints:
           BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 300),
-      child: Center(
-        child: Neumorphic(
-          child: StaggeredGridView.count(
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-              crossAxisCount: Provider.of<MajorTypeProvider>(context)
-                      .xAxis
-                      .lecAdapter
-                      .gadElementarySegmentGroups
-                      .length +
-                  1,
-              shrinkWrap: false,
-              primary: false,
-              scrollDirection: Axis.vertical,
-              children: [
-                Neumorphic(
-                  child: AxisLabel(
-                    axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
-                    orientation: Axis.vertical,
-                  ),
+      child: Neumorphic(
+        child: StaggeredGridView.count(
+            crossAxisSpacing: 4,
+            mainAxisSpacing: 4,
+            crossAxisCount: Provider.of<MajorTypeProvider>(context)
+                    .xAxis
+                    .lecAdapter
+                    .gadElementarySegmentGroups
+                    .length +
+                1,
+            shrinkWrap: true,
+            primary: false,
+            scrollDirection: Axis.vertical,
+            children: [
+              Neumorphic(
+                child: AxisLabel(
+                  axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
+                  orientation: Axis.vertical,
                 ),
-                Neumorphic(),
-                Neumorphic(),
-                Neumorphic(
-                  child: AxisLabel(
-                    axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
-                    orientation: Axis.horizontal,
-                  ),
+              ),
+              Neumorphic(),
+              Neumorphic(),
+              Neumorphic(
+                child: AxisLabel(
+                  axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
+                  orientation: Axis.horizontal,
                 ),
-              ],
-              staggeredTiles: _getStageredTiles(context)),
-        ),
+              ),
+            ],
+            staggeredTiles: _getStageredTiles(context)),
       ),
     );
   }
