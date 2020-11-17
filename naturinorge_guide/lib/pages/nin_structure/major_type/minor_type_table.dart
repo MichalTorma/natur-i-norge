@@ -14,25 +14,25 @@ class MinorTypeTable extends StatelessWidget {
             Provider.of<MajorTypeProvider>(context)
                 .yAxis
                 .lecAdapter
-                .elementarySegments
+                .gadElementarySegmentGroups
                 .length),
         StaggeredTile.count(
             Provider.of<MajorTypeProvider>(context)
                 .xAxis
                 .lecAdapter
-                .elementarySegments
+                .gadElementarySegmentGroups
                 .length,
             Provider.of<MajorTypeProvider>(context)
                 .yAxis
                 .lecAdapter
-                .elementarySegments
+                .gadElementarySegmentGroups
                 .length),
         StaggeredTile.count(1, 1),
         StaggeredTile.count(
             Provider.of<MajorTypeProvider>(context)
                 .xAxis
                 .lecAdapter
-                .elementarySegments
+                .gadElementarySegmentGroups
                 .length,
             1)
       ];
@@ -52,7 +52,7 @@ class MinorTypeTable extends StatelessWidget {
               crossAxisCount: Provider.of<MajorTypeProvider>(context)
                       .xAxis
                       .lecAdapter
-                      .elementarySegments
+                      .gadElementarySegmentGroups
                       .length +
                   1,
               shrinkWrap: false,
