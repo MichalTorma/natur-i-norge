@@ -133,6 +133,15 @@ class NiNDatabase extends _$NiNDatabase {
     return res;
   }
 
+  Future<List<String>> getGadElementarySegmentGroupIdsByStandardSegment(
+      NinStandardSegmentData standardSegment,
+      List<String> allElementarySegmentGroupIds, List<String> elementarySegments) async {
+    var res = select(ninElementarySegmentGroup)
+      ..where((tbl) => tbl.id.isIn(allElementarySegmentGroupIds))
+      ..where((tbl) => tbl.elementarySegmentId.isIn(elementarySegments));
+    return (await res.get()).map((e) => e.id).toSet().toList();
+  }
+
   Future<List<Detailed<NinElementarySegmentGroupDetailData>>>
       getElementarySegmentsByElementarySegmentGroupId(
           String elementarySegmentGroupId, Locale locale) async {
@@ -166,18 +175,12 @@ class NiNDatabase extends _$NiNDatabase {
     return elementarySegmentGroupIds;
   }
 
-  Future<List<NinElementarySegmentGroupData>>
-      getGadElementarySegmentGroupsByMajorTypeLecId(
-          String majorTypeLecId) async {
-    var elementarySegmentGroupIds =
-        (await (select(ninElementarySegmentCombination)
-                  ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLecId)))
-                .get())
-            .map((e) => e.elementarySegmentGroupId)
-            .toSet();
-    return (select(ninElementarySegmentGroup)
-          ..where((tbl) => tbl.id.isIn(elementarySegmentGroupIds)))
+  Future<List<String>> getGadElementarySegmentGroupsIdsByMajorTypeLecId(
+      String majorTypeLecId) async {
+    var res = await (select(ninElementarySegmentCombination)
+          ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLecId)))
         .get();
+    return res.map((e) => e.elementarySegmentGroupId).toSet().toList();
   }
 
   Future<Detailed<NinLECData>> getLecById(String lecId, Locale locale) async {

@@ -8,13 +8,21 @@ class StandardSegmentAdapter {
   final NiNDatabase db;
   final Locale locale;
   final Detailed<NinStandardSegmentData> standardSegment;
+  final List<String> allElementarySegmentGroupIds;
   List<NinElementarySegmentData> elementarySegments;
+  List<String> elementarySegmentGroups;
   LecAdapter lec;
 
-  StandardSegmentAdapter(this.standardSegment, this.db, this.locale);
+  StandardSegmentAdapter(this.standardSegment, this.db, this.locale,
+      this.allElementarySegmentGroupIds);
   Future getRelations() async {
     elementarySegments =
         await db.getElementarySegmentByStandardSegment(standardSegment.data);
+    elementarySegmentGroups =
+        await db.getGadElementarySegmentGroupIdsByStandardSegment(
+            standardSegment.data,
+            allElementarySegmentGroupIds,
+            elementarySegments.map((e) => e.id).toList());
     var majorTypeLec =
         await db.getMajorTypeLecByStandardSegment(standardSegment.data);
     lec = LecAdapter(db, locale, majorTypeLec);
@@ -56,11 +64,11 @@ class LecAdapter {
     print('Get Lec relations, majorTypeLec.id = ${majorTypeLec.id}');
     lec = await db.getLecById(majorTypeLec.lecId, locale);
     elementarySegments = await db.getElementarySegmentsByLec(lec.data);
-    var elementarySegmentGroupIds =
-        await db.getGadElementarySegmentGroupsByMajorTypeLecId(majorTypeLec.id);
+    var elementarySegmentGroupIds = await db
+        .getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec.id);
 
     for (var esg in elementarySegmentGroupIds) {
-      var esga = ElementarySegmentGroupAdapter(db, locale, esg.id);
+      var esga = ElementarySegmentGroupAdapter(db, locale, esg);
       await esga.getRelations();
       gadElementarySegmentGroups.add(esga);
     }
@@ -71,18 +79,18 @@ class MinorTypeAdapter {
   final NiNDatabase db;
   final Locale locale;
   final Detailed<NinMinorTypeData> minorType;
-  List<StandardSegmentAdapter> standardSegments;
+  // List<StandardSegmentAdapter> standardSegments;
 
   MinorTypeAdapter(this.minorType, this.db, this.locale);
-  Future getRelations() async {
-    var standardSegmentsOnly =
-        await db.getStandardSegmentsByMinorType(minorType.data, locale);
-    standardSegments = await Future.forEach(standardSegmentsOnly, (e) async {
-      var res = StandardSegmentAdapter(e, db, locale);
-      await res.getRelations();
-      return res;
-    });
-  }
+  // Future getRelations() async {
+  //   // var standardSegmentsOnly =
+  //   //     await db.getStandardSegmentsByMinorType(minorType.data, locale);
+  //   // standardSegments = await Future.forEach(standardSegmentsOnly, (e) async {
+  //   //   var res = StandardSegmentAdapter(e, db, locale);
+  //   //   await res.getRelations();
+  //   //   return res;
+  //   // });
+  // }
 }
 
 class MajorTypeAdapter {
@@ -91,7 +99,7 @@ class MajorTypeAdapter {
   final Locale locale;
   List<MinorTypeAdapter> minorTypes;
   List<LecAdapter> lecs;
-  List<StandardSegmentAdapter> standardSegments;
+  // List<StandardSegmentAdapter> standardSegments;
 
   MajorTypeAdapter(this.majorType, this.db, this.locale);
 
@@ -101,7 +109,7 @@ class MajorTypeAdapter {
         await db.getMinorTypesByMajorTypeId(majorType.data.id, locale);
     minorTypes = await Future.forEach(minorTypeDatas, (e) async {
       var res = MinorTypeAdapter(e, db, locale);
-      await res.getRelations();
+      // await res.getRelations();
       return res;
     });
     var majorTypeLecs =
@@ -111,10 +119,10 @@ class MajorTypeAdapter {
       await res.getRelations();
       return res;
     });
-    var standardSegmentsData =
-        await db.getStandardSegmentsByMajorType(majorType.data, locale);
-    standardSegments = await Future.forEach(
-        standardSegmentsData, (e) => StandardSegmentAdapter(e, db, locale));
+    // var standardSegmentsData =
+    //     await db.getStandardSegmentsByMajorType(majorType.data, locale);
+    // standardSegments = await Future.forEach(
+    //     standardSegmentsData, (e) => StandardSegmentAdapter(e, db, locale));
     return;
   }
 }
