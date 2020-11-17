@@ -26,16 +26,26 @@ class AxisLabel extends StatelessWidget {
 
     List<Widget> bodyParts = [
       Expanded(
+        flex: 1,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           child: AxisLabelNameWidget(axisBlock: axisBlock),
         ),
       ),
-      Flex(
-        direction: Axis.horizontal,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: standardSegmentWidgets,
+      Expanded(
+        flex: 1,
+        child: Flex(
+          direction: Axis.horizontal,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: standardSegmentWidgets,
+        ),
+      ),
+      Expanded(
+        flex: 1,
+        child: Container(
+          color: Colors.red,
+        ),
       )
     ];
 
