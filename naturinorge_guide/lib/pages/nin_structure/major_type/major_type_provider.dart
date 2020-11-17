@@ -54,10 +54,8 @@ class MajorTypeProvider extends ChangeNotifier {
     if (_allAxis.length < 1) {
       throw Exception('allAxis is empty');
     }
-    _xAxis =
-        _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLECData.axis == 0);
-    _yAxis =
-        _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLECData.axis == 1);
+    _xAxis = _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 0);
+    _yAxis = _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 1);
     // _otherAxis = _allAxis.where((element) =>
     //     ![0, 1].contains(element.lecAdapter.majorTypeLECData.axis));
   }

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
+import 'dart:math';
 
 class StandardSegmentAdapter {
   final NiNDatabase db;
@@ -21,15 +22,48 @@ class StandardSegmentAdapter {
   }
 }
 
+class ElementarySegmentGroupAdapter {
+  final NiNDatabase db;
+  final Locale locale;
+  final String elementarySegmentGroupId;
+
+  List<NinElementarySegmentData> elementarySegments;
+  int order;
+
+  ElementarySegmentGroupAdapter(
+      this.db, this.locale, this.elementarySegmentGroupId);
+  Future getRelations() async {
+    elementarySegments =
+        await db.getElementarySegmentByElementarySegmentGroupId(
+            elementarySegmentGroupId);
+    List<int> listOfOrders = elementarySegments.map((e) => e.order).toList();
+    order = listOfOrders.reduce(min);
+  }
+}
+
 class LecAdapter {
   final NiNDatabase db;
   final Locale locale;
   Detailed<NinLECData> lec;
-  final NinMajorTypeLECData majorTypeLECData;
+  List<NinElementarySegmentData> elementarySegments;
+  List<ElementarySegmentGroupAdapter> gadElementarySegmentGroups =
+      List<ElementarySegmentGroupAdapter>();
 
-  LecAdapter(this.db, this.locale, this.majorTypeLECData);
+  final NinMajorTypeLECData majorTypeLec;
+
+  LecAdapter(this.db, this.locale, this.majorTypeLec);
   Future getRelations() async {
-    lec = await db.getLecById(majorTypeLECData.lecId, locale);
+    print('Get Lec relations, majorTypeLec.id = ${majorTypeLec.id}');
+    lec = await db.getLecById(majorTypeLec.lecId, locale);
+    elementarySegments = await db.getElementarySegmentsByLec(lec.data);
+    var elementarySegmentGroupIds =
+        await db.getGadElementarySegmentGroupsByMajorTypeLecId(majorTypeLec.id);
+
+    for (var esg in elementarySegmentGroupIds) {
+      var esga = ElementarySegmentGroupAdapter(db, locale, esg.id);
+      await esga.getRelations();
+      gadElementarySegmentGroups.add(esga);
+    }
   }
 }
 
