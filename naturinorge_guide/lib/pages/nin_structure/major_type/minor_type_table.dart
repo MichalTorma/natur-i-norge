@@ -13,22 +13,26 @@ class MinorTypeTable extends StatelessWidget {
             1,
             Provider.of<MajorTypeProvider>(context)
                 .yAxis
-                .standardSegments
+                .lecAdapter
+                .elementarySegments
                 .length),
         StaggeredTile.count(
             Provider.of<MajorTypeProvider>(context)
                 .xAxis
-                .standardSegments
+                .lecAdapter
+                .elementarySegments
                 .length,
             Provider.of<MajorTypeProvider>(context)
                 .yAxis
-                .standardSegments
+                .lecAdapter
+                .elementarySegments
                 .length),
         StaggeredTile.count(1, 1),
         StaggeredTile.count(
             Provider.of<MajorTypeProvider>(context)
                 .xAxis
-                .standardSegments
+                .lecAdapter
+                .elementarySegments
                 .length,
             1)
       ];
@@ -37,35 +41,42 @@ class MinorTypeTable extends StatelessWidget {
     if (Provider.of<MajorTypeProvider>(context).isLoading) {
       return Container();
     }
-    return Neumorphic(
-      child: StaggeredGridView.count(
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          crossAxisCount: Provider.of<MajorTypeProvider>(context)
-                  .xAxis
-                  .standardSegments
-                  .length +
-              1,
-          shrinkWrap: true,
-          primary: false,
-          scrollDirection: Axis.vertical,
-          children: [
-            Neumorphic(
-              child: AxisLabel(
-                axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
-                orientation: Axis.vertical,
-              ),
-            ),
-            Neumorphic(),
-            Neumorphic(),
-            Neumorphic(
-              child: AxisLabel(
-                axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
-                orientation: Axis.horizontal,
-              ),
-            ),
-          ],
-          staggeredTiles: _getStageredTiles(context)),
+    return ConstrainedBox(
+      constraints:
+          BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 300),
+      child: Center(
+        child: Neumorphic(
+          child: StaggeredGridView.count(
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              crossAxisCount: Provider.of<MajorTypeProvider>(context)
+                      .xAxis
+                      .lecAdapter
+                      .elementarySegments
+                      .length +
+                  1,
+              shrinkWrap: false,
+              primary: false,
+              scrollDirection: Axis.vertical,
+              children: [
+                Neumorphic(
+                  child: AxisLabel(
+                    axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
+                    orientation: Axis.vertical,
+                  ),
+                ),
+                Neumorphic(),
+                Neumorphic(),
+                Neumorphic(
+                  child: AxisLabel(
+                    axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
+                    orientation: Axis.horizontal,
+                  ),
+                ),
+              ],
+              staggeredTiles: _getStageredTiles(context)),
+        ),
+      ),
     );
   }
 }
