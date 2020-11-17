@@ -15,7 +15,7 @@ class AxisLabelNameWidget extends StatelessWidget {
     return Neumorphic(
       // padding: EdgeInsets.all(4),
       child: AutoSizeText(
-        axisBlock.lecAdapter.lec.name,
+        '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
         textAlign: TextAlign.center,
       ),
     );
