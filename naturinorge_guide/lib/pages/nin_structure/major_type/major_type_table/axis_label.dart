@@ -15,8 +15,12 @@ class AxisLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     var standardSegmentWidgets = List<Widget>();
     for (var ss in axisBlock.standardSegments) {
-      standardSegmentWidgets.add(StandardSegmentWidget(
-        standardSegmentAdapter: ss,
+      print(ss.elementarySegments.length);
+      standardSegmentWidgets.add(Expanded(
+        flex: ss.elementarySegments.length,
+        child: StandardSegmentWidget(
+          standardSegmentAdapter: ss,
+        ),
       ));
     }
 
@@ -27,7 +31,8 @@ class AxisLabel extends StatelessWidget {
           child: AxisLabelNameWidget(axisBlock: axisBlock),
         ),
       ),
-      Row(
+      Flex(
+        direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: standardSegmentWidgets,

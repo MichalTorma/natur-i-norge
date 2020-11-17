@@ -108,15 +108,76 @@ class NiNDatabase extends _$NiNDatabase {
       (select(ninElementarySegment)..where((tbl) => tbl.id.equals(id)))
           .getSingle();
 
+  Future<List<NinElementarySegmentData>>
+      getElementarySegmentByElementarySegmentGroupId(
+          String elementarySegmentGroupId) async {
+    var elementarySegmentGroups = await (select(ninElementarySegmentGroup)
+          ..where((tbl) => tbl.id.equals(elementarySegmentGroupId)))
+        .get();
+    var elementarySegmentIds =
+        elementarySegmentGroups.map((e) => e.elementarySegmentId);
+    return (select(ninElementarySegment)
+          ..where((tbl) => tbl.id.isIn(elementarySegmentIds)))
+        .get();
+  }
+
   Future<List<NinElementarySegmentData>> getElementarySegmentByStandardSegment(
       NinStandardSegmentData standardSegment) async {
     var standardSegmentElements = await (select(ninStandardSegmentElement)
           ..where((tbl) => tbl.standardSegmentId.equals(standardSegment.id)))
         .get();
-    return await Future.forEach(
-        standardSegmentElements,
-        (e) async =>
-            await this.getElementarySegmentById(e.elementarySegmentId));
+    var res = List<NinElementarySegmentData>();
+    for (var es in standardSegmentElements) {
+      res.add(await this.getElementarySegmentById(es.elementarySegmentId));
+    }
+    return res;
+  }
+
+  Future<List<Detailed<NinElementarySegmentGroupDetailData>>>
+      getElementarySegmentsByElementarySegmentGroupId(
+          String elementarySegmentGroupId, Locale locale) async {
+    var elementarySegmentGroupDetails =
+        await (select(ninElementarySegmentGroupDetail)
+              ..where((tbl) => tbl.elementarySegmentGroupId
+                  .equals(elementarySegmentGroupId)))
+            .get();
+    var res = List<Detailed<NinElementarySegmentGroupDetailData>>();
+    for (var esgd in elementarySegmentGroupDetails) {
+      var detailed = await Detailed<NinElementarySegmentGroupDetailData>()
+          .initialize(esgd, locale, this);
+      res.add(detailed);
+    }
+    return res;
+  }
+
+  Future<List<NinElementarySegmentData>> getElementarySegmentsByLec(
+          NinLECData lec) =>
+      (select(ninElementarySegment)..where((tbl) => tbl.lecId.equals(lec.id)))
+          .get();
+
+  Future<List<String>> getElementarySegmentGroupsByElementarySegments(
+      List<NinElementarySegmentData> elementarySegments) async {
+    var elementaryIds = elementarySegments.map((e) => e.id);
+    var elementarySegmentGroups = await (select(ninElementarySegmentGroup)
+          ..where((tbl) => tbl.elementarySegmentId.isIn(elementaryIds)))
+        .get();
+    var elementarySegmentGroupIds =
+        elementarySegmentGroups.map((e) => e.id).toSet().toList();
+    return elementarySegmentGroupIds;
+  }
+
+  Future<List<NinElementarySegmentGroupData>>
+      getGadElementarySegmentGroupsByMajorTypeLecId(
+          String majorTypeLecId) async {
+    var elementarySegmentGroupIds =
+        (await (select(ninElementarySegmentCombination)
+                  ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLecId)))
+                .get())
+            .map((e) => e.elementarySegmentGroupId)
+            .toSet();
+    return (select(ninElementarySegmentGroup)
+          ..where((tbl) => tbl.id.isIn(elementarySegmentGroupIds)))
+        .get();
   }
 
   Future<Detailed<NinLECData>> getLecById(String lecId, Locale locale) async {
@@ -126,7 +187,7 @@ class NiNDatabase extends _$NiNDatabase {
   }
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
 }
 
 LazyDatabase _openConnection() {
@@ -136,7 +197,7 @@ LazyDatabase _openConnection() {
     // for your app.
     final dbFile = await rootBundle.load('assets/nin_database.db');
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'nin.sqlite'));
+    final file = File(p.join(dbFolder.path, 'nin3.sqlite'));
     await file.writeAsBytes(dbFile.buffer.asUint8List());
     return VmDatabase(file);
   });

@@ -9,25 +9,23 @@ class StandardSegmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Neumorphic(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                AutoSizeText(
-                  standardSegmentAdapter.standardSegment.name,
-                  textAlign: TextAlign.center,
-                ),
-                Divider(),
-                AutoSizeText(
-                  standardSegmentAdapter.standardSegment.data.id,
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Neumorphic(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              AutoSizeText(
+                standardSegmentAdapter.standardSegment.name,
+                textAlign: TextAlign.center,
+              ),
+              Divider(),
+              AutoSizeText(
+                standardSegmentAdapter.standardSegment.data.id.split('-')[1],
+                textAlign: TextAlign.center,
+              )
+            ],
           ),
         ),
       ),
