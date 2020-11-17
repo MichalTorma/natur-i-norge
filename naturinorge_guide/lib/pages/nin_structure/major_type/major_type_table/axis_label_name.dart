@@ -13,7 +13,7 @@ class AxisLabelNameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Neumorphic(
-      padding: EdgeInsets.all(4),
+      // padding: EdgeInsets.all(4),
       child: AutoSizeText(
         axisBlock.lecAdapter.lec.name,
         textAlign: TextAlign.center,
