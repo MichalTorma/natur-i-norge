@@ -70,7 +70,13 @@ class MajorTypeProvider extends ChangeNotifier {
           await _db.getStandardSegmentsByMajorTypeLec(element, locale);
       var standardSegmentAdapters = List<StandardSegmentAdapter>();
       for (var e in standardSegments) {
-        var res = StandardSegmentAdapter(e, _db, locale);
+        var res = StandardSegmentAdapter(
+            e,
+            _db,
+            locale,
+            lecAdapter.gadElementarySegmentGroups
+                .map((e) => e.elementarySegmentGroupId)
+                .toList());
         await res.getRelations();
         standardSegmentAdapters.add(res);
       }
