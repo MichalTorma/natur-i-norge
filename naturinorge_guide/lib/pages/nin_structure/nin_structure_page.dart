@@ -36,37 +36,16 @@ class _StructurePageState extends State<StructurePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(
         Provider.of<NinStructureProvider>(context, listen: false).scrollIndex));
     return Scaffold(
-      appBar: NeumorphicAppBar(
-        title: Text(LocaleKeys.structure).tr(),
-      ),
-      body: ListView(
-        controller: controller,
-        children: [
-          AutoScrollTag(
-            key: ValueKey(0),
-            controller: controller,
-            index: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Neumorphic(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      MajorTypeGroupSelector(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          if (Provider.of<NinStructureProvider>(context)
-                  .selectedMajorTypeGroup !=
-              null)
+      // appBar: NeumorphicAppBar(
+      //   title: Text(LocaleKeys.structure).tr(),
+      // ),
+      body: CustomScrollView(controller: controller, slivers: [
+        SliverList(
+          delegate: SliverChildListDelegate([
             AutoScrollTag(
-              key: ValueKey(1),
+              key: ValueKey(0),
               controller: controller,
-              index: 1,
+              index: 0,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Neumorphic(
@@ -74,36 +53,58 @@ class _StructurePageState extends State<StructurePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        MajorTypeGroupDetails(),
-                        Divider(),
-                        MajorTypeSelector(),
+                        MajorTypeGroupSelector(),
                       ],
                     ),
                   ),
                 ),
               ),
             ),
-          if (Provider.of<NinStructureProvider>(context).selectedMajorType !=
-              null)
-            AutoScrollTag(
-              key: ValueKey(2),
-              controller: controller,
-              index: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Neumorphic(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MajorTypeDetails(
-                      ninMajorType: Provider.of<NinStructureProvider>(context)
-                          .selectedMajorType,
+            if (Provider.of<NinStructureProvider>(context)
+                    .selectedMajorTypeGroup !=
+                null)
+              AutoScrollTag(
+                key: ValueKey(1),
+                controller: controller,
+                index: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Neumorphic(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          MajorTypeGroupDetails(),
+                          Divider(),
+                          MajorTypeSelector(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            )
-        ],
-      ),
+            if (Provider.of<NinStructureProvider>(context).selectedMajorType !=
+                null)
+              AutoScrollTag(
+                key: ValueKey(2),
+                controller: controller,
+                index: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Neumorphic(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: MajorTypeDetails(
+                        ninMajorType: Provider.of<NinStructureProvider>(context)
+                            .selectedMajorType,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+          ]),
+        ),
+      ]),
     );
   }
 
