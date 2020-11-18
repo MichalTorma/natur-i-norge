@@ -12,11 +12,14 @@ class AxisLabelNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Neumorphic(
-      // padding: EdgeInsets.all(4),
-      child: AutoSizeText(
-        '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
-        textAlign: TextAlign.center,
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Neumorphic(
+        // padding: EdgeInsets.all(4),
+        child: AutoSizeText(
+          '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
