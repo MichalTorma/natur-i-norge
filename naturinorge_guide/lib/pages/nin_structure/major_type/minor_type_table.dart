@@ -33,6 +33,7 @@ class MinorTypeTable extends StatelessWidget {
         Row(
           children: [
             Container(
+              clipBehavior: Clip.none,
               height: ySize,
               width: labelWidth,
               child: Neumorphic(
@@ -56,6 +57,7 @@ class MinorTypeTable extends StatelessWidget {
               width: labelWidth,
             ),
             Container(
+              padding: EdgeInsets.all(spacing.toDouble()),
               height: labelWidth,
               width: xSize,
               child: Neumorphic(
