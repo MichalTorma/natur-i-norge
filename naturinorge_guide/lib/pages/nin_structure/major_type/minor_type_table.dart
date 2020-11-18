@@ -1,7 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
-import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_table/axis_label.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_label.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +12,7 @@ class MinorTypeTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (Provider.of<MajorTypeProvider>(context).isLoading) {
-      return Container();
+      return LinearProgressIndicator();
     }
     var sidePadding = 2 * (8 + 2) + spacing + 10;
     var labelWidth = 70.0;
