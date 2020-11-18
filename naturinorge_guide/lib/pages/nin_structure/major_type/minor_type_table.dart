@@ -7,70 +7,67 @@ import 'package:provider/provider.dart';
 
 class MinorTypeTable extends StatelessWidget {
   const MinorTypeTable({Key key}) : super(key: key);
+  static int spacing = 2;
 
-  List<StaggeredTile> _getStageredTiles(BuildContext context) => [
-        StaggeredTile.count(
-            1,
-            Provider.of<MajorTypeProvider>(context)
-                .yAxis
-                .lecAdapter
-                .gadElementarySegmentGroups
-                .length),
-        StaggeredTile.count(
-            Provider.of<MajorTypeProvider>(context)
-                .xAxis
-                .lecAdapter
-                .gadElementarySegmentGroups
-                .length,
-            Provider.of<MajorTypeProvider>(context)
-                .yAxis
-                .lecAdapter
-                .gadElementarySegmentGroups
-                .length),
-        StaggeredTile.count(1, 1),
-        StaggeredTile.count(
-            Provider.of<MajorTypeProvider>(context)
-                .xAxis
-                .lecAdapter
-                .gadElementarySegmentGroups
-                .length,
-            1)
-      ];
   @override
   Widget build(BuildContext context) {
     if (Provider.of<MajorTypeProvider>(context).isLoading) {
       return Container();
     }
-    return Neumorphic(
-      child: StaggeredGridView.count(
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 4,
-          crossAxisCount: Provider.of<MajorTypeProvider>(context)
-                  .xAxis
-                  .lecAdapter
-                  .gadElementarySegmentGroups
-                  .length +
-              1,
-          shrinkWrap: true,
-          primary: false,
-          scrollDirection: Axis.vertical,
+    var sidePadding = 2 * (8 + 2) + spacing + 10;
+    var labelWidth = 70.0;
+    var xSize = MediaQuery.of(context).size.width - sidePadding - labelWidth;
+    var ySize = Provider.of<MajorTypeProvider>(context)
+            .yAxis
+            .lecAdapter
+            .gadElementarySegmentGroups
+            .length /
+        Provider.of<MajorTypeProvider>(context)
+            .yAxis
+            .lecAdapter
+            .gadElementarySegmentGroups
+            .length *
+        xSize;
+    return Column(
+      children: [
+        Row(
           children: [
-            Neumorphic(
-              child: AxisLabel(
-                axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
-                orientation: Axis.vertical,
+            Container(
+              height: ySize,
+              width: labelWidth,
+              child: Neumorphic(
+                child: AxisLabel(
+                  axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
+                  orientation: Axis.vertical,
+                ),
               ),
             ),
-            Neumorphic(),
-            Neumorphic(),
-            Neumorphic(
-              child: AxisLabel(
-                axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
-                orientation: Axis.horizontal,
+            Container(
+              color: Colors.red,
+              width: xSize,
+              height: ySize,
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              height: labelWidth,
+              width: labelWidth,
+            ),
+            Container(
+              height: labelWidth,
+              width: xSize,
+              child: Neumorphic(
+                child: AxisLabel(
+                  axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
+                  orientation: Axis.horizontal,
+                ),
               ),
             ),
           ],
-          staggeredTiles: _getStageredTiles(context)),
+        )
+      ],
     );
   }
 }
