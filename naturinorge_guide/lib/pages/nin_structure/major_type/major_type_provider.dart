@@ -33,9 +33,18 @@ class MajorTypeProvider extends ChangeNotifier {
   MajorTypeAdapter _majorTypeAdapter;
   int _numberOfAxis = 0;
   List<AxisBlock> _allAxis = List<AxisBlock>();
+  List<AxisBlock> _mainAxis = List<AxisBlock>();
+  List<AxisBlock> _secondaryAxis = List<AxisBlock>();
+  List<AxisBlock> _supplementaryAxis = List<AxisBlock>();
+  List<StandardSegmentAdapter> _selectedSecondaryAxisSegments =
+      List<StandardSegmentAdapter>();
   AxisBlock _xAxis;
   AxisBlock _yAxis;
-  List<AxisBlock> _otherAxis;
+
+  NinMappingScaleData _selectedMappingScale;
+  List<NinMappingScaleData> _allMappingScales;
+
+  // List<AxisBlock> _otherAxis;
   bool _isLoading = true;
 
   Future load(Detailed<NinMajorTypeData> majorType) async {
@@ -45,30 +54,49 @@ class MajorTypeProvider extends ChangeNotifier {
     _majorTypeAdapter = MajorTypeAdapter(majorType, _db, locale);
     await _majorTypeAdapter.getRelations();
     await _populateAllAxis();
-    _organizeAxis();
+    _initializeAxis();
+    await _initializeScale();
     _isLoading = false;
     notifyListeners();
   }
 
-  Future _organizeAxis() {
-    // todo implement changing axis
+  Future _initializeScale() async {
+    _selectedMappingScale = await _db.getMappingScaleById(5000);
+    _allMappingScales = await _db.getMappingScales();
+  }
+
+  _initializeAxis() {
     if (_allAxis.length < 1) {
       throw Exception('allAxis is empty');
     }
     _xAxis = _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 0);
     _yAxis = _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 1);
-    // _otherAxis = _allAxis.where((element) =>
-    //     ![0, 1].contains(element.lecAdapter.majorTypeLECData.axis));
+    // _otherAxis = _allAxis
+    //     .where(
+    //         (element) => ![0, 1].contains(element.lecAdapter.majorTypeLec.axis))
+    //     .toList();
+    _mainAxis = _allAxis
+        .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'mLEC')
+        .toList();
+    _secondaryAxis = _allAxis
+        .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'iLEC')
+        .toList();
+    _supplementaryAxis = _allAxis
+        .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'uLEC')
+        .toList();
+
+    _selectedSecondaryAxisSegments =
+        _secondaryAxis.map((e) => e.standardSegments[0]).toList();
   }
 
   Future _populateAllAxis() async {
     var majorTypeLecs =
         await _db.getMajorTypeLecByMajorTypeId(_majorType.data.id);
-    for (var element in majorTypeLecs) {
-      var lecAdapter = LecAdapter(_db, locale, element);
+    for (var majorTypeLec in majorTypeLecs) {
+      var lecAdapter = LecAdapter(_db, locale, majorTypeLec);
       await lecAdapter.getRelations();
       var standardSegments =
-          await _db.getStandardSegmentsByMajorTypeLec(element, locale);
+          await _db.getStandardSegmentsByMajorTypeLec(majorTypeLec, locale);
       var standardSegmentAdapters = List<StandardSegmentAdapter>();
       for (var e in standardSegments) {
         var res = StandardSegmentAdapter(
@@ -92,21 +120,5 @@ class MajorTypeProvider extends ChangeNotifier {
   int get numberOfAxis => _majorTypeAdapter.lecs.length;
   AxisBlock get xAxis => _xAxis;
   AxisBlock get yAxis => _yAxis;
-  List<AxisBlock> get otherAxis => _otherAxis;
   bool get isLoading => _isLoading;
-
-  // Widget gridBuilder(int index){
-  //   List<int> coordinates = getCoordinatesFromIndex(index);
-  //   Detailed<NinStandardSegmentData> standardSegment = getStandardSegment(coordinates);
-  //   Widget res;
-  //   if (standardSegment == null) {
-  //     res = Container(); // (1,1)
-  //   }
-  //   else {
-  //     if (_usedStandardSegments.contains(standardSegment)){
-
-  //     }
-  //     return //minor type widget
-  //   }
-  // }
 }
