@@ -28,10 +28,7 @@ class AxisLabel extends StatelessWidget {
     List<Widget> bodyParts = [
       Expanded(
         flex: 1,
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: AxisLabelNameWidget(axisBlock: axisBlock),
-        ),
+        child: AxisLabelNameWidget(axisBlock: axisBlock),
       ),
       Expanded(
         flex: 1,
