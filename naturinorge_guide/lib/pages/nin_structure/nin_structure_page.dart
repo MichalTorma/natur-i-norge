@@ -1,5 +1,4 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:naturinorge_guide/generated/codegen_loader.g.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_selector.dart';
@@ -95,13 +94,14 @@ class _StructurePageState extends State<StructurePage> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: MajorTypeDetails(
-                        ninMajorType: Provider.of<NinStructureProvider>(context)
-                            .selectedMajorType,
+                        ninMajorType: Provider.of<NinStructureProvider>(
+                          context,
+                        ).selectedMajorType,
                       ),
                     ),
                   ),
                 ),
-              )
+              ),
           ]),
         ),
       ]),

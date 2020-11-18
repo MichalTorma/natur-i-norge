@@ -1,6 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
+import 'package:naturinorge_guide/main.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -8,7 +9,6 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 enum ButtonState { AVAILABLE, SELECTED, UNAVAILABLE }
 
 class NinStructureProvider extends ChangeNotifier {
-  final NiNDatabase db;
   var _ninMajorTypeGroups = List<Detailed<NinMajorTypeGroupData>>();
   var _ninMajorTypes = List<Detailed<NinMajorTypeData>>();
 
@@ -21,7 +21,7 @@ class NinStructureProvider extends ChangeNotifier {
   int get scrollIndex => _scrollIndex;
 // MajorTypeGroup
 
-  NinStructureProvider(Locale locale, this.db) {
+  NinStructureProvider(Locale locale) {
     _locale = locale;
 
     _loadMajorTypeGroups();

@@ -1,22 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/db_description.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
-import 'package:naturinorge_guide/db/nin_db_provider.dart';
-import 'package:naturinorge_guide/details/details_view.dart';
 import 'package:naturinorge_guide/details/map_provider.dart';
 import 'package:naturinorge_guide/filter_provider.dart';
 import 'package:naturinorge_guide/pages/home_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
-import 'package:naturinorge_guide/tools/my_theme.dart';
 import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
-import 'depriciated/t4_old_helper.dart';
 import 'generated/codegen_loader.g.dart';
+
+NiNDatabase db;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +22,7 @@ void main() async {
     //   PREFS_DARK: false,
     //   PREFS_CHILD: false,
   });
+  db = NiNDatabase();
   runApp(EasyLocalization(
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('nb', 'NO')],
@@ -65,17 +63,14 @@ class MyApp extends StatelessWidget {
           ),
 
           // ACTIVE
-          ChangeNotifierProvider<NinDatabaseProvider>(
-              create: (_) => NinDatabaseProvider(NiNDatabase())),
-          ChangeNotifierProxyProvider<NinDatabaseProvider,
-                  NinStructureProvider>(
-              update: (context, dbProvider, previousMessages) =>
-                  NinStructureProvider(context.locale, dbProvider.db),
-              create: (_) => null),
-          ChangeNotifierProxyProvider<NinDatabaseProvider, MajorTypeProvider>(
-              update: (context, dbProvider, previousMessages) =>
-                  MajorTypeProvider(context.locale, dbProvider.db),
-              create: (_) => null),
+          ChangeNotifierProvider<NinStructureProvider>(
+            create: (_) => NinStructureProvider(context.locale),
+            lazy: false,
+          ),
+          ChangeNotifierProvider<MajorTypeProvider>(
+            create: (_) => MajorTypeProvider(context.locale),
+            lazy: false,
+          ),
         ],
         child: NeumorphicApp(
             localizationsDelegates: context.localizationDelegates,
