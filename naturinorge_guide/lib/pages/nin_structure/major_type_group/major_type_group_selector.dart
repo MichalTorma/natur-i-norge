@@ -18,7 +18,7 @@ class MajorTypeGroupSelector extends StatelessWidget {
       clipBehavior: Clip.none,
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
-      children: Provider.of<NinStructureProvider>(context)
+      children: Provider.of<NinStructureProvider>(context, listen: false)
           .majorTypeGroups
           .map((e) => MajorTypeGroupButton(
                 ninMajorTypeGroup: e,

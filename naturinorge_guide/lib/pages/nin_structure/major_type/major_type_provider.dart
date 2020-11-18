@@ -2,6 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
+import 'package:naturinorge_guide/main.dart';
 
 class MinorTypeBlock {
   final int order;
@@ -21,12 +22,8 @@ class AxisBlock {
 
 class MajorTypeProvider extends ChangeNotifier {
   final Locale locale;
-  final NiNDatabase _db;
 
-  MajorTypeProvider(
-    this.locale,
-    this._db,
-  );
+  MajorTypeProvider(this.locale);
 
   Detailed<NinMajorTypeData> _majorType;
   NinMappingScaleData _activeMappingScale;
@@ -51,7 +48,7 @@ class MajorTypeProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     _majorType = majorType;
-    _majorTypeAdapter = MajorTypeAdapter(majorType, _db, locale);
+    _majorTypeAdapter = MajorTypeAdapter(majorType, db, locale);
     await _majorTypeAdapter.getRelations();
     await _populateAllAxis();
     _initializeAxis();
@@ -61,8 +58,8 @@ class MajorTypeProvider extends ChangeNotifier {
   }
 
   Future _initializeScale() async {
-    _selectedMappingScale = await _db.getMappingScaleById(5000);
-    _allMappingScales = await _db.getMappingScales();
+    _selectedMappingScale = await db.getMappingScaleById(5000);
+    _allMappingScales = await db.getMappingScales();
   }
 
   _initializeAxis() {
@@ -91,17 +88,17 @@ class MajorTypeProvider extends ChangeNotifier {
 
   Future _populateAllAxis() async {
     var majorTypeLecs =
-        await _db.getMajorTypeLecByMajorTypeId(_majorType.data.id);
+        await db.getMajorTypeLecByMajorTypeId(_majorType.data.id);
     for (var majorTypeLec in majorTypeLecs) {
-      var lecAdapter = LecAdapter(_db, locale, majorTypeLec);
+      var lecAdapter = LecAdapter(db, locale, majorTypeLec);
       await lecAdapter.getRelations();
       var standardSegments =
-          await _db.getStandardSegmentsByMajorTypeLec(majorTypeLec, locale);
+          await db.getStandardSegmentsByMajorTypeLec(majorTypeLec, locale);
       var standardSegmentAdapters = List<StandardSegmentAdapter>();
       for (var e in standardSegments) {
         var res = StandardSegmentAdapter(
             e,
-            _db,
+            db,
             locale,
             lecAdapter.gadElementarySegmentGroups
                 .map((e) => e.elementarySegmentGroupId)
