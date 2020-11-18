@@ -40,6 +40,7 @@ class MajorTypeProvider extends ChangeNotifier {
 
   Future load(Detailed<NinMajorTypeData> majorType) async {
     _isLoading = true;
+    notifyListeners();
     _majorType = majorType;
     _majorTypeAdapter = MajorTypeAdapter(majorType, _db, locale);
     await _majorTypeAdapter.getRelations();
