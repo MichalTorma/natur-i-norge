@@ -4,8 +4,9 @@ import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'dart:math';
 
+import 'package:naturinorge_guide/main.dart';
+
 class StandardSegmentAdapter {
-  final NiNDatabase db;
   final Locale locale;
   final Detailed<NinStandardSegmentData> standardSegment;
   final List<String> allElementarySegmentGroupIds;
@@ -13,8 +14,8 @@ class StandardSegmentAdapter {
   List<String> elementarySegmentGroups;
   LecAdapter lec;
 
-  StandardSegmentAdapter(this.standardSegment, this.db, this.locale,
-      this.allElementarySegmentGroupIds);
+  StandardSegmentAdapter(
+      this.standardSegment, db, this.locale, this.allElementarySegmentGroupIds);
   Future getRelations() async {
     elementarySegments =
         await db.getElementarySegmentByStandardSegment(standardSegment.data);
@@ -25,21 +26,19 @@ class StandardSegmentAdapter {
             elementarySegments.map((e) => e.id).toList());
     var majorTypeLec =
         await db.getMajorTypeLecByStandardSegment(standardSegment.data);
-    lec = LecAdapter(db, locale, majorTypeLec);
+    lec = LecAdapter(locale, majorTypeLec);
     await lec.getRelations();
   }
 }
 
 class ElementarySegmentGroupAdapter {
-  final NiNDatabase db;
   final Locale locale;
   final String elementarySegmentGroupId;
 
   List<NinElementarySegmentData> elementarySegments;
   int order;
 
-  ElementarySegmentGroupAdapter(
-      this.db, this.locale, this.elementarySegmentGroupId);
+  ElementarySegmentGroupAdapter(this.locale, this.elementarySegmentGroupId);
   Future getRelations() async {
     elementarySegments =
         await db.getElementarySegmentByElementarySegmentGroupId(
@@ -50,7 +49,6 @@ class ElementarySegmentGroupAdapter {
 }
 
 class LecAdapter {
-  final NiNDatabase db;
   final Locale locale;
   Detailed<NinLECData> lec;
   List<NinElementarySegmentData> elementarySegments;
@@ -59,7 +57,7 @@ class LecAdapter {
 
   final NinMajorTypeLECData majorTypeLec;
 
-  LecAdapter(this.db, this.locale, this.majorTypeLec);
+  LecAdapter(this.locale, this.majorTypeLec);
   Future getRelations() async {
     print('Get Lec relations, majorTypeLec.id = ${majorTypeLec.id}');
     lec = await db.getLecById(majorTypeLec.lecId, locale);
@@ -68,20 +66,23 @@ class LecAdapter {
         .getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec.id);
 
     for (var esg in elementarySegmentGroupIds) {
-      var esga = ElementarySegmentGroupAdapter(db, locale, esg);
+      var esga = ElementarySegmentGroupAdapter(locale, esg);
       await esga.getRelations();
       gadElementarySegmentGroups.add(esga);
     }
   }
 }
 
-class MinorTypeAdapter {
-  final NiNDatabase db;
+class MinorTypeScaledAdapter {
+  final NinMappingScaleData mappingScale;
+  final String minorTypeScaledId;
   final Locale locale;
-  final Detailed<NinMinorTypeData> minorType;
+  List<MinorTypeAdapter> minorTypes;
+
   // List<StandardSegmentAdapter> standardSegments;
 
-  MinorTypeAdapter(this.minorType, this.db, this.locale);
+  MinorTypeScaledAdapter(
+      this.locale, this.mappingScale, this.minorTypeScaledId);
   // Future getRelations() async {
   //   // var standardSegmentsOnly =
   //   //     await db.getStandardSegmentsByMinorType(minorType.data, locale);
@@ -93,29 +94,45 @@ class MinorTypeAdapter {
   // }
 }
 
+class MinorTypeAdapter {
+  final Locale locale;
+  final Detailed<NinMinorType> minorType;
+
+  MinorTypeAdapter(this.locale, this.minorType);
+}
+
 class MajorTypeAdapter {
   final Detailed<NinMajorTypeData> majorType;
-  final NiNDatabase db;
+
   final Locale locale;
-  List<MinorTypeAdapter> minorTypes;
+  List<MinorTypeScaledAdapter> minorTypes;
   List<LecAdapter> lecs;
+
   // List<StandardSegmentAdapter> standardSegments;
 
-  MajorTypeAdapter(this.majorType, this.db, this.locale);
+  MajorTypeAdapter(this.majorType, db, this.locale);
 
-  Future getRelations() async {
+  Future getRelations(NinMappingScaleData mappingScale) async {
     print('Start getting relations for ${majorType.data.id}');
-    var minorTypeDatas =
-        await db.getMinorTypesByMajorTypeId(majorType.data.id, locale);
-    minorTypes = await Future.forEach(minorTypeDatas, (e) async {
-      var res = MinorTypeAdapter(e, db, locale);
+    var minorTypeScaledIds = await db.getMinorTypeScaledIdsByMajorTypeAndScale(
+        majorType.data, mappingScale);
+    var res = List<MinorTypeScaledAdapter>();
+    for (var minorTypeScaledId in minorTypeScaledIds) {
+      res.add(MinorTypeScaledAdapter(locale, mappingScale, minorTypeScaledId));
+    }
+    minorTypes = await Future.forEach(minorTypeScaledIds, (e) async {
+      var res = MinorTypeScaledAdapter(
+        locale,
+        mappingScale,
+        e,
+      );
       // await res.getRelations();
       return res;
     });
     var majorTypeLecs =
         await db.getMajorTypeLecByMajorTypeId(majorType.data.id);
     lecs = await Future.forEach(majorTypeLecs, (element) async {
-      var res = LecAdapter(db, locale, element);
+      var res = LecAdapter(locale, element);
       await res.getRelations();
       return res;
     });

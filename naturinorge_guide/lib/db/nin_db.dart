@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:moor/moor.dart';
 // These imports are only needed to open the database
 import 'package:moor/ffi.dart';
+import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -29,8 +30,7 @@ class NiNDatabase extends _$NiNDatabase {
     var majorTypes = await (select(ninMajorType)
           ..where((tbl) => tbl.majorTypeGroupId.equals(majorTypeGroupId)))
         .get();
-    return await Detailed<NinMajorTypeData>()
-        .fromList(majorTypes, locale, this);
+    return await Detailed<NinMajorTypeData>().fromList(majorTypes, locale);
   }
 
   Future<List<NinDetailData>> getDetails(String detailId, Locale locale) async {
@@ -59,14 +59,40 @@ class NiNDatabase extends _$NiNDatabase {
   Future<NinMappingScaleData> getMappingScaleById(int id) =>
       (select(ninMappingScale)..where((tbl) => tbl.id.equals(id))).getSingle();
 
-  Future<List<Detailed<NinMinorTypeData>>> getMinorTypesByMajorTypeId(
-      String majorTypeId, Locale locale) async {
-    var minorTypesQuery = select(ninMinorType)
-      ..where((tbl) => tbl.majorTypeId.equals(majorTypeId));
-    var minorTypes = await minorTypesQuery.get();
-    var res = Detailed<NinMinorTypeData>().fromList(minorTypes, locale, this);
-    return await res;
+  Future<List<String>> getMinorTypeScaledIdsByMajorTypeAndScale(
+      NinMajorTypeData majorType, NinMappingScaleData mappingScale) async {
+    var minorTypes = (await (select(ninMinorType)
+              ..where((tbl) => tbl.majorTypeId.equals(majorType.id)))
+            .get())
+        .map((e) => e.id);
+
+    var minorTypesScaled = await (select(ninMinorTypeScaled)
+          ..where((tbl) => tbl.minorTypeId.isIn(minorTypes))
+          ..where((tbl) => tbl.mappingScaleId.equals(mappingScale.id)))
+        .get();
+    var res = minorTypesScaled.map((e) => e.id).toSet().toList();
+    return res;
   }
+
+  Future<List<Detailed<NinMinorTypeData>>> getMinorTypesByMajorTypeScaledId(
+      String majorTypeSacledId, Locale locale) async {
+    var minorTypeIds = await (select(ninMinorTypeScaled)
+          ..where((tbl) => tbl.id.equals(majorTypeSacledId)))
+        .get();
+    var minorTypes = await (select(ninMinorType)
+          ..where((tbl) => tbl.id.isIn(minorTypeIds.map((e) => e.minorTypeId))))
+        .get();
+
+    return Detailed<NinMinorTypeData>().fromList(minorTypes, locale);
+  }
+  // Future<List<Detailed<NinMinorTypeData>>> getMinorTypesByMajorTypeId(
+  //     String majorTypeId, NinMappingScaleData scale, Locale locale) async {
+  //   var minorTypesQuery = select(ninMinorType)
+  //     ..where((tbl) => tbl.majorTypeId.equals(majorTypeId));
+  //   var minorTypes = await minorTypesQuery.get();
+  //   var res = Detailed<NinMinorTypeData>().fromList(minorTypes, locale);
+  //   return await res;
+  // }
 
   Future<List<Detailed<NinStandardSegmentData>>>
       getStandardSegmentsByMajorTypeLec(
@@ -75,7 +101,7 @@ class NiNDatabase extends _$NiNDatabase {
           ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLEC.id)))
         .get();
     return await Detailed<NinStandardSegmentData>()
-        .fromList(standardSegments, locale, this);
+        .fromList(standardSegments, locale);
   }
 
   Future<List<Detailed<NinStandardSegmentData>>> getStandardSegmentsByMinorType(
@@ -88,7 +114,7 @@ class NiNDatabase extends _$NiNDatabase {
               .isIn(minorTypeStandardSegments.map((e) => e.standardSegmentId))))
         .get();
     return await Detailed<NinStandardSegmentData>()
-        .fromList(standardSegments, locale, this);
+        .fromList(standardSegments, locale);
   }
 
   Future<List<Detailed<NinStandardSegmentData>>> getStandardSegmentsByMajorType(
@@ -101,7 +127,7 @@ class NiNDatabase extends _$NiNDatabase {
               tbl.majorTypeLECId.isIn(majorTypeLec.map((e) => e.id).toList())))
         .get();
     return await Detailed<NinStandardSegmentData>()
-        .fromList(standardSegments, locale, this);
+        .fromList(standardSegments, locale);
   }
 
   Future<NinElementarySegmentData> getElementarySegmentById(String id) =>
@@ -135,7 +161,8 @@ class NiNDatabase extends _$NiNDatabase {
 
   Future<List<String>> getGadElementarySegmentGroupIdsByStandardSegment(
       NinStandardSegmentData standardSegment,
-      List<String> allElementarySegmentGroupIds, List<String> elementarySegments) async {
+      List<String> allElementarySegmentGroupIds,
+      List<String> elementarySegments) async {
     var res = select(ninElementarySegmentGroup)
       ..where((tbl) => tbl.id.isIn(allElementarySegmentGroupIds))
       ..where((tbl) => tbl.elementarySegmentId.isIn(elementarySegments));
@@ -153,7 +180,7 @@ class NiNDatabase extends _$NiNDatabase {
     var res = List<Detailed<NinElementarySegmentGroupDetailData>>();
     for (var esgd in elementarySegmentGroupDetails) {
       var detailed = await Detailed<NinElementarySegmentGroupDetailData>()
-          .initialize(esgd, locale, this);
+          .initialize(esgd, locale);
       res.add(detailed);
     }
     return res;
@@ -186,7 +213,7 @@ class NiNDatabase extends _$NiNDatabase {
   Future<Detailed<NinLECData>> getLecById(String lecId, Locale locale) async {
     var lec = await (select(ninLEC)..where((tbl) => tbl.id.equals(lecId)))
         .getSingle();
-    return await Detailed<NinLECData>().initialize(lec, locale, this);
+    return await Detailed<NinLECData>().initialize(lec, locale);
   }
 
   @override
