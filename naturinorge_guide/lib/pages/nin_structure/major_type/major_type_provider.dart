@@ -8,7 +8,7 @@ class MinorTypeBlock {
   final int order;
   final int width;
   final int height;
-  final MinorTypeAdapter minorType;
+  final MinorTypeScaledAdapter minorType;
 
   MinorTypeBlock(this.order, this.width, this.height, this.minorType);
 }
@@ -25,8 +25,8 @@ class MajorTypeProvider extends ChangeNotifier {
 
   MajorTypeProvider(this.locale);
 
+  bool _isLoading = true;
   Detailed<NinMajorTypeData> _majorType;
-  NinMappingScaleData _activeMappingScale;
   MajorTypeAdapter _majorTypeAdapter;
   int _numberOfAxis = 0;
   List<AxisBlock> _allAxis = List<AxisBlock>();
@@ -41,23 +41,23 @@ class MajorTypeProvider extends ChangeNotifier {
   NinMappingScaleData _selectedMappingScale;
   List<NinMappingScaleData> _allMappingScales;
 
-  // List<AxisBlock> _otherAxis;
-  bool _isLoading = true;
+  List<MinorTypeScaledAdapter> _minorTypes;
 
   Future load(Detailed<NinMajorTypeData> majorType) async {
     _isLoading = true;
     notifyListeners();
     _majorType = majorType;
     _majorTypeAdapter = MajorTypeAdapter(majorType, db, locale);
-    await _majorTypeAdapter.getRelations();
+    await _initializeScales();
+    await _majorTypeAdapter.getRelations(_selectedMappingScale);
     await _populateAllAxis();
     _initializeAxis();
-    await _initializeScale();
+    await _initializeMinorTypes();
     _isLoading = false;
     notifyListeners();
   }
 
-  Future _initializeScale() async {
+  Future _initializeScales() async {
     _selectedMappingScale = await db.getMappingScaleById(5000);
     _allMappingScales = await db.getMappingScales();
   }
@@ -68,10 +68,6 @@ class MajorTypeProvider extends ChangeNotifier {
     }
     _xAxis = _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 0);
     _yAxis = _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 1);
-    // _otherAxis = _allAxis
-    //     .where(
-    //         (element) => ![0, 1].contains(element.lecAdapter.majorTypeLec.axis))
-    //     .toList();
     _mainAxis = _allAxis
         .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'mLEC')
         .toList();
@@ -90,7 +86,7 @@ class MajorTypeProvider extends ChangeNotifier {
     var majorTypeLecs =
         await db.getMajorTypeLecByMajorTypeId(_majorType.data.id);
     for (var majorTypeLec in majorTypeLecs) {
-      var lecAdapter = LecAdapter(db, locale, majorTypeLec);
+      var lecAdapter = LecAdapter(locale, majorTypeLec);
       await lecAdapter.getRelations();
       var standardSegments =
           await db.getStandardSegmentsByMajorTypeLec(majorTypeLec, locale);
@@ -112,6 +108,16 @@ class MajorTypeProvider extends ChangeNotifier {
     }
 
     print(_allAxis.length);
+  }
+
+  Future _initializeMinorTypes() async {
+    var minorTypesScaledIds = await db.getMinorTypeScaledIdsByMajorTypeAndScale(
+        _majorType.data, _selectedMappingScale);
+    var res = List<MinorTypeScaledAdapter>();
+    for (var minorTypeScaledId in minorTypesScaledIds) {
+      res.add(MinorTypeScaledAdapter(
+          locale, _selectedMappingScale, minorTypeScaledId));
+    }
   }
 
   setMappingScale(int mappingScaleId) {
