@@ -53,7 +53,7 @@ class NinStructureProvider extends ChangeNotifier {
   Future _loadMajorTypeGroups({String filter = ''}) async {
     var majorTypeGroups = await db.allMajorTypeGroups;
     _ninMajorTypeGroups = await Detailed<NinMajorTypeGroupData>()
-        .fromList(majorTypeGroups, locale, db);
+        .fromList(majorTypeGroups, locale);
     notifyListeners();
   }
 

@@ -3,11 +3,12 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:naturinorge_guide/db/nin_db.dart';
+import 'package:naturinorge_guide/main.dart';
 
 class Detailed<K> {
   K data;
   String name;
-  NiNDatabase db;
+
   Locale locale;
   String detailId;
   String nameHeader;
@@ -15,22 +16,22 @@ class Detailed<K> {
   String descriptionHeader;
   Map<String, String> other;
 
-  Future initialize(dynamic data, Locale locale, NiNDatabase db) async {
+  Future initialize(dynamic data, Locale locale) async {
     this.data = data;
     this.locale = locale;
     this.detailId = data.detailId;
-    this.db = db;
+
     await _getRelations();
     return this;
   }
 
   Future<List<Detailed<K>>> fromList(
-      List<dynamic> dataList, Locale locale, NiNDatabase db) async {
+      List<dynamic> dataList, Locale locale) async {
     var res = List<Detailed<K>>();
     for (var e in dataList) {
       print('Get details for detailId: ${e.detailId}');
       try {
-        var detailed = await Detailed<K>().initialize(e, locale, db);
+        var detailed = await Detailed<K>().initialize(e, locale);
         res.add(detailed);
       } catch (e) {
         print(e);
