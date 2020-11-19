@@ -114,8 +114,16 @@ class MajorTypeProvider extends ChangeNotifier {
     print(_allAxis.length);
   }
 
+  setMappingScale(int mappingScaleId) {
+    _selectedMappingScale = _allMappingScales[mappingScaleId];
+    notifyListeners();
+  }
+
   int get numberOfAxis => _majorTypeAdapter.lecs.length;
   AxisBlock get xAxis => _xAxis;
   AxisBlock get yAxis => _yAxis;
   bool get isLoading => _isLoading;
+  List<NinMappingScaleData> get mappingScales => _allMappingScales;
+  int get getSelectedMappingIndex =>
+      _allMappingScales.indexOf(_selectedMappingScale);
 }
