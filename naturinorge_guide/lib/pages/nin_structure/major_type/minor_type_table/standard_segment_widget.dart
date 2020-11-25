@@ -18,6 +18,7 @@ class StandardSegmentWidget extends StatelessWidget {
             child: AutoSizeText(
               standardSegmentAdapter.standardSegment.name,
               textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),
