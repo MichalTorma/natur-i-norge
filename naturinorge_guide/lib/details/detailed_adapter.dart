@@ -29,12 +29,12 @@ class Detailed<K> {
       List<dynamic> dataList, Locale locale) async {
     var res = List<Detailed<K>>();
     for (var e in dataList) {
-      print('Get details for detailId: ${e.detailId}');
+      // print('Get details for detailId: ${e.detailId}');
       try {
         var detailed = await Detailed<K>().initialize(e, locale);
         res.add(detailed);
       } catch (e) {
-        print(e);
+        // print(e);
         print('Unable to get deails for ${e.detailId}');
       }
     }
@@ -44,16 +44,16 @@ class Detailed<K> {
   }
 
   _printDetails(List<NinDetailData> details) {
-    for (var detail in details) {
-      print(
-          '${detail.id} - ${detail.key} - ${detail.value} - ${detail.languageId}');
-    }
+    // for (var detail in details) {
+    //   print(
+    //       '${detail.id} - ${detail.key} - ${detail.value} - ${detail.languageId}');
+    // }
   }
 
   Future _getRelations() async {
     var details = await db.getDetails(detailId, locale);
     if (details == null || details.length == 0) {
-      print('unable to find details');
+      // print('unable to find details');
       return;
     }
 
@@ -70,7 +70,7 @@ class Detailed<K> {
         orElse: () => null);
     if (descriptionDetail == null) {
       // _printDetails(details);
-      print('Unable to find <description>');
+      // print('Unable to find <description>');
     } else {
       description = descriptionDetail.value;
     }
