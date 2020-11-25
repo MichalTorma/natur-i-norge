@@ -59,7 +59,7 @@ class LecAdapter {
 
   LecAdapter(this.locale, this.majorTypeLec);
   Future getRelations() async {
-    print('Get Lec relations, majorTypeLec.id = ${majorTypeLec.id}');
+    // print('Get Lec relations, majorTypeLec.id = ${majorTypeLec.id}');
     lec = await db.getLecById(majorTypeLec.lecId, locale);
     elementarySegments = await db.getElementarySegmentsByLec(lec.data);
     var elementarySegmentGroupIds = await db
@@ -131,7 +131,7 @@ class MajorTypeAdapter {
   MajorTypeAdapter(this.majorType, db, this.locale);
 
   Future getRelations(NinMappingScaleData mappingScale) async {
-    print('Start getting relations for ${majorType.data.id}');
+    // print('Start getting relations for ${majorType.data.id}');
     var minorTypeScaledIds = await db.getMinorTypeScaledIdsByMajorTypeAndScale(
         majorType.data, mappingScale);
     var res = List<MinorTypeScaledAdapter>();

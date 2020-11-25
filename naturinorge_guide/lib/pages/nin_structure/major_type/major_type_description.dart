@@ -29,7 +29,10 @@ class MajorTypeDetails extends StatelessWidget {
         ),
         Divider(),
         Text(ninMajorType.description),
-        TableOptions(),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: TableOptions(),
+        ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: MinorTypeTable(),

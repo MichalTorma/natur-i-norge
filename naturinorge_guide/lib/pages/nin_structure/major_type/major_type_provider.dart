@@ -5,12 +5,11 @@ import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/main.dart';
 
 class MinorTypeBlock {
-  final int order;
   final int width;
   final int height;
-  final MinorTypeScaledAdapter minorType;
+  final MinorTypeScaledAdapter minorTypeScaled;
 
-  MinorTypeBlock(this.order, this.width, this.height, this.minorType);
+  MinorTypeBlock(this.width, this.height, this.minorTypeScaled);
 }
 
 class AxisBlock {
@@ -33,8 +32,8 @@ class MajorTypeProvider extends ChangeNotifier {
   List<AxisBlock> _mainAxis = List<AxisBlock>();
   List<AxisBlock> _secondaryAxis = List<AxisBlock>();
   List<AxisBlock> _supplementaryAxis = List<AxisBlock>();
-  List<StandardSegmentAdapter> _selectedSecondaryAxisSegments =
-      List<StandardSegmentAdapter>();
+  StandardSegmentAdapter _selectedSecondaryAxisSegment;
+
   AxisBlock _xAxis;
   AxisBlock _yAxis;
   List<AxisBlock> _zAxis;
@@ -45,6 +44,7 @@ class MajorTypeProvider extends ChangeNotifier {
 
   List<MinorTypeScaledAdapter> _minorTypesScaled;
   List<List<List<String>>> _minorTypesArray;
+  List<MinorTypeBlock> _minorTypesScaledBlocks;
 
   Future load(Detailed<NinMajorTypeData> majorType) async {
     _isLoading = true;
@@ -86,8 +86,8 @@ class MajorTypeProvider extends ChangeNotifier {
         .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'uLEC')
         .toList();
 
-    _selectedSecondaryAxisSegments =
-        _secondaryAxis.map((e) => e.standardSegments[0]).toList();
+    _selectedSecondaryAxisSegment = _secondaryAxis[0].standardSegments[0];
+    // _secondaryAxis.map((e) => e.standardSegments[0]).toList();
   }
 
   Future _populateAllAxis() async {
@@ -114,7 +114,7 @@ class MajorTypeProvider extends ChangeNotifier {
       _allAxis.add(res);
     }
 
-    print(_allAxis.length);
+    // print(_allAxis.length);
   }
 
   Future _initializeMinorTypes() async {
@@ -132,11 +132,11 @@ class MajorTypeProvider extends ChangeNotifier {
 
   _initializeMinorTypesArray() {
     _minorTypesArray = List.generate(
-        xAxis.standardSegments.length,
+        _zAxisStandardSegments.length,
         (index) => List.generate(
-            yAxis.standardSegments.length,
+            xAxis.standardSegments.length,
             (index) =>
-                List.generate(_zAxisStandardSegments.length, (index) => null)));
+                List.generate(yAxis.standardSegments.length, (index) => null)));
 
     _minorTypesScaled.forEach((mts) {
       mts.minorTypes.forEach((mt) {
@@ -154,20 +154,77 @@ class MajorTypeProvider extends ChangeNotifier {
                 zAxisSegment.standardSegment.data.id ==
                 zSegment.standardSegment.data.id));
 
-        for (var xOrder in xOrders) {
-          for (var yOrder in yOrders) {
-            for (var zOrder in zOrders) {
-              print('$xOrder $yOrder $zOrder');
-              _minorTypesArray[xOrder][yOrder][zOrder] = mts.minorTypeScaledId;
+        for (var zOrder in zOrders) {
+          for (var xOrder in xOrders) {
+            for (var yOrder in yOrders) {
+              // print('$xOrder $yOrder $zOrder');
+              _minorTypesArray[zOrder][xOrder][yOrder] = mts.minorTypeScaledId;
             }
           }
         }
       });
     });
+
+    var minorTypeSlice = _minorTypesArray[_zAxisStandardSegments
+        .indexWhere((element) => element == _selectedSecondaryAxisSegment)];
+
+    _minorTypesScaledBlocks = List<MinorTypeBlock>();
+    // var numberOfBlocks =
+    //     minorTypeSlice.expand((element) => element).toSet().length +
+    //         minorTypeSlice
+    //             .expand((element) => element)
+    //             .where((e) => e == null)
+    //             .length;
+
+    List<MinorTypeBlock> minorTypesScaledBlocks = List<MinorTypeBlock>();
+    var usedMinorTypeIds = List<String>();
+    for (var y in List.generate(yAxis.standardSegments.length, (idx) => idx)) {
+      for (var x
+          in List.generate(xAxis.standardSegments.length, (idx) => idx)) {
+        var minorTypeSegmentId = minorTypeSlice[x][y];
+        if (minorTypeSegmentId == null) {
+          minorTypesScaledBlocks.add(MinorTypeBlock(1, 1, null));
+        } else if (usedMinorTypeIds.contains(minorTypeSegmentId)) {
+          continue;
+        } else {
+          usedMinorTypeIds.add(minorTypeSegmentId);
+          minorTypesScaledBlocks.add(MinorTypeBlock(
+              _getMinorTypeBlockWidth(minorTypeSlice, x, y),
+              _getMinorTypeBlockHeight(minorTypeSlice, x, y),
+              _minorTypesScaled.firstWhere(
+                  (e) => e.minorTypeScaledId == minorTypeSegmentId)));
+        }
+      }
+    }
+    _minorTypesScaledBlocks = minorTypesScaledBlocks;
   }
 
-  setMappingScale(int mappingScaleId) {
+  int _getMinorTypeBlockWidth(List<List<String>> slice, int x, int y) {
+    var mtsId = slice[x][y];
+    var xPointer = x;
+    var width = 0;
+    while (xPointer < slice.length && slice[xPointer][y] == mtsId) {
+      width++;
+      xPointer++;
+    }
+    return width;
+  }
+
+  int _getMinorTypeBlockHeight(List<List<String>> slice, int x, int y) {
+    var mtsId = slice[x][y];
+    var yPointer = y;
+    var height = 0;
+    while (yPointer < slice[x].length && slice[x][yPointer] == mtsId) {
+      height++;
+      yPointer++;
+    }
+    return height;
+  }
+
+  setMappingScale(int mappingScaleId) async {
     _selectedMappingScale = _allMappingScales[mappingScaleId];
+    await _initializeMinorTypes();
+    _initializeMinorTypesArray();
     notifyListeners();
   }
 
@@ -179,4 +236,7 @@ class MajorTypeProvider extends ChangeNotifier {
   int get getSelectedMappingIndex =>
       _allMappingScales.indexOf(_selectedMappingScale);
   List<MinorTypeScaledAdapter> get minorTypes => _minorTypesScaled;
+  List<MinorTypeBlock> get minorTypeSclaedBlocks => _minorTypesScaledBlocks;
+  StandardSegmentAdapter get selectedSecondaryAxisSegment =>
+      _selectedSecondaryAxisSegment;
 }
