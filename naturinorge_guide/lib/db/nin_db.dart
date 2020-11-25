@@ -216,6 +216,20 @@ class NiNDatabase extends _$NiNDatabase {
     return await Detailed<NinLECData>().initialize(lec, locale);
   }
 
+  Future<List<Detailed<NinMinorTypeData>>> getMinorTypesByIds(
+      List<String> minorTypeIds, Locale locale) async {
+    var minorTypes = await (select(ninMinorType)
+          ..where((tbl) => tbl.id.isIn(minorTypeIds)))
+        .get();
+    return await Detailed<NinMinorTypeData>().fromList(minorTypes, locale);
+  }
+
+  Future<List<NinMinorTypeScaledData>> getMinorTypeScaledById(
+          String minorTypeScaledId) =>
+      (select(ninMinorTypeScaled)
+            ..where((tbl) => tbl.id.equals(minorTypeScaledId)))
+          .get();
+
   @override
   int get schemaVersion => 3;
 }

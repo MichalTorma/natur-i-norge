@@ -474,10 +474,6 @@
         ><FONT FACE="Bitstream Vera Sans">☆ majorType_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
-        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
-        ><FONT FACE="Bitstream Vera Sans">⚪ order</FONT
-        ></TD><TD ALIGN="LEFT"
-        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ minorTypeScaled</FONT></TD
@@ -619,6 +615,10 @@
         ><FONT FACE="Bitstream Vera Sans">☆ majorTypeLEC_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">⚪ order</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
         BGCOLOR="palegoldenrod"
         ><FONT FACE="Bitstream Vera Sans">⚪ elementarySegment</FONT></TD
