@@ -103,16 +103,19 @@ class MinorTypeAdapter {
   MinorTypeAdapter(this.locale, this.minorType);
 
   Future getRelations() async {
-    var standardSegments =
+    var standardSegmentsData =
         await db.getStandardSegmentsByMinorType(minorType.data, locale);
     var res = List<StandardSegmentAdapter>();
-    for (var ss in standardSegments) {
+    for (var ss in standardSegmentsData) {
       var majorTypeLec = await db.getMajorTypeLecByStandardSegment(ss.data);
       var allElementarySegmentGroupIds = await db
           .getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec.id);
       var ssa =
           StandardSegmentAdapter(ss, locale, allElementarySegmentGroupIds);
+      await ssa.getRelations();
+      res.add(ssa);
     }
+    standardSegments = res;
   }
 }
 

@@ -37,6 +37,8 @@ class MajorTypeProvider extends ChangeNotifier {
       List<StandardSegmentAdapter>();
   AxisBlock _xAxis;
   AxisBlock _yAxis;
+  List<AxisBlock> _zAxis;
+  List<StandardSegmentAdapter> _zAxisStandardSegments;
 
   NinMappingScaleData _selectedMappingScale;
   List<NinMappingScaleData> _allMappingScales;
@@ -54,6 +56,7 @@ class MajorTypeProvider extends ChangeNotifier {
     await _populateAllAxis();
     _initializeAxis();
     await _initializeMinorTypes();
+    _initializeMinorTypesArray();
     _isLoading = false;
     notifyListeners();
   }
@@ -69,6 +72,10 @@ class MajorTypeProvider extends ChangeNotifier {
     }
     _xAxis = _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 0);
     _yAxis = _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 1);
+    _zAxis =
+        _allAxis.where((e) => e.lecAdapter.majorTypeLec.axis == 2).toList();
+    _zAxisStandardSegments = _zAxis.expand((e) => e.standardSegments).toList();
+
     _mainAxis = _allAxis
         .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'mLEC')
         .toList();
@@ -123,20 +130,38 @@ class MajorTypeProvider extends ChangeNotifier {
     _minorTypesScaled = res;
   }
 
-  Future _initializeMinorTypesArray() {
+  _initializeMinorTypesArray() {
     _minorTypesArray = List.generate(
         xAxis.standardSegments.length,
         (index) => List.generate(
             yAxis.standardSegments.length,
-            (index) => List.generate(
-                _mainAxis.length + _secondaryAxis.length, (index) => null)));
+            (index) =>
+                List.generate(_zAxisStandardSegments.length, (index) => null)));
 
     _minorTypesScaled.forEach((mts) {
       mts.minorTypes.forEach((mt) {
-        var xSegment = mt.standardSegments.firstWhere((element) =>
+        var xSegments = mt.standardSegments.where((element) =>
             element.lec.lec.data.id == xAxis.lecAdapter.lec.data.id);
-        var ySegment = mt.standardSegments.firstWhere((element) =>
+        var xOrders = xSegments.map((e) => e.standardSegment.data.order);
+        var ySegments = mt.standardSegments.where((element) =>
             element.lec.lec.data.id == yAxis.lecAdapter.lec.data.id);
+        var yOrders = ySegments.map((e) => e.standardSegment.data.order);
+        var xySegments = [xSegments, ySegments].expand((element) => element);
+        var zSegments = mt.standardSegments
+            .where((element) => !xySegments.contains(element));
+        var zOrders = zSegments.map((zSegment) =>
+            _zAxisStandardSegments.indexWhere((zAxisSegment) =>
+                zAxisSegment.standardSegment.data.id ==
+                zSegment.standardSegment.data.id));
+
+        for (var xOrder in xOrders) {
+          for (var yOrder in yOrders) {
+            for (var zOrder in zOrders) {
+              print('$xOrder $yOrder $zOrder');
+              _minorTypesArray[xOrder][yOrder][zOrder] = mts.minorTypeScaledId;
+            }
+          }
+        }
       });
     });
   }
