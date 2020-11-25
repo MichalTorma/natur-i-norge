@@ -57,7 +57,6 @@ class MinorType(Base):
 
     __tablename__ = f'{prefix}MinorType'
     _id = Column(Text, primary_key=True)
-    order = Column(Integer)
     majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
@@ -224,6 +223,7 @@ class StandardSegment(Base):
     __tablename__ = f'{prefix}StandardSegment'
     _id = Column(Text, primary_key=True)
     majorTypeLEC_id = Column(Text, ForeignKey(f'{prefix}MajorTypeLEC._id'))
+    order = Column(Integer)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
     # References
@@ -262,7 +262,7 @@ class GadModifier(Base):
     majorType_id = Column(
         Text,
         ForeignKey(f'{prefix}MajorType._id'),
-    ) 
+    )
     lec_id = Column(
         Text,
         ForeignKey(f'{prefix}LEC._id')

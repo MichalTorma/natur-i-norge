@@ -2762,20 +2762,16 @@ class NinLEC extends Table with TableInfo<NinLEC, NinLECData> {
 class NinMinorTypeData extends DataClass
     implements Insertable<NinMinorTypeData> {
   final String id;
-  final int order;
   final String majorTypeId;
   final String detailId;
-  NinMinorTypeData(
-      {@required this.id, this.order, this.majorTypeId, this.detailId});
+  NinMinorTypeData({@required this.id, this.majorTypeId, this.detailId});
   factory NinMinorTypeData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
-    final intType = db.typeSystem.forDartType<int>();
     return NinMinorTypeData(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      order: intType.mapFromDatabaseResponse(data['${effectivePrefix}order']),
       majorTypeId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
       detailId: stringType
@@ -2787,9 +2783,6 @@ class NinMinorTypeData extends DataClass
     final map = <String, Expression>{};
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String>(id);
-    }
-    if (!nullToAbsent || order != null) {
-      map['order'] = Variable<int>(order);
     }
     if (!nullToAbsent || majorTypeId != null) {
       map['majorType_id'] = Variable<String>(majorTypeId);
@@ -2803,8 +2796,6 @@ class NinMinorTypeData extends DataClass
   NinMinorTypeCompanion toCompanion(bool nullToAbsent) {
     return NinMinorTypeCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      order:
-          order == null && nullToAbsent ? const Value.absent() : Value(order),
       majorTypeId: majorTypeId == null && nullToAbsent
           ? const Value.absent()
           : Value(majorTypeId),
@@ -2819,7 +2810,6 @@ class NinMinorTypeData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinMinorTypeData(
       id: serializer.fromJson<String>(json['_id']),
-      order: serializer.fromJson<int>(json['order']),
       majorTypeId: serializer.fromJson<String>(json['majorType_id']),
       detailId: serializer.fromJson<String>(json['detail_id']),
     );
@@ -2829,17 +2819,14 @@ class NinMinorTypeData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       '_id': serializer.toJson<String>(id),
-      'order': serializer.toJson<int>(order),
       'majorType_id': serializer.toJson<String>(majorTypeId),
       'detail_id': serializer.toJson<String>(detailId),
     };
   }
 
-  NinMinorTypeData copyWith(
-          {String id, int order, String majorTypeId, String detailId}) =>
+  NinMinorTypeData copyWith({String id, String majorTypeId, String detailId}) =>
       NinMinorTypeData(
         id: id ?? this.id,
-        order: order ?? this.order,
         majorTypeId: majorTypeId ?? this.majorTypeId,
         detailId: detailId ?? this.detailId,
       );
@@ -2847,7 +2834,6 @@ class NinMinorTypeData extends DataClass
   String toString() {
     return (StringBuffer('NinMinorTypeData(')
           ..write('id: $id, ')
-          ..write('order: $order, ')
           ..write('majorTypeId: $majorTypeId, ')
           ..write('detailId: $detailId')
           ..write(')'))
@@ -2855,57 +2841,47 @@ class NinMinorTypeData extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(order.hashCode, $mrjc(majorTypeId.hashCode, detailId.hashCode))));
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(majorTypeId.hashCode, detailId.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is NinMinorTypeData &&
           other.id == this.id &&
-          other.order == this.order &&
           other.majorTypeId == this.majorTypeId &&
           other.detailId == this.detailId);
 }
 
 class NinMinorTypeCompanion extends UpdateCompanion<NinMinorTypeData> {
   final Value<String> id;
-  final Value<int> order;
   final Value<String> majorTypeId;
   final Value<String> detailId;
   const NinMinorTypeCompanion({
     this.id = const Value.absent(),
-    this.order = const Value.absent(),
     this.majorTypeId = const Value.absent(),
     this.detailId = const Value.absent(),
   });
   NinMinorTypeCompanion.insert({
     @required String id,
-    this.order = const Value.absent(),
     this.majorTypeId = const Value.absent(),
     this.detailId = const Value.absent(),
   }) : id = Value(id);
   static Insertable<NinMinorTypeData> custom({
     Expression<String> id,
-    Expression<int> order,
     Expression<String> majorTypeId,
     Expression<String> detailId,
   }) {
     return RawValuesInsertable({
       if (id != null) '_id': id,
-      if (order != null) 'order': order,
       if (majorTypeId != null) 'majorType_id': majorTypeId,
       if (detailId != null) 'detail_id': detailId,
     });
   }
 
   NinMinorTypeCompanion copyWith(
-      {Value<String> id,
-      Value<int> order,
-      Value<String> majorTypeId,
-      Value<String> detailId}) {
+      {Value<String> id, Value<String> majorTypeId, Value<String> detailId}) {
     return NinMinorTypeCompanion(
       id: id ?? this.id,
-      order: order ?? this.order,
       majorTypeId: majorTypeId ?? this.majorTypeId,
       detailId: detailId ?? this.detailId,
     );
@@ -2916,9 +2892,6 @@ class NinMinorTypeCompanion extends UpdateCompanion<NinMinorTypeData> {
     final map = <String, Expression>{};
     if (id.present) {
       map['_id'] = Variable<String>(id.value);
-    }
-    if (order.present) {
-      map['order'] = Variable<int>(order.value);
     }
     if (majorTypeId.present) {
       map['majorType_id'] = Variable<String>(majorTypeId.value);
@@ -2933,7 +2906,6 @@ class NinMinorTypeCompanion extends UpdateCompanion<NinMinorTypeData> {
   String toString() {
     return (StringBuffer('NinMinorTypeCompanion(')
           ..write('id: $id, ')
-          ..write('order: $order, ')
           ..write('majorTypeId: $majorTypeId, ')
           ..write('detailId: $detailId')
           ..write(')'))
@@ -2952,14 +2924,6 @@ class NinMinorType extends Table
   GeneratedTextColumn _constructId() {
     return GeneratedTextColumn('_id', $tableName, false,
         $customConstraints: 'NOT NULL');
-  }
-
-  final VerificationMeta _orderMeta = const VerificationMeta('order');
-  GeneratedIntColumn _order;
-  GeneratedIntColumn get order => _order ??= _constructOrder();
-  GeneratedIntColumn _constructOrder() {
-    return GeneratedIntColumn('order', $tableName, true,
-        $customConstraints: '');
   }
 
   final VerificationMeta _majorTypeIdMeta =
@@ -2981,7 +2945,7 @@ class NinMinorType extends Table
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, order, majorTypeId, detailId];
+  List<GeneratedColumn> get $columns => [id, majorTypeId, detailId];
   @override
   NinMinorType get asDslTable => this;
   @override
@@ -2997,10 +2961,6 @@ class NinMinorType extends Table
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id'], _idMeta));
     } else if (isInserting) {
       context.missing(_idMeta);
-    }
-    if (data.containsKey('order')) {
-      context.handle(
-          _orderMeta, order.isAcceptableOrUnknown(data['order'], _orderMeta));
     }
     if (data.containsKey('majorType_id')) {
       context.handle(
@@ -4114,18 +4074,21 @@ class NinStandardSegmentData extends DataClass
     implements Insertable<NinStandardSegmentData> {
   final String id;
   final String majorTypeLECId;
+  final int order;
   final String detailId;
   NinStandardSegmentData(
-      {@required this.id, this.majorTypeLECId, this.detailId});
+      {@required this.id, this.majorTypeLECId, this.order, this.detailId});
   factory NinStandardSegmentData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
     return NinStandardSegmentData(
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
       majorTypeLECId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}majorTypeLEC_id']),
+      order: intType.mapFromDatabaseResponse(data['${effectivePrefix}order']),
       detailId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
     );
@@ -4139,6 +4102,9 @@ class NinStandardSegmentData extends DataClass
     if (!nullToAbsent || majorTypeLECId != null) {
       map['majorTypeLEC_id'] = Variable<String>(majorTypeLECId);
     }
+    if (!nullToAbsent || order != null) {
+      map['order'] = Variable<int>(order);
+    }
     if (!nullToAbsent || detailId != null) {
       map['detail_id'] = Variable<String>(detailId);
     }
@@ -4151,6 +4117,8 @@ class NinStandardSegmentData extends DataClass
       majorTypeLECId: majorTypeLECId == null && nullToAbsent
           ? const Value.absent()
           : Value(majorTypeLECId),
+      order:
+          order == null && nullToAbsent ? const Value.absent() : Value(order),
       detailId: detailId == null && nullToAbsent
           ? const Value.absent()
           : Value(detailId),
@@ -4163,6 +4131,7 @@ class NinStandardSegmentData extends DataClass
     return NinStandardSegmentData(
       id: serializer.fromJson<String>(json['_id']),
       majorTypeLECId: serializer.fromJson<String>(json['majorTypeLEC_id']),
+      order: serializer.fromJson<int>(json['order']),
       detailId: serializer.fromJson<String>(json['detail_id']),
     );
   }
@@ -4172,15 +4141,17 @@ class NinStandardSegmentData extends DataClass
     return <String, dynamic>{
       '_id': serializer.toJson<String>(id),
       'majorTypeLEC_id': serializer.toJson<String>(majorTypeLECId),
+      'order': serializer.toJson<int>(order),
       'detail_id': serializer.toJson<String>(detailId),
     };
   }
 
   NinStandardSegmentData copyWith(
-          {String id, String majorTypeLECId, String detailId}) =>
+          {String id, String majorTypeLECId, int order, String detailId}) =>
       NinStandardSegmentData(
         id: id ?? this.id,
         majorTypeLECId: majorTypeLECId ?? this.majorTypeLECId,
+        order: order ?? this.order,
         detailId: detailId ?? this.detailId,
       );
   @override
@@ -4188,20 +4159,24 @@ class NinStandardSegmentData extends DataClass
     return (StringBuffer('NinStandardSegmentData(')
           ..write('id: $id, ')
           ..write('majorTypeLECId: $majorTypeLECId, ')
+          ..write('order: $order, ')
           ..write('detailId: $detailId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf(
-      $mrjc(id.hashCode, $mrjc(majorTypeLECId.hashCode, detailId.hashCode)));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          majorTypeLECId.hashCode, $mrjc(order.hashCode, detailId.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is NinStandardSegmentData &&
           other.id == this.id &&
           other.majorTypeLECId == this.majorTypeLECId &&
+          other.order == this.order &&
           other.detailId == this.detailId);
 }
 
@@ -4209,25 +4184,30 @@ class NinStandardSegmentCompanion
     extends UpdateCompanion<NinStandardSegmentData> {
   final Value<String> id;
   final Value<String> majorTypeLECId;
+  final Value<int> order;
   final Value<String> detailId;
   const NinStandardSegmentCompanion({
     this.id = const Value.absent(),
     this.majorTypeLECId = const Value.absent(),
+    this.order = const Value.absent(),
     this.detailId = const Value.absent(),
   });
   NinStandardSegmentCompanion.insert({
     @required String id,
     this.majorTypeLECId = const Value.absent(),
+    this.order = const Value.absent(),
     this.detailId = const Value.absent(),
   }) : id = Value(id);
   static Insertable<NinStandardSegmentData> custom({
     Expression<String> id,
     Expression<String> majorTypeLECId,
+    Expression<int> order,
     Expression<String> detailId,
   }) {
     return RawValuesInsertable({
       if (id != null) '_id': id,
       if (majorTypeLECId != null) 'majorTypeLEC_id': majorTypeLECId,
+      if (order != null) 'order': order,
       if (detailId != null) 'detail_id': detailId,
     });
   }
@@ -4235,10 +4215,12 @@ class NinStandardSegmentCompanion
   NinStandardSegmentCompanion copyWith(
       {Value<String> id,
       Value<String> majorTypeLECId,
+      Value<int> order,
       Value<String> detailId}) {
     return NinStandardSegmentCompanion(
       id: id ?? this.id,
       majorTypeLECId: majorTypeLECId ?? this.majorTypeLECId,
+      order: order ?? this.order,
       detailId: detailId ?? this.detailId,
     );
   }
@@ -4252,6 +4234,9 @@ class NinStandardSegmentCompanion
     if (majorTypeLECId.present) {
       map['majorTypeLEC_id'] = Variable<String>(majorTypeLECId.value);
     }
+    if (order.present) {
+      map['order'] = Variable<int>(order.value);
+    }
     if (detailId.present) {
       map['detail_id'] = Variable<String>(detailId.value);
     }
@@ -4263,6 +4248,7 @@ class NinStandardSegmentCompanion
     return (StringBuffer('NinStandardSegmentCompanion(')
           ..write('id: $id, ')
           ..write('majorTypeLECId: $majorTypeLECId, ')
+          ..write('order: $order, ')
           ..write('detailId: $detailId')
           ..write(')'))
         .toString();
@@ -4292,6 +4278,14 @@ class NinStandardSegment extends Table
         $customConstraints: '');
   }
 
+  final VerificationMeta _orderMeta = const VerificationMeta('order');
+  GeneratedIntColumn _order;
+  GeneratedIntColumn get order => _order ??= _constructOrder();
+  GeneratedIntColumn _constructOrder() {
+    return GeneratedIntColumn('order', $tableName, true,
+        $customConstraints: '');
+  }
+
   final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
   GeneratedTextColumn _detailId;
   GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
@@ -4301,7 +4295,7 @@ class NinStandardSegment extends Table
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, majorTypeLECId, detailId];
+  List<GeneratedColumn> get $columns => [id, majorTypeLECId, order, detailId];
   @override
   NinStandardSegment get asDslTable => this;
   @override
@@ -4324,6 +4318,10 @@ class NinStandardSegment extends Table
           _majorTypeLECIdMeta,
           majorTypeLECId.isAcceptableOrUnknown(
               data['majorTypeLEC_id'], _majorTypeLECIdMeta));
+    }
+    if (data.containsKey('order')) {
+      context.handle(
+          _orderMeta, order.isAcceptableOrUnknown(data['order'], _orderMeta));
     }
     if (data.containsKey('detail_id')) {
       context.handle(_detailIdMeta,
