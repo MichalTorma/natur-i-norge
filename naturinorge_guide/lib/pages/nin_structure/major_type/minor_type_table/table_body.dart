@@ -1,6 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/scaled_minor_type.dart';
 import 'package:provider/provider.dart';
 
 class TableBody extends StatelessWidget {
@@ -13,6 +14,26 @@ class TableBody extends StatelessWidget {
         child: CircularProgressIndicator(),
       );
     }
-    return Container();
+    var minorTypesBlocks = Provider.of<MajorTypeProvider>(context)
+        .minorTypeSclaedBlocks
+        .map((e) => ScaledMinorTypeWidgetWidget(minorTypeBlock: e))
+        .toList();
+    var staggeredTiles = Provider.of<MajorTypeProvider>(context)
+        .minorTypeSclaedBlocks
+        .map((e) => StaggeredTile.count(e.width, e.height))
+        .toList();
+    return StaggeredGridView.count(
+      addAutomaticKeepAlives: true,
+      padding: EdgeInsets.all(4.0),
+      crossAxisSpacing: 2.0,
+      mainAxisSpacing: 2.0,
+      crossAxisCount:
+          Provider.of<MajorTypeProvider>(context).xAxis.standardSegments.length,
+      reverse: true,
+      primary: false,
+      // shrinkWrap: true,
+      children: minorTypesBlocks,
+      staggeredTiles: staggeredTiles,
+    );
   }
 }

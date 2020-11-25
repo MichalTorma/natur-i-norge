@@ -2,6 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_label.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/secondary_axis_switch.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/table_body.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,7 @@ class MinorTypeTable extends StatelessWidget {
             ),
             Container(
               height: ySize,
-              width: ySize,
+              width: xSize,
               child: TableBody(),
             )
           ],
@@ -56,6 +57,7 @@ class MinorTypeTable extends StatelessWidget {
             Container(
               height: labelWidth,
               width: labelWidth,
+              child: SecondaryAxisSwitch(),
             ),
             Container(
               padding: EdgeInsets.all(spacing.toDouble()),
