@@ -79,7 +79,6 @@ CREATE TABLE "nin_LEC" (
 );
 CREATE TABLE "nin_MinorType" (
 	_id TEXT NOT NULL, 
-	"order" INTEGER, 
 	"majorType_id" TEXT, 
 	detail_id TEXT, 
 	PRIMARY KEY (_id), 
@@ -122,6 +121,7 @@ CREATE TABLE "nin_ElementarySegmentGroup" (
 CREATE TABLE "nin_StandardSegment" (
 	_id TEXT NOT NULL, 
 	"majorTypeLEC_id" TEXT, 
+	"order" INTEGER, 
 	detail_id TEXT, 
 	PRIMARY KEY (_id), 
 	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id), 

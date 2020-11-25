@@ -15,7 +15,7 @@ class StandardSegmentAdapter {
   LecAdapter lec;
 
   StandardSegmentAdapter(
-      this.standardSegment, db, this.locale, this.allElementarySegmentGroupIds);
+      this.standardSegment, this.locale, this.allElementarySegmentGroupIds);
   Future getRelations() async {
     elementarySegments =
         await db.getElementarySegmentByStandardSegment(standardSegment.data);
@@ -79,26 +79,41 @@ class MinorTypeScaledAdapter {
   final Locale locale;
   List<MinorTypeAdapter> minorTypes;
 
-  // List<StandardSegmentAdapter> standardSegments;
-
   MinorTypeScaledAdapter(
       this.locale, this.mappingScale, this.minorTypeScaledId);
-  // Future getRelations() async {
-  //   // var standardSegmentsOnly =
-  //   //     await db.getStandardSegmentsByMinorType(minorType.data, locale);
-  //   // standardSegments = await Future.forEach(standardSegmentsOnly, (e) async {
-  //   //   var res = StandardSegmentAdapter(e, db, locale);
-  //   //   await res.getRelations();
-  //   //   return res;
-  //   // });
-  // }
+  Future getRelations() async {
+    var minorTypesData =
+        await db.getMinorTypesByMajorTypeScaledId(minorTypeScaledId, locale);
+    var res = List<MinorTypeAdapter>();
+    for (var minorType in minorTypesData) {
+      var item = MinorTypeAdapter(locale, minorType);
+      await item.getRelations();
+      res.add(item);
+    }
+    minorTypes = res;
+  }
 }
 
 class MinorTypeAdapter {
   final Locale locale;
-  final Detailed<NinMinorType> minorType;
+  final Detailed<NinMinorTypeData> minorType;
+
+  List<StandardSegmentAdapter> standardSegments;
 
   MinorTypeAdapter(this.locale, this.minorType);
+
+  Future getRelations() async {
+    var standardSegments =
+        await db.getStandardSegmentsByMinorType(minorType.data, locale);
+    var res = List<StandardSegmentAdapter>();
+    for (var ss in standardSegments) {
+      var majorTypeLec = await db.getMajorTypeLecByStandardSegment(ss.data);
+      var allElementarySegmentGroupIds = await db
+          .getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec.id);
+      var ssa =
+          StandardSegmentAdapter(ss, locale, allElementarySegmentGroupIds);
+    }
+  }
 }
 
 class MajorTypeAdapter {

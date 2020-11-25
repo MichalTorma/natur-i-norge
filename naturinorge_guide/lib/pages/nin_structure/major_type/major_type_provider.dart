@@ -41,7 +41,8 @@ class MajorTypeProvider extends ChangeNotifier {
   NinMappingScaleData _selectedMappingScale;
   List<NinMappingScaleData> _allMappingScales;
 
-  List<MinorTypeScaledAdapter> _minorTypes;
+  List<MinorTypeScaledAdapter> _minorTypesScaled;
+  List<List<List<String>>> _minorTypesArray;
 
   Future load(Detailed<NinMajorTypeData> majorType) async {
     _isLoading = true;
@@ -94,7 +95,6 @@ class MajorTypeProvider extends ChangeNotifier {
       for (var e in standardSegments) {
         var res = StandardSegmentAdapter(
             e,
-            db,
             locale,
             lecAdapter.gadElementarySegmentGroups
                 .map((e) => e.elementarySegmentGroupId)
@@ -115,9 +115,30 @@ class MajorTypeProvider extends ChangeNotifier {
         _majorType.data, _selectedMappingScale);
     var res = List<MinorTypeScaledAdapter>();
     for (var minorTypeScaledId in minorTypesScaledIds) {
-      res.add(MinorTypeScaledAdapter(
-          locale, _selectedMappingScale, minorTypeScaledId));
+      var minorTypeScaled = MinorTypeScaledAdapter(
+          locale, _selectedMappingScale, minorTypeScaledId);
+      await minorTypeScaled.getRelations();
+      res.add(minorTypeScaled);
     }
+    _minorTypesScaled = res;
+  }
+
+  Future _initializeMinorTypesArray() {
+    _minorTypesArray = List.generate(
+        xAxis.standardSegments.length,
+        (index) => List.generate(
+            yAxis.standardSegments.length,
+            (index) => List.generate(
+                _mainAxis.length + _secondaryAxis.length, (index) => null)));
+
+    _minorTypesScaled.forEach((mts) {
+      mts.minorTypes.forEach((mt) {
+        var xSegment = mt.standardSegments.firstWhere((element) =>
+            element.lec.lec.data.id == xAxis.lecAdapter.lec.data.id);
+        var ySegment = mt.standardSegments.firstWhere((element) =>
+            element.lec.lec.data.id == yAxis.lecAdapter.lec.data.id);
+      });
+    });
   }
 
   setMappingScale(int mappingScaleId) {
@@ -132,4 +153,5 @@ class MajorTypeProvider extends ChangeNotifier {
   List<NinMappingScaleData> get mappingScales => _allMappingScales;
   int get getSelectedMappingIndex =>
       _allMappingScales.indexOf(_selectedMappingScale);
+  List<MinorTypeScaledAdapter> get minorTypes => _minorTypesScaled;
 }
