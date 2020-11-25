@@ -1,4 +1,3 @@
-from requests.sessions import session
 from sqlalchemy.orm import sessionmaker
 
 def generate_moor(engine, path):
