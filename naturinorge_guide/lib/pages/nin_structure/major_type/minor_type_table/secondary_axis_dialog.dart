@@ -1,9 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:provider/provider.dart';
 
-class SecondaryAxisDialog extends StatelessWidget {
-  const SecondaryAxisDialog({Key key}) : super(key: key);
+class SecondaryAxisOptions extends StatelessWidget {
+  const SecondaryAxisOptions({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,22 @@ class SecondaryAxisDialog extends StatelessWidget {
                       children: [
                         Text(e.standardSegment.data.id),
                         Divider(),
-                        Text(e.standardSegment.name)
+                        Expanded(
+                            child: AutoSizeText(
+                          e.standardSegment.name,
+                          textAlign: TextAlign.center,
+                        ))
+                      ],
+                    ),
+                    background: Column(
+                      children: [
+                        Text(e.standardSegment.data.id),
+                        Divider(),
+                        Expanded(
+                            child: AutoSizeText(
+                          e.standardSegment.name,
+                          textAlign: TextAlign.center,
+                        ))
                       ],
                     ),
                   ))
@@ -29,8 +45,22 @@ class SecondaryAxisDialog extends StatelessWidget {
           return Column(children: [
             Text(axis.lecAdapter.lec.name),
             NeumorphicToggle(
+              height: 80,
               thumb: Neumorphic(),
               children: standarSegments,
+              onChanged: (value) => Provider.of<MajorTypeProvider>(context,
+                      listen: false)
+                  .setSecondaryStandardSegment(axis.standardSegments[value]),
+              selectedIndex: axis.standardSegments.indexWhere((e) =>
+                  e.standardSegment.data.id ==
+                  Provider.of<MajorTypeProvider>(context)
+                      .selectedSecondaryAxisSegments
+                      .firstWhere((element) =>
+                          element.lec.lec.data.id ==
+                          axis.lecAdapter.lec.data.id)
+                      .standardSegment
+                      .data
+                      .id),
             )
           ]);
         },
