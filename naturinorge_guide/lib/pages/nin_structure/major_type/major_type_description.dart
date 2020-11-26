@@ -36,7 +36,7 @@ class MajorTypeDetails extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: SecondaryAxisDialog(),
+          child: SecondaryAxisOptions(),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
