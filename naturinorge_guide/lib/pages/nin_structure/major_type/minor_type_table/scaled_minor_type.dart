@@ -9,7 +9,7 @@ class ScaledMinorTypeWidgetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (minorTypeBlock == null) {
+    if (minorTypeBlock.minorTypeScaled == null) {
       return Container();
     } else
       return Neumorphic(
