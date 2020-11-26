@@ -129,9 +129,21 @@ class MajorTypeProvider extends ChangeNotifier {
     _minorTypesScaled = res;
   }
 
+  dynamic _createArray(List<int> dims) {
+    if (dims.length > 0) {
+      var dim = dims.first;
+      var newDims = List<int>.from(dims);
+      newDims.removeAt(0);
+      var array = List.generate(dim, (index) => _createArray(newDims));
+      return array;
+    } else {
+      return null;
+    }
+  }
+
   dynamic _addToArray(dynamic array, List<int> coors, String value) {
     if (coors.length > 0) {
-      var index = coors[0];
+      var index = coors.first;
       var newArray = array[index];
       coors.removeAt(0);
 
@@ -143,13 +155,13 @@ class MajorTypeProvider extends ChangeNotifier {
   }
 
   _initializeMinorTypesArray() {
-    _minorTypesArray = List.generate(xAxis.standardSegments.length,
-        (index) => List.generate(yAxis.standardSegments.length, (index) => ''));
+    var minorTypesDims = _zAxis
+        .map((e) => e.standardSegments.length)
+        .toList(); // TODO maybe need reverse
+    minorTypesDims.add(xAxis.standardSegments.length);
+    minorTypesDims.add(yAxis.standardSegments.length);
 
-    for (var zAxis in _zAxis) {
-      _minorTypesArray = List.generate(
-          zAxis.standardSegments.length, (index) => _minorTypesArray);
-    }
+    _minorTypesArray = _createArray(minorTypesDims);
 
     _minorTypesScaled.forEach((mts) {
       mts.minorTypes.forEach((mt) {
@@ -184,7 +196,10 @@ class MajorTypeProvider extends ChangeNotifier {
         }
       });
     });
+    _initializeMinorTypeSlice();
+  }
 
+  _initializeMinorTypeSlice() {
     dynamic minorTypeSlice = _minorTypesArray;
 
     for (var selectedSegment in _selectedZAxisSegments) {
@@ -193,18 +208,12 @@ class MajorTypeProvider extends ChangeNotifier {
     }
 
     _minorTypesScaledBlocks = List<MinorTypeBlock>();
-    // var numberOfBlocks =
-    //     minorTypeSlice.expand((element) => element).toSet().length +
-    //         minorTypeSlice
-    //             .expand((element) => element)
-    //             .where((e) => e == null)
-    //             .length;
 
     List<MinorTypeBlock> minorTypesScaledBlocks = List<MinorTypeBlock>();
     var usedMinorTypeIds = List<String>();
-    for (var y in List.generate(yAxis.standardSegments.length, (idx) => idx)) {
+    for (var y in List.generate(_yAxis.standardSegments.length, (idx) => idx)) {
       for (var x
-          in List.generate(xAxis.standardSegments.length, (idx) => idx)) {
+          in List.generate(_xAxis.standardSegments.length, (idx) => idx)) {
         var minorTypeSegmentId = minorTypeSlice[x][y];
         if (minorTypeSegmentId == null) {
           minorTypesScaledBlocks.add(MinorTypeBlock(1, 1, null));
@@ -223,7 +232,7 @@ class MajorTypeProvider extends ChangeNotifier {
     _minorTypesScaledBlocks = minorTypesScaledBlocks;
   }
 
-  int _getMinorTypeBlockWidth(List<List<String>> slice, int x, int y) {
+  int _getMinorTypeBlockWidth(List<dynamic> slice, int x, int y) {
     var mtsId = slice[x][y];
     var xPointer = x;
     var width = 0;
@@ -234,7 +243,7 @@ class MajorTypeProvider extends ChangeNotifier {
     return width;
   }
 
-  int _getMinorTypeBlockHeight(List<List<String>> slice, int x, int y) {
+  int _getMinorTypeBlockHeight(List<dynamic> slice, int x, int y) {
     var mtsId = slice[x][y];
     var yPointer = y;
     var height = 0;
@@ -249,6 +258,14 @@ class MajorTypeProvider extends ChangeNotifier {
     _selectedMappingScale = _allMappingScales[mappingScaleId];
     await _initializeMinorTypes();
     _initializeMinorTypesArray();
+    notifyListeners();
+  }
+
+  setSecondaryStandardSegment(StandardSegmentAdapter standardSegment) {
+    var ssIndex = _selectedZAxisSegments.indexWhere((element) =>
+        element.lec.lec.data.id == standardSegment.lec.lec.data.id);
+    _selectedZAxisSegments[ssIndex] = standardSegment;
+    _initializeMinorTypeSlice();
     notifyListeners();
   }
 
