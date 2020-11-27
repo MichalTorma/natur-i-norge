@@ -15,7 +15,7 @@ class MappingScaleWidget extends StatelessWidget {
                   background: Center(
                       child: Text(
                     e.name,
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    style: TextStyle(fontWeight: FontWeight.w400),
                   )),
                   foreground: Center(
                       child: Text(

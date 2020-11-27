@@ -27,10 +27,11 @@ class TableBody extends StatelessWidget {
       padding: EdgeInsets.all(4.0),
       crossAxisSpacing: 2.0,
       mainAxisSpacing: 2.0,
+      physics: new NeverScrollableScrollPhysics(),
       crossAxisCount:
           Provider.of<MajorTypeProvider>(context).xAxis.standardSegments.length,
       reverse: true,
-      primary: false,
+      primary: true,
       // shrinkWrap: true,
       children: minorTypesBlocks,
       staggeredTiles: staggeredTiles,
