@@ -13,8 +13,30 @@ class ScaledMinorTypeWidgetWidget extends StatelessWidget {
       return Container();
     } else
       return Neumorphic(
-        child: Center(
-          child: AutoSizeText(minorTypeBlock.minorTypeScaled.minorTypeScaledId),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: AutoSizeText(
+                    minorTypeBlock.minorTypeScaled.minorTypeScaledId),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: AutoSizeText(
+                  minorTypeBlock.minorTypeScaled.minorTypes
+                      .map((e) => e.minorType.name)
+                      .toList()
+                      .join('/'),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+              ),
+            )
+          ],
         ),
       );
   }
