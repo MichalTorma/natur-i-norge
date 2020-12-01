@@ -1,11 +1,8 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:moor/moor.dart';
-// import 'package:naturinorge_guide/db/lazy_db_flutter.dart';
 import 'package:naturinorge_guide/db/lazy_db_web.dart'
     if (dart.library.io) 'package:naturinorge_guide/db/lazy_db_flutter.dart';
-// import 'package:moor/moor_web.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 
 part 'nin_db.g.dart';
@@ -82,14 +79,6 @@ class NiNDatabase extends _$NiNDatabase {
 
     return Detailed<NinMinorTypeData>().fromList(minorTypes, locale);
   }
-  // Future<List<Detailed<NinMinorTypeData>>> getMinorTypesByMajorTypeId(
-  //     String majorTypeId, NinMappingScaleData scale, Locale locale) async {
-  //   var minorTypesQuery = select(ninMinorType)
-  //     ..where((tbl) => tbl.majorTypeId.equals(majorTypeId));
-  //   var minorTypes = await minorTypesQuery.get();
-  //   var res = Detailed<NinMinorTypeData>().fromList(minorTypes, locale);
-  //   return await res;
-  // }
 
   Future<List<Detailed<NinStandardSegmentData>>>
       getStandardSegmentsByMajorTypeLec(
@@ -232,11 +221,7 @@ class NiNDatabase extends _$NiNDatabase {
 }
 
 LazyDatabase _openConnection() {
-  // the LazyDatabase util lets us find the right location for the file async.
   return LazyDatabase(() async {
-    // put the database file, called db.sqlite here, into the documents folder
-    // for your app.
-
     return getLazyDb();
   });
 }
