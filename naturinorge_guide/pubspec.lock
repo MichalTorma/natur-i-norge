@@ -289,8 +289,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "4710c9e81f634edfcb723937a5100a582c64993d"
-      url: "https://github.com/MichalTorma/Flutter-Neumorphic.git"
+      resolved-ref: "519178d47262d810a00a4371680135030a248e06"
+      url: "https://github.com/Idean/Flutter-Neumorphic.git"
     source: git
     version: "3.0.3"
   flutter_staggered_grid_view:
