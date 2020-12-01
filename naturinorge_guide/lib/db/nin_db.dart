@@ -1,12 +1,12 @@
-import 'dart:io';
 import 'dart:ui';
 
-import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:moor/moor.dart';
-import 'package:moor/ffi.dart';
+// import 'package:naturinorge_guide/db/lazy_db_flutter.dart';
+import 'package:naturinorge_guide/db/lazy_db_web.dart'
+    if (dart.library.io) 'package:naturinorge_guide/db/lazy_db_flutter.dart';
+// import 'package:moor/moor_web.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 
 part 'nin_db.g.dart';
 
@@ -236,10 +236,7 @@ LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     // put the database file, called db.sqlite here, into the documents folder
     // for your app.
-    final dbFile = await rootBundle.load('assets/nin_database.db');
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'nin3.sqlite'));
-    await file.writeAsBytes(dbFile.buffer.asUint8List());
-    return VmDatabase(file);
+
+    return getLazyDb();
   });
 }
