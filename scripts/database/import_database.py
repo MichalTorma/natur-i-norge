@@ -9,7 +9,7 @@ import os
 
 prefix = 'nin_'
 input_file = 'tables/GoldenMaster.xlsx'
-database_file = 'db/v006.db'
+database_file = '/Users/amarok/src/natur-i-norge/naturinorge_guide/assets/nin_database.db'
 try:
     os.remove(database_file)
 except:
