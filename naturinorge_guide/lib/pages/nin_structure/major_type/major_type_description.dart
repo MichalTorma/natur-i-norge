@@ -5,7 +5,6 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_prov
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/secondary_axis_dialog.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/table_options.dart';
-import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:provider/provider.dart';
 
 class MajorTypeDetails extends StatelessWidget {

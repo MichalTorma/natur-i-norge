@@ -4,7 +4,6 @@ import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/main.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 
 enum ButtonState { AVAILABLE, SELECTED, UNAVAILABLE }
 
@@ -50,7 +49,7 @@ class NinStructureProvider extends ChangeNotifier {
   List<Detailed<NinMajorTypeGroupData>> get majorTypeGroups =>
       _ninMajorTypeGroups;
 
-  Future _loadMajorTypeGroups({String filter = ''}) async {
+  Future _loadMajorTypeGroups() async {
     var majorTypeGroups = await db.allMajorTypeGroups;
     _ninMajorTypeGroups = await Detailed<NinMajorTypeGroupData>()
         .fromList(majorTypeGroups, locale);

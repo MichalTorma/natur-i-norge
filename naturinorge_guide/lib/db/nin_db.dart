@@ -2,11 +2,8 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
-// import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:moor/moor.dart';
-// These imports are only needed to open the database
 import 'package:moor/ffi.dart';
-import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
