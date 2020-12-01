@@ -1,13 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:naturinorge_guide/db/db_description.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
-import 'package:naturinorge_guide/details/map_provider.dart';
-import 'package:naturinorge_guide/filter_provider.dart';
 import 'package:naturinorge_guide/pages/home_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
+import 'package:naturinorge_guide/tools/my_theme.dart';
 import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
@@ -55,12 +53,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           // DEP
-          ChangeNotifierProvider<FilterProvider>(
-            create: (_) => FilterProvider(MyDatabase().t4Dao),
-          ),
-          ChangeNotifierProvider<MapProvider>(
-            create: (_) => MapProvider(),
-          ),
+          // ChangeNotifierProvider<FilterProvider>(
+          //   create: (_) => FilterProvider(MyDatabase().t4Dao),
+          // ),
+          // ChangeNotifierProvider<MapProvider>(
+          //   create: (_) => MapProvider(),
+          // ),
 
           // ACTIVE
           ChangeNotifierProvider<NinStructureProvider>(
@@ -79,16 +77,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: LocaleKeys.name.tr(),
             themeMode: ThemeMode.light,
-            theme: NeumorphicThemeData(
-              baseColor: Color(0xFFFFFFFF),
-              lightSource: LightSource.topLeft,
-              depth: 10,
-            ),
-            darkTheme: NeumorphicThemeData(
-              baseColor: Color(0xFF3E3E3E),
-              lightSource: LightSource.topLeft,
-              depth: 6,
-            ),
+            theme: lightTheme,
+            darkTheme: darkTheme,
             home: HomePage()));
   }
 }

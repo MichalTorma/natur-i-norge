@@ -1,11 +1,9 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description.dart';
-import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_selector.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type_group/major_type_group_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'major_type_group/major_type_group_selector.dart';
