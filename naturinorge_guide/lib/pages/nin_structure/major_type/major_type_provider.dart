@@ -3,21 +3,9 @@ import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/main.dart';
-
-class MinorTypeBlock {
-  final int width;
-  final int height;
-  final MinorTypeScaledAdapter minorTypeScaled;
-
-  MinorTypeBlock(this.width, this.height, this.minorTypeScaled);
-}
-
-class AxisBlock {
-  final List<StandardSegmentAdapter> standardSegments;
-  final LecAdapter lecAdapter;
-
-  AxisBlock(this.standardSegments, this.lecAdapter);
-}
+import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/minor_type_block.dart';
+import 'package:naturinorge_guide/tools/array_tools.dart';
 
 class MajorTypeProvider extends ChangeNotifier {
   final Locale locale;
@@ -27,7 +15,6 @@ class MajorTypeProvider extends ChangeNotifier {
   bool _isLoading = true;
   Detailed<NinMajorTypeData> _majorType;
   MajorTypeAdapter _majorTypeAdapter;
-  int _numberOfAxis = 0;
   List<AxisBlock> _allAxis = List<AxisBlock>();
   List<AxisBlock> _mainAxis = List<AxisBlock>();
   List<AxisBlock> _secondaryAxis = List<AxisBlock>();
@@ -129,39 +116,14 @@ class MajorTypeProvider extends ChangeNotifier {
     _minorTypesScaled = res;
   }
 
-  dynamic _createArray(List<int> dims) {
-    if (dims.length > 0) {
-      var dim = dims.first;
-      var newDims = List<int>.from(dims);
-      newDims.removeAt(0);
-      var array = List.generate(dim, (index) => _createArray(newDims));
-      return array;
-    } else {
-      return null;
-    }
-  }
-
-  dynamic _addToArray(dynamic array, List<int> coors, String value) {
-    if (coors.length > 0) {
-      var index = coors.first;
-      var newArray = array[index];
-      coors.removeAt(0);
-
-      array[index] = _addToArray(newArray, coors, value);
-      return array;
-    } else {
-      return value;
-    }
-  }
-
   _initializeMinorTypesArray() {
     var minorTypesDims = _zAxis
         .map((e) => e.standardSegments.length)
-        .toList(); // TODO maybe need reverse
+        .toList();
     minorTypesDims.add(xAxis.standardSegments.length);
     minorTypesDims.add(yAxis.standardSegments.length);
 
-    _minorTypesArray = _createArray(minorTypesDims);
+    _minorTypesArray = createArray(minorTypesDims);
 
     _minorTypesScaled.forEach((mts) {
       mts.minorTypes.forEach((mt) {
@@ -191,7 +153,7 @@ class MajorTypeProvider extends ChangeNotifier {
             coors.add(yOrder);
 
             _minorTypesArray =
-                _addToArray(_minorTypesArray, coors, mts.minorTypeScaledId);
+                addToArray(_minorTypesArray, coors, mts.minorTypeScaledId);
           }
         }
       });

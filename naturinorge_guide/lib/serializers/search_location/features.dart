@@ -2,7 +2,6 @@ library features;
 
 import 'dart:convert';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:naturinorge_guide/serializers/observations/serializers.dart';
@@ -26,7 +25,8 @@ abstract class Features implements Built<Features, FeaturesBuilder> {
   @BuiltValueField(wireName: 'type')
   String get type;
   String toJson() {
-    return json.encode(standardSerializers.serializeWith(Features.serializer, this));
+    return json
+        .encode(standardSerializers.serializeWith(Features.serializer, this));
   }
 
   static Features fromJson(String jsonString) {

@@ -2,13 +2,11 @@ library arts_taxon;
 
 import 'dart:convert';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:naturinorge_guide/serializers/observations/serializers.dart';
 
 import 'accepted_name_usage.dart';
-import 'dynamic_properties.dart';
 
 part 'arts_taxon.g.dart';
 
@@ -44,7 +42,8 @@ abstract class ArtsTaxon implements Built<ArtsTaxon, ArtsTaxonBuilder> {
   // @BuiltValueField(wireName: 'dynamicProperties')
   // BuiltList<DynamicProperties> get dynamicProperties;
   String toJson() {
-    return json.encode(standardSerializers.serializeWith(ArtsTaxon.serializer, this));
+    return json
+        .encode(standardSerializers.serializeWith(ArtsTaxon.serializer, this));
   }
 
   static ArtsTaxon fromJson(String jsonString) {
@@ -54,5 +53,3 @@ abstract class ArtsTaxon implements Built<ArtsTaxon, ArtsTaxonBuilder> {
 
   static Serializer<ArtsTaxon> get serializer => _$artsTaxonSerializer;
 }
-
-

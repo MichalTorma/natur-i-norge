@@ -2,7 +2,6 @@ library accepted_name_usage;
 
 import 'dart:convert';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:naturinorge_guide/serializers/observations/serializers.dart';
@@ -39,8 +38,8 @@ abstract class AcceptedNameUsage
   @BuiltValueField(wireName: 'dynamicProperties')
   String get dynamicProperties;
   String toJson() {
-    return json
-        .encode(standardSerializers.serializeWith(AcceptedNameUsage.serializer, this));
+    return json.encode(
+        standardSerializers.serializeWith(AcceptedNameUsage.serializer, this));
   }
 
   static AcceptedNameUsage fromJson(String jsonString) {

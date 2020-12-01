@@ -2,7 +2,6 @@ library crs_property;
 
 import 'dart:convert';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:naturinorge_guide/serializers/observations/serializers.dart';
@@ -17,7 +16,8 @@ abstract class CrsProperty implements Built<CrsProperty, CrsPropertyBuilder> {
   @BuiltValueField(wireName: 'name')
   String get name;
   String toJson() {
-    return json.encode(standardSerializers.serializeWith(CrsProperty.serializer, this));
+    return json.encode(
+        standardSerializers.serializeWith(CrsProperty.serializer, this));
   }
 
   static CrsProperty fromJson(String jsonString) {
