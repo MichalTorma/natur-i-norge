@@ -2,7 +2,6 @@ library feature_property;
 
 import 'dart:convert';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:naturinorge_guide/serializers/observations/serializers.dart';
@@ -21,8 +20,8 @@ abstract class FeatureProperty
   @BuiltValueField(wireName: 'MaxCategory')
   int get maxCategory;
   String toJson() {
-    return json
-        .encode(standardSerializers.serializeWith(FeatureProperty.serializer, this));
+    return json.encode(
+        standardSerializers.serializeWith(FeatureProperty.serializer, this));
   }
 
   static FeatureProperty fromJson(String jsonString) {

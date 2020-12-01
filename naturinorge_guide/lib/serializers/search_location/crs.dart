@@ -1,9 +1,7 @@
-
 library crs;
 
 import 'dart:convert';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:naturinorge_guide/serializers/observations/serializers.dart';
@@ -25,7 +23,8 @@ abstract class Crs implements Built<Crs, CrsBuilder> {
   }
 
   static Crs fromJson(String jsonString) {
-    return standardSerializers.deserializeWith(Crs.serializer, json.decode(jsonString));
+    return standardSerializers.deserializeWith(
+        Crs.serializer, json.decode(jsonString));
   }
 
   static Serializer<Crs> get serializer => _$crsSerializer;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 ThemeData myTheme = ThemeData(
   // Define the default brightness and colors.
@@ -18,4 +19,16 @@ ThemeData myTheme = ThemeData(
     title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
     body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
   ),
+);
+
+NeumorphicThemeData lightTheme = NeumorphicThemeData(
+  baseColor: Color(0xFFFFFFFF),
+  lightSource: LightSource.topLeft,
+  depth: 10,
+);
+
+NeumorphicThemeData darkTheme = NeumorphicThemeData(
+  baseColor: Color(0xFF3E3E3E),
+  lightSource: LightSource.topLeft,
+  depth: 6,
 );

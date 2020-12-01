@@ -85,7 +85,7 @@ abstract class ArtsApi {
       //   contentType: "application/json;charset=utf-8"
       // ),
     );
-    String stringResp = resp.data.replaceAll('\\', '');
+    // String stringResp = resp.data.replaceAll('\\', '');
     // print(stringResp);
     return SearchLocation.fromJson(resp.data);
   }
