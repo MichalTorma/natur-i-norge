@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:moor/backends.dart';
 import 'package:moor/moor_web.dart';
 
 dynamic getLazyDb() {
