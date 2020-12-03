@@ -216,8 +216,30 @@ class NiNDatabase extends _$NiNDatabase {
             ..where((tbl) => tbl.id.equals(minorTypeScaledId)))
           .get();
 
+  Future<List<NinSpecie>> getSpeciesByFilter(String filter) =>
+      (select(ninSpecies)
+            ..where((tbl) =>
+                tbl.scientificName.like('%$filter%') |
+                tbl.vernacularName.like('%$filter%')))
+          .get();
+
+  Future<List<NinGadValueData>> getGadValuesBySpeciesId(
+          int speciesId, String majorTypeId) =>
+      (select(ninGadValue)
+            ..where((tbl) =>
+                tbl.speciesId.equals(speciesId) &
+                tbl.majorTypeId.equals(majorTypeId)))
+          .get();
+
+  Future<List<NinElementarySegmentCombinationData>>
+      getElementarySegmentCombinationsByElementarySegmentCombinationId(
+              String elementarySegmentCombinationId) =>
+          (select(ninElementarySegmentCombination)
+                ..where((tbl) => tbl.id.equals(elementarySegmentCombinationId)))
+              .get();
+
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 }
 
 LazyDatabase _openConnection() {
