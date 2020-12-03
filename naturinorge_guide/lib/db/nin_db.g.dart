@@ -5718,7 +5718,7 @@ class NinElementarySegmentCombination extends Table
 class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
   final String elementarySegmentCombinationId;
   final int speciesId;
-  final int majorTypeId;
+  final String majorTypeId;
   final int valueM7ScaleId;
   final int valueM3ScaleId;
   NinGadValueData(
@@ -5738,7 +5738,7 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
           data['${effectivePrefix}elementarySegmentCombination_id']),
       speciesId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}species_id']),
-      majorTypeId: intType
+      majorTypeId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
       valueM7ScaleId: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}valueM7Scale_id']),
@@ -5757,7 +5757,7 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
       map['species_id'] = Variable<int>(speciesId);
     }
     if (!nullToAbsent || majorTypeId != null) {
-      map['majorType_id'] = Variable<int>(majorTypeId);
+      map['majorType_id'] = Variable<String>(majorTypeId);
     }
     if (!nullToAbsent || valueM7ScaleId != null) {
       map['valueM7Scale_id'] = Variable<int>(valueM7ScaleId);
@@ -5796,7 +5796,7 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
       elementarySegmentCombinationId:
           serializer.fromJson<String>(json['elementarySegmentCombination_id']),
       speciesId: serializer.fromJson<int>(json['species_id']),
-      majorTypeId: serializer.fromJson<int>(json['majorType_id']),
+      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
       valueM7ScaleId: serializer.fromJson<int>(json['valueM7Scale_id']),
       valueM3ScaleId: serializer.fromJson<int>(json['valueM3Scale_id']),
     );
@@ -5808,7 +5808,7 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
       'elementarySegmentCombination_id':
           serializer.toJson<String>(elementarySegmentCombinationId),
       'species_id': serializer.toJson<int>(speciesId),
-      'majorType_id': serializer.toJson<int>(majorTypeId),
+      'majorType_id': serializer.toJson<String>(majorTypeId),
       'valueM7Scale_id': serializer.toJson<int>(valueM7ScaleId),
       'valueM3Scale_id': serializer.toJson<int>(valueM3ScaleId),
     };
@@ -5817,7 +5817,7 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
   NinGadValueData copyWith(
           {String elementarySegmentCombinationId,
           int speciesId,
-          int majorTypeId,
+          String majorTypeId,
           int valueM7ScaleId,
           int valueM3ScaleId}) =>
       NinGadValueData(
@@ -5863,7 +5863,7 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
 class NinGadValueCompanion extends UpdateCompanion<NinGadValueData> {
   final Value<String> elementarySegmentCombinationId;
   final Value<int> speciesId;
-  final Value<int> majorTypeId;
+  final Value<String> majorTypeId;
   final Value<int> valueM7ScaleId;
   final Value<int> valueM3ScaleId;
   const NinGadValueCompanion({
@@ -5884,7 +5884,7 @@ class NinGadValueCompanion extends UpdateCompanion<NinGadValueData> {
   static Insertable<NinGadValueData> custom({
     Expression<String> elementarySegmentCombinationId,
     Expression<int> speciesId,
-    Expression<int> majorTypeId,
+    Expression<String> majorTypeId,
     Expression<int> valueM7ScaleId,
     Expression<int> valueM3ScaleId,
   }) {
@@ -5901,7 +5901,7 @@ class NinGadValueCompanion extends UpdateCompanion<NinGadValueData> {
   NinGadValueCompanion copyWith(
       {Value<String> elementarySegmentCombinationId,
       Value<int> speciesId,
-      Value<int> majorTypeId,
+      Value<String> majorTypeId,
       Value<int> valueM7ScaleId,
       Value<int> valueM3ScaleId}) {
     return NinGadValueCompanion(
@@ -5925,7 +5925,7 @@ class NinGadValueCompanion extends UpdateCompanion<NinGadValueData> {
       map['species_id'] = Variable<int>(speciesId.value);
     }
     if (majorTypeId.present) {
-      map['majorType_id'] = Variable<int>(majorTypeId.value);
+      map['majorType_id'] = Variable<String>(majorTypeId.value);
     }
     if (valueM7ScaleId.present) {
       map['valueM7Scale_id'] = Variable<int>(valueM7ScaleId.value);
@@ -5976,11 +5976,11 @@ class NinGadValue extends Table with TableInfo<NinGadValue, NinGadValueData> {
 
   final VerificationMeta _majorTypeIdMeta =
       const VerificationMeta('majorTypeId');
-  GeneratedIntColumn _majorTypeId;
-  GeneratedIntColumn get majorTypeId =>
+  GeneratedTextColumn _majorTypeId;
+  GeneratedTextColumn get majorTypeId =>
       _majorTypeId ??= _constructMajorTypeId();
-  GeneratedIntColumn _constructMajorTypeId() {
-    return GeneratedIntColumn('majorType_id', $tableName, true,
+  GeneratedTextColumn _constructMajorTypeId() {
+    return GeneratedTextColumn('majorType_id', $tableName, true,
         $customConstraints: '');
   }
 

@@ -10,7 +10,7 @@ dynamic createArray(List<int> dims) {
   }
 }
 
-dynamic addToArray(dynamic array, List<int> coors, String value) {
+dynamic addToArray(dynamic array, List<int> coors, dynamic value) {
   if (coors.length > 0) {
     var index = coors.first;
     var newArray = array[index];
