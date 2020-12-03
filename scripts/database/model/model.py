@@ -238,7 +238,7 @@ class GadValue(Base):
         f'{prefix}ElementarySegmentCombination._id'), primary_key=True)
     species_id = Column(Integer, ForeignKey(
         f'{prefix}Species.scientificNameId'), primary_key=True)
-    majorType_id = Column(Integer, ForeignKey(f'{prefix}MajorType._id'))
+    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
     valueM7Scale_id = Column(Integer, ForeignKey(
         f'{prefix}GadScale.m7Scale'), nullable=True)
     valueM3Scale_id = Column(Integer, ForeignKey(
