@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:naturinorge_guide/db/nin_db.dart';
-import 'package:naturinorge_guide/main.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/specie_adapter.dart';
 
 class GadHelper {

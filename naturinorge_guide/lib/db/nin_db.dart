@@ -238,6 +238,14 @@ class NiNDatabase extends _$NiNDatabase {
                 ..where((tbl) => tbl.id.equals(elementarySegmentCombinationId)))
               .get();
 
+  Future<List<NinGadModifierData>> getGadModifiersBySpeciesId(
+          int speciesId, String majorTypeId) =>
+      (select(ninGadModifier)
+            ..where((tbl) =>
+                tbl.speciesId.equals(speciesId) &
+                tbl.majorTypeId.equals(majorTypeId)))
+          .get();
+
   @override
   int get schemaVersion => 6;
 }
