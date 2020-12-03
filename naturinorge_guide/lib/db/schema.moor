@@ -174,7 +174,7 @@ CREATE TABLE "nin_ElementarySegmentCombination" (
 CREATE TABLE "nin_GadValue" (
 	"elementarySegmentCombination_id" TEXT NOT NULL, 
 	species_id INTEGER NOT NULL, 
-	"majorType_id" INTEGER, 
+	"majorType_id" TEXT, 
 	"valueM7Scale_id" INTEGER, 
 	"valueM3Scale_id" INTEGER, 
 	PRIMARY KEY ("elementarySegmentCombination_id", species_id), 
