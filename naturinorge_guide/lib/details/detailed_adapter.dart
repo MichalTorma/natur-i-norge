@@ -27,13 +27,13 @@ class Detailed<K> {
 
   Future<List<Detailed<K>>> fromList(
       List<dynamic> dataList, Locale locale) async {
-    var res = List<Detailed<K>>();
+    var res = List<Detailed<K>>.empty(growable: true);
     for (var e in dataList) {
       // print('Get details for detailId: ${e.detailId}');
       try {
         var detailed = await Detailed<K>().initialize(e, locale);
         res.add(detailed);
-      } catch (e) {
+      } catch (error) {
         // print(e);
         print('Unable to get deails for ${e.detailId}');
       }

@@ -138,7 +138,7 @@ class NiNDatabase extends _$NiNDatabase {
     var standardSegmentElements = await (select(ninStandardSegmentElement)
           ..where((tbl) => tbl.standardSegmentId.equals(standardSegment.id)))
         .get();
-    var res = List<NinElementarySegmentData>();
+    var res = List<NinElementarySegmentData>.empty(growable: true);
     for (var es in standardSegmentElements) {
       res.add(await this.getElementarySegmentById(es.elementarySegmentId));
     }
@@ -163,7 +163,8 @@ class NiNDatabase extends _$NiNDatabase {
               ..where((tbl) => tbl.elementarySegmentGroupId
                   .equals(elementarySegmentGroupId)))
             .get();
-    var res = List<Detailed<NinElementarySegmentGroupDetailData>>();
+    var res = List<Detailed<NinElementarySegmentGroupDetailData>>.empty(
+        growable: true);
     for (var esgd in elementarySegmentGroupDetails) {
       var detailed = await Detailed<NinElementarySegmentGroupDetailData>()
           .initialize(esgd, locale);
@@ -247,7 +248,7 @@ class NiNDatabase extends _$NiNDatabase {
           .get();
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 }
 
 LazyDatabase _openConnection() {
