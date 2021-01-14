@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 enum ButtonState { AVAILABLE, SELECTED, UNAVAILABLE }
 
 class NinStructureProvider extends ChangeNotifier {
-  var _ninMajorTypeGroups = List<Detailed<NinMajorTypeGroupData>>();
-  var _ninMajorTypes = List<Detailed<NinMajorTypeData>>();
+  var _ninMajorTypeGroups = List<Detailed<NinMajorTypeGroupData>>.empty();
+  var _ninMajorTypes = List<Detailed<NinMajorTypeData>>.empty();
 
   Detailed<NinMajorTypeGroupData> _selectedMajorTypeGroupData;
   Detailed<NinMajorTypeData> _selectedMajorTypeData;

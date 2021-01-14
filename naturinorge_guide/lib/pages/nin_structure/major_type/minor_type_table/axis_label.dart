@@ -13,7 +13,7 @@ class AxisLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var standardSegmentWidgets = List<Widget>();
+    var standardSegmentWidgets = List<Widget>.empty(growable: true);
     for (var ss in axisBlock.standardSegments) {
       // print(ss.elementarySegments.length);
       standardSegmentWidgets.add(Expanded(

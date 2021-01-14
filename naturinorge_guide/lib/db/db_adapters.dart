@@ -59,7 +59,7 @@ class LecAdapter {
   Detailed<NinLECData> lec;
   List<NinElementarySegmentData> elementarySegments;
   List<ElementarySegmentGroupAdapter> gadElementarySegmentGroups =
-      List<ElementarySegmentGroupAdapter>();
+      List<ElementarySegmentGroupAdapter>.empty(growable: true);
 
   final NinMajorTypeLECData majorTypeLec;
 
@@ -90,7 +90,7 @@ class MinorTypeScaledAdapter {
   Future getRelations() async {
     var minorTypesData =
         await db.getMinorTypesByMajorTypeScaledId(minorTypeScaledId, locale);
-    var res = List<MinorTypeAdapter>();
+    var res = List<MinorTypeAdapter>.empty(growable: true);
     for (var minorType in minorTypesData) {
       var item = MinorTypeAdapter(locale, minorType);
       await item.getRelations();
@@ -111,7 +111,7 @@ class MinorTypeAdapter {
   Future getRelations() async {
     var standardSegmentsData =
         await db.getStandardSegmentsByMinorType(minorType.data, locale);
-    var res = List<StandardSegmentAdapter>();
+    var res = List<StandardSegmentAdapter>.empty(growable: true);
     for (var ss in standardSegmentsData) {
       var majorTypeLec = await db.getMajorTypeLecByStandardSegment(ss.data);
       var allElementarySegmentGroupIds = await db
@@ -140,7 +140,7 @@ class MajorTypeAdapter {
     // print('Start getting relations for ${majorType.data.id}');
     var minorTypeScaledIds = await db.getMinorTypeScaledIdsByMajorTypeAndScale(
         majorType.data, mappingScale);
-    var res = List<MinorTypeScaledAdapter>();
+    var res = List<MinorTypeScaledAdapter>.empty(growable: true);
     for (var minorTypeScaledId in minorTypeScaledIds) {
       res.add(MinorTypeScaledAdapter(locale, mappingScale, minorTypeScaledId));
     }

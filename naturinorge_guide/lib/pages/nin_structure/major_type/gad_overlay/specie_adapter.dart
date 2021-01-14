@@ -16,14 +16,14 @@ class SpecieAdapter {
   Future getRelations() async {
     var gadValuesData =
         await db.getGadValuesBySpeciesId(specie.scientificNameId, majorType.id);
-    gadValues = List<GadValueAdapter>();
+    gadValues = List<GadValueAdapter>.empty(growable: true);
     for (var gadValueData in gadValuesData) {
       var gadValue = GadValueAdapter(gadValueData, locale);
       await gadValue.getRelations();
       gadValues.add(gadValue);
     }
 
-    gadModifiers = List<GadModifierAdpater>();
+    gadModifiers = List<GadModifierAdpater>.empty(growable: true);
     var gadModifiersData = await db.getGadModifiersBySpeciesId(
         specie.scientificNameId, majorType.id);
     for (var gadModifierData in gadModifiersData) {
@@ -48,7 +48,8 @@ class GadValueAdapter {
     if (elementarySegmentCombinations.length == 0)
       throw Exception(
           'unable to find elementayr segment combination with id: ${gadValue.elementarySegmentCombinationId}');
-    elementarySegmentGroupAdapters = List<ElementarySegmentGroupAdapter>();
+    elementarySegmentGroupAdapters =
+        List<ElementarySegmentGroupAdapter>.empty(growable: true);
     for (var elementarySegmentCombination in elementarySegmentCombinations) {
       var esg = ElementarySegmentGroupAdapter(
           locale, elementarySegmentCombination.elementarySegmentGroupId);
