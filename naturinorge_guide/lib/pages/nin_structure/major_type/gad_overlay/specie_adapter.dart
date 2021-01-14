@@ -45,6 +45,9 @@ class GadValueAdapter {
     elementarySegmentCombinations = await db
         .getElementarySegmentCombinationsByElementarySegmentCombinationId(
             gadValue.elementarySegmentCombinationId);
+    if (elementarySegmentCombinations.length == 0)
+      throw Exception(
+          'unable to find elementayr segment combination with id: ${gadValue.elementarySegmentCombinationId}');
     elementarySegmentGroupAdapters = List<ElementarySegmentGroupAdapter>();
     for (var elementarySegmentCombination in elementarySegmentCombinations) {
       var esg = ElementarySegmentGroupAdapter(
