@@ -3,6 +3,7 @@ import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/main.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/gad_helper.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/minor_type_block.dart';
 import 'package:naturinorge_guide/tools/array_tools.dart';
@@ -32,6 +33,9 @@ class MajorTypeProvider extends ChangeNotifier {
   dynamic _minorTypesArray;
   List<MinorTypeBlock> _minorTypesScaledBlocks;
 
+  GadHelper gadHelper;
+  List<List<dynamic>> gadArray;
+
   Future load(Detailed<NinMajorTypeData> majorType) async {
     _isLoading = true;
     notifyListeners();
@@ -43,6 +47,14 @@ class MajorTypeProvider extends ChangeNotifier {
     _initializeAxis();
     await _initializeMinorTypes();
     _initializeMinorTypesArray();
+    gadHelper = GadHelper(
+      locale: locale,
+      majorType: _majorType.data,
+      xAxis: _xAxis,
+      yAxis: _yAxis,
+      zAxis: _zAxis,
+    );
+
     _isLoading = false;
     notifyListeners();
   }
@@ -117,9 +129,7 @@ class MajorTypeProvider extends ChangeNotifier {
   }
 
   _initializeMinorTypesArray() {
-    var minorTypesDims = _zAxis
-        .map((e) => e.standardSegments.length)
-        .toList();
+    var minorTypesDims = _zAxis.map((e) => e.standardSegments.length).toList();
     minorTypesDims.add(xAxis.standardSegments.length);
     minorTypesDims.add(yAxis.standardSegments.length);
 
@@ -229,6 +239,10 @@ class MajorTypeProvider extends ChangeNotifier {
     _selectedZAxisSegments[ssIndex] = standardSegment;
     _initializeMinorTypeSlice();
     notifyListeners();
+  }
+
+  addSpecies(NinSpecie specie) async {
+    await gadHelper.addSpecie(specie);
   }
 
   int get numberOfAxis => _majorTypeAdapter.lecs.length;
