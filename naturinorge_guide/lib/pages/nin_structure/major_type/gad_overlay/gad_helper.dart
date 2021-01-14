@@ -13,10 +13,11 @@ class GadHelper {
   final AxisBlock yAxis;
   final List<AxisBlock> zAxis;
   // dynamic finalArray;
-  List<dynamic> allArrays = List<dynamic>();
+  List<dynamic> allArrays = List<dynamic>.empty();
   List<int> dims;
 
-  List<SpecieAdapter> selectedSprecies = List<SpecieAdapter>();
+  List<SpecieAdapter> selectedSprecies =
+      List<SpecieAdapter>.empty(growable: true);
 
   GadHelper({this.majorType, this.locale, this.xAxis, this.yAxis, this.zAxis}) {
     _generateDims();
@@ -44,7 +45,7 @@ class GadHelper {
               yAxis.lecAdapter.gadElementarySegmentGroups.contains(element));
       var yCoor = yAxis.lecAdapter.gadElementarySegmentGroups.indexOf(yElem);
 
-      var coors = List<int>();
+      var coors = List<int>.empty(growable: true);
       for (var axis in zAxis) {
         var zElem = gadValue.elementarySegmentGroupAdapters.firstWhere(
             (element) =>
@@ -61,7 +62,7 @@ class GadHelper {
   }
 
   _generateDims() {
-    dims = List<int>();
+    dims = List<int>.empty(growable: true);
     for (var axis in zAxis) {
       dims.add(axis.lecAdapter.gadElementarySegmentGroups.length);
     }

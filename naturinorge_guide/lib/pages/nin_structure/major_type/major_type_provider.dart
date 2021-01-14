@@ -16,10 +16,10 @@ class MajorTypeProvider extends ChangeNotifier {
   bool _isLoading = true;
   Detailed<NinMajorTypeData> _majorType;
   MajorTypeAdapter _majorTypeAdapter;
-  List<AxisBlock> _allAxis = List<AxisBlock>();
-  List<AxisBlock> _mainAxis = List<AxisBlock>();
-  List<AxisBlock> _secondaryAxis = List<AxisBlock>();
-  List<AxisBlock> _supplementaryAxis = List<AxisBlock>();
+  List<AxisBlock> _allAxis = List<AxisBlock>.empty(growable: true);
+  // List<AxisBlock> _mainAxis = List<AxisBlock>.empty();
+  List<AxisBlock> _secondaryAxis = List<AxisBlock>.empty(growable: true);
+  // List<AxisBlock> _supplementaryAxis = List<AxisBlock>.empty();
   List<StandardSegmentAdapter> _selectedZAxisSegments;
 
   AxisBlock _xAxis;
@@ -74,15 +74,15 @@ class MajorTypeProvider extends ChangeNotifier {
         _allAxis.where((e) => e.lecAdapter.majorTypeLec.axis == 2).toList();
     // _zAxisStandardSegments = _zAxis.expand((e) => e.standardSegments).toList();
 
-    _mainAxis = _allAxis
-        .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'mLEC')
-        .toList();
+    // _mainAxis = _allAxis
+    //     .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'mLEC')
+    //     .toList();
     _secondaryAxis = _allAxis
         .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'iLEC')
         .toList();
-    _supplementaryAxis = _allAxis
-        .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'uLEC')
-        .toList();
+    // _supplementaryAxis = _allAxis
+    //     .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'uLEC')
+    //     .toList();
 
     _selectedZAxisSegments =
         _secondaryAxis.map((e) => e.standardSegments[0]).toList();
@@ -96,7 +96,8 @@ class MajorTypeProvider extends ChangeNotifier {
       await lecAdapter.getRelations();
       var standardSegments =
           await db.getStandardSegmentsByMajorTypeLec(majorTypeLec, locale);
-      var standardSegmentAdapters = List<StandardSegmentAdapter>();
+      var standardSegmentAdapters =
+          List<StandardSegmentAdapter>.empty(growable: true);
       for (var e in standardSegments) {
         var res = StandardSegmentAdapter(
             e,
@@ -118,7 +119,7 @@ class MajorTypeProvider extends ChangeNotifier {
   Future _initializeMinorTypes() async {
     var minorTypesScaledIds = await db.getMinorTypeScaledIdsByMajorTypeAndScale(
         _majorType.data, _selectedMappingScale);
-    var res = List<MinorTypeScaledAdapter>();
+    var res = List<MinorTypeScaledAdapter>.empty(growable: true);
     for (var minorTypeScaledId in minorTypesScaledIds) {
       var minorTypeScaled = MinorTypeScaledAdapter(
           locale, _selectedMappingScale, minorTypeScaledId);
@@ -179,10 +180,11 @@ class MajorTypeProvider extends ChangeNotifier {
           minorTypeSlice[selectedSegment.standardSegment.data.order];
     }
 
-    _minorTypesScaledBlocks = List<MinorTypeBlock>();
+    _minorTypesScaledBlocks = List<MinorTypeBlock>.empty(growable: true);
 
-    List<MinorTypeBlock> minorTypesScaledBlocks = List<MinorTypeBlock>();
-    var usedMinorTypeIds = List<String>();
+    List<MinorTypeBlock> minorTypesScaledBlocks =
+        List<MinorTypeBlock>.empty(growable: true);
+    var usedMinorTypeIds = List<String>.empty(growable: true);
     for (var y in List.generate(_yAxis.standardSegments.length, (idx) => idx)) {
       for (var x
           in List.generate(_xAxis.standardSegments.length, (idx) => idx)) {

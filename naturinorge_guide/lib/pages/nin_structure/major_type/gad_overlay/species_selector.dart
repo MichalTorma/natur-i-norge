@@ -13,7 +13,7 @@ class SpeciesSelector extends StatefulWidget {
 }
 
 class _SpeciesSelectorState extends State<SpeciesSelector> {
-  List<NinSpecie> species = List<NinSpecie>();
+  List<NinSpecie> species = List<NinSpecie>.empty(growable: true);
 
   @override
   void initState() {
