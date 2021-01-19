@@ -255,7 +255,7 @@ class MajorTypeProvider extends ChangeNotifier {
   int get getSelectedMappingIndex =>
       _allMappingScales.indexOf(_selectedMappingScale);
   List<MinorTypeScaledAdapter> get minorTypes => _minorTypesScaled;
-  List<MinorTypeBlock> get minorTypeSclaedBlocks => _minorTypesScaledBlocks;
+  List<MinorTypeBlock> get minorTypeScaledBlocks => _minorTypesScaledBlocks;
   List<StandardSegmentAdapter> get selectedSecondaryAxisSegments =>
       _selectedZAxisSegments;
   List<AxisBlock> get secondaryAxis => _secondaryAxis;
