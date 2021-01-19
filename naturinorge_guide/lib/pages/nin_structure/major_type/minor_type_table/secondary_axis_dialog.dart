@@ -9,53 +9,51 @@ class SecondaryAxisOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // List<Widget> body = List<Widget>.empty(growable: true);
+    var body =
+        Provider.of<MajorTypeProvider>(context).secondaryAxis.map((axis) {
+      var standarSegments = axis.standardSegments
+          .map((e) => ToggleElement(
+                foreground: SecondaryToggleText(
+                  standardSegmentAdapter: e,
+                  fontWeight: FontWeight.w700,
+                ),
+                background: SecondaryToggleText(
+                  standardSegmentAdapter: e,
+                  fontWeight: FontWeight.w400,
+                ),
+              ))
+          .toList();
+      return Container(
+        child: Column(children: [
+          Container(
+            height: 30,
+            child: Center(child: Text(axis.lecAdapter.lec.name)),
+          ),
+          NeumorphicToggle(
+            height: 90,
+            thumb: Neumorphic(),
+            children: standarSegments,
+            onChanged: (value) =>
+                Provider.of<MajorTypeProvider>(context, listen: false)
+                    .setSecondaryStandardSegment(axis.standardSegments[value]),
+            selectedIndex: axis.standardSegments.indexWhere((e) =>
+                e.standardSegment.data.id ==
+                Provider.of<MajorTypeProvider>(context)
+                    .selectedSecondaryAxisSegments
+                    .firstWhere((element) =>
+                        element.lec.lec.data.id == axis.lecAdapter.lec.data.id)
+                    .standardSegment
+                    .data
+                    .id),
+          )
+        ]),
+      );
+    }).toList();
     return Neumorphic(
-      child: ListView.builder(
-        primary: false,
-        shrinkWrap: true,
-        itemCount: Provider.of<MajorTypeProvider>(context).secondaryAxis.length,
-        itemBuilder: (ctx, index) {
-          var axis =
-              Provider.of<MajorTypeProvider>(context).secondaryAxis[index];
-          var standarSegments = axis.standardSegments
-              .map((e) => ToggleElement(
-                    foreground: SecondaryToggleText(
-                      standardSegmentAdapter: e,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    background: SecondaryToggleText(
-                      standardSegmentAdapter: e,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ))
-              .toList();
-          return Column(children: [
-            Container(
-              height: 50,
-              child: Center(child: Text(axis.lecAdapter.lec.name)),
-            ),
-            NeumorphicToggle(
-              height: 90,
-              thumb: Neumorphic(),
-              children: standarSegments,
-              onChanged: (value) => Provider.of<MajorTypeProvider>(context,
-                      listen: false)
-                  .setSecondaryStandardSegment(axis.standardSegments[value]),
-              selectedIndex: axis.standardSegments.indexWhere((e) =>
-                  e.standardSegment.data.id ==
-                  Provider.of<MajorTypeProvider>(context)
-                      .selectedSecondaryAxisSegments
-                      .firstWhere((element) =>
-                          element.lec.lec.data.id ==
-                          axis.lecAdapter.lec.data.id)
-                      .standardSegment
-                      .data
-                      .id),
-            )
-          ]);
-        },
-      ),
-    );
+        child: Column(
+      children: body,
+    ));
   }
 }
 
