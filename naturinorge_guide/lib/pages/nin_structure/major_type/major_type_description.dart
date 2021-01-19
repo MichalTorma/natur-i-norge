@@ -40,7 +40,7 @@ class MajorTypeDetails extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: MinorTypeTable(),
+          child: Center(child: MinorTypeTable()),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
