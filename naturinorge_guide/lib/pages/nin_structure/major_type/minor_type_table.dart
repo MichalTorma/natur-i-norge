@@ -15,19 +15,40 @@ class MinorTypeTable extends StatelessWidget {
     }
     var sidePadding = 2 * (8 + 2) + spacing + 10;
     var labelWidth = 70.0;
-    var xSize = MediaQuery.of(context).size.width - sidePadding - labelWidth;
-    var ySize = Provider.of<MajorTypeProvider>(context)
-            .yAxis
-            .lecAdapter
-            .gadElementarySegmentGroups
-            .length /
-        Provider.of<MajorTypeProvider>(context)
-            .yAxis
-            .lecAdapter
-            .gadElementarySegmentGroups
-            .length *
-        xSize;
-    return Column(
+    double xSize;
+    double ySize;
+    // Portrait mode
+    if (MediaQuery.of(context).size.width <
+        MediaQuery.of(context).size.height) {
+      xSize = MediaQuery.of(context).size.width - sidePadding - labelWidth;
+      ySize = Provider.of<MajorTypeProvider>(context)
+              .yAxis
+              .lecAdapter
+              .gadElementarySegmentGroups
+              .length /
+          Provider.of<MajorTypeProvider>(context)
+              .yAxis
+              .lecAdapter
+              .gadElementarySegmentGroups
+              .length *
+          xSize;
+    } else {
+      // Landscape mode
+      ySize = MediaQuery.of(context).size.height - sidePadding - labelWidth;
+      xSize = Provider.of<MajorTypeProvider>(context)
+              .xAxis
+              .lecAdapter
+              .gadElementarySegmentGroups
+              .length /
+          Provider.of<MajorTypeProvider>(context)
+              .xAxis
+              .lecAdapter
+              .gadElementarySegmentGroups
+              .length *
+          ySize;
+    }
+    return Wrap(
+      direction: Axis.vertical,
       children: [
         Row(
           children: [
