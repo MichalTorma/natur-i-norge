@@ -33,8 +33,6 @@ class GadHelper {
     selectedSprecies.add(specieAdapter);
     var newArray = createArray(dims);
     for (var gadValue in specieAdapter.gadValues) {
-      if (gadValue.elementarySegmentCombinations[0].id == 'KA.i/UF.h/KI.0a')
-        print(gadValue.elementarySegmentCombinations);
       var xElem = gadValue.elementarySegmentGroupAdapters.firstWhere(
           (element) =>
               xAxis.lecAdapter.gadElementarySegmentGroups.contains(element));
