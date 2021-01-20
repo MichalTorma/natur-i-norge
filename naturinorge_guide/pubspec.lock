@@ -290,7 +290,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: "519178d47262d810a00a4371680135030a248e06"
-      url: "https://github.com/Idean/Flutter-Neumorphic.git"
+      url: "git://github.com/Idean/Flutter-Neumorphic.git"
     source: git
     version: "3.0.3"
   flutter_staggered_grid_view:
@@ -800,4 +800,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.12.0-0.0 <3.0.0"
-  flutter: ">=1.17.0 <2.0.0"
+  flutter: ">=1.17.0"
