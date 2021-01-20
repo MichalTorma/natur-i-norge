@@ -32,7 +32,7 @@ dependencies:
   # flutter_neumorphic: ^3.0.3
   flutter_neumorphic:
     git:
-      url: 'https://github.com/Idean/Flutter-Neumorphic.git'
+      url: 'git://github.com/Idean/Flutter-Neumorphic.git'
   easy_localization: ^2.3.3
   easy_localization_loader: ^0.0.2
   auto_size_text: ^2.1.0
