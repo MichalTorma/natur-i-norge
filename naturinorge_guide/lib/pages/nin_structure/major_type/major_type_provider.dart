@@ -44,17 +44,23 @@ class MajorTypeProvider extends ChangeNotifier {
     await _initializeScales();
     await _majorTypeAdapter.getRelations(_selectedMappingScale);
     await _populateAllAxis();
-    _initializeAxis();
-    await _initializeMinorTypes();
-    _initializeMinorTypesArray();
-    gadHelper = GadHelper(
-      locale: locale,
-      majorType: _majorType.data,
-      xAxis: _xAxis,
-      yAxis: _yAxis,
-      zAxis: _zAxis,
-    );
-
+    if (_allAxis.length > 0) {
+      _initializeAxis();
+      await _initializeMinorTypes();
+      _initializeMinorTypesArray();
+      gadHelper = GadHelper(
+        locale: locale,
+        majorType: _majorType.data,
+        xAxis: _xAxis,
+        yAxis: _yAxis,
+        zAxis: _zAxis,
+      );
+    } else {
+      _xAxis = null;
+      _yAxis = null;
+      _zAxis = null;
+      _secondaryAxis = null;
+    }
     _isLoading = false;
     notifyListeners();
   }
@@ -89,6 +95,7 @@ class MajorTypeProvider extends ChangeNotifier {
   }
 
   Future _populateAllAxis() async {
+    _allAxis = List<AxisBlock>.empty(growable: true);
     var majorTypeLecs =
         await db.getMajorTypeLecByMajorTypeId(_majorType.data.id);
     for (var majorTypeLec in majorTypeLecs) {
