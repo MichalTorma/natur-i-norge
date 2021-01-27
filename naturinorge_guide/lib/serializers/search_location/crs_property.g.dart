@@ -34,7 +34,7 @@ class _$CrsPropertySerializer implements StructuredSerializer<CrsProperty> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'name':
           result.name = serializers.deserialize(value,
@@ -55,9 +55,7 @@ class _$CrsProperty extends CrsProperty {
       (new CrsPropertyBuilder()..update(updates)).build();
 
   _$CrsProperty._({this.name}) : super._() {
-    if (name == null) {
-      throw new BuiltValueNullFieldError('CrsProperty', 'name');
-    }
+    BuiltValueNullFieldError.checkNotNull(name, 'CrsProperty', 'name');
   }
 
   @override
@@ -95,8 +93,9 @@ class CrsPropertyBuilder implements Builder<CrsProperty, CrsPropertyBuilder> {
   CrsPropertyBuilder();
 
   CrsPropertyBuilder get _$this {
-    if (_$v != null) {
-      _name = _$v.name;
+    final $v = _$v;
+    if ($v != null) {
+      _name = $v.name;
       _$v = null;
     }
     return this;
@@ -104,9 +103,7 @@ class CrsPropertyBuilder implements Builder<CrsProperty, CrsPropertyBuilder> {
 
   @override
   void replace(CrsProperty other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$CrsProperty;
   }
 
@@ -117,7 +114,10 @@ class CrsPropertyBuilder implements Builder<CrsProperty, CrsPropertyBuilder> {
 
   @override
   _$CrsProperty build() {
-    final _$result = _$v ?? new _$CrsProperty._(name: name);
+    final _$result = _$v ??
+        new _$CrsProperty._(
+            name: BuiltValueNullFieldError.checkNotNull(
+                name, 'CrsProperty', 'name'));
     replace(_$result);
     return _$result;
   }

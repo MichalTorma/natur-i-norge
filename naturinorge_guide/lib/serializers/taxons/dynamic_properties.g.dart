@@ -26,10 +26,12 @@ class _$DynamicPropertiesSerializer
       serializers.serialize(object.value,
           specifiedType: const FullType(String)),
     ];
-    if (object.properties != null) {
+    Object value;
+    value = object.properties;
+    if (value != null) {
       result
         ..add('Properties')
-        ..add(serializers.serialize(object.properties,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 BuiltList, const [const FullType(DynamicProperties)])));
     }
@@ -46,7 +48,7 @@ class _$DynamicPropertiesSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'Name':
           result.name = serializers.deserialize(value,
@@ -82,12 +84,8 @@ class _$DynamicProperties extends DynamicProperties {
       (new DynamicPropertiesBuilder()..update(updates)).build();
 
   _$DynamicProperties._({this.name, this.value, this.properties}) : super._() {
-    if (name == null) {
-      throw new BuiltValueNullFieldError('DynamicProperties', 'name');
-    }
-    if (value == null) {
-      throw new BuiltValueNullFieldError('DynamicProperties', 'value');
-    }
+    BuiltValueNullFieldError.checkNotNull(name, 'DynamicProperties', 'name');
+    BuiltValueNullFieldError.checkNotNull(value, 'DynamicProperties', 'value');
   }
 
   @override
@@ -144,10 +142,11 @@ class DynamicPropertiesBuilder
   DynamicPropertiesBuilder();
 
   DynamicPropertiesBuilder get _$this {
-    if (_$v != null) {
-      _name = _$v.name;
-      _value = _$v.value;
-      _properties = _$v.properties?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _name = $v.name;
+      _value = $v.value;
+      _properties = $v.properties?.toBuilder();
       _$v = null;
     }
     return this;
@@ -155,9 +154,7 @@ class DynamicPropertiesBuilder
 
   @override
   void replace(DynamicProperties other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$DynamicProperties;
   }
 
@@ -172,7 +169,11 @@ class DynamicPropertiesBuilder
     try {
       _$result = _$v ??
           new _$DynamicProperties._(
-              name: name, value: value, properties: _properties?.build());
+              name: BuiltValueNullFieldError.checkNotNull(
+                  name, 'DynamicProperties', 'name'),
+              value: BuiltValueNullFieldError.checkNotNull(
+                  value, 'DynamicProperties', 'value'),
+              properties: _properties?.build());
     } catch (_) {
       String _$failedField;
       try {

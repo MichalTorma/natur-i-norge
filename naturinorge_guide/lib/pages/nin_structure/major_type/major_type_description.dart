@@ -2,6 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/add_species_btn.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/selected_species_list.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/secondary_axis_dialog.dart';
@@ -41,6 +42,10 @@ class MajorTypeDetails extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Center(child: MinorTypeTable()),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: SelectedSpeciesList(),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
