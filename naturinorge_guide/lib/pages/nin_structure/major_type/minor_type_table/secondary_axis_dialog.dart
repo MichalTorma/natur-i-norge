@@ -79,12 +79,15 @@ class SecondaryToggleText extends StatelessWidget {
         ),
         Divider(),
         Expanded(
-            child: AutoSizeText(
-          standardSegmentAdapter.standardSegment.name,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: fontWeight),
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: AutoSizeText(
+            standardSegmentAdapter.standardSegment.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: fontWeight),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
         ))
       ],
     );

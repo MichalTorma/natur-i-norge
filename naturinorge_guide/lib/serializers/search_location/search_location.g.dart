@@ -43,7 +43,7 @@ class _$SearchLocationSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'features':
           result.features.replace(serializers.deserialize(value,
@@ -78,15 +78,10 @@ class _$SearchLocation extends SearchLocation {
       (new SearchLocationBuilder()..update(updates)).build();
 
   _$SearchLocation._({this.features, this.crs, this.type}) : super._() {
-    if (features == null) {
-      throw new BuiltValueNullFieldError('SearchLocation', 'features');
-    }
-    if (crs == null) {
-      throw new BuiltValueNullFieldError('SearchLocation', 'crs');
-    }
-    if (type == null) {
-      throw new BuiltValueNullFieldError('SearchLocation', 'type');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        features, 'SearchLocation', 'features');
+    BuiltValueNullFieldError.checkNotNull(crs, 'SearchLocation', 'crs');
+    BuiltValueNullFieldError.checkNotNull(type, 'SearchLocation', 'type');
   }
 
   @override
@@ -142,10 +137,11 @@ class SearchLocationBuilder
   SearchLocationBuilder();
 
   SearchLocationBuilder get _$this {
-    if (_$v != null) {
-      _features = _$v.features?.toBuilder();
-      _crs = _$v.crs?.toBuilder();
-      _type = _$v.type;
+    final $v = _$v;
+    if ($v != null) {
+      _features = $v.features.toBuilder();
+      _crs = $v.crs.toBuilder();
+      _type = $v.type;
       _$v = null;
     }
     return this;
@@ -153,9 +149,7 @@ class SearchLocationBuilder
 
   @override
   void replace(SearchLocation other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$SearchLocation;
   }
 
@@ -170,7 +164,10 @@ class SearchLocationBuilder
     try {
       _$result = _$v ??
           new _$SearchLocation._(
-              features: features.build(), crs: crs.build(), type: type);
+              features: features.build(),
+              crs: crs.build(),
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, 'SearchLocation', 'type'));
     } catch (_) {
       String _$failedField;
       try {

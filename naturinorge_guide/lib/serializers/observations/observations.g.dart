@@ -19,349 +19,402 @@ class _$ObservationsSerializer implements StructuredSerializer<Observations> {
   Iterable<Object> serialize(Serializers serializers, Observations object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.species != null) {
+    Object value;
+    value = object.species;
+    if (value != null) {
       result
         ..add('species')
-        ..add(serializers.serialize(object.species,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.id != null) {
+    value = object.id;
+    if (value != null) {
       result
         ..add('Id')
-        ..add(serializers.serialize(object.id,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.institution != null) {
+    value = object.institution;
+    if (value != null) {
       result
         ..add('Institution')
-        ..add(serializers.serialize(object.institution,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.institutionCode != null) {
+    value = object.institutionCode;
+    if (value != null) {
       result
         ..add('InstitutionCode')
-        ..add(serializers.serialize(object.institutionCode,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.institutionUrl != null) {
+    value = object.institutionUrl;
+    if (value != null) {
       result
         ..add('InstitutionUrl')
-        ..add(serializers.serialize(object.institutionUrl,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.institutionLogoUrl != null) {
+    value = object.institutionLogoUrl;
+    if (value != null) {
       result
         ..add('InstitutionLogoUrl')
-        ..add(serializers.serialize(object.institutionLogoUrl,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.collection != null) {
+    value = object.collection;
+    if (value != null) {
       result
         ..add('Collection')
-        ..add(serializers.serialize(object.collection,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.collectionCode != null) {
+    value = object.collectionCode;
+    if (value != null) {
       result
         ..add('CollectionCode')
-        ..add(serializers.serialize(object.collectionCode,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.catalogNumber != null) {
+    value = object.catalogNumber;
+    if (value != null) {
       result
         ..add('CatalogNumber')
-        ..add(serializers.serialize(object.catalogNumber,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.detailUrl != null) {
+    value = object.detailUrl;
+    if (value != null) {
       result
         ..add('DetailUrl')
-        ..add(serializers.serialize(object.detailUrl,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.collector != null) {
+    value = object.collector;
+    if (value != null) {
       result
         ..add('Collector')
-        ..add(serializers.serialize(object.collector,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.collectedDate != null) {
+    value = object.collectedDate;
+    if (value != null) {
       result
         ..add('CollectedDate')
-        ..add(serializers.serialize(object.collectedDate,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.identifiedBy != null) {
+    value = object.identifiedBy;
+    if (value != null) {
       result
         ..add('IdentifiedBy')
-        ..add(serializers.serialize(object.identifiedBy,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.datetimeIdentified != null) {
+    value = object.datetimeIdentified;
+    if (value != null) {
       result
         ..add('DatetimeIdentified')
-        ..add(serializers.serialize(object.datetimeIdentified,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.basisOfRecord != null) {
+    value = object.basisOfRecord;
+    if (value != null) {
       result
         ..add('BasisOfRecord')
-        ..add(serializers.serialize(object.basisOfRecord,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.taxonId != null) {
+    value = object.taxonId;
+    if (value != null) {
       result
         ..add('TaxonId')
-        ..add(serializers.serialize(object.taxonId,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.habitat != null) {
+    value = object.habitat;
+    if (value != null) {
       result
         ..add('Habitat')
-        ..add(serializers.serialize(object.habitat,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.datasetId != null) {
+    value = object.datasetId;
+    if (value != null) {
       result
         ..add('DatasetId')
-        ..add(serializers.serialize(object.datasetId,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.datasetName != null) {
+    value = object.datasetName;
+    if (value != null) {
       result
         ..add('DatasetName')
-        ..add(serializers.serialize(object.datasetName,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.obsUrl != null) {
+    value = object.obsUrl;
+    if (value != null) {
       result
         ..add('ObsUrl')
-        ..add(serializers.serialize(object.obsUrl,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.name != null) {
+    value = object.name;
+    if (value != null) {
       result
         ..add('Name')
-        ..add(serializers.serialize(object.name,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.scientificName != null) {
+    value = object.scientificName;
+    if (value != null) {
       result
         ..add('ScientificName')
-        ..add(serializers.serialize(object.scientificName,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.author != null) {
+    value = object.author;
+    if (value != null) {
       result
         ..add('Author')
-        ..add(serializers.serialize(object.author,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.kingdom != null) {
+    value = object.kingdom;
+    if (value != null) {
       result
         ..add('kingdom')
-        ..add(serializers.serialize(object.kingdom,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.phylum != null) {
+    value = object.phylum;
+    if (value != null) {
       result
         ..add('phylum')
-        ..add(serializers.serialize(object.phylum,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.klass != null) {
+    value = object.klass;
+    if (value != null) {
       result
         ..add('klass')
-        ..add(serializers.serialize(object.klass,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.order != null) {
+    value = object.order;
+    if (value != null) {
       result
         ..add('order')
-        ..add(serializers.serialize(object.order,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.family != null) {
+    value = object.family;
+    if (value != null) {
       result
         ..add('family')
-        ..add(serializers.serialize(object.family,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.genus != null) {
+    value = object.genus;
+    if (value != null) {
       result
         ..add('genus')
-        ..add(serializers.serialize(object.genus,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.subspecies != null) {
+    value = object.subspecies;
+    if (value != null) {
       result
         ..add('subspecies')
-        ..add(serializers.serialize(object.subspecies,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.specificEpithet != null) {
+    value = object.specificEpithet;
+    if (value != null) {
       result
         ..add('specificEpithet')
-        ..add(serializers.serialize(object.specificEpithet,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.infraspecificEpithet != null) {
+    value = object.infraspecificEpithet;
+    if (value != null) {
       result
         ..add('infraspecificEpithet')
-        ..add(serializers.serialize(object.infraspecificEpithet,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.status != null) {
+    value = object.status;
+    if (value != null) {
       result
         ..add('Status')
-        ..add(serializers.serialize(object.status,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.typeObj != null) {
+    value = object.typeObj;
+    if (value != null) {
       result
         ..add('TypeObj')
-        ..add(serializers.serialize(object.typeObj,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.sex != null) {
+    value = object.sex;
+    if (value != null) {
       result
         ..add('Sex')
-        ..add(serializers.serialize(object.sex,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.count != null) {
+    value = object.count;
+    if (value != null) {
       result
         ..add('Count')
-        ..add(serializers.serialize(object.count,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.notes != null) {
+    value = object.notes;
+    if (value != null) {
       result
         ..add('Notes')
-        ..add(serializers.serialize(object.notes,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.country != null) {
+    value = object.country;
+    if (value != null) {
       result
         ..add('Country')
-        ..add(serializers.serialize(object.country,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.county != null) {
+    value = object.county;
+    if (value != null) {
       result
         ..add('County')
-        ..add(serializers.serialize(object.county,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.countyId != null) {
+    value = object.countyId;
+    if (value != null) {
       result
         ..add('CountyId')
-        ..add(serializers.serialize(object.countyId,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.municipality != null) {
+    value = object.municipality;
+    if (value != null) {
       result
         ..add('Municipality')
-        ..add(serializers.serialize(object.municipality,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.municipalityId != null) {
+    value = object.municipalityId;
+    if (value != null) {
       result
         ..add('MunicipalityId')
-        ..add(serializers.serialize(object.municipalityId,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.locality != null) {
+    value = object.locality;
+    if (value != null) {
       result
         ..add('Locality')
-        ..add(serializers.serialize(object.locality,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.longitude != null) {
+    value = object.longitude;
+    if (value != null) {
       result
         ..add('Longitude')
-        ..add(serializers.serialize(object.longitude,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.latitude != null) {
+    value = object.latitude;
+    if (value != null) {
       result
         ..add('Latitude')
-        ..add(serializers.serialize(object.latitude,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.precision != null) {
+    value = object.precision;
+    if (value != null) {
       result
         ..add('Precision')
-        ..add(serializers.serialize(object.precision,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.footprintWKT != null) {
+    value = object.footprintWKT;
+    if (value != null) {
       result
         ..add('FootprintWKT')
-        ..add(serializers.serialize(object.footprintWKT,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.east != null) {
+    value = object.east;
+    if (value != null) {
       result
         ..add('East')
-        ..add(serializers.serialize(object.east,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(double)));
     }
-    if (object.north != null) {
+    value = object.north;
+    if (value != null) {
       result
         ..add('North')
-        ..add(serializers.serialize(object.north,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(double)));
     }
-    if (object.projection != null) {
+    value = object.projection;
+    if (value != null) {
       result
         ..add('Projection')
-        ..add(serializers.serialize(object.projection,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.info != null) {
+    value = object.info;
+    if (value != null) {
       result
         ..add('Info')
-        ..add(serializers.serialize(object.info,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.propertyUrls != null) {
+    value = object.propertyUrls;
+    if (value != null) {
       result
         ..add('PropertyUrls')
-        ..add(serializers.serialize(object.propertyUrls,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 BuiltList, const [const FullType(PropertyUrl)])));
     }
-    if (object.thumbImgUrls != null) {
+    value = object.thumbImgUrls;
+    if (value != null) {
       result
         ..add('ThumbImgUrls')
-        ..add(serializers.serialize(object.thumbImgUrls,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
-    if (object.behavior != null) {
+    value = object.behavior;
+    if (value != null) {
       result
         ..add('Behavior')
-        ..add(serializers.serialize(object.behavior,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.otherCatalogNumbers != null) {
+    value = object.otherCatalogNumbers;
+    if (value != null) {
       result
         ..add('OtherCatalogNumbers')
-        ..add(serializers.serialize(object.otherCatalogNumbers,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.trackDateTime != null) {
+    value = object.trackDateTime;
+    if (value != null) {
       result
         ..add('TrackDateTime')
-        ..add(serializers.serialize(object.trackDateTime,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.scientificNameId != null) {
+    value = object.scientificNameId;
+    if (value != null) {
       result
         ..add('ScientificNameId')
-        ..add(serializers.serialize(object.scientificNameId,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     return result;
   }
@@ -375,7 +428,7 @@ class _$ObservationsSerializer implements StructuredSerializer<Observations> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'species':
           result.species = serializers.deserialize(value,
@@ -1225,64 +1278,65 @@ class ObservationsBuilder
   ObservationsBuilder();
 
   ObservationsBuilder get _$this {
-    if (_$v != null) {
-      _species = _$v.species;
-      _id = _$v.id;
-      _institution = _$v.institution;
-      _institutionCode = _$v.institutionCode;
-      _institutionUrl = _$v.institutionUrl;
-      _institutionLogoUrl = _$v.institutionLogoUrl;
-      _collection = _$v.collection;
-      _collectionCode = _$v.collectionCode;
-      _catalogNumber = _$v.catalogNumber;
-      _detailUrl = _$v.detailUrl;
-      _collector = _$v.collector;
-      _collectedDate = _$v.collectedDate;
-      _identifiedBy = _$v.identifiedBy;
-      _datetimeIdentified = _$v.datetimeIdentified;
-      _basisOfRecord = _$v.basisOfRecord;
-      _taxonId = _$v.taxonId;
-      _habitat = _$v.habitat;
-      _datasetId = _$v.datasetId;
-      _datasetName = _$v.datasetName;
-      _obsUrl = _$v.obsUrl;
-      _name = _$v.name;
-      _scientificName = _$v.scientificName;
-      _author = _$v.author;
-      _kingdom = _$v.kingdom;
-      _phylum = _$v.phylum;
-      _klass = _$v.klass;
-      _order = _$v.order;
-      _family = _$v.family;
-      _genus = _$v.genus;
-      _subspecies = _$v.subspecies;
-      _specificEpithet = _$v.specificEpithet;
-      _infraspecificEpithet = _$v.infraspecificEpithet;
-      _status = _$v.status;
-      _typeObj = _$v.typeObj;
-      _sex = _$v.sex;
-      _count = _$v.count;
-      _notes = _$v.notes;
-      _country = _$v.country;
-      _county = _$v.county;
-      _countyId = _$v.countyId;
-      _municipality = _$v.municipality;
-      _municipalityId = _$v.municipalityId;
-      _locality = _$v.locality;
-      _longitude = _$v.longitude;
-      _latitude = _$v.latitude;
-      _precision = _$v.precision;
-      _footprintWKT = _$v.footprintWKT;
-      _east = _$v.east;
-      _north = _$v.north;
-      _projection = _$v.projection;
-      _info = _$v.info;
-      _propertyUrls = _$v.propertyUrls?.toBuilder();
-      _thumbImgUrls = _$v.thumbImgUrls?.toBuilder();
-      _behavior = _$v.behavior;
-      _otherCatalogNumbers = _$v.otherCatalogNumbers;
-      _trackDateTime = _$v.trackDateTime;
-      _scientificNameId = _$v.scientificNameId;
+    final $v = _$v;
+    if ($v != null) {
+      _species = $v.species;
+      _id = $v.id;
+      _institution = $v.institution;
+      _institutionCode = $v.institutionCode;
+      _institutionUrl = $v.institutionUrl;
+      _institutionLogoUrl = $v.institutionLogoUrl;
+      _collection = $v.collection;
+      _collectionCode = $v.collectionCode;
+      _catalogNumber = $v.catalogNumber;
+      _detailUrl = $v.detailUrl;
+      _collector = $v.collector;
+      _collectedDate = $v.collectedDate;
+      _identifiedBy = $v.identifiedBy;
+      _datetimeIdentified = $v.datetimeIdentified;
+      _basisOfRecord = $v.basisOfRecord;
+      _taxonId = $v.taxonId;
+      _habitat = $v.habitat;
+      _datasetId = $v.datasetId;
+      _datasetName = $v.datasetName;
+      _obsUrl = $v.obsUrl;
+      _name = $v.name;
+      _scientificName = $v.scientificName;
+      _author = $v.author;
+      _kingdom = $v.kingdom;
+      _phylum = $v.phylum;
+      _klass = $v.klass;
+      _order = $v.order;
+      _family = $v.family;
+      _genus = $v.genus;
+      _subspecies = $v.subspecies;
+      _specificEpithet = $v.specificEpithet;
+      _infraspecificEpithet = $v.infraspecificEpithet;
+      _status = $v.status;
+      _typeObj = $v.typeObj;
+      _sex = $v.sex;
+      _count = $v.count;
+      _notes = $v.notes;
+      _country = $v.country;
+      _county = $v.county;
+      _countyId = $v.countyId;
+      _municipality = $v.municipality;
+      _municipalityId = $v.municipalityId;
+      _locality = $v.locality;
+      _longitude = $v.longitude;
+      _latitude = $v.latitude;
+      _precision = $v.precision;
+      _footprintWKT = $v.footprintWKT;
+      _east = $v.east;
+      _north = $v.north;
+      _projection = $v.projection;
+      _info = $v.info;
+      _propertyUrls = $v.propertyUrls?.toBuilder();
+      _thumbImgUrls = $v.thumbImgUrls?.toBuilder();
+      _behavior = $v.behavior;
+      _otherCatalogNumbers = $v.otherCatalogNumbers;
+      _trackDateTime = $v.trackDateTime;
+      _scientificNameId = $v.scientificNameId;
       _$v = null;
     }
     return this;
@@ -1290,9 +1344,7 @@ class ObservationsBuilder
 
   @override
   void replace(Observations other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Observations;
   }
 

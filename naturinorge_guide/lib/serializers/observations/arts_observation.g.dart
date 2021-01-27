@@ -51,7 +51,7 @@ class _$ArtsObservationSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'Observations':
           result.observations.replace(serializers.deserialize(value,
@@ -104,21 +104,16 @@ class _$ArtsObservation extends ArtsObservation {
       this.totalCount,
       this.totalPages})
       : super._() {
-    if (observations == null) {
-      throw new BuiltValueNullFieldError('ArtsObservation', 'observations');
-    }
-    if (pageIndex == null) {
-      throw new BuiltValueNullFieldError('ArtsObservation', 'pageIndex');
-    }
-    if (pageSize == null) {
-      throw new BuiltValueNullFieldError('ArtsObservation', 'pageSize');
-    }
-    if (totalCount == null) {
-      throw new BuiltValueNullFieldError('ArtsObservation', 'totalCount');
-    }
-    if (totalPages == null) {
-      throw new BuiltValueNullFieldError('ArtsObservation', 'totalPages');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        observations, 'ArtsObservation', 'observations');
+    BuiltValueNullFieldError.checkNotNull(
+        pageIndex, 'ArtsObservation', 'pageIndex');
+    BuiltValueNullFieldError.checkNotNull(
+        pageSize, 'ArtsObservation', 'pageSize');
+    BuiltValueNullFieldError.checkNotNull(
+        totalCount, 'ArtsObservation', 'totalCount');
+    BuiltValueNullFieldError.checkNotNull(
+        totalPages, 'ArtsObservation', 'totalPages');
   }
 
   @override
@@ -191,12 +186,13 @@ class ArtsObservationBuilder
   ArtsObservationBuilder();
 
   ArtsObservationBuilder get _$this {
-    if (_$v != null) {
-      _observations = _$v.observations?.toBuilder();
-      _pageIndex = _$v.pageIndex;
-      _pageSize = _$v.pageSize;
-      _totalCount = _$v.totalCount;
-      _totalPages = _$v.totalPages;
+    final $v = _$v;
+    if ($v != null) {
+      _observations = $v.observations.toBuilder();
+      _pageIndex = $v.pageIndex;
+      _pageSize = $v.pageSize;
+      _totalCount = $v.totalCount;
+      _totalPages = $v.totalPages;
       _$v = null;
     }
     return this;
@@ -204,9 +200,7 @@ class ArtsObservationBuilder
 
   @override
   void replace(ArtsObservation other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ArtsObservation;
   }
 
@@ -222,10 +216,14 @@ class ArtsObservationBuilder
       _$result = _$v ??
           new _$ArtsObservation._(
               observations: observations.build(),
-              pageIndex: pageIndex,
-              pageSize: pageSize,
-              totalCount: totalCount,
-              totalPages: totalPages);
+              pageIndex: BuiltValueNullFieldError.checkNotNull(
+                  pageIndex, 'ArtsObservation', 'pageIndex'),
+              pageSize: BuiltValueNullFieldError.checkNotNull(
+                  pageSize, 'ArtsObservation', 'pageSize'),
+              totalCount: BuiltValueNullFieldError.checkNotNull(
+                  totalCount, 'ArtsObservation', 'totalCount'),
+              totalPages: BuiltValueNullFieldError.checkNotNull(
+                  totalPages, 'ArtsObservation', 'totalPages'));
     } catch (_) {
       String _$failedField;
       try {

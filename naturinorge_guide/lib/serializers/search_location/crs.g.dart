@@ -37,7 +37,7 @@ class _$CrsSerializer implements StructuredSerializer<Crs> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'properties':
           result.properties.replace(serializers.deserialize(value,
@@ -64,12 +64,8 @@ class _$Crs extends Crs {
       (new CrsBuilder()..update(updates)).build();
 
   _$Crs._({this.properties, this.type}) : super._() {
-    if (properties == null) {
-      throw new BuiltValueNullFieldError('Crs', 'properties');
-    }
-    if (type == null) {
-      throw new BuiltValueNullFieldError('Crs', 'type');
-    }
+    BuiltValueNullFieldError.checkNotNull(properties, 'Crs', 'properties');
+    BuiltValueNullFieldError.checkNotNull(type, 'Crs', 'type');
   }
 
   @override
@@ -115,9 +111,10 @@ class CrsBuilder implements Builder<Crs, CrsBuilder> {
   CrsBuilder();
 
   CrsBuilder get _$this {
-    if (_$v != null) {
-      _properties = _$v.properties?.toBuilder();
-      _type = _$v.type;
+    final $v = _$v;
+    if ($v != null) {
+      _properties = $v.properties.toBuilder();
+      _type = $v.type;
       _$v = null;
     }
     return this;
@@ -125,9 +122,7 @@ class CrsBuilder implements Builder<Crs, CrsBuilder> {
 
   @override
   void replace(Crs other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Crs;
   }
 
@@ -140,7 +135,10 @@ class CrsBuilder implements Builder<Crs, CrsBuilder> {
   _$Crs build() {
     _$Crs _$result;
     try {
-      _$result = _$v ?? new _$Crs._(properties: properties.build(), type: type);
+      _$result = _$v ??
+          new _$Crs._(
+              properties: properties.build(),
+              type: BuiltValueNullFieldError.checkNotNull(type, 'Crs', 'type'));
     } catch (_) {
       String _$failedField;
       try {
