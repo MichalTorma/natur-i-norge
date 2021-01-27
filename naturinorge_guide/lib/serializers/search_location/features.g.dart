@@ -42,7 +42,7 @@ class _$FeaturesSerializer implements StructuredSerializer<Features> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'geometry':
           result.geometry.replace(serializers.deserialize(value,
@@ -84,18 +84,10 @@ class _$Features extends Features {
 
   _$Features._({this.geometry, this.id, this.properties, this.type})
       : super._() {
-    if (geometry == null) {
-      throw new BuiltValueNullFieldError('Features', 'geometry');
-    }
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Features', 'id');
-    }
-    if (properties == null) {
-      throw new BuiltValueNullFieldError('Features', 'properties');
-    }
-    if (type == null) {
-      throw new BuiltValueNullFieldError('Features', 'type');
-    }
+    BuiltValueNullFieldError.checkNotNull(geometry, 'Features', 'geometry');
+    BuiltValueNullFieldError.checkNotNull(id, 'Features', 'id');
+    BuiltValueNullFieldError.checkNotNull(properties, 'Features', 'properties');
+    BuiltValueNullFieldError.checkNotNull(type, 'Features', 'type');
   }
 
   @override
@@ -158,11 +150,12 @@ class FeaturesBuilder implements Builder<Features, FeaturesBuilder> {
   FeaturesBuilder();
 
   FeaturesBuilder get _$this {
-    if (_$v != null) {
-      _geometry = _$v.geometry?.toBuilder();
-      _id = _$v.id;
-      _properties = _$v.properties?.toBuilder();
-      _type = _$v.type;
+    final $v = _$v;
+    if ($v != null) {
+      _geometry = $v.geometry.toBuilder();
+      _id = $v.id;
+      _properties = $v.properties.toBuilder();
+      _type = $v.type;
       _$v = null;
     }
     return this;
@@ -170,9 +163,7 @@ class FeaturesBuilder implements Builder<Features, FeaturesBuilder> {
 
   @override
   void replace(Features other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Features;
   }
 
@@ -188,9 +179,10 @@ class FeaturesBuilder implements Builder<Features, FeaturesBuilder> {
       _$result = _$v ??
           new _$Features._(
               geometry: geometry.build(),
-              id: id,
+              id: BuiltValueNullFieldError.checkNotNull(id, 'Features', 'id'),
               properties: properties.build(),
-              type: type);
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, 'Features', 'type'));
     } catch (_) {
       String _$failedField;
       try {

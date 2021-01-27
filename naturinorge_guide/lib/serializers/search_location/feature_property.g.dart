@@ -41,7 +41,7 @@ class _$FeaturePropertySerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'ObservationCount':
           result.observationCount = serializers.deserialize(value,
@@ -68,12 +68,10 @@ class _$FeatureProperty extends FeatureProperty {
       (new FeaturePropertyBuilder()..update(updates)).build();
 
   _$FeatureProperty._({this.observationCount, this.maxCategory}) : super._() {
-    if (observationCount == null) {
-      throw new BuiltValueNullFieldError('FeatureProperty', 'observationCount');
-    }
-    if (maxCategory == null) {
-      throw new BuiltValueNullFieldError('FeatureProperty', 'maxCategory');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        observationCount, 'FeatureProperty', 'observationCount');
+    BuiltValueNullFieldError.checkNotNull(
+        maxCategory, 'FeatureProperty', 'maxCategory');
   }
 
   @override
@@ -122,9 +120,10 @@ class FeaturePropertyBuilder
   FeaturePropertyBuilder();
 
   FeaturePropertyBuilder get _$this {
-    if (_$v != null) {
-      _observationCount = _$v.observationCount;
-      _maxCategory = _$v.maxCategory;
+    final $v = _$v;
+    if ($v != null) {
+      _observationCount = $v.observationCount;
+      _maxCategory = $v.maxCategory;
       _$v = null;
     }
     return this;
@@ -132,9 +131,7 @@ class FeaturePropertyBuilder
 
   @override
   void replace(FeatureProperty other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$FeatureProperty;
   }
 
@@ -147,7 +144,10 @@ class FeaturePropertyBuilder
   _$FeatureProperty build() {
     final _$result = _$v ??
         new _$FeatureProperty._(
-            observationCount: observationCount, maxCategory: maxCategory);
+            observationCount: BuiltValueNullFieldError.checkNotNull(
+                observationCount, 'FeatureProperty', 'observationCount'),
+            maxCategory: BuiltValueNullFieldError.checkNotNull(
+                maxCategory, 'FeatureProperty', 'maxCategory'));
     replace(_$result);
     return _$result;
   }

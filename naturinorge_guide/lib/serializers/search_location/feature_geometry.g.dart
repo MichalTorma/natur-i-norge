@@ -41,7 +41,7 @@ class _$FeatureGeometrySerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'coordinates':
           result.coordinates.replace(serializers.deserialize(value,
@@ -70,12 +70,9 @@ class _$FeatureGeometry extends FeatureGeometry {
       (new FeatureGeometryBuilder()..update(updates)).build();
 
   _$FeatureGeometry._({this.coordinates, this.type}) : super._() {
-    if (coordinates == null) {
-      throw new BuiltValueNullFieldError('FeatureGeometry', 'coordinates');
-    }
-    if (type == null) {
-      throw new BuiltValueNullFieldError('FeatureGeometry', 'type');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        coordinates, 'FeatureGeometry', 'coordinates');
+    BuiltValueNullFieldError.checkNotNull(type, 'FeatureGeometry', 'type');
   }
 
   @override
@@ -125,9 +122,10 @@ class FeatureGeometryBuilder
   FeatureGeometryBuilder();
 
   FeatureGeometryBuilder get _$this {
-    if (_$v != null) {
-      _coordinates = _$v.coordinates?.toBuilder();
-      _type = _$v.type;
+    final $v = _$v;
+    if ($v != null) {
+      _coordinates = $v.coordinates.toBuilder();
+      _type = $v.type;
       _$v = null;
     }
     return this;
@@ -135,9 +133,7 @@ class FeatureGeometryBuilder
 
   @override
   void replace(FeatureGeometry other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$FeatureGeometry;
   }
 
@@ -151,7 +147,10 @@ class FeatureGeometryBuilder
     _$FeatureGeometry _$result;
     try {
       _$result = _$v ??
-          new _$FeatureGeometry._(coordinates: coordinates.build(), type: type);
+          new _$FeatureGeometry._(
+              coordinates: coordinates.build(),
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, 'FeatureGeometry', 'type'));
     } catch (_) {
       String _$failedField;
       try {

@@ -13,10 +13,11 @@ class GadHelper {
   final AxisBlock yAxis;
   final List<AxisBlock> zAxis;
   // dynamic finalArray;
-  List<dynamic> allArrays = List<dynamic>.empty();
+  List<dynamic> allArrays = List<dynamic>.empty(growable: true);
   List<int> dims;
+  dynamic _meanArray;
 
-  List<SpecieAdapter> selectedSprecies =
+  List<SpecieAdapter> selectedSpecies =
       List<SpecieAdapter>.empty(growable: true);
 
   GadHelper({this.majorType, this.locale, this.xAxis, this.yAxis, this.zAxis}) {
@@ -26,11 +27,11 @@ class GadHelper {
   Future addSpecie(NinSpecie specie) async {
     var specieAdapter = SpecieAdapter(specie, locale, majorType);
     await specieAdapter.getRelations();
-    if (selectedSprecies.contains(specieAdapter)) {
+    if (selectedSpecies.contains(specieAdapter)) {
       print('Specie already added');
       return;
     }
-    selectedSprecies.add(specieAdapter);
+    selectedSpecies.add(specieAdapter);
     var newArray = createArray(dims);
     for (var gadValue in specieAdapter.gadValues) {
       var xElem = gadValue.elementarySegmentGroupAdapters.firstWhere(
@@ -57,6 +58,15 @@ class GadHelper {
       print('added');
     }
     allArrays.add(newArray);
+    _meanArray = _getMeanArray();
+  }
+
+  removeSpecie(NinSpecie specie) {
+    var idx = selectedSpecies.indexWhere(
+        (e) => e.specie.scientificNameId == specie.scientificNameId);
+    selectedSpecies.removeAt(idx);
+    allArrays.removeAt(idx);
+    _meanArray = _getMeanArray();
   }
 
   _generateDims() {
@@ -68,14 +78,26 @@ class GadHelper {
     dims.add(yAxis.lecAdapter.gadElementarySegmentGroups.length);
   }
 
-  List<List<double>> getArraySliceForSpecie(
-      NinSpecie specie, List<StandardSegmentAdapter> selectedZAxisSegments) {
-    var specieId = selectedSprecies.indexWhere((element) =>
-        element.specie.scientificNameId == specie.scientificNameId);
-    dynamic slice = allArrays[specieId];
+  dynamic _getMeanArray() {
+    if (allArrays.length == 0) {
+      return null;
+    }
+    if (allArrays.length == 1) {
+      return allArrays.first;
+    } else {
+      var addedArrays =
+          allArrays.reduce((value, element) => addArrays(value, element));
+      var meanArray = divideArrayBy(addedArrays, allArrays.length.toDouble());
+      return meanArray;
+    }
+  }
+
+  List<List<double>> getSlice(
+      List<StandardSegmentAdapter> selectedZAxisSegments) {
+    dynamic slice = _meanArray;
     for (var selectedStandardSegment in selectedZAxisSegments) {
       slice = slice[selectedStandardSegment.standardSegment.data.order];
     }
-    return slice;
+    return slice as List<List<double>>;
   }
 }

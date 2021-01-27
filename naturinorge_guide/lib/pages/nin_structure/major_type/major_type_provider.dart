@@ -4,6 +4,7 @@ import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/main.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/gad_helper.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/specie_adapter.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/minor_type_block.dart';
 import 'package:naturinorge_guide/tools/array_tools.dart';
@@ -33,7 +34,7 @@ class MajorTypeProvider extends ChangeNotifier {
   dynamic _minorTypesArray;
   List<MinorTypeBlock> _minorTypesScaledBlocks;
 
-  GadHelper gadHelper;
+  GadHelper _gadHelper;
   List<List<dynamic>> gadArray;
 
   Future load(Detailed<NinMajorTypeData> majorType) async {
@@ -48,7 +49,7 @@ class MajorTypeProvider extends ChangeNotifier {
       _initializeAxis();
       await _initializeMinorTypes();
       _initializeMinorTypesArray();
-      gadHelper = GadHelper(
+      _gadHelper = GadHelper(
         locale: locale,
         majorType: _majorType.data,
         xAxis: _xAxis,
@@ -56,6 +57,7 @@ class MajorTypeProvider extends ChangeNotifier {
         zAxis: _zAxis,
       );
     } else {
+      //TODO remove once DB is complete
       _xAxis = null;
       _yAxis = null;
       _zAxis = null;
@@ -251,7 +253,23 @@ class MajorTypeProvider extends ChangeNotifier {
   }
 
   addSpecies(NinSpecie specie) async {
-    await gadHelper.addSpecie(specie);
+    await _gadHelper.addSpecie(specie);
+    if (_gadHelper.selectedSpecies.length > 0) {
+      gadArray = _gadHelper.getSlice(_selectedZAxisSegments);
+    } else {
+      gadArray = null;
+    }
+    notifyListeners();
+  }
+
+  removeSpecie(NinSpecie specie) {
+    _gadHelper.removeSpecie(specie);
+    if (_gadHelper.selectedSpecies.length > 0) {
+      gadArray = _gadHelper.getSlice(_selectedZAxisSegments);
+    } else {
+      gadArray = null;
+    }
+    notifyListeners();
   }
 
   int get numberOfAxis => _majorTypeAdapter.lecs.length;
@@ -266,4 +284,5 @@ class MajorTypeProvider extends ChangeNotifier {
   List<StandardSegmentAdapter> get selectedSecondaryAxisSegments =>
       _selectedZAxisSegments;
   List<AxisBlock> get secondaryAxis => _secondaryAxis;
+  List<SpecieAdapter> get selectedSpecies => _gadHelper.selectedSpecies;
 }
