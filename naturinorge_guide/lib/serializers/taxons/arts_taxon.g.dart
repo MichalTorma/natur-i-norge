@@ -29,28 +29,33 @@ class _$ArtsTaxonSerializer implements StructuredSerializer<ArtsTaxon> {
       serializers.serialize(object.scientificName,
           specifiedType: const FullType(String)),
     ];
-    if (object.scientificNameAuthorship != null) {
+    Object value;
+    value = object.scientificNameAuthorship;
+    if (value != null) {
       result
         ..add('scientificNameAuthorship')
-        ..add(serializers.serialize(object.scientificNameAuthorship,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.taxonRank != null) {
+    value = object.taxonRank;
+    if (value != null) {
       result
         ..add('taxonRank')
-        ..add(serializers.serialize(object.taxonRank,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.taxonomicStatus != null) {
+    value = object.taxonomicStatus;
+    if (value != null) {
       result
         ..add('taxonomicStatus')
-        ..add(serializers.serialize(object.taxonomicStatus,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.acceptedNameUsage != null) {
+    value = object.acceptedNameUsage;
+    if (value != null) {
       result
         ..add('acceptedNameUsage')
-        ..add(serializers.serialize(object.acceptedNameUsage,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(AcceptedNameUsage)));
     }
     return result;
@@ -65,7 +70,7 @@ class _$ArtsTaxonSerializer implements StructuredSerializer<ArtsTaxon> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'Id':
           result.id = serializers.deserialize(value,
@@ -138,18 +143,12 @@ class _$ArtsTaxon extends ArtsTaxon {
       this.taxonomicStatus,
       this.acceptedNameUsage})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('ArtsTaxon', 'id');
-    }
-    if (scientificNameID == null) {
-      throw new BuiltValueNullFieldError('ArtsTaxon', 'scientificNameID');
-    }
-    if (taxonID == null) {
-      throw new BuiltValueNullFieldError('ArtsTaxon', 'taxonID');
-    }
-    if (scientificName == null) {
-      throw new BuiltValueNullFieldError('ArtsTaxon', 'scientificName');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'ArtsTaxon', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        scientificNameID, 'ArtsTaxon', 'scientificNameID');
+    BuiltValueNullFieldError.checkNotNull(taxonID, 'ArtsTaxon', 'taxonID');
+    BuiltValueNullFieldError.checkNotNull(
+        scientificName, 'ArtsTaxon', 'scientificName');
   }
 
   @override
@@ -248,15 +247,16 @@ class ArtsTaxonBuilder implements Builder<ArtsTaxon, ArtsTaxonBuilder> {
   ArtsTaxonBuilder();
 
   ArtsTaxonBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _scientificNameID = _$v.scientificNameID;
-      _taxonID = _$v.taxonID;
-      _scientificName = _$v.scientificName;
-      _scientificNameAuthorship = _$v.scientificNameAuthorship;
-      _taxonRank = _$v.taxonRank;
-      _taxonomicStatus = _$v.taxonomicStatus;
-      _acceptedNameUsage = _$v.acceptedNameUsage?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _scientificNameID = $v.scientificNameID;
+      _taxonID = $v.taxonID;
+      _scientificName = $v.scientificName;
+      _scientificNameAuthorship = $v.scientificNameAuthorship;
+      _taxonRank = $v.taxonRank;
+      _taxonomicStatus = $v.taxonomicStatus;
+      _acceptedNameUsage = $v.acceptedNameUsage?.toBuilder();
       _$v = null;
     }
     return this;
@@ -264,9 +264,7 @@ class ArtsTaxonBuilder implements Builder<ArtsTaxon, ArtsTaxonBuilder> {
 
   @override
   void replace(ArtsTaxon other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ArtsTaxon;
   }
 
@@ -281,10 +279,13 @@ class ArtsTaxonBuilder implements Builder<ArtsTaxon, ArtsTaxonBuilder> {
     try {
       _$result = _$v ??
           new _$ArtsTaxon._(
-              id: id,
-              scientificNameID: scientificNameID,
-              taxonID: taxonID,
-              scientificName: scientificName,
+              id: BuiltValueNullFieldError.checkNotNull(id, 'ArtsTaxon', 'id'),
+              scientificNameID: BuiltValueNullFieldError.checkNotNull(
+                  scientificNameID, 'ArtsTaxon', 'scientificNameID'),
+              taxonID: BuiltValueNullFieldError.checkNotNull(
+                  taxonID, 'ArtsTaxon', 'taxonID'),
+              scientificName: BuiltValueNullFieldError.checkNotNull(
+                  scientificName, 'ArtsTaxon', 'scientificName'),
               scientificNameAuthorship: scientificNameAuthorship,
               taxonRank: taxonRank,
               taxonomicStatus: taxonomicStatus,

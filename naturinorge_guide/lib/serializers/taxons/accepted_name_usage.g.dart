@@ -66,7 +66,7 @@ class _$AcceptedNameUsageSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'Id':
           result.id = serializers.deserialize(value,
@@ -160,46 +160,27 @@ class _$AcceptedNameUsage extends AcceptedNameUsage {
       this.nameAccordingTo,
       this.dynamicProperties})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('AcceptedNameUsage', 'id');
-    }
-    if (scientificNameID == null) {
-      throw new BuiltValueNullFieldError(
-          'AcceptedNameUsage', 'scientificNameID');
-    }
-    if (taxonID == null) {
-      throw new BuiltValueNullFieldError('AcceptedNameUsage', 'taxonID');
-    }
-    if (scientificName == null) {
-      throw new BuiltValueNullFieldError('AcceptedNameUsage', 'scientificName');
-    }
-    if (scientificNameAuthorship == null) {
-      throw new BuiltValueNullFieldError(
-          'AcceptedNameUsage', 'scientificNameAuthorship');
-    }
-    if (taxonRank == null) {
-      throw new BuiltValueNullFieldError('AcceptedNameUsage', 'taxonRank');
-    }
-    if (taxonomicStatus == null) {
-      throw new BuiltValueNullFieldError(
-          'AcceptedNameUsage', 'taxonomicStatus');
-    }
-    if (acceptedNameUsage == null) {
-      throw new BuiltValueNullFieldError(
-          'AcceptedNameUsage', 'acceptedNameUsage');
-    }
-    if (higherClassification == null) {
-      throw new BuiltValueNullFieldError(
-          'AcceptedNameUsage', 'higherClassification');
-    }
-    if (nameAccordingTo == null) {
-      throw new BuiltValueNullFieldError(
-          'AcceptedNameUsage', 'nameAccordingTo');
-    }
-    if (dynamicProperties == null) {
-      throw new BuiltValueNullFieldError(
-          'AcceptedNameUsage', 'dynamicProperties');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'AcceptedNameUsage', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        scientificNameID, 'AcceptedNameUsage', 'scientificNameID');
+    BuiltValueNullFieldError.checkNotNull(
+        taxonID, 'AcceptedNameUsage', 'taxonID');
+    BuiltValueNullFieldError.checkNotNull(
+        scientificName, 'AcceptedNameUsage', 'scientificName');
+    BuiltValueNullFieldError.checkNotNull(scientificNameAuthorship,
+        'AcceptedNameUsage', 'scientificNameAuthorship');
+    BuiltValueNullFieldError.checkNotNull(
+        taxonRank, 'AcceptedNameUsage', 'taxonRank');
+    BuiltValueNullFieldError.checkNotNull(
+        taxonomicStatus, 'AcceptedNameUsage', 'taxonomicStatus');
+    BuiltValueNullFieldError.checkNotNull(
+        acceptedNameUsage, 'AcceptedNameUsage', 'acceptedNameUsage');
+    BuiltValueNullFieldError.checkNotNull(
+        higherClassification, 'AcceptedNameUsage', 'higherClassification');
+    BuiltValueNullFieldError.checkNotNull(
+        nameAccordingTo, 'AcceptedNameUsage', 'nameAccordingTo');
+    BuiltValueNullFieldError.checkNotNull(
+        dynamicProperties, 'AcceptedNameUsage', 'dynamicProperties');
   }
 
   @override
@@ -328,18 +309,19 @@ class AcceptedNameUsageBuilder
   AcceptedNameUsageBuilder();
 
   AcceptedNameUsageBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _scientificNameID = _$v.scientificNameID;
-      _taxonID = _$v.taxonID;
-      _scientificName = _$v.scientificName;
-      _scientificNameAuthorship = _$v.scientificNameAuthorship;
-      _taxonRank = _$v.taxonRank;
-      _taxonomicStatus = _$v.taxonomicStatus;
-      _acceptedNameUsage = _$v.acceptedNameUsage;
-      _higherClassification = _$v.higherClassification;
-      _nameAccordingTo = _$v.nameAccordingTo;
-      _dynamicProperties = _$v.dynamicProperties;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _scientificNameID = $v.scientificNameID;
+      _taxonID = $v.taxonID;
+      _scientificName = $v.scientificName;
+      _scientificNameAuthorship = $v.scientificNameAuthorship;
+      _taxonRank = $v.taxonRank;
+      _taxonomicStatus = $v.taxonomicStatus;
+      _acceptedNameUsage = $v.acceptedNameUsage;
+      _higherClassification = $v.higherClassification;
+      _nameAccordingTo = $v.nameAccordingTo;
+      _dynamicProperties = $v.dynamicProperties;
       _$v = null;
     }
     return this;
@@ -347,9 +329,7 @@ class AcceptedNameUsageBuilder
 
   @override
   void replace(AcceptedNameUsage other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$AcceptedNameUsage;
   }
 
@@ -362,17 +342,25 @@ class AcceptedNameUsageBuilder
   _$AcceptedNameUsage build() {
     final _$result = _$v ??
         new _$AcceptedNameUsage._(
-            id: id,
-            scientificNameID: scientificNameID,
-            taxonID: taxonID,
-            scientificName: scientificName,
-            scientificNameAuthorship: scientificNameAuthorship,
-            taxonRank: taxonRank,
-            taxonomicStatus: taxonomicStatus,
-            acceptedNameUsage: acceptedNameUsage,
-            higherClassification: higherClassification,
-            nameAccordingTo: nameAccordingTo,
-            dynamicProperties: dynamicProperties);
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, 'AcceptedNameUsage', 'id'),
+            scientificNameID: BuiltValueNullFieldError.checkNotNull(
+                scientificNameID, 'AcceptedNameUsage', 'scientificNameID'),
+            taxonID: BuiltValueNullFieldError.checkNotNull(
+                taxonID, 'AcceptedNameUsage', 'taxonID'),
+            scientificName: BuiltValueNullFieldError.checkNotNull(
+                scientificName, 'AcceptedNameUsage', 'scientificName'),
+            scientificNameAuthorship: BuiltValueNullFieldError.checkNotNull(
+                scientificNameAuthorship, 'AcceptedNameUsage', 'scientificNameAuthorship'),
+            taxonRank: BuiltValueNullFieldError.checkNotNull(
+                taxonRank, 'AcceptedNameUsage', 'taxonRank'),
+            taxonomicStatus: BuiltValueNullFieldError.checkNotNull(
+                taxonomicStatus, 'AcceptedNameUsage', 'taxonomicStatus'),
+            acceptedNameUsage: BuiltValueNullFieldError.checkNotNull(
+                acceptedNameUsage, 'AcceptedNameUsage', 'acceptedNameUsage'),
+            higherClassification: BuiltValueNullFieldError.checkNotNull(higherClassification, 'AcceptedNameUsage', 'higherClassification'),
+            nameAccordingTo: BuiltValueNullFieldError.checkNotNull(nameAccordingTo, 'AcceptedNameUsage', 'nameAccordingTo'),
+            dynamicProperties: BuiltValueNullFieldError.checkNotNull(dynamicProperties, 'AcceptedNameUsage', 'dynamicProperties'));
     replace(_$result);
     return _$result;
   }

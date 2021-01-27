@@ -18,22 +18,26 @@ class _$PropertyUrlSerializer implements StructuredSerializer<PropertyUrl> {
   Iterable<Object> serialize(Serializers serializers, PropertyUrl object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.type != null) {
+    Object value;
+    value = object.type;
+    if (value != null) {
       result
         ..add('Type')
-        ..add(serializers.serialize(object.type,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.linkTekst != null) {
+    value = object.linkTekst;
+    if (value != null) {
       result
         ..add('LinkTekst')
-        ..add(serializers.serialize(object.linkTekst,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.url != null) {
+    value = object.url;
+    if (value != null) {
       result
         ..add('Url')
-        ..add(serializers.serialize(object.url,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -48,7 +52,7 @@ class _$PropertyUrlSerializer implements StructuredSerializer<PropertyUrl> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'Type':
           result.type = serializers.deserialize(value,
@@ -132,10 +136,11 @@ class PropertyUrlBuilder implements Builder<PropertyUrl, PropertyUrlBuilder> {
   PropertyUrlBuilder();
 
   PropertyUrlBuilder get _$this {
-    if (_$v != null) {
-      _type = _$v.type;
-      _linkTekst = _$v.linkTekst;
-      _url = _$v.url;
+    final $v = _$v;
+    if ($v != null) {
+      _type = $v.type;
+      _linkTekst = $v.linkTekst;
+      _url = $v.url;
       _$v = null;
     }
     return this;
@@ -143,9 +148,7 @@ class PropertyUrlBuilder implements Builder<PropertyUrl, PropertyUrlBuilder> {
 
   @override
   void replace(PropertyUrl other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$PropertyUrl;
   }
 
