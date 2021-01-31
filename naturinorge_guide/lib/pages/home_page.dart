@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
     return Container(
       child: Scaffold(
         appBar: NeumorphicAppBar(
-          title: Text(LocaleKeys.name).tr(),
+          title: Text(LocaleKeys.app_name).tr(),
         ),
         body: GridView(
           padding: EdgeInsets.all(24),
