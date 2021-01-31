@@ -28,23 +28,6 @@ class GadOverlay extends StatelessWidget {
                     ),
                   ))
               .toList(),
-        )
-        // child: GridView.builder(
-        //     primary: true,
-        //     shrinkWrap: false,
-        //     physics: NeverScrollableScrollPhysics(),
-        //     itemCount: gadArray.length * gadArray.first.length,
-        //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        //         childAspectRatio: 1, crossAxisCount: gadArray.length),
-        //     itemBuilder: (context, index) {
-        //       var x = index % gadArray.length;
-        //       var y = (index / gadArray.length).floor();
-        //       var value = gadArray[x][y];
-        //       return Container(
-        //         color: Colors.red,
-        //         child: Text(value.toString()),
-        //       );
-        //     }),
-        );
+        ));
   }
 }
