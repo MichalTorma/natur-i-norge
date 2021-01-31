@@ -35,7 +35,7 @@ class MajorTypeProvider extends ChangeNotifier {
   List<MinorTypeBlock> _minorTypesScaledBlocks;
 
   GadHelper _gadHelper;
-  List<List<dynamic>> gadArray;
+  List<List<num>> _gadArray;
 
   Future load(Detailed<NinMajorTypeData> majorType) async {
     _isLoading = true;
@@ -249,26 +249,27 @@ class MajorTypeProvider extends ChangeNotifier {
         element.lec.lec.data.id == standardSegment.lec.lec.data.id);
     _selectedZAxisSegments[ssIndex] = standardSegment;
     _initializeMinorTypeSlice();
+    _getGadArray();
     notifyListeners();
+  }
+
+  _getGadArray() {
+    if (_gadHelper.selectedSpecies.length > 0) {
+      _gadArray = _gadHelper.getSlice(_selectedZAxisSegments);
+    } else {
+      _gadArray = null;
+    }
   }
 
   addSpecies(NinSpecie specie) async {
     await _gadHelper.addSpecie(specie);
-    if (_gadHelper.selectedSpecies.length > 0) {
-      gadArray = _gadHelper.getSlice(_selectedZAxisSegments);
-    } else {
-      gadArray = null;
-    }
+    _getGadArray();
     notifyListeners();
   }
 
   removeSpecie(NinSpecie specie) {
     _gadHelper.removeSpecie(specie);
-    if (_gadHelper.selectedSpecies.length > 0) {
-      gadArray = _gadHelper.getSlice(_selectedZAxisSegments);
-    } else {
-      gadArray = null;
-    }
+    _getGadArray();
     notifyListeners();
   }
 
@@ -285,4 +286,5 @@ class MajorTypeProvider extends ChangeNotifier {
       _selectedZAxisSegments;
   List<AxisBlock> get secondaryAxis => _secondaryAxis;
   List<SpecieAdapter> get selectedSpecies => _gadHelper.selectedSpecies;
+  List<List<num>> get gadArray => _gadArray;
 }
