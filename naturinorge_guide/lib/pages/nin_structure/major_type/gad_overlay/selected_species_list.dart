@@ -10,11 +10,13 @@ class SelectedSpeciesList extends StatelessWidget {
     var body = Provider.of<MajorTypeProvider>(context)
         .selectedSpecies
         .map((e) => ListTile(
+              // tileColor: Colors.lightBlue,
               title: Text(e.specie.scientificName),
               subtitle: Text(e.specie.vernacularName),
               trailing: GestureDetector(
                 child: NeumorphicIcon(
                   Icons.delete,
+                  style: NeumorphicStyle(color: Colors.black45),
                   size: 40,
                 ),
                 onTap: () =>
