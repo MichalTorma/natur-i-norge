@@ -45,12 +45,12 @@ class MajorTypeDetails extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: SelectedSpeciesList(),
+          child: AddSpecieButtons(),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: AddSpecieButton(),
-        )
+          child: SelectedSpeciesList(),
+        ),
       ]),
     );
   }
