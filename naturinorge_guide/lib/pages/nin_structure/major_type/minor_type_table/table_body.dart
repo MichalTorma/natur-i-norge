@@ -41,7 +41,8 @@ class TableBody extends StatelessWidget {
           children: minorTypesBlocks,
           staggeredTiles: staggeredTiles,
         ),
-        if (Provider.of<MajorTypeProvider>(context).gadArray != null)
+        if (Provider.of<MajorTypeProvider>(context).gadArray != null &&
+            Provider.of<MajorTypeProvider>(context).showGad == 0)
           GadOverlay(),
       ],
     );

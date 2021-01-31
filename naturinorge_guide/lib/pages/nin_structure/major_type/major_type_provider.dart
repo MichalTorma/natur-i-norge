@@ -34,6 +34,7 @@ class MajorTypeProvider extends ChangeNotifier {
   dynamic _minorTypesArray;
   List<MinorTypeBlock> _minorTypesScaledBlocks;
 
+  int _showGad = 0;
   GadHelper _gadHelper;
   List<List<num>> _gadArray;
 
@@ -273,6 +274,15 @@ class MajorTypeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  setShowGad(int newValue) {
+    if (newValue == _showGad) {
+      return;
+    } else {
+      _showGad = newValue;
+      notifyListeners();
+    }
+  }
+
   int get numberOfAxis => _majorTypeAdapter.lecs.length;
   AxisBlock get xAxis => _xAxis;
   AxisBlock get yAxis => _yAxis;
@@ -287,4 +297,5 @@ class MajorTypeProvider extends ChangeNotifier {
   List<AxisBlock> get secondaryAxis => _secondaryAxis;
   List<SpecieAdapter> get selectedSpecies => _gadHelper.selectedSpecies;
   List<List<num>> get gadArray => _gadArray;
+  int get showGad => _showGad;
 }

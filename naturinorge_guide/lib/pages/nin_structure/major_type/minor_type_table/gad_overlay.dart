@@ -9,12 +9,12 @@ class GadOverlay extends StatelessWidget {
     var gadArray = Provider.of<MajorTypeProvider>(context).gadArray;
     return Container(
         color: Colors.white70,
-        child: Column(
+        child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: gadArray
               .map((column) => Expanded(
-                    child: Row(
+                    child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
