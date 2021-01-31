@@ -34,6 +34,7 @@ dynamic addArrays(dynamic a, dynamic b) {
     for (var idx in List.generate(a.length, (index) => index)) {
       res.add(addArrays(a[idx], b[idx]));
     }
+    return res;
   }
 }
 
@@ -49,5 +50,6 @@ dynamic divideArrayBy(dynamic array, double value) {
     for (var _array in array) {
       res.add(divideArrayBy(_array, value));
     }
+    return res;
   }
 }

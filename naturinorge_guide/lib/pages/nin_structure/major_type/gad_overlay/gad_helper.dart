@@ -92,12 +92,13 @@ class GadHelper {
     }
   }
 
-  List<List<double>> getSlice(
-      List<StandardSegmentAdapter> selectedZAxisSegments) {
+  List<List<num>> getSlice(List<StandardSegmentAdapter> selectedZAxisSegments) {
     dynamic slice = _meanArray;
     for (var selectedStandardSegment in selectedZAxisSegments) {
       slice = slice[selectedStandardSegment.standardSegment.data.order];
     }
-    return slice as List<List<double>>;
+    List<List<num>> res =
+        slice.map<List<num>>((e) => List<num>.from(e)).toList();
+    return res;
   }
 }
