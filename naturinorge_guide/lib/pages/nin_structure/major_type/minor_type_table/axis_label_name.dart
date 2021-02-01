@@ -14,11 +14,14 @@ class AxisLabelNameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
-      child: Neumorphic(
-        // padding: EdgeInsets.all(4),
-        child: AutoSizeText(
-          '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
-          textAlign: TextAlign.center,
+      child: GestureDetector(
+        onTap: () => null, //Link to LKM info page
+        child: Neumorphic(
+          // padding: EdgeInsets.all(4),
+          child: AutoSizeText(
+            '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

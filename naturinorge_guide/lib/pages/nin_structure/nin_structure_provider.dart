@@ -17,7 +17,6 @@ class NinStructureProvider extends ChangeNotifier {
   int _scrollIndex = 0;
 // Scrolling
 
-  int get scrollIndex => _scrollIndex;
 // MajorTypeGroup
 
   NinStructureProvider(Locale locale) {
@@ -66,6 +65,12 @@ class NinStructureProvider extends ChangeNotifier {
     _scrollIndex = 2;
     notifyListeners();
     // }
+  }
+
+  int get scrollIndex => _scrollIndex;
+  setScrollIndex(int idx) {
+    _scrollIndex = idx;
+    notifyListeners();
   }
 
   Locale get locale => _locale;
