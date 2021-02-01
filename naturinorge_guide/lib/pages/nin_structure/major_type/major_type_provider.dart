@@ -18,9 +18,7 @@ class MajorTypeProvider extends ChangeNotifier {
   Detailed<NinMajorTypeData> _majorType;
   MajorTypeAdapter _majorTypeAdapter;
   List<AxisBlock> _allAxis = List<AxisBlock>.empty(growable: true);
-  // List<AxisBlock> _mainAxis = List<AxisBlock>.empty();
   List<AxisBlock> _secondaryAxis = List<AxisBlock>.empty(growable: true);
-  // List<AxisBlock> _supplementaryAxis = List<AxisBlock>.empty();
   List<StandardSegmentAdapter> _selectedZAxisSegments;
 
   AxisBlock _xAxis;
@@ -62,6 +60,8 @@ class MajorTypeProvider extends ChangeNotifier {
       _xAxis = null;
       _yAxis = null;
       _zAxis = null;
+      _gadHelper = null;
+      _gadArray = null;
       _secondaryAxis = null;
     }
     _isLoading = false;
@@ -81,18 +81,9 @@ class MajorTypeProvider extends ChangeNotifier {
     _yAxis = _allAxis.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 1);
     _zAxis =
         _allAxis.where((e) => e.lecAdapter.majorTypeLec.axis == 2).toList();
-    // _zAxisStandardSegments = _zAxis.expand((e) => e.standardSegments).toList();
-
-    // _mainAxis = _allAxis
-    //     .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'mLEC')
-    //     .toList();
     _secondaryAxis = _allAxis
         .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'iLEC')
         .toList();
-    // _supplementaryAxis = _allAxis
-    //     .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'uLEC')
-    //     .toList();
-
     _selectedZAxisSegments =
         _secondaryAxis.map((e) => e.standardSegments[0]).toList();
   }
@@ -122,8 +113,6 @@ class MajorTypeProvider extends ChangeNotifier {
       var res = AxisBlock(standardSegmentAdapters, lecAdapter);
       _allAxis.add(res);
     }
-
-    // print(_allAxis.length);
   }
 
   Future _initializeMinorTypes() async {
@@ -168,7 +157,6 @@ class MajorTypeProvider extends ChangeNotifier {
 
         for (var xOrder in xOrders) {
           for (var yOrder in yOrders) {
-            // print('$xOrder $yOrder $zOrder');
             var coors = List<int>.from(zOrdersList);
             coors.add(xOrder);
             coors.add(yOrder);
