@@ -1,4 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:naturinorge_guide/pages/nin_structure/app_bar/nin_app_bar.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_selector.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type_group/major_type_group_description.dart';
@@ -37,6 +38,7 @@ class _StructurePageState extends State<StructurePage> {
       //   title: Text(LocaleKeys.structure).tr(),
       // ),
       body: CustomScrollView(controller: controller, slivers: [
+        NinAppBar(),
         SliverList(
           delegate: SliverChildListDelegate([
             AutoScrollTag(
