@@ -27,25 +27,25 @@ class AddSpecieButtons extends StatelessWidget {
                   child: NeumorphicToggle(
                     children: [
                       ToggleElement(
-                          foreground: NeumorphicIcon(
+                          foreground: Icon(
                             Icons.visibility,
-                            style: NeumorphicStyle(color: Colors.black87),
+                            color: Colors.black87,
                           ),
                           background: Center(
-                            child: NeumorphicIcon(
+                            child: Icon(
                               Icons.visibility,
-                              style: NeumorphicStyle(color: Colors.black26),
+                              color: Colors.black26,
                             ),
                           )),
                       ToggleElement(
-                          foreground: NeumorphicIcon(
+                          foreground: Icon(
                             Icons.visibility_off,
-                            style: NeumorphicStyle(color: Colors.black87),
+                            color: Colors.black87,
                           ),
                           background: Center(
-                            child: NeumorphicIcon(
+                            child: Icon(
                               Icons.visibility_off,
-                              style: NeumorphicStyle(color: Colors.black26),
+                              color: Colors.black26,
                             ),
                           )),
                     ],
