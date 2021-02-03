@@ -28,10 +28,14 @@ class SecondaryAxisOptions extends StatelessWidget {
         child: Column(children: [
           Container(
             height: 30,
-            child: Center(child: Text(axis.lecAdapter.lec.name)),
+            child: Center(
+                child: Text(
+              axis.lecAdapter.lec.name,
+              style: Theme.of(context).textTheme.subtitle1,
+            )),
           ),
           NeumorphicToggle(
-            height: 90,
+            height: 100,
             thumb: Neumorphic(),
             children: standarSegments,
             onChanged: (value) =>
@@ -68,28 +72,28 @@ class SecondaryToggleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Text(
             standardSegmentAdapter.standardSegment.data.id.split('-').last,
             style: TextStyle(fontWeight: fontWeight),
           ),
-        ),
-        Divider(),
-        Expanded(
-            child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: AutoSizeText(
-            standardSegmentAdapter.standardSegment.name,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: fontWeight),
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ))
-      ],
+          Divider(),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: AutoSizeText(
+              standardSegmentAdapter.standardSegment.name,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: fontWeight),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ))
+        ],
+      ),
     );
   }
 }
