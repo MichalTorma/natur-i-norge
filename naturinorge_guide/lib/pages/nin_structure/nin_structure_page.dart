@@ -1,6 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/pages/nin_structure/app_bar/nin_app_bar.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description_landscape.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_selector.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type_group/major_type_group_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
@@ -93,11 +94,23 @@ class _StructurePageState extends State<StructurePage> {
                   child: Neumorphic(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: MajorTypeDetails(
-                        ninMajorType: Provider.of<NinStructureProvider>(
-                          context,
-                        ).selectedMajorType,
-                      ),
+                      child: LayoutBuilder(
+                          // stream: null,
+                          builder: (context, boxConstraints) {
+                        if (boxConstraints.maxWidth < 1000) {
+                          return MajorTypeDetails(
+                            ninMajorType: Provider.of<NinStructureProvider>(
+                              context,
+                            ).selectedMajorType,
+                          );
+                        } else {
+                          return MajorTypeDetailsLandscape(
+                            ninMajorType: Provider.of<NinStructureProvider>(
+                              context,
+                            ).selectedMajorType,
+                          );
+                        }
+                      }),
                     ),
                   ),
                 ),
