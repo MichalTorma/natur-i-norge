@@ -16,8 +16,10 @@ class HomePage extends StatelessWidget {
         ),
         body: GridView(
           padding: EdgeInsets.all(24),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, crossAxisSpacing: 24, mainAxisSpacing: 24),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 300,
+              crossAxisSpacing: 24,
+              mainAxisSpacing: 24),
           children: [
             HomePageButton(
                 icon: Icons.map_outlined,

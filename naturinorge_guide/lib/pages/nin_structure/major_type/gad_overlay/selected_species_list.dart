@@ -14,9 +14,9 @@ class SelectedSpeciesList extends StatelessWidget {
               title: Text(e.specie.scientificName),
               subtitle: Text(e.specie.vernacularName),
               trailing: GestureDetector(
-                child: NeumorphicIcon(
+                child: Icon(
                   Icons.delete,
-                  style: NeumorphicStyle(color: Colors.black45),
+                  color: Colors.black45,
                   size: 40,
                 ),
                 onTap: () =>
@@ -25,7 +25,8 @@ class SelectedSpeciesList extends StatelessWidget {
               ),
             ))
         .toList();
-    return Column(
+    return ListView(
+      shrinkWrap: true,
       children: body,
     );
   }

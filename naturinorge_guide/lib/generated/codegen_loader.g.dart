@@ -5,6 +5,8 @@ abstract class LocaleKeys {
   static const toggle_theme = 'toggle_theme';
   static const structure = 'structure';
   static const T4_helper = 'T4_helper';
+  static const read_mode = 'read_mode';
+  static const show_less = 'show_less';
   // static const <name> = '<name>';
   // static const <description> = '<description>';
   // static const <ecological_characteristics> = '<ecological_characteristics>';
