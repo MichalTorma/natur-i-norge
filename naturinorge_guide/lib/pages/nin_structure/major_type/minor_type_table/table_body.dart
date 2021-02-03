@@ -17,7 +17,7 @@ class TableBody extends StatelessWidget {
     }
     var minorTypesBlocks = Provider.of<MajorTypeProvider>(context)
         .minorTypeScaledBlocks
-        .map((e) => ScaledMinorTypeWidgetWidget(minorTypeBlock: e))
+        .map((e) => ScaledMinorTypeWidget(minorTypeBlock: e))
         .toList();
     var staggeredTiles = Provider.of<MajorTypeProvider>(context)
         .minorTypeScaledBlocks
