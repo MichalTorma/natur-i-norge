@@ -6,20 +6,22 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from nin_struktur.nin_db_router import NinModel
+# from nin_struktur.nin_db_router import NinModel
 
-class NinDetail(NinModel):
+class NinDetail(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
-    language = models.ForeignKey('NinLanguage', models.DO_NOTHING)
+    language = models.OneToOneField('NinLanguage', models.DO_NOTHING)
     key = models.TextField()
     value = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'nin_Detail'
+        unique_together = (("field_id", "language", 'key'),)
 
 
-class NinElementarysegment(NinModel):
+
+class NinElementarysegment(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     lec = models.ForeignKey('NinLec', models.DO_NOTHING, blank=True, null=True)
     value = models.TextField()
@@ -30,7 +32,7 @@ class NinElementarysegment(NinModel):
         db_table = 'nin_ElementarySegment'
 
 
-class NinElementarysegmentcombination(NinModel):
+class NinElementarysegmentcombination(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     elementarysegmentgroup = models.ForeignKey('NinElementarysegmentgroup', models.DO_NOTHING, db_column='elementarySegmentGroup_id')  # Field name made lowercase.
     majortypelec = models.ForeignKey('NinMajortypelec', models.DO_NOTHING, db_column='majorTypeLEC_id', blank=True, null=True)  # Field name made lowercase.
@@ -40,7 +42,7 @@ class NinElementarysegmentcombination(NinModel):
         db_table = 'nin_ElementarySegmentCombination'
 
 
-class NinElementarysegmentgroup(NinModel):
+class NinElementarysegmentgroup(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     elementarysegment = models.ForeignKey(NinElementarysegment, models.DO_NOTHING, db_column='elementarySegment_id')  # Field name made lowercase.
 
@@ -49,7 +51,7 @@ class NinElementarysegmentgroup(NinModel):
         db_table = 'nin_ElementarySegmentGroup'
 
 
-class NinElementarysegmentgroupdetail(NinModel):
+class NinElementarysegmentgroupdetail(models.Model):
     elementarysegmentgroup = models.OneToOneField(NinElementarysegmentgroup, models.DO_NOTHING, db_column='elementarySegmentGroup_id', primary_key=True)  # Field name made lowercase.
     lec = models.ForeignKey('NinLec', models.DO_NOTHING, blank=True, null=True)
     value = models.TextField(blank=True, null=True)
@@ -60,7 +62,7 @@ class NinElementarysegmentgroupdetail(NinModel):
         db_table = 'nin_ElementarySegmentGroupDetail'
 
 
-class NinGadmodifier(NinModel):
+class NinGadmodifier(models.Model):
     majortypelec = models.OneToOneField('NinMajortypelec', models.DO_NOTHING, db_column='majorTypeLEC_id', primary_key=True)  # Field name made lowercase.
     majortype = models.ForeignKey('NinMajortype', models.DO_NOTHING, db_column='majorType_id', blank=True, null=True)  # Field name made lowercase.
     lec = models.ForeignKey('NinLec', models.DO_NOTHING, blank=True, null=True)
@@ -72,8 +74,8 @@ class NinGadmodifier(NinModel):
         db_table = 'nin_GadModifier'
 
 
-class NinGadscale(NinModel):
-    m7scale = models.IntegerField(db_column='m7Scale')  # Field name made lowercase.
+class NinGadscale(models.Model):
+    m7scale = models.IntegerField(db_column='m7Scale', primary_key=True)  # Field name made lowercase.
     m3scale = models.IntegerField(db_column='m3Scale', blank=True, null=True)  # Field name made lowercase.
     constancy = models.TextField(db_column='Constancy', blank=True, null=True)  # Field name made lowercase.
 
@@ -82,7 +84,7 @@ class NinGadscale(NinModel):
         db_table = 'nin_GadScale'
 
 
-class NinGadvalue(NinModel):
+class NinGadvalue(models.Model):
     elementarysegmentcombination = models.ForeignKey(NinElementarysegmentcombination, models.DO_NOTHING, db_column='elementarySegmentCombination_id')  # Field name made lowercase.
     species = models.ForeignKey('NinSpecies', models.DO_NOTHING)
     majortype = models.ForeignKey('NinMajortype', models.DO_NOTHING, db_column='majorType_id', blank=True, null=True)  # Field name made lowercase.
@@ -94,7 +96,7 @@ class NinGadvalue(NinModel):
         db_table = 'nin_GadValue'
 
 
-class NinLec(NinModel):
+class NinLec(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     parentlec = models.ForeignKey('self', models.DO_NOTHING, db_column='parentLec_id', blank=True, null=True)  # Field name made lowercase.
     structuringprocess = models.ForeignKey('NinStructuringprocess', models.DO_NOTHING, db_column='structuringProcess_id', blank=True, null=True)  # Field name made lowercase.
@@ -109,7 +111,7 @@ class NinLec(NinModel):
         db_table = 'nin_LEC'
 
 
-class NinLectype(NinModel):
+class NinLectype(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     detail = models.ForeignKey(NinDetail, models.DO_NOTHING, blank=True, null=True)
 
@@ -118,7 +120,7 @@ class NinLectype(NinModel):
         db_table = 'nin_LECType'
 
 
-class NinLanguage(NinModel):
+class NinLanguage(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     name = models.TextField(blank=True, null=True)
 
@@ -127,7 +129,7 @@ class NinLanguage(NinModel):
         db_table = 'nin_Language'
 
 
-class NinMajortype(NinModel):
+class NinMajortype(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     majortypegroup = models.ForeignKey('NinMajortypegroup', models.DO_NOTHING, db_column='majorTypeGroup_id', blank=True, null=True)  # Field name made lowercase.
     order = models.IntegerField(blank=True, null=True)
@@ -138,7 +140,7 @@ class NinMajortype(NinModel):
         db_table = 'nin_MajorType'
 
 
-class NinMajortypegroup(NinModel):
+class NinMajortypegroup(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     detail = models.ForeignKey(NinDetail, models.DO_NOTHING, blank=True, null=True)
 
@@ -147,7 +149,7 @@ class NinMajortypegroup(NinModel):
         db_table = 'nin_MajorTypeGroup'
 
 
-class NinMajortypelec(NinModel):
+class NinMajortypelec(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     lec = models.ForeignKey(NinLec, models.DO_NOTHING, blank=True, null=True)
     majortype = models.ForeignKey(NinMajortype, models.DO_NOTHING, db_column='majorType_id', blank=True, null=True)  # Field name made lowercase.
@@ -159,7 +161,7 @@ class NinMajortypelec(NinModel):
         db_table = 'nin_MajorTypeLEC'
 
 
-class NinMappingscale(NinModel):
+class NinMappingscale(models.Model):
     field_id = models.IntegerField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     name = models.TextField(blank=True, null=True)
 
@@ -168,7 +170,7 @@ class NinMappingscale(NinModel):
         db_table = 'nin_MappingScale'
 
 
-class NinMinortype(NinModel):
+class NinMinortype(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     majortype = models.ForeignKey(NinMajortype, models.DO_NOTHING, db_column='majorType_id', blank=True, null=True)  # Field name made lowercase.
     detail = models.ForeignKey(NinDetail, models.DO_NOTHING, blank=True, null=True)
@@ -178,7 +180,7 @@ class NinMinortype(NinModel):
         db_table = 'nin_MinorType'
 
 
-class NinMinortypescaled(NinModel):
+class NinMinortypescaled(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     minortype = models.ForeignKey(NinMinortype, models.DO_NOTHING, db_column='minorType_id')  # Field name made lowercase.
     mappingscale = models.ForeignKey(NinMappingscale, models.DO_NOTHING, db_column='mappingScale_id', blank=True, null=True)  # Field name made lowercase.
@@ -188,7 +190,7 @@ class NinMinortypescaled(NinModel):
         db_table = 'nin_MinorTypeScaled'
 
 
-class NinMinortypestandardsegment(NinModel):
+class NinMinortypestandardsegment(models.Model):
     minortype = models.ForeignKey(NinMinortype, models.DO_NOTHING, db_column='minorType_id')  # Field name made lowercase.
     standardsegment = models.ForeignKey('NinStandardsegment', models.DO_NOTHING, db_column='standardSegment_id')  # Field name made lowercase.
 
@@ -197,7 +199,7 @@ class NinMinortypestandardsegment(NinModel):
         db_table = 'nin_MinorTypeStandardSegment'
 
 
-class NinPatternofvariation(NinModel):
+class NinPatternofvariation(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     detail = models.ForeignKey(NinDetail, models.DO_NOTHING, blank=True, null=True)
 
@@ -206,7 +208,7 @@ class NinPatternofvariation(NinModel):
         db_table = 'nin_PatternOfVariation'
 
 
-class NinSpecies(NinModel):
+class NinSpecies(models.Model):
     scientificnameid = models.IntegerField(db_column='scientificNameId', primary_key=True)  # Field name made lowercase.
     scientificname = models.TextField(db_column='scientificName', blank=True, null=True)  # Field name made lowercase.
     author = models.TextField(blank=True, null=True)
@@ -217,7 +219,7 @@ class NinSpecies(NinModel):
         db_table = 'nin_Species'
 
 
-class NinStandardsegment(NinModel):
+class NinStandardsegment(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     majortypelec = models.ForeignKey(NinMajortypelec, models.DO_NOTHING, db_column='majorTypeLEC_id', blank=True, null=True)  # Field name made lowercase.
     order = models.IntegerField(blank=True, null=True)
@@ -228,7 +230,7 @@ class NinStandardsegment(NinModel):
         db_table = 'nin_StandardSegment'
 
 
-class NinStandardsegmentelement(NinModel):
+class NinStandardsegmentelement(models.Model):
     standardsegment = models.ForeignKey(NinStandardsegment, models.DO_NOTHING, db_column='standardSegment_id')  # Field name made lowercase.
     elementarysegment = models.ForeignKey(NinElementarysegment, models.DO_NOTHING, db_column='elementarySegment_id')  # Field name made lowercase.
 
@@ -237,7 +239,7 @@ class NinStandardsegmentelement(NinModel):
         db_table = 'nin_StandardSegmentElement'
 
 
-class NinStructuringprocess(NinModel):
+class NinStructuringprocess(models.Model):
     field_id = models.TextField(db_column='_id', primary_key=True)  # Field renamed because it started with '_'.
     detail = models.ForeignKey(NinDetail, models.DO_NOTHING, blank=True, null=True)
 
