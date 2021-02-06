@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'nin',
+    'easy',
+    'django_admin_generator',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +76,7 @@ WSGI_APPLICATION = 'nin_struktur.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+DATABASE_ROUTERS = ('nin_struktur.nin_db_router.MyDBRouter',)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
