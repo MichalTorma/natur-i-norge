@@ -3,7 +3,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from model.model import Base
 
-database_file = 'assets/nin_database.db'
+database_file = '/Users/amarok/src/natur-i-norge/naturinorge_guide/assets/nin_database.db'
 engine = create_engine(f'sqlite:///{database_file}')
 export_path = 'tables/GoldenMaster.xlsx'
 writer = pd.ExcelWriter(export_path)
