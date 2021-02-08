@@ -12,3 +12,4 @@
 # End of https://www.toptal.com/developers/gitignore/api/vscode
 ninEnv/
 .venv/
+scripts/database/db_env/
