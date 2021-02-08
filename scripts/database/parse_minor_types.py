@@ -12,6 +12,24 @@ segments_table = pd.read_excel('tables/MinorTypes.xlsx', sheet_name="MajorTypeSe
 minor_types_table = pd.read_excel('tables/MinorTypes.xlsx', sheet_name="MinorTypes")
 major_types = list(set(list(segments_table.major_type)))
 
+table = segments_table[segments_table.major_type == major_type]
+table.standard_segments = table.standard_segments.apply(lambda x: x.replace(' ','')
+        .replace('(','')
+        .replace(')','')
+        .replace('∙','.'))
+lec_type = 3
+lkm_strings = table.standard_segments[table.lec_type == lec_type]
+# %%
+lkm_list = ';'.join(list(lkm_strings)).replace(';;',';').split(';')
+assert len(lkm_list) > 0
+lkm_ss = lkm_list[0]
+#%%
+gradient = lkm_ss.split('–')[0]
+ss_string = lkm_ss.split('–')[1]
+#%%
+
+# %%
+# %%
 def get_dLKM(major_type):
     table = segments_table[segments_table.major_type == major_type]
     table.standard_segments = table.standard_segments.apply(lambda x: x.replace(' ','')
