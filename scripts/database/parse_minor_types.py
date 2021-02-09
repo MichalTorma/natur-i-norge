@@ -110,7 +110,7 @@ for (_,mt) in minor_types_table.iterrows():
 # %%
 # %%
 def get_axis(order, lec_type):
-    if order not in [1,2]:
+    if lec_type not in [1,2]:
         return None
     axis = order
     if axis > 2:
