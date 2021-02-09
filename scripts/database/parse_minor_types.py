@@ -12,22 +12,134 @@ segments_table = pd.read_excel('tables/MinorTypes.xlsx', sheet_name="MajorTypeSe
 minor_types_table = pd.read_excel('tables/MinorTypes.xlsx', sheet_name="MinorTypes")
 major_types = list(set(list(segments_table.major_type)))
 
-major_type = major_types[0]
-table = segments_table[segments_table.major_type == major_type]
-table.standard_segments = table.standard_segments.apply(lambda x: x.replace(' ','')
-        .replace('(','')
-        .replace(')','')
-        .replace('∙','.'))
-lec_type = 3
-lkm_strings = table.standard_segments[table.lec_type == lec_type]
+def get_axis(order, lec_type):
+    if order not in [1,2]:
+        return None
+    axis = order
+    if axis > 2:
+        axis = 2
+    return axis
 
-# %%
-lkm_list = ';'.join(list(lkm_strings)).replace(';;',';').split(';')
-assert len(lkm_list) > 0
-lkm_ss = lkm_list[0]
-#%%
-gradient = lkm_ss.split('–')[0]
-ss_string = lkm_ss.split('–')[1]
+def get_lec_type_string(lec_type):
+    if lec_type == 0:
+        return 'dLEC'
+    if lec_type == 1:
+        return 'mLEC'
+    if lec_type == 2:
+        return 'iLEC'
+    if lec_type == 3:
+        return 'uLEC'
+    else:
+        raise Exception(f'Unknown lec type: {lec_type}')
+
+def save_hs(major_type, ss_string, lec_type, axis):
+    major_type_nh = major_type.replace('-','')
+    lec_id = f'HS-{major_type_nh}'
+    session.merge(model.LEC(
+        _id=lec_id,
+        parentLec_id='HS',
+    ))
+
+    ss_list = ss_string.split('|')
+    for (ss_order, ss) in enumerate(ss_list):
+        es_id = f'{lec_id}.{ss}'
+        session.merge(
+            model.ElementarySegment(
+                _id = es_id,
+                lec_id=lec_id,
+                value=ss,
+                order=ss_order
+            )
+        )
+
+        session.merge(
+            model.ElementarySegmentGroup(
+                _id=es_id,
+                elementarySegment_id=es_id
+            )
+        )
+    session.commit()
+
+
+
+def get_LKM(major_type, lec_type):
+    table = segments_table[segments_table.major_type == major_type]
+    table.standard_segments = table.standard_segments.apply(lambda x: x.replace(' ','')
+            .replace('(','')
+            .replace(')','')
+            .replace('∙','.'))
+    print(major_type)
+    lkm_strings = table.standard_segments[table.lec_type == lec_type]
+    if len(lkm_strings) == 0:
+        print('No gradients to import, skiping...')
+        return
+    lkm_list = ';'.join(list(lkm_strings)).replace(';;',';').split(';')
+    assert len(lkm_list) > 0
+    # print(lkm_strings)
+    for (lkm_order, lkm_ss) in enumerate(lkm_list):
+        axis = get_axis(lkm_order, lec_type)
+        print(lkm_ss)
+        if lkm_ss == '':
+            continue
+        gradient = lkm_ss.split('–')[0]
+        ss_string = lkm_ss.split('–')[1]
+        if gradient != 'S1':
+            if gradient[-1].isnumeric():
+                gradient = gradient[:-1]
+        if gradient == 'HS*':
+            save_hs(major_type, ss_string, lec_type, axis)
+            lec_id = f'{major_type}-HS'
+            lec_id = f'HS-{major_type.replace("-","")}'
+            mtl_id = lec_id
+        else:
+            ss_string = ss_string.lower()
+            lec_id = gradient
+            mtl_id = f'{major_type.replace("-","")}-{lec_id}'
+        print(lec_id)
+        # print(lkm_order)
+        # save majorTypeLEC
+
+
+
+        session.merge(
+            model.MajorTypeLEC(
+                _id=mtl_id,
+                lec_id=lec_id,
+                majorType_id=major_type,
+                lecType_id=get_lec_type_string(lec_type),
+                axis=axis
+            )
+        )
+
+
+        # save ss and sse
+        ss_strings_list = ss_string.split('|')
+        for (ss_order, ss_string) in enumerate(ss_strings_list):
+            ss_id = f'{major_type.replace("-","")}-{lec_id}.{ss_string}'
+            session.merge(
+            model.StandardSegment(
+                _id=ss_id,
+                majorTypeLEC_id=mtl_id,
+                order=ss_order,
+                )
+            )
+            for (es_order, es_string) in enumerate(ss_string):
+                es_id = f'{lec_id}.{es_string}'
+                session.merge(
+                model.StandardSegmentElement(
+                    standardSegment_id=ss_id,
+                    elementarySegment_id=es_id,
+                )
+        )
+
+
+        session.commit()
+# get_LKM('H-4', 2)
+for mt in major_types:
+    get_LKM(mt, 1)
+    get_LKM(mt, 2)
+    get_LKM(mt, 3)
+
 #%%
 
 # %%
