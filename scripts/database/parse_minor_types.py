@@ -56,7 +56,21 @@ def get_minor_type(minor_type):
                     new_orders_list.append(mp[order])
                 ss_orders_list = new_orders_list
             else:
-
+                es_list=[]
+                for es_string in ss_orders_list[0]:
+                    q = session.query(model.ElementarySegment)\
+                        .order_by(model.ElementarySegment.order)\
+                        .filter(model.ElementarySegment.lec_id == lec_id)\
+                        .filter(model.ElementarySegment.value == es_string)
+                    assert q.count() == 1
+                    es_list.append(q.first()._id)
+                q = session.query(model.StandardSegmentElement)\
+                    .filter(model.StandardSegmentElement.elementarySegment_id.in_(es_list))
+                ss_ids = list(set(map(lambda x: x.standardSegment_id, q.all())))
+                q = session.query(model.StandardSegment)\
+                    .filter(model.StandardSegment._id.in_(ss_ids))\
+                    .order_by(model.StandardSegment.order)
+                ss_orders_list = list(map(lambda x: x.order + 1,q.all()))
         print(ss_orders_list)
         for ss_order in ss_orders_list:
             ss_order_int = int(ss_order)
@@ -153,7 +167,7 @@ def get_LKM(major_type, lec_type):
         gradient = lkm_ss.split('–')[0]
         ss_string = lkm_ss.split('–')[1]
 
-        if gradient not in ['S1','S3']:
+        if gradient not in ['S1']:
             if gradient[-1].isnumeric():
                 gradient = gradient[:-1]
             if gradient in ['E','F','S']:
