@@ -9,11 +9,14 @@ engine = create_engine(f'sqlite:///{database_file}')
 Session = sessionmaker(bind=engine)
 session = Session()
 segments_table = pd.read_excel('tables/MinorTypes.xlsx', sheet_name="MajorTypeSegments")
+segments_table.major_type = segments_table.major_type.apply(lambda x: x.strip())
 minor_types_table = pd.read_excel('tables/MinorTypes.xlsx', sheet_name="MinorTypes")
 major_types = list(set(list(segments_table.major_type)))
+
 #%%
 minor_types_table.standard_segments = minor_types_table.standard_segments.apply(lambda x: x.replace(' ','')
-    .replace('*',''))
+    .replace('*','')
+    .replace('∙','-'))
 def get_minor_type(minor_type):
     major_type = minor_type.major_type
     major_type_nh = major_type.replace('-','')
@@ -50,6 +53,8 @@ def get_minor_type(minor_type):
                     'D': 4,
                     'E': 5,
                     'F': 6,
+                    'G': 7,
+                    'H': 8,
                 }
                 new_orders_list = []
                 for order in ss_orders_list:
@@ -64,24 +69,34 @@ def get_minor_type(minor_type):
                         .filter(model.ElementarySegment.value == es_string)
                     assert q.count() == 1
                     es_list.append(q.first()._id)
+                # print(es_list)
                 q = session.query(model.StandardSegmentElement)\
                     .filter(model.StandardSegmentElement.elementarySegment_id.in_(es_list))
                 ss_ids = list(set(map(lambda x: x.standardSegment_id, q.all())))
+                # print(ss_ids)
                 q = session.query(model.StandardSegment)\
                     .filter(model.StandardSegment._id.in_(ss_ids))\
+                    .filter(model.StandardSegment.majorTypeLEC_id == f'{major_type_nh}-{lec_id}')\
                     .order_by(model.StandardSegment.order)
-                ss_orders_list = list(map(lambda x: x.order + 1,q.all()))
-        print(ss_orders_list)
+                ss_orders_list = list(set(map(lambda x: x.order + 1,q.all())))
+
+                # print(ss_orders_list)
         for ss_order in ss_orders_list:
             ss_order_int = int(ss_order)
-
-            mtl_id = f'{major_type_nh}-{lec_id}'
-            print(f'mtl_id: {mtl_id} order: {ss_order_int}')
+            if lec_id.split('-')[0]=='HS':
+                mtl_id = lec_id
+            else:
+                mtl_id = f'{major_type_nh}-{lec_id}'
+            # print(f'mtl_id: {mtl_id} order: {ss_order_int}')
             q = session.query(model.StandardSegment)\
                 .filter(model.StandardSegment.majorTypeLEC_id == mtl_id)\
                 .filter(model.StandardSegment.order == ss_order_int-1)
 
-            assert q.count() == 1
+            try:
+                assert q.count() == 1
+            except:
+                raise Exception(f'Error on mtl_id: {mtl_id} order: {ss_order_int-1}')
+
             ss = q.first()
 
 
