@@ -11,7 +11,75 @@ session = Session()
 segments_table = pd.read_excel('tables/MinorTypes.xlsx', sheet_name="MajorTypeSegments")
 minor_types_table = pd.read_excel('tables/MinorTypes.xlsx', sheet_name="MinorTypes")
 major_types = list(set(list(segments_table.major_type)))
+#%%
+minor_types_table.standard_segments = minor_types_table.standard_segments.apply(lambda x: x.replace(' ','')
+    .replace('*',''))
+def get_minor_type(minor_type):
+    major_type = minor_type.major_type
+    major_type_nh = major_type.replace('-','')
+    order = minor_type.order
+    name = minor_type.name
+    print(f'{major_type}-{order}')
+    ss_string = minor_type.standard_segments
+    ss_list = ss_string.split('&')
+    used_lec = []
+    for ss_single_string in ss_list:
+        ss_single_list = ss_single_string.split('-')
+        lec_id = ss_single_list[0]
+        if lec_id == 'HS':
+            lec_id = f'HS-{major_type_nh}'
+        if lec_id == 'SI':
+            lec_id = 'S1'
+        used_lec.append(lec_id)
+        if len(ss_single_list) == 3:
+            order_list = list(range(int(ss_single_list[1]),int(ss_single_list[2])))
+            ss_orders_list = list(map(lambda x: str(x), order_list))
+        elif len(ss_single_list) == 2:
+            ss_orders_string = ss_single_list[1]
+            ss_orders_list = ss_orders_string.split(',')
+        else:
+            raise Exception(f'unable to parse ss_single_list: {ss_single_list}')
+        assert lec_id != None
 
+        if not ss_orders_list[0].isnumeric():
+            if ss_orders_list[0].isupper():
+                mp = {
+                    'A': 1,
+                    'B': 2,
+                    'C': 3,
+                    'D': 4,
+                    'E': 5,
+                    'F': 6,
+                }
+                new_orders_list = []
+                for order in ss_orders_list:
+                    new_orders_list.append(mp[order])
+                ss_orders_list = new_orders_list
+            else:
+
+        print(ss_orders_list)
+        for ss_order in ss_orders_list:
+            ss_order_int = int(ss_order)
+
+            mtl_id = f'{major_type_nh}-{lec_id}'
+            print(f'mtl_id: {mtl_id} order: {ss_order_int}')
+            q = session.query(model.StandardSegment)\
+                .filter(model.StandardSegment.majorTypeLEC_id == mtl_id)\
+                .filter(model.StandardSegment.order == ss_order_int-1)
+
+            assert q.count() == 1
+            ss = q.first()
+
+
+    # fill unused lec with first of each unused
+
+
+# minor_type = minor_types_table.iloc[0]
+for (_,mt) in minor_types_table.iterrows():
+    get_minor_type(mt)
+
+# %%
+# %%
 def get_axis(order, lec_type):
     if order not in [1,2]:
         return None
@@ -70,6 +138,7 @@ def get_LKM(major_type, lec_type):
             .replace('∙','.'))
     print(major_type)
     lkm_strings = table.standard_segments[table.lec_type == lec_type]
+
     if len(lkm_strings) == 0:
         print('No gradients to import, skiping...')
         return
@@ -83,9 +152,18 @@ def get_LKM(major_type, lec_type):
             continue
         gradient = lkm_ss.split('–')[0]
         ss_string = lkm_ss.split('–')[1]
-        if gradient != 'S1':
+
+        if gradient not in ['S1','S3']:
             if gradient[-1].isnumeric():
                 gradient = gradient[:-1]
+            if gradient in ['E','F','S']:
+                mp = {
+                    'E': 'S3E',
+                    'F': 'S3F',
+                    'S': 'S3S',
+                }
+                gradient = mp[gradient]
+
         if gradient == 'HS*':
             save_hs(major_type, ss_string, lec_type, axis)
             lec_id = f'{major_type}-HS'
