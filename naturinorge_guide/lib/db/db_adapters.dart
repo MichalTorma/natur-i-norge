@@ -19,6 +19,9 @@ class StandardSegmentAdapter {
   Future getRelations() async {
     elementarySegments =
         await db.getElementarySegmentByStandardSegment(standardSegment.data);
+    if (elementarySegments[0] == null) {
+      print(elementarySegments);
+    }
     elementarySegmentGroups =
         await db.getGadElementarySegmentGroupIdsByStandardSegment(
             standardSegment.data,
