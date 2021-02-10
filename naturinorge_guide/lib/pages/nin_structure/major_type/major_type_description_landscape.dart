@@ -10,7 +10,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_tabl
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/secondary_axis_dialog.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/table_options.dart';
 import 'package:provider/provider.dart';
-import 'package:readmore/readmore.dart';
+// import 'package:readmore/readmore.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class MajorTypeDetailsLandscape extends StatelessWidget {
@@ -44,12 +44,12 @@ class MajorTypeDetailsLandscape extends StatelessWidget {
                     ),
                   ),
                   Divider(),
-                  ReadMoreText(
+                  Text(
                     ninMajorType.description,
-                    trimLines: 10,
-                    trimMode: TrimMode.Line,
-                    trimExpandedText: LocaleKeys.read_mode.tr(),
-                    trimCollapsedText: LocaleKeys.show_less.tr(),
+                    // trimLines: 10,
+                    // trimMode: TrimMode.Line,
+                    // trimExpandedText: LocaleKeys.read_mode.tr(),
+                    // trimCollapsedText: LocaleKeys.show_less.tr(),
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   Divider(),
