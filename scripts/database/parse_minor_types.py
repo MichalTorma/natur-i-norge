@@ -21,7 +21,14 @@ def get_minor_type(minor_type):
     major_type = minor_type.major_type
     major_type_nh = major_type.replace('-','')
     order = minor_type.order
-    name = minor_type.name
+    name_string = minor_type['name']
+    name = None
+    desc = None
+    if '[' in name_string:
+        desc = name_string.split('[')[0]
+        name = name_string.split('[')[1].split(']')[0]
+    else:
+        name = name_string
 
     mt_id=f'{major_type_nh}-{order}'
     detail_id=f'minor_type_{mt_id}'
@@ -40,6 +47,15 @@ def get_minor_type(minor_type):
             value=name
         )
     )
+    if desc != None:
+        session.merge(
+            model.Detail(
+            _id=detail_id,
+            language_id='nb',
+            key='<description>',
+            value=desc
+        )
+        )
     session.merge(
         model.MinorTypeScaled(
             _id=f'{major_type_nh}-{order}',
