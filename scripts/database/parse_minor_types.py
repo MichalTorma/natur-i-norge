@@ -22,6 +22,60 @@ def get_minor_type(minor_type):
     major_type_nh = major_type.replace('-','')
     order = minor_type.order
     name = minor_type.name
+
+    mt_id=f'{major_type_nh}-{order}'
+    detail_id=f'minor_type_{mt_id}'
+    session.merge(
+        model.MinorType(
+            _id=mt_id,
+            majorType_id=major_type,
+            detail_id=detail_id
+        )
+    )
+    session.merge(
+        model.Detail(
+            _id=detail_id,
+            language_id='nb',
+            key='<name>',
+            value=name
+        )
+    )
+    session.merge(
+        model.MinorTypeScaled(
+            _id=f'{major_type_nh}-{order}',
+            minorType_id=mt_id,
+            mappingScale_id=500
+        )
+    )
+    session.merge(
+        model.MinorTypeScaled(
+            _id=f'{major_type_nh}-B-{order}',
+            minorType_id=mt_id,
+            mappingScale_id=2500
+        )
+    )
+    session.merge(
+        model.MinorTypeScaled(
+            _id=f'{major_type_nh}-C-{order}',
+            minorType_id=mt_id,
+            mappingScale_id=5000
+        )
+    )
+    session.merge(
+        model.MinorTypeScaled(
+            _id=f'{major_type_nh}-D-{order}',
+            minorType_id=mt_id,
+            mappingScale_id=10000
+        )
+    )
+    session.merge(
+        model.MinorTypeScaled(
+            _id=f'{major_type_nh}-E-{order}',
+            minorType_id=mt_id,
+            mappingScale_id=20000
+        )
+    )
+    session.commit()
     print(f'{major_type}-{order}')
     ss_string = minor_type.standard_segments
     ss_list = ss_string.split('&')
@@ -98,7 +152,13 @@ def get_minor_type(minor_type):
                 raise Exception(f'Error on mtl_id: {mtl_id} order: {ss_order_int-1}')
 
             ss = q.first()
-
+            session.merge(
+                model.MinorTypeStandardSegment(
+                    minorType_id=mt_id,
+                    standardSegment_id=ss._id
+                )
+            )
+        session.commit()
 
     # fill unused lec with first of each unused
 
