@@ -36,9 +36,18 @@ class MajorTypeProvider extends ChangeNotifier {
   GadHelper _gadHelper;
   List<List<num>> _gadArray;
 
+  clear() {
+    _xAxis = null;
+    _yAxis = null;
+    _zAxis = null;
+    _gadHelper = null;
+    _gadArray = null;
+  }
+
   Future load(Detailed<NinMajorTypeData> majorType) async {
     _isLoading = true;
     notifyListeners();
+    clear();
     _majorType = majorType;
     _majorTypeAdapter = MajorTypeAdapter(majorType, db, locale);
     await _initializeScales();
@@ -57,11 +66,7 @@ class MajorTypeProvider extends ChangeNotifier {
       );
     } else {
       //TODO remove once DB is complete
-      _xAxis = null;
-      _yAxis = null;
-      _zAxis = null;
-      _gadHelper = null;
-      _gadArray = null;
+
       // _secondaryAxis = null;
     }
     _isLoading = false;
@@ -253,11 +258,13 @@ class MajorTypeProvider extends ChangeNotifier {
           continue;
         } else {
           usedMinorTypeIds.add(minorTypeSegmentId);
+          var mnt = _minorTypesScaled
+              .firstWhere((e) => e.minorTypeScaledId == minorTypeSegmentId);
+          print("$minorTypeSegmentId");
           minorTypesScaledBlocks.add(MinorTypeBlock(
               _getMinorTypeBlockWidth(minorTypeSlice, x, y),
               _getMinorTypeBlockHeight(minorTypeSlice, x, y),
-              _minorTypesScaled.firstWhere(
-                  (e) => e.minorTypeScaledId == minorTypeSegmentId)));
+              mnt));
         }
       }
     }

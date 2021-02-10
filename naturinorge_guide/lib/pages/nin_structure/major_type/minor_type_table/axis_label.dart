@@ -15,7 +15,7 @@ class AxisLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     var standardSegmentWidgets = List<Widget>.empty(growable: true);
     for (var ss in axisBlock.standardSegments) {
-      // print(ss.elementarySegments.length);
+      print('${ss.standardSegment.data.id} ${ss.elementarySegments.length}');
       standardSegmentWidgets.add(Expanded(
         flex: ss.elementarySegmentGroups.length,
         child: StandardSegmentWidget(

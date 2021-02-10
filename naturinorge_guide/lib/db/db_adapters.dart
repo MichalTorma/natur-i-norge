@@ -19,9 +19,7 @@ class StandardSegmentAdapter {
   Future getRelations() async {
     elementarySegments =
         await db.getElementarySegmentByStandardSegment(standardSegment.data);
-    if (elementarySegments[0] == null) {
-      print(elementarySegments);
-    }
+
     elementarySegmentGroups =
         await db.getGadElementarySegmentGroupIdsByStandardSegment(
             standardSegment.data,
@@ -47,10 +45,6 @@ class ElementarySegmentGroupAdapter {
         await db.getElementarySegmentByElementarySegmentGroupId(
             elementarySegmentGroupId);
     List<int> listOfOrders = elementarySegments.map((e) => e.order).toList();
-    print(elementarySegmentGroupId);
-    if (elementarySegmentGroupId == 'UE.b') {
-      print('');
-    }
     order = listOfOrders.reduce(min);
   }
 

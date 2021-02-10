@@ -55,7 +55,6 @@ class GadHelper {
       coors.add(xCoor);
       coors.add(yCoor);
       newArray = addToArray(newArray, coors, gadValue.gadValue.valueM7ScaleId);
-      print('added');
     }
     allArrays.add(newArray);
     _meanArray = _getMeanArray();
