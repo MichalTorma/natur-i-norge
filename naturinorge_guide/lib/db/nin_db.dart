@@ -201,13 +201,15 @@ class NiNDatabase extends _$NiNDatabase {
           ..where((tbl) => tbl.id.equals(majorTypeLecId)))
         .getSingle();
     var es = await (select(ninElementarySegment)
-          ..where((tbl) => tbl.lecId.equals(mtl.lecId)))
+          ..where((tbl) => tbl.lecId.equals(mtl.lecId))
+          ..orderBy([(u) => OrderingTerm.asc(ninElementarySegment.order)]))
         .get();
-    var es_ids = es.map((e) => e.id);
-    var esg = await (select(ninElementarySegmentGroup)
-          ..where((tbl) => tbl.elementarySegmentId.isIn(es_ids)))
-        .get();
-    return esg.map((e) => e.id).toList();
+    var es_ids = es.map((e) => e.id).toSet().toList();
+    return es_ids;
+    // var esg = await (select(ninElementarySegmentGroup)
+    //       ..where((tbl) => tbl.elementarySegmentId.isIn(es_ids)))
+    //     .get();
+    // return esg.map((e) => e.id).toSet().toList();
   }
 
   Future<Detailed<NinLECData>> getLecById(String lecId, Locale locale) async {
@@ -261,7 +263,7 @@ class NiNDatabase extends _$NiNDatabase {
           .get();
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 }
 
 LazyDatabase _openConnection() {
