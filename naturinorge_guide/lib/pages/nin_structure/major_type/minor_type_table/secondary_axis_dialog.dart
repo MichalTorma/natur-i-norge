@@ -10,8 +10,10 @@ class SecondaryAxisOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // List<Widget> body = List<Widget>.empty(growable: true);
-    var body =
-        Provider.of<MajorTypeProvider>(context).secondaryAxis.map((axis) {
+    if (Provider.of<MajorTypeProvider>(context).zAxis == null) {
+      return Container();
+    }
+    var body = Provider.of<MajorTypeProvider>(context).zAxis.map((axis) {
       var standarSegments = axis.standardSegments
           .map((e) => ToggleElement(
                 foreground: SecondaryToggleText(
@@ -72,6 +74,7 @@ class SecondaryToggleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var name = standardSegmentAdapter.standardSegment.name ?? '<<TBF>>';
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -85,7 +88,7 @@ class SecondaryToggleText extends StatelessWidget {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: AutoSizeText(
-              standardSegmentAdapter.standardSegment.name,
+              name,
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: fontWeight),
               maxLines: 3,
