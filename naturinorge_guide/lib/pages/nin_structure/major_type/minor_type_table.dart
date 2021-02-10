@@ -25,11 +25,11 @@ class MinorTypeTable extends StatelessWidget {
       if (boxContrains.maxWidth > MediaQuery.of(context).size.height) {
         var ySize =
             MediaQuery.of(context).size.height - sidePadding - labelWidth;
-        var xSize = ratio * ySize;
+        var xSize = ySize * ratio;
         return Size(xSize, ySize);
       } else {
         var xSize = boxContrains.maxWidth - sidePadding - labelWidth;
-        var ySize = ratio * xSize;
+        var ySize = xSize * ratio;
         return Size(xSize, ySize);
       }
     }

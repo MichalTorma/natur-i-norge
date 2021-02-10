@@ -10,7 +10,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 mt_list = session.query(model.MajorType).all()
 
-for mnt in mt_list:
+for mt in mt_list:
     all_lec = session.query(model.MajorTypeLEC)\
         .filter(model.MajorTypeLEC.majorType_id == mt._id)\
         .filter(model.MajorTypeLEC.lecType_id.in_(['mLEC','iLEC'])).all()
