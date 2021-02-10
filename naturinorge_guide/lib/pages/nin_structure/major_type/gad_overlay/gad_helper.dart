@@ -71,8 +71,10 @@ class GadHelper {
 
   _generateDims() {
     dims = List<int>.empty(growable: true);
-    for (var axis in zAxis) {
-      dims.add(axis.lecAdapter.gadElementarySegmentGroups.length);
+    if (zAxis != null) {
+      for (var axis in zAxis) {
+        dims.add(axis.lecAdapter.gadElementarySegmentGroups.length);
+      }
     }
     dims.add(xAxis.lecAdapter.gadElementarySegmentGroups.length);
     dims.add(yAxis.lecAdapter.gadElementarySegmentGroups.length);
