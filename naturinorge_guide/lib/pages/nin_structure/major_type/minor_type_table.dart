@@ -29,7 +29,7 @@ class MinorTypeTable extends StatelessWidget {
         return Size(xSize, ySize);
       } else {
         var xSize = boxContrains.maxWidth - sidePadding - labelWidth;
-        var ySize = xSize * ratio;
+        var ySize = xSize / ratio;
         return Size(xSize, ySize);
       }
     }

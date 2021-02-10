@@ -1,69 +1,916 @@
 CREATE TABLE "nin_Language" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	name TEXT, 
-	PRIMARY KEY (_id)
+	PRIMARY KEY (pid)
 );
 CREATE TABLE "nin_MappingScale" (
-	_id INTEGER NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id INTEGER, 
 	name TEXT, 
-	PRIMARY KEY (_id)
+	PRIMARY KEY (pid), 
+	UNIQUE (_id)
 );
 CREATE TABLE "nin_GadScale" (
-	"m7Scale" INTEGER NOT NULL, 
+	pid INTEGER NOT NULL, 
+	"m7Scale" INTEGER, 
 	"m3Scale" INTEGER, 
 	"Constancy" TEXT, 
-	PRIMARY KEY ("m7Scale")
+	PRIMARY KEY (pid), 
+	UNIQUE ("m7Scale")
 );
 CREATE TABLE "nin_Species" (
-	"scientificNameId" INTEGER NOT NULL, 
+	pid INTEGER NOT NULL, 
+	"scientificNameId" INTEGER, 
 	"scientificName" TEXT, 
 	author TEXT, 
 	"vernacularName" TEXT, 
-	PRIMARY KEY ("scientificNameId")
+	PRIMARY KEY (pid), 
+	UNIQUE ("scientificNameId")
+);
+CREATE TABLE dummy_table_4349059d_d913_4e3d_aea3_a46c0450b38e (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c63fe8be_91b6_4772_a514_69b27e42e16d (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_a20d3f46_7283_4a27_b688_5e8d3645d38f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_93079b58_3da4_4c8c_ad1d_67a493c95f2f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_332d5764_8b68_445b_b00f_38f3c98fb6b3 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_332408c2_536f_44c0_9b9f_ad8df7d0e498 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c1fba8e3_7fd8_4a29_b84c_43d9400e911e (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0e3bb3bc_3f2b_4d3f_92bb_3dcad8c45245 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_e5939659_5438_496d_a536_3b46e0d5458b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_5aec86c6_87c1_476c_8dcc_85553a90309f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_fc835c43_2190_49c5_a0ed_922f827f20f3 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_6c0ea3bc_1c1b_47c9_8851_bd5b641f1ef6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_29775be8_f8b1_4e30_91b2_f19d82ea1227 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_bf89e5c6_c1b1_4d60_81b2_1355fd239db6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_243f7f20_965c_4354_9855_360ae39ef70b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_714cf9c5_1668_43e7_ba29_625ce2c2b2a9 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_81fb43ab_690b_4239_aa06_b3eccff82319 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_913b2be3_01f5_4552_87d6_0241bdf173f5 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d5b1ce29_3087_46aa_bf2b_9e58c89a5e98 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_3b71087d_a188_4c72_a33a_f8bb9345dc4f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_78be8ae0_c4b6_4548_8908_abc0960da648 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_fe9e24eb_104a_469b_a348_1bf1a71e8e9f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c5982c3e_9ffc_4dec_85fd_e3b80bc7879f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_099de4b5_ded9_475f_a9e3_068407ad4b62 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_f98008b3_d682_46ba_9702_9824f62620f9 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0038f5ce_875a_486a_8750_e5a5741f9ed8 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0d6c6ada_ebe8_432a_b4f7_4256751a0b9f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_392966d1_7436_453d_9889_f1ca58556bdc (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_82fbff7a_74f9_422e_b1cb_62ca331ee7c2 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_fae14c12_710d_4952_8c0f_8aa3f4a4deb6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4dec9593_edee_4352_a43f_f2ef82f4fdef (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d78a81be_ce54_430d_900d_5690b67ba50a (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_cea5f1c4_75f6_4962_9197_9030f34ffdb0 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_6dcd2fdc_99e1_4a43_b740_cd0262d5ee9c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0af303b6_2950_4d16_acdd_f6758ebe7ace (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c8edb55d_693b_43b8_8107_2a4a7a84eb72 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0f4acf6c_736c_49d2_887b_113bc3fae0e5 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d8e035b8_cef7_4a76_bde0_338364131a19 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_dd9b40f5_dae6_4e82_94a1_e5b262fe8a88 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0d11f6a1_8cd1_4c7c_9d09_60fc191eef88 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c7c2199d_d1da_457c_bf8b_b6f3f11bd0cb (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_7f4cd4ee_003d_4c56_b46b_e8e4b9228f52 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_baf6fde2_3d99_4716_82be_80993d5354fd (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0cf272f6_227a_4eab_a987_9cdfe96fe502 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0c56a439_06b9_43c5_a7d1_e2f546da5b7b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_045a5cb2_5c9f_4863_8057_4fb07343032f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_726ffbeb_77bd_4ed2_8834_2614f38322da (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_90911ef1_3811_495d_9e1e_445faa4f4f33 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d3154710_b706_48d0_a849_17aa46a1dd20 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_b0d97cd3_f305_4b62_88d2_e92783f6dcff (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_ffb95816_3937_443b_b5ab_b9e428230f7e (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_321f8af4_be38_4213_9106_c231652de33a (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_bc3f544b_6c6d_480a_a92a_b13c914ca83c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_44d1c439_64d7_474d_ab9f_33eb928d0e5c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_3cbbd325_f87c_4b1e_b3a3_25670343e674 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_b757a27d_b8e5_431c_abd5_33cc08b37377 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_80b4b390_c374_40d8_9b40_f22322036e14 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_07a9cdfd_6c71_41a7_be7f_d79fb557aa6d (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d5defb13_6e21_4dd0_9af9_399d20f1801b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_9699c9e1_3067_47f6_aca4_1c19fd7f7c1e (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_88876f2e_220b_4061_be76_4f949453c65c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_749d8f94_5111_479e_82c6_e47f3126417f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_b457ff61_4cd5_4206_83ff_b66b461c4b00 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_933954c0_bf25_4b8b_a55f_1cde09cef71e (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_dad331b1_6d3c_4079_bb94_4ce5de1d269c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0e395000_a3d9_4ddf_a71b_deee5a6707fc (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_41d126db_5f4a_4752_b6b3_c679bb18be5e (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_f37cb793_1670_4c4e_b125_3955f2fab5fa (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d2743537_56a6_432d_b906_05c3803c2a92 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_629d0fb5_08b7_47dd_81f5_8002e24faa72 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_79e66b61_1c69_4095_bef1_6bc2bb818e8c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d462ea8d_68c7_4204_a90f_0c1087597ebe (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_9fac6a35_2136_4e4f_93a6_50a7d1dff4e8 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_9debd907_7d18_4603_9715_d750e9b0fdc6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_9fbf7a26_4d05_4250_a314_09ced7d9eebe (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_95c8fd31_ef7b_44db_b2cf_dc8dcca97f79 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_fb1164e1_acb9_431d_876e_855eb7794190 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_05570ec1_f808_44d8_b084_13eab39fe591 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_b21a23b3_ab42_427f_ab39_b202c76362fe (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c7bb35ea_9abb_42bd_b9f0_58719576575b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_56919f08_f014_4791_b5d0_59ce37c01e4d (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_745c3513_ef47_4fe2_9f54_ba79a52c93c7 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_5085ac66_d4d2_465c_b010_ba9320835fe8 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_48d18408_80f3_4372_9c67_cd04eb76c823 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_5a3bda0e_7c8c_43e2_8d25_2d6102031370 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_60319534_bc6f_4eff_975c_b1274cc5b0dc (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_9ceec56b_1156_481d_af05_1586210f19e0 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_def28e03_20ab_4367_92ca_d6a9411b49eb (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_152f6cfc_9c89_4fee_afe6_dc72fc1482c1 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_ceab408b_5059_4049_a80d_9b4cc9959a4b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_752fd808_b34b_42ee_a9f6_bcd080da7957 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_70d64452_e156_4acc_98e9_d990701a5ad7 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_260e1b48_3714_43e3_b48e_259840bcd86e (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_2ed080cd_e649_4114_8410_eb3c3fa18e74 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_71c753d7_f97b_41fb_a71a_890afc3e42df (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_06af6b5c_cee9_49a7_b61b_58576985b8e9 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_66ebe2bd_a13e_49db_b79a_c961c05f7865 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_f271e001_f8d5_4b7b_ba72_7772f9f3012a (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_018caa25_01bd_4045_af7c_57c8d8e027ea (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4f0fe304_74aa_4bed_b6c1_8ba3a8cfca26 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_de93718d_c703_446d_b508_ca769b0058f8 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4e52bb95_a9e2_4220_b552_1043e4c255b6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_6b7517e2_4ef7_40ba_a2f4_f70b339e2b58 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_8c74b88d_14f4_49f5_bc96_1acf62ae50ff (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d8b1d24c_40d2_406a_b536_4cd23c64ce41 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_7e8d14cf_6da1_4e75_9554_0b209b7e57d9 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_f064d70b_fd00_4dbc_a1bf_33187a9922ec (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_da52c333_fafe_4c43_a83c_d08e1fb27e6f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_9301d75e_a7ff_4e92_bc90_62b92a1eccfe (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_95a11b54_f1bb_4e1f_b9f2_3c794ee912f8 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_a4f748c2_22cc_4468_a272_82dc7b484764 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_7e85380e_0930_45f5_a3ff_233562910879 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0a60b6f3_39aa_4c3e_bbca_0ea7273667b1 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_fa9f0ade_fd22_4978_bef8_cf47e04636cd (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_2187d5ee_db66_4c20_af5f_bde94986206c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_cf97b5c4_c73d_4970_92cb_dd7120534877 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_6f2a4f21_6aef_4f65_8ed9_39bc1d4841fd (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_9e947df6_05c8_4fd4_ae36_35954d387b6d (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_fa387bcd_8ab1_4fbb_ae9d_e5c429a4137e (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_3b1bef4b_f72f_4f47_94f9_08d902285b87 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4c581a91_2db7_439f_94cc_15b0c784667d (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_305d0f8f_db39_49c7_8f1a_aed04e04edeb (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_91e622af_a732_4dde_992a_e2bda5a4f453 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_26f90e9b_c527_48ec_aa0e_45c286269d5c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_a5462069_3c9c_414c_9485_152a996e33b7 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_3f0b85d8_04c3_47de_a8da_dda9849f07fa (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_498d5530_3005_408b_9b46_c61a8b2bee69 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_f8b1b2f5_c156_4e3e_ad81_edf37b87c115 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_fd9a19df_d125_4ffb_a7e6_e89a065f790a (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_33b0182d_9257_44c2_a039_8b9a08659ea9 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_a2af0370_8777_4c4a_ab92_1c29b032f426 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_1a4a1185_7a7e_4477_b50e_121ec612da82 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_53aa8055_ac31_4b2d_9ae5_b385e7b3786d (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_6a4fc738_bc11_4d49_bafc_fc6956d2d201 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_6a178f8f_e609_404a_b5b9_ae257954e544 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_b0f1840b_e3f4_4ee2_9951_27a02aa0e523 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_265c7382_2fe2_4526_9e94_bc8ab0dbab2f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_a58cb5a4_bfd3_42d0_94d7_47c4347ad9c8 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_50e6809a_2a63_474c_b800_8df3ca13d99b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_49e273d0_daac_48e7_a4f7_bbf11519cade (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_deb9156c_0ceb_4556_9632_0c4517884a73 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_373351b9_02db_4900_94cf_498edf707927 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_6a4e663f_a9f0_49ae_9879_83624b9d3e40 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_a562aff5_7865_47e9_961b_4886ab85f313 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_7f09f3b2_b0f8_4d00_b9a3_754c399992d2 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_3180ba9a_c124_4221_a984_54bcda61e409 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_a7b9c42d_3bbf_4262_b57d_830cabbbcbca (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c326e4a4_21fe_40d8_951c_d1d9cd96e04a (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4f1de094_a8ca_43e4_b4b1_e223680b2f7f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_18a7721a_3239_465e_b4ce_ae4abf81f5bf (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_0615b655_c19c_44b2_af57_2b048aac6039 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_52d3bc58_4a49_4555_9f22_3daac7aefb9b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_e92edef8_52dd_4dea_96df_fa48c1f8ef13 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_5b3a65cf_461d_4005_b0e0_9dc797272dd4 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4ebc0d8c_8dd9_483b_9623_a0d5cb6ad71b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_9fd69983_f354_49c3_ab68_b177b8dc9cf3 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_f7887d13_870f_466a_9a72_4b3246c23d95 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_8cac12f9_1abe_482b_87e3_aa26c7e3e2fa (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_786bc2e3_3678_48f6_8a8c_c6f3b9cebaad (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_61147d7c_9cdc_46a1_a78d_b7c6cdca3e5d (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_271abf8a_3733_40cf_9f36_442e5cceb7b6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4b5ff911_921b_4dd5_88fd_19258bbf7838 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4dce97d8_ac32_4d87_a70d_3fcabfd67a90 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_98597e23_3b3a_47f6_a677_c8d13ce1f5fd (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_2f055ece_3bfd_4cf0_89e1_ce24776c5168 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_09a7ee5d_9bca_40ba_b5f8_9c82175ba35a (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_ac1fef2c_b01f_46bb_95f8_2bb5ab810f50 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_e8e258d9_373a_44ee_878e_083fc5be179c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_5f2f056d_ad6f_4c13_b398_63ca48b27564 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_096a0ed8_8ffb_429a_bcb3_70e45e9589a0 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_5dfe2d5a_d69b_4318_8932_c66531452a69 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d992423c_7528_4ff9_8591_c80122477c3e (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_93239425_7bdd_4576_8988_d880dfdf65f6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_dbd3cd92_2db3_4a17_a20b_619744ffeffc (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_240171e0_30f3_4601_b0ae_cbacbfbb07e9 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_b23656e4_dc35_44be_9e87_5058b1f11c96 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_a9ffb16c_3d92_4cce_a41e_9c858ffc44c0 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_3f58f97d_c409_4674_8b34_4992f0c7882c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d4e557d4_8888_45f4_948c_b10d377ed066 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_3867b643_6c6f_490f_be3f_4473a4f31fc0 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_22110226_888e_45bf_a01c_b0746bdacde5 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_6fcf701a_c8f7_48ef_a17b_a310546ee74f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_6ca37e37_52da_4463_a756_8aeac287d72b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c5f9c592_d8e7_4063_a738_05e9c7b955f6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_8c0a5684_d503_425a_9b41_94ad7122ea1b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_aba1f34f_f9a9_4413_b520_db5235a7506d (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_8a92697b_9793_4115_8c0e_dd556259f252 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_818c5f82_c315_41c0_922a_b33b829821f7 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_84b0ca6a_c75c_48c4_b6a7_e95fd266dce2 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_036b9dc2_1dfc_4cca_9a64_cabda861926f (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_dbe73d8f_bb3f_4860_b019_2384552a31b9 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_e6ab4e8f_d056_4b98_9f10_090349483d30 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_e96d0a08_42dd_4e9e_9ec9_b0be250f33b6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_80f1d570_4eba_4b8e_8316_f47c74de7b8b (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_60f2a6e1_9989_413d_bda3_ec98bb0c2e87 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_ce8dc226_a368_4141_9a78_35ad80750b72 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_21cf0c5f_3a84_48a5_b7a2_654fa0a6d353 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_425de20c_076b_4e5a_b1ca_0bffd224c566 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_df2aa88d_a542_43db_a529_d946a5d10bfa (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_3172dcce_4f15_4304_b206_451ca2ea48a9 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d3e1038c_4940_4855_a605_0bf1ff949976 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c2c1f079_d2ec_4cdc_bb94_a27f509b912a (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_107ba4ee_c3f9_4e60_b4e0_34738a48c72c (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_f8cb9175_20a2_4ed6_95af_40678ba9e3e5 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_e196a2ad_e69f_40cf_a0c0_e298a25c56ad (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_72af6291_1f4d_4999_8c6c_411b09b8e579 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_aeddaeed_d254_4246_b5da_50b5255d9c98 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
 );
 CREATE TABLE "nin_Detail" (
-	_id TEXT NOT NULL, 
-	language_id TEXT NOT NULL, 
-	"key" TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
+	language_id TEXT, 
+	"key" TEXT, 
 	value TEXT, 
-	PRIMARY KEY (_id, language_id, "key"), 
+	PRIMARY KEY (pid), 
 	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
 );
 CREATE TABLE "nin_MajorTypeGroup" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	detail_id TEXT, 
-	PRIMARY KEY (_id), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_StructuringProcess" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	detail_id TEXT, 
-	PRIMARY KEY (_id), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_PatternOfVariation" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	detail_id TEXT, 
-	PRIMARY KEY (_id), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_LECType" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	detail_id TEXT, 
-	PRIMARY KEY (_id), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_MajorType" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	"majorTypeGroup_id" TEXT, 
 	"order" INTEGER, 
 	detail_id TEXT, 
-	PRIMARY KEY (_id), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY("majorTypeGroup_id") REFERENCES "nin_MajorTypeGroup" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_LEC" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	"parentLec_id" TEXT, 
 	"structuringProcess_id" TEXT, 
 	"patternOfVariation_id" TEXT, 
@@ -71,113 +918,131 @@ CREATE TABLE "nin_LEC" (
 	"knowledgeBaseDivision" INTEGER, 
 	"spatialScale" INTEGER, 
 	detail_id TEXT, 
-	PRIMARY KEY (_id), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY("parentLec_id") REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY("structuringProcess_id") REFERENCES "nin_StructuringProcess" (_id), 
 	FOREIGN KEY("patternOfVariation_id") REFERENCES "nin_PatternOfVariation" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_MinorType" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	"majorType_id" TEXT, 
 	detail_id TEXT, 
-	PRIMARY KEY (_id), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_MajorTypeLEC" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	lec_id TEXT, 
 	"majorType_id" TEXT, 
 	"lecType_id" TEXT, 
 	axis INTEGER, 
-	PRIMARY KEY (_id), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
 	FOREIGN KEY("lecType_id") REFERENCES "nin_LECType" (_id)
 );
 CREATE TABLE "nin_ElementarySegment" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	lec_id TEXT, 
-	value TEXT NOT NULL, 
+	value TEXT, 
 	"order" INTEGER, 
-	PRIMARY KEY (_id, value), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)
 );
 CREATE TABLE "nin_MinorTypeScaled" (
-	_id TEXT NOT NULL, 
-	"minorType_id" TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
+	"minorType_id" TEXT, 
 	"mappingScale_id" INTEGER, 
-	PRIMARY KEY (_id, "minorType_id"), 
+	PRIMARY KEY (pid), 
 	FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id), 
 	FOREIGN KEY("mappingScale_id") REFERENCES "nin_MappingScale" (_id)
 );
 CREATE TABLE "nin_ElementarySegmentGroup" (
-	_id TEXT NOT NULL, 
-	"elementarySegment_id" TEXT NOT NULL, 
-	PRIMARY KEY (_id, "elementarySegment_id"), 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
+	"elementarySegment_id" TEXT, 
+	PRIMARY KEY (pid), 
 	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
 );
 CREATE TABLE "nin_StandardSegment" (
-	_id TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
 	"majorTypeLEC_id" TEXT, 
 	"order" INTEGER, 
 	detail_id TEXT, 
-	PRIMARY KEY (_id), 
+	PRIMARY KEY (pid), 
+	UNIQUE (_id), 
 	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_GadModifier" (
-	"majorTypeLEC_id" TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	"majorTypeLEC_id" TEXT, 
 	"majorType_id" TEXT, 
 	lec_id TEXT, 
-	species_id INTEGER NOT NULL, 
+	species_id INTEGER, 
 	value INTEGER, 
-	PRIMARY KEY ("majorTypeLEC_id", species_id), 
+	PRIMARY KEY (pid), 
 	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id), 
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY(species_id) REFERENCES "nin_Species" ("scientificNameId")
 );
 CREATE TABLE "nin_MinorTypeStandardSegment" (
-	"minorType_id" TEXT NOT NULL, 
-	"standardSegment_id" TEXT NOT NULL, 
-	PRIMARY KEY ("minorType_id", "standardSegment_id"), 
+	pid INTEGER NOT NULL, 
+	"minorType_id" TEXT, 
+	"standardSegment_id" TEXT, 
+	PRIMARY KEY (pid), 
 	FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id), 
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)
 );
 CREATE TABLE "nin_ElementarySegmentGroupDetail" (
-	"elementarySegmentGroup_id" TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	"elementarySegmentGroup_id" TEXT, 
 	lec_id TEXT, 
 	value TEXT, 
 	detail_id TEXT, 
-	PRIMARY KEY ("elementarySegmentGroup_id"), 
+	PRIMARY KEY (pid), 
+	UNIQUE ("elementarySegmentGroup_id"), 
 	FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" ("elementarySegment_id"), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_StandardSegmentElement" (
-	"standardSegment_id" TEXT NOT NULL, 
-	"elementarySegment_id" TEXT NOT NULL, 
-	PRIMARY KEY ("standardSegment_id", "elementarySegment_id"), 
+	pid INTEGER NOT NULL, 
+	"standardSegment_id" TEXT, 
+	"elementarySegment_id" TEXT, 
+	PRIMARY KEY (pid), 
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id), 
 	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
 );
 CREATE TABLE "nin_ElementarySegmentCombination" (
-	_id TEXT NOT NULL, 
-	"elementarySegmentGroup_id" TEXT NOT NULL, 
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
+	"elementarySegmentGroup_id" TEXT, 
 	"majorTypeLEC_id" TEXT, 
-	PRIMARY KEY (_id, "elementarySegmentGroup_id"), 
+	PRIMARY KEY (pid), 
 	FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" (_id), 
 	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id)
 );
 CREATE TABLE "nin_GadValue" (
-	"elementarySegmentCombination_id" TEXT NOT NULL, 
-	species_id INTEGER NOT NULL, 
+	pid INTEGER NOT NULL, 
+	"elementarySegmentCombination_id" TEXT, 
+	species_id INTEGER, 
 	"majorType_id" TEXT, 
 	"valueM7Scale_id" INTEGER, 
 	"valueM3Scale_id" INTEGER, 
-	PRIMARY KEY ("elementarySegmentCombination_id", species_id), 
+	PRIMARY KEY (pid), 
 	FOREIGN KEY("elementarySegmentCombination_id") REFERENCES "nin_ElementarySegmentCombination" (_id), 
 	FOREIGN KEY(species_id) REFERENCES "nin_Species" ("scientificNameId"), 
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 

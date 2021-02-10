@@ -12,7 +12,8 @@ class Language(Base):
     reference this table.'''
 
     __tablename__ = f'{prefix}Language'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text)
     name = Column(Text)
 
 
@@ -20,10 +21,11 @@ class Detail(Base):
     '''Key value pairs for details'''
 
     __tablename__ = f'{prefix}Detail'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text)
     language_id = Column(Text, ForeignKey(
-        f'{prefix}Language._id'), primary_key=True)
-    key = Column(Text, primary_key=True)
+        f'{prefix}Language._id'))
+    key = Column(Text)
     value = Column(Text)
 
 
@@ -31,7 +33,8 @@ class MajorTypeGroup(Base):
     '''Table of Major type groups lie T,V,M etc..'''
 
     __tablename__ = f'{prefix}MajorTypeGroup'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
     # References
@@ -42,7 +45,8 @@ class MajorType(Base):
     '''Major types like T4,V11 and so on, references major type.'''
 
     __tablename__ = f'{prefix}MajorType'
-    _id = Column(Text, primary_key=True,)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True,)
     majorTypeGroup_id = Column(Text, ForeignKey(f'{prefix}MajorTypeGroup._id'))
     order = Column(Integer)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
@@ -56,7 +60,8 @@ class MinorType(Base):
     '''Minor types like T4-1 '''
 
     __tablename__ = f'{prefix}MinorType'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True)
     majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
@@ -69,10 +74,11 @@ class MinorTypeStandardSegment(Base):
     '''Minor type association with standard segments and Minor types'''
 
     __tablename__ = f'{prefix}MinorTypeStandardSegment'
+    pid = Column(Integer, autoincrement=True, primary_key=True)
     minorType_id = Column(Text, ForeignKey(
-        f'{prefix}MinorType._id'), primary_key=True)
+        f'{prefix}MinorType._id'))
     standardSegment_id = Column(Text, ForeignKey(
-        f'{prefix}StandardSegment._id'), primary_key=True)
+        f'{prefix}StandardSegment._id'))
 
     # References
     minorType = relationship('MinorType', back_populates='standardSegments')
@@ -83,9 +89,10 @@ class MinorTypeScaled(Base):
     '''Minor type association with scale'''
 
     __tablename__ = f'{prefix}MinorTypeScaled'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text)
     minorType_id = Column(Text, ForeignKey(
-        f'{prefix}MinorType._id'), primary_key=True)
+        f'{prefix}MinorType._id'))
     mappingScale_id = Column(Integer, ForeignKey(f'{prefix}MappingScale._id'))
 
     # References
@@ -96,7 +103,8 @@ class MappingScale(Base):
     '''Mapping scale used'''
 
     __tablename__ = f'{prefix}MappingScale'
-    _id = Column(Integer, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Integer, unique=True)
     name = Column(Text)
 
 
@@ -104,7 +112,8 @@ class LEC(Base):
     '''Local environmental complex-gradients with their descriptions'''
 
     __tablename__ = f'{prefix}LEC'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True)
     parentLec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
     structuringProcess_id = Column(
         Text, ForeignKey(f'{prefix}StructuringProcess._id'))
@@ -130,7 +139,8 @@ class StructuringProcess(Base):
     '''category of structuring process of local environmental complex-gradient'''
 
     __tablename__ = f'{prefix}StructuringProcess'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
     # References
@@ -142,7 +152,8 @@ class PatternOfVariation(Base):
     ends in a species-thinning situation at high intensity)'''
 
     __tablename__ = f'{prefix}PatternOfVariation'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
     # References
@@ -153,7 +164,8 @@ class MajorTypeLEC(Base):
     '''Association table for LEC and major types'''
 
     __tablename__ = f'{prefix}MajorTypeLEC'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True)
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
     majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
     lecType_id = Column(Text, ForeignKey(f'{prefix}LECType._id'))
@@ -169,31 +181,35 @@ class LECType(Base):
     ''' LEC categories types like dLEC, mLEC, iLEC and so on'''
 
     __tablename__ = f'{prefix}LECType'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
 
 class ElementarySegment(Base):
     __tablename__ = f'{prefix}ElementarySegment'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True)
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
-    value = Column(Text, primary_key=True)
+    value = Column(Text)
     order = Column(Integer)
 
 
 class ElementarySegmentGroup(Base):
     __tablename__ = f'{prefix}ElementarySegmentGroup'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text)
     elementarySegment_id = Column(Text, ForeignKey(
-        f'{prefix}ElementarySegment._id'), primary_key=True)
+        f'{prefix}ElementarySegment._id'))
 
 
 class ElementarySegmentGroupDetail(Base):
     '''elementary segments of individual LECs like KA.a, VT.b'''
 
     __tablename__ = f'{prefix}ElementarySegmentGroupDetail'
+    pid = Column(Integer, autoincrement=True, primary_key=True)
     elementarySegmentGroup_id = Column(Text, ForeignKey(
-        f'{prefix}ElementarySegmentGroup.elementarySegment_id'), primary_key=True)
+        f'{prefix}ElementarySegmentGroup.elementarySegment_id'), unique=True)
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
     value = Column(Text)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
@@ -206,10 +222,11 @@ class StandardSegmentElement(Base):
     ''' Association table that connects standard segments and elementary segments'''
 
     __tablename__ = f'{prefix}StandardSegmentElement'
+    pid = Column(Integer, autoincrement=True, primary_key=True)
     standardSegment_id = Column(Text, ForeignKey(
-        f'{prefix}StandardSegment._id'), primary_key=True)
+        f'{prefix}StandardSegment._id'))
     elementarySegment_id = Column(Text, ForeignKey(
-        f'{prefix}ElementarySegment._id'), primary_key=True)
+        f'{prefix}ElementarySegment._id'))
 
     # References
     elementarySegment = relationship('ElementarySegment')
@@ -221,7 +238,8 @@ class StandardSegment(Base):
     ''' Standard segments for LACCategorie. They consist of Elementary segments'''
 
     __tablename__ = f'{prefix}StandardSegment'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text, unique=True)
     majorTypeLEC_id = Column(Text, ForeignKey(f'{prefix}MajorTypeLEC._id'))
     order = Column(Integer)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
@@ -234,10 +252,11 @@ class StandardSegment(Base):
 
 class GadValue(Base):
     __tablename__ = f'{prefix}GadValue'
+    pid = Column(Integer, autoincrement=True, primary_key=True)
     elementarySegmentCombination_id = Column(Text, ForeignKey(
-        f'{prefix}ElementarySegmentCombination._id'), primary_key=True)
+        f'{prefix}ElementarySegmentCombination._id'))
     species_id = Column(Integer, ForeignKey(
-        f'{prefix}Species.scientificNameId'), primary_key=True)
+        f'{prefix}Species.scientificNameId'))
     majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
     valueM7Scale_id = Column(Integer, ForeignKey(
         f'{prefix}GadScale.m7Scale'), nullable=True)
@@ -254,10 +273,11 @@ class GadValue(Base):
 class GadModifier(Base):
     '''uLKM value'''
     __tablename__ = f'{prefix}GadModifier'
+    pid = Column(Integer, autoincrement=True, primary_key=True)
     majorTypeLEC_id = Column(
         Text,
         ForeignKey(f'{prefix}MajorTypeLEC._id'),
-        primary_key=True
+
     )
     majorType_id = Column(
         Text,
@@ -268,15 +288,16 @@ class GadModifier(Base):
         ForeignKey(f'{prefix}LEC._id')
     )
     species_id = Column(Integer, ForeignKey(
-        f'{prefix}Species.scientificNameId'), primary_key=True)
+        f'{prefix}Species.scientificNameId'))
     value = Column(Integer)
 
 
 class ElementarySegmentCombination(Base):
     __tablename__ = f'{prefix}ElementarySegmentCombination'
-    _id = Column(Text, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    _id = Column(Text)
     elementarySegmentGroup_id = Column(Text, ForeignKey(
-        f'{prefix}ElementarySegmentGroup._id'), primary_key=True)
+        f'{prefix}ElementarySegmentGroup._id'))
     majorTypeLEC_id = Column(
         Text,
         ForeignKey(f'{prefix}MajorTypeLEC._id')
@@ -290,14 +311,16 @@ class GadScale(Base):
     ''' Collection of M7 and M3 scales with constancy'''
 
     __tablename__ = f'{prefix}GadScale'
-    m7Scale = Column(Integer, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    m7Scale = Column(Integer, unique=True)
     m3Scale = Column(Integer)
     Constancy = Column(Text)
 
 
 class Species(Base):
     __tablename__ = f'{prefix}Species'
-    scientificNameId = Column(Integer, primary_key=True)
+    pid = Column(Integer, autoincrement=True, primary_key=True)
+    scientificNameId = Column(Integer, unique=True)
     scientificName = Column(Text)
     author = Column(Text)
     vernacularName = Column(Text)
