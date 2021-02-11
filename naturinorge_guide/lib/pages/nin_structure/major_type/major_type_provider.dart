@@ -253,7 +253,8 @@ class MajorTypeProvider extends ChangeNotifier {
           in List.generate(_xAxis.standardSegments.length, (idx) => idx)) {
         var minorTypeSegmentId = minorTypeSlice[x][y];
         if (minorTypeSegmentId == null) {
-          minorTypesScaledBlocks.add(MinorTypeBlock(1, 1, null));
+          var size = _getEmptyBlockSize(x, y);
+          minorTypesScaledBlocks.add(MinorTypeBlock(size[0], size[1], null));
         } else if (usedMinorTypeIds.contains(minorTypeSegmentId)) {
           continue;
         } else {
@@ -268,6 +269,12 @@ class MajorTypeProvider extends ChangeNotifier {
       }
     }
     _minorTypesScaledBlocks = minorTypesScaledBlocks;
+  }
+
+  List<int> _getEmptyBlockSize(int x, int y) {
+    var width = _xAxis.standardSegments[x].elementarySegmentGroups.length;
+    var height = _yAxis.standardSegments[x].elementarySegmentGroups.length;
+    return [width, height];
   }
 
   List<int> _getMinorTypeBlockSize(List<dynamic> slice, int x, int y) {
