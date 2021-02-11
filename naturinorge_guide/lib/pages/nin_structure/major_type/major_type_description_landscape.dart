@@ -41,6 +41,7 @@ class MajorTypeDetailsLandscape extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: AutoSizeText(
                         ninMajorType.name,
+                        wrapWords: false,
                         style: Theme.of(context).textTheme.headline2,
                         textAlign: TextAlign.center,
                       ),

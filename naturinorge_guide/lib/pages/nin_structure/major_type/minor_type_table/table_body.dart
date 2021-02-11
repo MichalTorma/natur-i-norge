@@ -44,7 +44,9 @@ class TableBody extends StatelessWidget {
         ),
         if (Provider.of<MajorTypeProvider>(context).gadArray != null &&
             Provider.of<MajorTypeProvider>(context).showGad == 0)
-          GadOverlay(),
+          IgnorePointer(
+            child: GadOverlay(),
+          ),
       ],
     );
   }
