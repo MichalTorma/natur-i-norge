@@ -286,28 +286,6 @@ class MajorTypeProvider extends ChangeNotifier {
     return [width, height];
   }
 
-  int _getMinorTypeBlockWidth(List<dynamic> slice, int x, int y) {
-    var mtsId = slice[x][y];
-    var xPointer = x;
-    var width = 0;
-    while (xPointer < slice.length && slice[xPointer][y] == mtsId) {
-      width++;
-      xPointer++;
-    }
-    return width;
-  }
-
-  int _getMinorTypeBlockHeight(List<dynamic> slice, int x, int y) {
-    var mtsId = slice[x][y];
-    var yPointer = y;
-    var height = 0;
-    while (yPointer < slice[x].length && slice[x][yPointer] == mtsId) {
-      height++;
-      yPointer++;
-    }
-    return height;
-  }
-
   setMappingScale(int mappingScaleId) async {
     _selectedMappingScale = _allMappingScales[mappingScaleId];
     await _initializeMinorTypes();
