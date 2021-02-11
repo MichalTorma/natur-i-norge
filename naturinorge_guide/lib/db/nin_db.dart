@@ -263,7 +263,7 @@ class NiNDatabase extends _$NiNDatabase {
           .get();
 
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 11;
 }
 
 LazyDatabase _openConnection() {
