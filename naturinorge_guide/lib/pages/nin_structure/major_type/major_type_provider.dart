@@ -14,7 +14,7 @@ class MajorTypeProvider extends ChangeNotifier {
 
   MajorTypeProvider(this.locale);
 
-  bool _isLoading = true;
+  bool _isLoading = false;
   Detailed<NinMajorTypeData> _majorType;
   MajorTypeAdapter _majorTypeAdapter;
   List<AxisBlock> _allAxis = List<AxisBlock>.empty(growable: true);
@@ -263,7 +263,7 @@ class MajorTypeProvider extends ChangeNotifier {
               .firstWhere((e) => e.minorTypeScaledId == minorTypeSegmentId);
 
           var size = _getMinorTypeBlockSize(minorTypeSlice, x, y);
-          print("$minorTypeSegmentId $size");
+          // print("$minorTypeSegmentId $size");
           minorTypesScaledBlocks.add(MinorTypeBlock(size[0], size[1], mnt));
         }
       }
