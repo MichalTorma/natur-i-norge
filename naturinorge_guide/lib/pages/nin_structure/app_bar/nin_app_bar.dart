@@ -30,7 +30,14 @@ class NinAppBar extends StatelessWidget {
               .toString()));
     return SliverAppBar(
       floating: true,
-      actions: actions,
+      title: Container(
+        height: 60,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: actions,
+        ),
+      ),
+      // actions: actions,
       leading: LeadingNinAppBar(),
     );
   }
