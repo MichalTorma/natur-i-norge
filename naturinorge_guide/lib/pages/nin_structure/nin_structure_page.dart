@@ -2,6 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/pages/nin_structure/app_bar/nin_app_bar.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description_landscape.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_selector.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type_group/major_type_group_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
@@ -38,86 +39,96 @@ class _StructurePageState extends State<StructurePage> {
       // appBar: NeumorphicAppBar(
       //   title: Text(LocaleKeys.structure).tr(),
       // ),
-      body: CustomScrollView(controller: controller, slivers: [
-        NinAppBar(),
-        SliverList(
-          delegate: SliverChildListDelegate([
-            AutoScrollTag(
-              key: ValueKey(0),
-              controller: controller,
-              index: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Neumorphic(
+      body: Stack(
+        children: [
+          CustomScrollView(controller: controller, slivers: [
+            NinAppBar(),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                AutoScrollTag(
+                  key: ValueKey(0),
+                  controller: controller,
+                  index: 0,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        MajorTypeGroupSelector(),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            if (Provider.of<NinStructureProvider>(context)
-                    .selectedMajorTypeGroup !=
-                null)
-              AutoScrollTag(
-                key: ValueKey(1),
-                controller: controller,
-                index: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Neumorphic(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          MajorTypeGroupDetails(),
-                          Divider(),
-                          MajorTypeSelector(),
-                        ],
+                    child: Neumorphic(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            MajorTypeGroupSelector(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            if (Provider.of<NinStructureProvider>(context).selectedMajorType !=
-                null)
-              AutoScrollTag(
-                key: ValueKey(2),
-                controller: controller,
-                index: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Neumorphic(
+                if (Provider.of<NinStructureProvider>(context)
+                        .selectedMajorTypeGroup !=
+                    null)
+                  AutoScrollTag(
+                    key: ValueKey(1),
+                    controller: controller,
+                    index: 1,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: LayoutBuilder(
-                          // stream: null,
-                          builder: (context, boxConstraints) {
-                        if (boxConstraints.maxWidth < 1000) {
-                          return MajorTypeDetails(
-                            ninMajorType: Provider.of<NinStructureProvider>(
-                              context,
-                            ).selectedMajorType,
-                          );
-                        } else {
-                          return MajorTypeDetailsLandscape(
-                            ninMajorType: Provider.of<NinStructureProvider>(
-                              context,
-                            ).selectedMajorType,
-                          );
-                        }
-                      }),
+                      child: Neumorphic(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              MajorTypeGroupDetails(),
+                              Divider(),
+                              MajorTypeSelector(),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
+                if (Provider.of<NinStructureProvider>(context)
+                        .selectedMajorType !=
+                    null)
+                  AutoScrollTag(
+                    key: ValueKey(2),
+                    controller: controller,
+                    index: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Neumorphic(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: LayoutBuilder(
+                              // stream: null,
+                              builder: (context, boxConstraints) {
+                            if (boxConstraints.maxWidth < 1000) {
+                              return MajorTypeDetails(
+                                ninMajorType: Provider.of<NinStructureProvider>(
+                                  context,
+                                ).selectedMajorType,
+                              );
+                            } else {
+                              return MajorTypeDetailsLandscape(
+                                ninMajorType: Provider.of<NinStructureProvider>(
+                                  context,
+                                ).selectedMajorType,
+                              );
+                            }
+                          }),
+                        ),
+                      ),
+                    ),
+                  ),
+              ]),
+            ),
           ]),
-        ),
-      ]),
+          if (Provider.of<MajorTypeProvider>(context).isLoading)
+            AbsorbPointer(
+              child: Container(
+                  color: Colors.black87, child: CircularProgressIndicator()),
+            )
+        ],
+      ),
     );
   }
 
