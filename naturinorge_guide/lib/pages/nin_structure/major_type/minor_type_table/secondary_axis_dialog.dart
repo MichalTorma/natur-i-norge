@@ -56,10 +56,9 @@ class SecondaryAxisOptions extends StatelessWidget {
         ]),
       );
     }).toList();
-    return Neumorphic(
-        child: Column(
+    return Column(
       children: body,
-    ));
+    );
   }
 }
 
