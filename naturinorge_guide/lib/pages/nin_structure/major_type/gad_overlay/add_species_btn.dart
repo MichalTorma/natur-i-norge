@@ -8,6 +8,9 @@ class AddSpecieButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Provider.of<MajorTypeProvider>(context).majorType.data.id != 'T-4') {
+      return Container();
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
