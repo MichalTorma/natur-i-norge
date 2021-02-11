@@ -35,6 +35,24 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
   Widget build(BuildContext context) {
     var mt = widget.minorTypes[selected];
     var body = List<Widget>.empty(growable: true);
+    body.add(Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        mt.minorType.name,
+        style: Theme.of(context).textTheme.headline4,
+        textAlign: TextAlign.center,
+      ),
+    ));
+    if (mt.minorType.description != null) {
+      body.add(Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          mt.minorType.description,
+          style: Theme.of(context).textTheme.subtitle2,
+          textAlign: TextAlign.center,
+        ),
+      ));
+    }
     mt.minorType.other.forEach((key, value) {
       body.add(Padding(
         padding: const EdgeInsets.all(8.0),
