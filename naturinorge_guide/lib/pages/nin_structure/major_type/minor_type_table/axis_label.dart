@@ -1,4 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_label_name.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/elementary_segment_widget.dart';
@@ -44,9 +45,10 @@ class AxisLabel extends StatelessWidget {
             direction: Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: axisBlock.lecAdapter.gadElementarySegmentGroups
+            children: axisBlock.standardSegments
+                .expand((element) => element.elementarySegmentGroups)
                 .map((e) => ElementarySegmentWidget(
-                      elementarySegmentGroupAdapter: e,
+                      elementarySegmentGroupId: e,
                     ))
                 .toList()),
       )

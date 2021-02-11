@@ -9,10 +9,9 @@ class StandardSegmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var name = "<<TBF>>";
-    if (standardSegmentAdapter.standardSegment.name != null) {
-      name = standardSegmentAdapter.standardSegment.name;
-    }
+    var name = standardSegmentAdapter.standardSegment.name ??
+        standardSegmentAdapter.standardSegment.data.id;
+
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: Neumorphic(

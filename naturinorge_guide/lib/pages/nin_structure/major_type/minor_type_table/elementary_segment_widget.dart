@@ -3,8 +3,8 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
 
 class ElementarySegmentWidget extends StatelessWidget {
-  final ElementarySegmentGroupAdapter elementarySegmentGroupAdapter;
-  const ElementarySegmentWidget({Key key, this.elementarySegmentGroupAdapter})
+  final String elementarySegmentGroupId;
+  const ElementarySegmentWidget({Key key, this.elementarySegmentGroupId})
       : super(key: key);
 
   @override
@@ -15,9 +15,7 @@ class ElementarySegmentWidget extends StatelessWidget {
         child: Neumorphic(
           padding: EdgeInsets.all(2),
           child: Center(
-            child: AutoSizeText(elementarySegmentGroupAdapter
-                .elementarySegmentGroupId
-                .split('.')[1]),
+            child: AutoSizeText(elementarySegmentGroupId),
           ),
         ),
       ),
