@@ -124,6 +124,7 @@ class NiNDatabase extends _$NiNDatabase {
 
   Future<List<NinElementarySegmentData>>
       getElementarySegmentByElementarySegmentGroupId(
+          // TODO improve speed here
           String elementarySegmentGroupId) async {
     var elementarySegmentGroups = await (select(ninElementarySegmentGroup)
           ..where((tbl) => tbl.id.equals(elementarySegmentGroupId)))
