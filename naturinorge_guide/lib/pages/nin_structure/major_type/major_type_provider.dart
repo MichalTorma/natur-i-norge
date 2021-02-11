@@ -273,7 +273,7 @@ class MajorTypeProvider extends ChangeNotifier {
 
   List<int> _getEmptyBlockSize(int x, int y) {
     var width = _xAxis.standardSegments[x].elementarySegmentGroups.length;
-    var height = _yAxis.standardSegments[x].elementarySegmentGroups.length;
+    var height = _yAxis.standardSegments[y].elementarySegmentGroups.length;
     return [width, height];
   }
 
