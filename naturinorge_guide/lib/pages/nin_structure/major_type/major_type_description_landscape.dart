@@ -33,33 +33,36 @@ class MajorTypeDetailsLandscape extends StatelessWidget {
         children: [
           Container(
               width: sidebarWidth,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: AutoSizeText(
-                      ninMajorType.name,
-                      style: Theme.of(context).textTheme.headline2,
-                      textAlign: TextAlign.center,
+              child: Scrollbar(
+                child: ListView(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AutoSizeText(
+                        ninMajorType.name,
+                        style: Theme.of(context).textTheme.headline2,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                  Divider(),
-                  Text(
-                    ninMajorType.description,
-                    // trimLines: 10,
-                    // trimMode: TrimMode.Line,
-                    // trimExpandedText: LocaleKeys.read_mode.tr(),
-                    // trimCollapsedText: LocaleKeys.show_less.tr(),
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  Divider(),
-                  TableOptions(),
-                  Divider(),
-                  SecondaryAxisOptions(),
-                  Divider(),
-                  SelectedSpeciesList(),
-                  AddSpecieButtons(),
-                ],
+                    Divider(),
+                    Text(
+                      ninMajorType.description,
+                      // trimLines: 10,
+                      // trimMode: TrimMode.Line,
+                      // trimExpandedText: LocaleKeys.read_mode.tr(),
+                      // trimCollapsedText: LocaleKeys.show_less.tr(),
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Divider(),
+                    TableOptions(),
+                    Divider(),
+                    SecondaryAxisOptions(),
+                    Divider(),
+                    SelectedSpeciesList(),
+                    AddSpecieButtons(),
+                  ],
+                ),
               )),
           Container(
             // color: Colors.red,
