@@ -34,6 +34,7 @@ class TableBody extends StatelessWidget {
           crossAxisCount: Provider.of<MajorTypeProvider>(context)
               .xAxis
               .standardSegments
+              .expand((element) => element.elementarySegmentGroups)
               .length,
           reverse: true,
           primary: true,

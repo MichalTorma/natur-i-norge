@@ -260,15 +260,30 @@ class MajorTypeProvider extends ChangeNotifier {
           usedMinorTypeIds.add(minorTypeSegmentId);
           var mnt = _minorTypesScaled
               .firstWhere((e) => e.minorTypeScaledId == minorTypeSegmentId);
-          print("$minorTypeSegmentId");
-          minorTypesScaledBlocks.add(MinorTypeBlock(
-              _getMinorTypeBlockWidth(minorTypeSlice, x, y),
-              _getMinorTypeBlockHeight(minorTypeSlice, x, y),
-              mnt));
+
+          var size = _getMinorTypeBlockSize(minorTypeSlice, x, y);
+          print("$minorTypeSegmentId $size");
+          minorTypesScaledBlocks.add(MinorTypeBlock(size[0], size[1], mnt));
         }
       }
     }
     _minorTypesScaledBlocks = minorTypesScaledBlocks;
+  }
+
+  List<int> _getMinorTypeBlockSize(List<dynamic> slice, int x, int y) {
+    var mtsId = slice[x][y];
+    var mts = _minorTypesScaled.firstWhere((e) => e.minorTypeScaledId == mtsId);
+    var width = mts.minorTypes
+        .expand((element) => element.standardSegments)
+        .where((e) => e.lec.lec.data.id == _xAxis.lecAdapter.lec.data.id)
+        .expand((element) => element.elementarySegmentGroups)
+        .length;
+    var height = mts.minorTypes
+        .expand((element) => element.standardSegments)
+        .where((e) => e.lec.lec.data.id == _yAxis.lecAdapter.lec.data.id)
+        .expand((element) => element.elementarySegmentGroups)
+        .length;
+    return [width, height];
   }
 
   int _getMinorTypeBlockWidth(List<dynamic> slice, int x, int y) {
