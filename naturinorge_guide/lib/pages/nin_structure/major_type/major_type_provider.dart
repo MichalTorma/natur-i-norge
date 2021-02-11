@@ -354,4 +354,5 @@ class MajorTypeProvider extends ChangeNotifier {
   List<SpecieAdapter> get selectedSpecies => _gadHelper.selectedSpecies;
   List<List<num>> get gadArray => _gadArray;
   int get showGad => _showGad;
+  Detailed<NinMajorTypeData> get majorType => _majorType;
 }
