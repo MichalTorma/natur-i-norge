@@ -14,14 +14,15 @@ class MinorTypeTable extends StatelessWidget {
     if (boxContrains.hasBoundedWidth) {
       var ratio = Provider.of<MajorTypeProvider>(context)
               .xAxis
-              .lecAdapter
-              .gadElementarySegmentGroups
+              .standardSegments
+              .expand((element) => element.elementarySegmentGroups)
               .length /
           Provider.of<MajorTypeProvider>(context)
               .yAxis
-              .lecAdapter
-              .gadElementarySegmentGroups
+              .standardSegments
+              .expand((element) => element.elementarySegmentGroups)
               .length;
+
       if (boxContrains.maxWidth > MediaQuery.of(context).size.height) {
         var ySize =
             MediaQuery.of(context).size.height - sidePadding - labelWidth;
