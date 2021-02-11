@@ -84,7 +84,9 @@ class NiNDatabase extends _$NiNDatabase {
       getStandardSegmentsByMajorTypeLec(
           NinMajorTypeLECData majorTypeLEC, Locale locale) async {
     var standardSegments = await (select(ninStandardSegment)
-          ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLEC.id)))
+          ..where((tbl) =>
+              tbl.majorTypeLECId.equals(majorTypeLEC.id) &
+              isNull(tbl.order).not()))
         .get();
     return await Detailed<NinStandardSegmentData>()
         .fromList(standardSegments, locale);
@@ -263,7 +265,7 @@ class NiNDatabase extends _$NiNDatabase {
           .get();
 
   @override
-  int get schemaVersion => 11;
+  int get schemaVersion => 14;
 }
 
 LazyDatabase _openConnection() {

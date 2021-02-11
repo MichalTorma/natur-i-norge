@@ -41,6 +41,7 @@ class ElementarySegmentGroupAdapter {
 
   ElementarySegmentGroupAdapter(this.locale, this.elementarySegmentGroupId);
   Future getRelations() async {
+    print(elementarySegmentGroupId);
     elementarySegments =
         await db.getElementarySegmentByElementarySegmentGroupId(
             elementarySegmentGroupId);
