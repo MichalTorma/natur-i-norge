@@ -15,7 +15,7 @@ class AddSpecieButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         NeumorphicButton(
-          child: Text('Add specie'), // TODO translation
+          child: Text('Legge til arter'), // TODO translation
           onPressed: () => showDialog(
               context: context, builder: (context) => SpeciesSelector()),
         ),

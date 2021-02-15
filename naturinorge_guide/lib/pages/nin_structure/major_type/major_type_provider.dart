@@ -243,7 +243,7 @@ class MajorTypeProvider extends ChangeNotifier {
       }
     }
 
-    _minorTypesScaledBlocks = List<MinorTypeBlock>.empty(growable: true);
+    _minorTypesScaledBlocks = null;
 
     List<MinorTypeBlock> minorTypesScaledBlocks =
         List<MinorTypeBlock>.empty(growable: true);
@@ -268,7 +268,7 @@ class MajorTypeProvider extends ChangeNotifier {
         }
       }
     }
-    _minorTypesScaledBlocks = minorTypesScaledBlocks;
+    _minorTypesScaledBlocks = minorTypesScaledBlocks; //.sublist(0, 2);
   }
 
   List<int> _getEmptyBlockSize(int x, int y) {
@@ -281,16 +281,16 @@ class MajorTypeProvider extends ChangeNotifier {
     var mtsId = slice[x][y];
     var mts = _minorTypesScaled.firstWhere((e) => e.minorTypeScaledId == mtsId);
     var width = mts.minorTypes
-        .expand((element) => element.standardSegments)
-        .where((e) => e.lec.lec.data.id == _xAxis.lecAdapter.lec.data.id)
-        .expand((element) => element.elementarySegmentGroups)
-        .length;
+        .expand((mnt) => mnt.standardSegments)
+        .where((ss) => ss.lec.lec.data.id == _xAxis.lecAdapter.lec.data.id)
+        .expand((ss_f) => ss_f.elementarySegmentGroups)
+        .toSet();
     var height = mts.minorTypes
-        .expand((element) => element.standardSegments)
-        .where((e) => e.lec.lec.data.id == _yAxis.lecAdapter.lec.data.id)
-        .expand((element) => element.elementarySegmentGroups)
-        .length;
-    return [width, height];
+        .expand((mnt) => mnt.standardSegments)
+        .where((ss) => ss.lec.lec.data.id == _yAxis.lecAdapter.lec.data.id)
+        .expand((ss_f) => ss_f.elementarySegmentGroups)
+        .toSet();
+    return [width.length, height.length];
   }
 
   setMappingScale(int mappingScaleId) async {
