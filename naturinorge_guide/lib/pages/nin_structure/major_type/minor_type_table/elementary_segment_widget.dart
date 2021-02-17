@@ -15,7 +15,7 @@ class ElementarySegmentWidget extends StatelessWidget {
         child: Neumorphic(
           padding: EdgeInsets.all(2),
           child: Center(
-            child: AutoSizeText(elementarySegmentGroupId),
+            child: AutoSizeText(elementarySegmentGroupId.split('.')[1]),
           ),
         ),
       ),
