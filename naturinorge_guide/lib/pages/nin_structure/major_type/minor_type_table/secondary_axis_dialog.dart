@@ -1,8 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
+import 'package:naturinorge_guide/db/nin_db.dart';
+import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SecondaryAxisOptions extends StatelessWidget {
   const SecondaryAxisOptions({Key key}) : super(key: key);
@@ -37,7 +40,7 @@ class SecondaryAxisOptions extends StatelessWidget {
             )),
           ),
           NeumorphicToggle(
-            height: 100,
+            // height: 100,
             thumb: Neumorphic(),
             children: standarSegments,
             onChanged: (value) =>
@@ -73,7 +76,7 @@ class SecondaryToggleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var name = standardSegmentAdapter.standardSegment.name ?? '<<TBF>>';
+    var name = standardSegmentAdapter.standardSegment.name;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -82,18 +85,19 @@ class SecondaryToggleText extends StatelessWidget {
             standardSegmentAdapter.standardSegment.data.id.split('-').last,
             style: TextStyle(fontWeight: fontWeight),
           ),
-          Divider(),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: AutoSizeText(
-              name,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: fontWeight),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ))
+          // if (name != null) Divider(),
+          // if (name != null)
+          //   Expanded(
+          //       child: Padding(
+          //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          //     child: AutoSizeText(
+          //       name,
+          //       textAlign: TextAlign.center,
+          //       style: TextStyle(fontWeight: fontWeight),
+          //       maxLines: 3,
+          //       overflow: TextOverflow.ellipsis,
+          //     ),
+          //   ))
         ],
       ),
     );
