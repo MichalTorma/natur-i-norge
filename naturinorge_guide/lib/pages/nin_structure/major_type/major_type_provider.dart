@@ -279,13 +279,22 @@ class MajorTypeProvider extends ChangeNotifier {
 
   List<int> _getMinorTypeBlockSize(List<dynamic> slice, int x, int y) {
     var mtsId = slice[x][y];
-    var mts = _minorTypesScaled.firstWhere((e) => e.minorTypeScaledId == mtsId);
-    var width = mts.minorTypes
+    var mta = _minorTypesScaled.firstWhere((e) => e.minorTypeScaledId == mtsId);
+    var mts = mta.minorTypes.where((mt) =>
+        _selectedZAxisSegments
+            .map((ss) => ss.standardSegment.data.id)
+            .toSet()
+            .intersection(mt.standardSegments
+                .map((e) => e.standardSegment.data.id)
+                .toSet())
+            .length >
+        0);
+    var width = mts
         .expand((mnt) => mnt.standardSegments)
         .where((ss) => ss.lec.lec.data.id == _xAxis.lecAdapter.lec.data.id)
         .expand((ss_f) => ss_f.elementarySegmentGroups)
         .toSet();
-    var height = mts.minorTypes
+    var height = mts
         .expand((mnt) => mnt.standardSegments)
         .where((ss) => ss.lec.lec.data.id == _yAxis.lecAdapter.lec.data.id)
         .expand((ss_f) => ss_f.elementarySegmentGroups)
