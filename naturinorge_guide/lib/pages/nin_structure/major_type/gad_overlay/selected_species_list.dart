@@ -27,6 +27,7 @@ class SelectedSpeciesList extends StatelessWidget {
         .toList();
     return ListView(
       shrinkWrap: true,
+      primary: false,
       children: body,
     );
   }

@@ -101,7 +101,7 @@ class _StructurePageState extends State<StructurePage> {
                           child: LayoutBuilder(
                               // stream: null,
                               builder: (context, boxConstraints) {
-                            if (boxConstraints.maxWidth < 1000) {
+                            if (boxConstraints.maxWidth < 800) {
                               return MajorTypeDetails(
                                 ninMajorType: Provider.of<NinStructureProvider>(
                                   context,
