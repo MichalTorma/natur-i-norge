@@ -39,6 +39,7 @@ class ScaledMinorTypeWidget extends StatelessWidget {
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
+                    wrapWords: false,
                   ),
                 ),
               )
