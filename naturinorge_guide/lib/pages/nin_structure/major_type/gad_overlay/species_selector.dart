@@ -30,9 +30,15 @@ class _SpeciesSelectorState extends State<SpeciesSelector> {
         padding: const EdgeInsets.all(8.0),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: Container(
-                child: TextField(
+            SliverAppBar(
+              title: Container(
+                // height: 60,
+                child: TextFormField(
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.search),
+                      hintText: 'Søk',
+                    ),
+                    // initialValue: ,
                     autocorrect: false,
                     onChanged: (filter) async {
                       var newSpecies = await db.getSpeciesByFilter(filter);
