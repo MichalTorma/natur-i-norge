@@ -266,7 +266,7 @@ class NiNDatabase extends _$NiNDatabase {
           .get();
 
   @override
-  int get schemaVersion => 18;
+  int get schemaVersion => 22;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
