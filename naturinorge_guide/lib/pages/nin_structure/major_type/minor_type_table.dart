@@ -22,17 +22,20 @@ class MinorTypeTable extends StatelessWidget {
               .standardSegments
               .expand((element) => element.elementarySegmentGroups)
               .length;
+      var maxWidth = boxContrains.maxWidth;
+      var maxHeight = MediaQuery.of(context).size.height;
 
-      if (boxContrains.maxWidth > MediaQuery.of(context).size.height) {
-        var ySize =
-            MediaQuery.of(context).size.height - sidePadding - labelWidth;
-        var xSize = ySize * ratio;
-        return Size(xSize, ySize);
+      double xSize;
+      double ySize;
+      var envelopeRatio = maxWidth / maxHeight;
+      if (envelopeRatio < ratio) {
+        xSize = boxContrains.maxWidth - sidePadding - labelWidth;
+        ySize = xSize / ratio;
       } else {
-        var xSize = boxContrains.maxWidth - sidePadding - labelWidth;
-        var ySize = xSize / ratio;
-        return Size(xSize, ySize);
+        ySize = MediaQuery.of(context).size.height - sidePadding - labelWidth;
+        xSize = ySize * ratio;
       }
+      return Size(xSize, ySize);
     }
     throw Exception("No width constrain for Table Widget");
   }
