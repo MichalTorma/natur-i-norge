@@ -283,15 +283,17 @@ class MajorTypeProvider extends ChangeNotifier {
     var mta = _minorTypesScaled.firstWhere((e) => e.minorTypeScaledId == mtsId);
     List<MinorTypeAdapter> mts;
     if (_selectedZAxisSegments != null) {
-      var mts = mta.minorTypes.where((mt) =>
-          _selectedZAxisSegments
-              .map((ss) => ss.standardSegment.data.id)
-              .toSet()
-              .intersection(mt.standardSegments
-                  .map((e) => e.standardSegment.data.id)
-                  .toSet())
-              .length >
-          0);
+      mts = mta.minorTypes
+          .where((mt) =>
+              _selectedZAxisSegments
+                  .map((ss) => ss.standardSegment.data.id)
+                  .toSet()
+                  .intersection(mt.standardSegments
+                      .map((e) => e.standardSegment.data.id)
+                      .toSet())
+                  .length >
+              0)
+          .toList();
     } else {
       mts = mta.minorTypes;
     }
