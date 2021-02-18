@@ -42,6 +42,7 @@ class MajorTypeProvider extends ChangeNotifier {
     _zAxis = null;
     _gadHelper = null;
     _gadArray = null;
+    _selectedZAxisSegments = null;
   }
 
   Future load(Detailed<NinMajorTypeData> majorType) async {
@@ -280,15 +281,20 @@ class MajorTypeProvider extends ChangeNotifier {
   List<int> _getMinorTypeBlockSize(List<dynamic> slice, int x, int y) {
     var mtsId = slice[x][y];
     var mta = _minorTypesScaled.firstWhere((e) => e.minorTypeScaledId == mtsId);
-    var mts = mta.minorTypes.where((mt) =>
-        _selectedZAxisSegments
-            .map((ss) => ss.standardSegment.data.id)
-            .toSet()
-            .intersection(mt.standardSegments
-                .map((e) => e.standardSegment.data.id)
-                .toSet())
-            .length >
-        0);
+    List<MinorTypeAdapter> mts;
+    if (_selectedZAxisSegments != null) {
+      var mts = mta.minorTypes.where((mt) =>
+          _selectedZAxisSegments
+              .map((ss) => ss.standardSegment.data.id)
+              .toSet()
+              .intersection(mt.standardSegments
+                  .map((e) => e.standardSegment.data.id)
+                  .toSet())
+              .length >
+          0);
+    } else {
+      mts = mta.minorTypes;
+    }
     var width = mts
         .expand((mnt) => mnt.standardSegments)
         .where((ss) => ss.lec.lec.data.id == _xAxis.lecAdapter.lec.data.id)
