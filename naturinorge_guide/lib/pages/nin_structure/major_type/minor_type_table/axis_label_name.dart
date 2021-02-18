@@ -18,9 +18,12 @@ class AxisLabelNameWidget extends StatelessWidget {
         onTap: () => null, //Link to LKM info page
         child: Neumorphic(
           // padding: EdgeInsets.all(4),
-          child: AutoSizeText(
-            '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
-            textAlign: TextAlign.center,
+          child: Center(
+            child: AutoSizeText(
+              '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
+              textAlign: TextAlign.center,
+              maxLines: 1,
+            ),
           ),
         ),
       ),
