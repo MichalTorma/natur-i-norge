@@ -35,7 +35,7 @@ class SecondaryAxisOptions extends StatelessWidget {
             height: 30,
             child: Center(
                 child: Text(
-              axis.lecAdapter.lec.name,
+              axis.lecAdapter.lec.name ?? axis.lecAdapter.lec.data.id,
               style: Theme.of(context).textTheme.subtitle1,
             )),
           ),
@@ -77,6 +77,7 @@ class SecondaryToggleText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var name = standardSegmentAdapter.standardSegment.name;
+    // print(standardSegmentAdapter.standardSegment.data);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
