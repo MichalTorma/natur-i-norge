@@ -11,8 +11,12 @@ class MinorTypeTable extends StatelessWidget {
   static double labelWidth = 70.0;
 
   Size getSize(BuildContext context, BoxConstraints boxContrains) {
-    if (boxContrains.hasBoundedWidth) {
-      var ratio = Provider.of<MajorTypeProvider>(context)
+    if (!boxContrains.hasBoundedWidth) {
+      throw Exception("No width constrain for Table Widget");
+    }
+    var ratio;
+    if (Provider.of<MajorTypeProvider>(context).yAxis != null) {
+      ratio = Provider.of<MajorTypeProvider>(context)
               .xAxis
               .standardSegments
               .expand((element) => element.elementarySegmentGroups)
@@ -22,22 +26,28 @@ class MinorTypeTable extends StatelessWidget {
               .standardSegments
               .expand((element) => element.elementarySegmentGroups)
               .length;
-      var maxWidth = boxContrains.maxWidth;
-      var maxHeight = MediaQuery.of(context).size.height;
-
-      double xSize;
-      double ySize;
-      var envelopeRatio = maxWidth / maxHeight;
-      if (envelopeRatio < ratio) {
-        xSize = boxContrains.maxWidth - sidePadding - labelWidth;
-        ySize = xSize / ratio;
-      } else {
-        ySize = MediaQuery.of(context).size.height - sidePadding - labelWidth;
-        xSize = ySize * ratio;
-      }
-      return Size(xSize, ySize);
+    } else {
+      ratio = Provider.of<MajorTypeProvider>(context)
+          .xAxis
+          .standardSegments
+          .expand((element) => element.elementarySegmentGroups)
+          .length
+          .toDouble();
     }
-    throw Exception("No width constrain for Table Widget");
+    var maxWidth = boxContrains.maxWidth;
+    var maxHeight = MediaQuery.of(context).size.height;
+
+    double xSize;
+    double ySize;
+    var envelopeRatio = maxWidth / maxHeight;
+    if (envelopeRatio < ratio) {
+      xSize = boxContrains.maxWidth - sidePadding - labelWidth;
+      ySize = xSize / ratio;
+    } else {
+      ySize = MediaQuery.of(context).size.height - sidePadding - labelWidth;
+      xSize = ySize * ratio;
+    }
+    return Size(xSize, ySize);
   }
 
   @override
@@ -55,17 +65,18 @@ class MinorTypeTable extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                clipBehavior: Clip.none,
-                height: ySize,
-                width: labelWidth,
-                child: Neumorphic(
-                  child: AxisLabel(
-                    axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
-                    orientation: Axis.vertical,
+              if (Provider.of<MajorTypeProvider>(context).yAxis != null)
+                Container(
+                  clipBehavior: Clip.none,
+                  height: ySize,
+                  width: labelWidth,
+                  child: Neumorphic(
+                    child: AxisLabel(
+                      axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
+                      orientation: Axis.vertical,
+                    ),
                   ),
                 ),
-              ),
               Container(
                 height: ySize,
                 width: xSize,
@@ -75,11 +86,12 @@ class MinorTypeTable extends StatelessWidget {
           ),
           Row(
             children: [
-              Container(
-                height: labelWidth,
-                width: labelWidth,
-                // child: SecondaryAxisSwitch(),
-              ),
+              if (Provider.of<MajorTypeProvider>(context).yAxis != null)
+                Container(
+                  height: labelWidth,
+                  width: labelWidth,
+                  // child: SecondaryAxisSwitch(),
+                ),
               Container(
                 padding: EdgeInsets.all(spacing.toDouble()),
                 height: labelWidth,
