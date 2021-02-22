@@ -6,7 +6,9 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_tabl
 import 'package:provider/provider.dart';
 
 class TableBody extends StatelessWidget {
-  const TableBody({Key key}) : super(key: key);
+  const TableBody({Key key, this.xSize, this.ySize}) : super(key: key);
+  final double xSize;
+  final double ySize;
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +27,26 @@ class TableBody extends StatelessWidget {
         .toList();
     return Stack(
       children: [
-        StaggeredGridView.count(
-          addAutomaticKeepAlives: true,
-          padding: EdgeInsets.all(4.0),
-          crossAxisSpacing: 2.0,
-          mainAxisSpacing: 2.0,
-          physics: new NeverScrollableScrollPhysics(),
-          crossAxisCount: Provider.of<MajorTypeProvider>(context)
-              .xAxis
-              .standardSegments
-              .expand((element) => element.elementarySegmentGroups)
-              .length,
-          reverse: true,
-          primary: true,
-          // shrinkWrap: true,
-          children: minorTypesBlocks,
-          staggeredTiles: staggeredTiles,
+        Container(
+          width: xSize,
+          height: ySize,
+          child: StaggeredGridView.count(
+            addAutomaticKeepAlives: true,
+            padding: EdgeInsets.all(4.0),
+            crossAxisSpacing: 2.0,
+            mainAxisSpacing: 2.0,
+            physics: new NeverScrollableScrollPhysics(),
+            crossAxisCount: Provider.of<MajorTypeProvider>(context)
+                .xAxis
+                .standardSegments
+                .expand((element) => element.elementarySegmentGroups)
+                .length,
+            reverse: true,
+            primary: true,
+            // shrinkWrap: true,
+            children: minorTypesBlocks,
+            staggeredTiles: staggeredTiles,
+          ),
         ),
         if (Provider.of<MajorTypeProvider>(context).gadArray != null &&
             Provider.of<MajorTypeProvider>(context).showGad == 0)
