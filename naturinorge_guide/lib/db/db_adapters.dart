@@ -20,6 +20,7 @@ class StandardSegmentAdapter {
     elementarySegments =
         await db.getElementarySegmentByStandardSegment(standardSegment.data);
 
+    // print(elementarySegments);
     elementarySegmentGroups =
         await db.getGadElementarySegmentGroupIdsByStandardSegment(
             standardSegment.data,
