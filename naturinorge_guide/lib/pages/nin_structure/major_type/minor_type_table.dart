@@ -80,7 +80,10 @@ class MinorTypeTable extends StatelessWidget {
               Container(
                 height: ySize,
                 width: xSize,
-                child: TableBody(),
+                child: TableBody(
+                  xSize: xSize,
+                  ySize: ySize,
+                ),
               )
             ],
           ),
