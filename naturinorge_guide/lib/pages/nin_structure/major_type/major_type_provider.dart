@@ -30,6 +30,7 @@ class MajorTypeProvider extends ChangeNotifier {
 
   List<MinorTypeScaledAdapter> _minorTypesScaled;
   dynamic _minorTypesArray;
+  List<String> _usedMinorTypeIds;
   List<MinorTypeBlock> _minorTypesScaledBlocks;
 
   int _showGad = 0;
@@ -54,8 +55,8 @@ class MajorTypeProvider extends ChangeNotifier {
     await _initializeScales();
     await _majorTypeAdapter.getRelations(_selectedMappingScale);
     await _populateAllAxis();
-    if (_allAxis.length > 0) {
-      _initializeAxis();
+    _initializeAxis();
+    if (_xAxis != null) {
       await _initializeMinorTypes();
       _initializeMinorTypesArray();
       _gadHelper = GadHelper(
@@ -97,6 +98,9 @@ class MajorTypeProvider extends ChangeNotifier {
         .compareTo(b.lecAdapter.majorTypeLec.axis));
     visibleAxis.addAll(mLec);
     visibleAxis.addAll(iLec);
+    if (visibleAxis.length == 0) {
+      return;
+    }
     _xAxis = visibleAxis[0];
     if (visibleAxis.length > 1) {
       _yAxis = visibleAxis[1];
@@ -248,39 +252,63 @@ class MajorTypeProvider extends ChangeNotifier {
 
     List<MinorTypeBlock> minorTypesScaledBlocks =
         List<MinorTypeBlock>.empty(growable: true);
-    var usedMinorTypeIds = List<String>.empty(growable: true);
-    for (var y in List.generate(_yAxis.standardSegments.length, (idx) => idx)) {
+    _usedMinorTypeIds = List<String>.empty(growable: true);
+
+    if (_yAxis == null) {
       for (var x
           in List.generate(_xAxis.standardSegments.length, (idx) => idx)) {
-        var minorTypeSegmentId = minorTypeSlice[x][y];
-        if (minorTypeSegmentId == null) {
-          var size = _getEmptyBlockSize(x, y);
-          minorTypesScaledBlocks.add(MinorTypeBlock(size[0], size[1], null));
-        } else if (usedMinorTypeIds.contains(minorTypeSegmentId)) {
-          continue;
-        } else {
-          usedMinorTypeIds.add(minorTypeSegmentId);
-          var mnt = _minorTypesScaled
-              .firstWhere((e) => e.minorTypeScaledId == minorTypeSegmentId);
-
-          var size = _getMinorTypeBlockSize(minorTypeSlice, x, y);
-          // print("$minorTypeSegmentId $size");
-          minorTypesScaledBlocks.add(MinorTypeBlock(size[0], size[1], mnt));
+        minorTypesScaledBlocks
+            .add(_addMinorTypeScaledBlock(minorTypeSlice, x, null));
+      }
+    } else {
+      for (var y
+          in List.generate(_yAxis.standardSegments.length, (idx) => idx)) {
+        for (var x
+            in List.generate(_xAxis.standardSegments.length, (idx) => idx)) {
+          minorTypesScaledBlocks
+              .add(_addMinorTypeScaledBlock(minorTypeSlice, x, y));
         }
       }
     }
+    minorTypesScaledBlocks.removeWhere((mtsb) => mtsb == null);
     _minorTypesScaledBlocks = minorTypesScaledBlocks; //.sublist(0, 2);
+  }
+
+  MinorTypeBlock _addMinorTypeScaledBlock(
+      dynamic minorTypeSlice, int x, int y) {
+    var minorTypeSegmentId;
+    if (y == null) {
+      minorTypeSegmentId = minorTypeSlice[x];
+    } else {
+      minorTypeSegmentId = minorTypeSlice[x][y];
+    }
+    if (minorTypeSegmentId == null) {
+      var size = _getEmptyBlockSize(x, y);
+      return MinorTypeBlock(size[0], size[1], null);
+    } else if (_usedMinorTypeIds.contains(minorTypeSegmentId)) {
+      return null;
+    } else {
+      _usedMinorTypeIds.add(minorTypeSegmentId);
+      var mnt = _minorTypesScaled
+          .firstWhere((e) => e.minorTypeScaledId == minorTypeSegmentId);
+
+      var size = _getMinorTypeBlockSize(mnt);
+      // print("$minorTypeSegmentId $size");
+      return MinorTypeBlock(size[0], size[1], mnt);
+    }
   }
 
   List<int> _getEmptyBlockSize(int x, int y) {
     var width = _xAxis.standardSegments[x].elementarySegmentGroups.length;
-    var height = _yAxis.standardSegments[y].elementarySegmentGroups.length;
+    var height = 1;
+    if (y != null) {
+      height = _yAxis.standardSegments[y].elementarySegmentGroups.length;
+    }
+
     return [width, height];
   }
 
-  List<int> _getMinorTypeBlockSize(List<dynamic> slice, int x, int y) {
-    var mtsId = slice[x][y];
-    var mta = _minorTypesScaled.firstWhere((e) => e.minorTypeScaledId == mtsId);
+  List<int> _getMinorTypeBlockSize(MinorTypeScaledAdapter mta) {
     List<MinorTypeAdapter> mts;
     if (_selectedZAxisSegments != null) {
       mts = mta.minorTypes
@@ -301,13 +329,18 @@ class MajorTypeProvider extends ChangeNotifier {
         .expand((mnt) => mnt.standardSegments)
         .where((ss) => ss.lec.lec.data.id == _xAxis.lecAdapter.lec.data.id)
         .expand((ss_f) => ss_f.elementarySegmentGroups)
-        .toSet();
-    var height = mts
-        .expand((mnt) => mnt.standardSegments)
-        .where((ss) => ss.lec.lec.data.id == _yAxis.lecAdapter.lec.data.id)
-        .expand((ss_f) => ss_f.elementarySegmentGroups)
-        .toSet();
-    return [width.length, height.length];
+        .toSet()
+        .length;
+    var height = 1;
+    if (_yAxis != null) {
+      height = mts
+          .expand((mnt) => mnt.standardSegments)
+          .where((ss) => ss.lec.lec.data.id == _yAxis.lecAdapter.lec.data.id)
+          .expand((ss_f) => ss_f.elementarySegmentGroups)
+          .toSet()
+          .length;
+    }
+    return [width, height];
   }
 
   setMappingScale(int mappingScaleId) async {

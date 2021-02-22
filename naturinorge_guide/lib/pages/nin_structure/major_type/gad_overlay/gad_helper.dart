@@ -76,7 +76,9 @@ class GadHelper {
       }
     }
     dims.add(xAxis.lecAdapter.gadElementarySegmentGroups.length);
-    dims.add(yAxis.lecAdapter.gadElementarySegmentGroups.length);
+    if (yAxis != null) {
+      dims.add(yAxis.lecAdapter.gadElementarySegmentGroups.length);
+    }
   }
 
   dynamic _getMeanArray() {

@@ -24,6 +24,32 @@ class MajorTypeDetailsLandscape extends StatelessWidget {
     if (Provider.of<MajorTypeProvider>(context).isLoading) {
       return Container();
     }
+    if (Provider.of<MajorTypeProvider>(context).xAxis == null) {
+      return Container(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AutoSizeText(
+                ninMajorType.name,
+                wrapWords: false,
+                style: Theme.of(context).textTheme.headline2,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Divider(),
+            Text(
+              ninMajorType.description,
+              // trimLines: 10,
+              // trimMode: TrimMode.Line,
+              // trimExpandedText: LocaleKeys.read_mode.tr(),
+              // trimCollapsedText: LocaleKeys.show_less.tr(),
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ],
+        ),
+      );
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -72,38 +98,6 @@ class MajorTypeDetailsLandscape extends StatelessWidget {
           )
         ],
       ),
-
-      // child: Row(mainAxisSize: MainAxisSize.min, children: [
-      //   Center(
-      //     child: Text(
-      //       ninMajorType.name,
-      //       style: Theme.of(context).textTheme.headline2,
-      //       textAlign: TextAlign.center,
-      //     ),
-      //   ),
-      //   Divider(),
-      //   Text(ninMajorType.description),
-      //   Padding(
-      //     padding: const EdgeInsets.only(top: 8.0),
-      //     child: TableOptions(),
-      //   ),
-      //   Padding(
-      //     padding: const EdgeInsets.symmetric(vertical: 4.0),
-      //     child: SecondaryAxisOptions(),
-      //   ),
-      //   Padding(
-      //     padding: const EdgeInsets.only(top: 8.0),
-      //     child: Center(child: MinorTypeTable()),
-      //   ),
-      //   Padding(
-      //     padding: const EdgeInsets.only(top: 8.0),
-      //     child: AddSpecieButtons(),
-      //   ),
-      //   Padding(
-      //     padding: const EdgeInsets.only(top: 8.0),
-      //     child: SelectedSpeciesList(),
-      //   ),
-      // ]),
     );
   }
 }
