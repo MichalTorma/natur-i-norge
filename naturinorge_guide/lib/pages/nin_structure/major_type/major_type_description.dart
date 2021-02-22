@@ -21,18 +21,20 @@ class MajorTypeDetails extends StatelessWidget {
     if (Provider.of<MajorTypeProvider>(context).isLoading) {
       return Container();
     }
-    return Container(
-      child: Column(children: [
-        Center(
-          child: AutoSizeText(
-            ninMajorType.name,
-            wrapWords: false,
-            style: Theme.of(context).textTheme.headline2,
-            textAlign: TextAlign.center,
-          ),
+    var body = [
+      Center(
+        child: AutoSizeText(
+          ninMajorType.name,
+          wrapWords: false,
+          style: Theme.of(context).textTheme.headline2,
+          textAlign: TextAlign.center,
         ),
-        Divider(),
-        Text(ninMajorType.description),
+      ),
+      Divider(),
+      Text(ninMajorType.description),
+    ];
+    if (Provider.of<MajorTypeProvider>(context).xAxis != null) {
+      body.addAll([
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: TableOptions(),
@@ -53,7 +55,10 @@ class MajorTypeDetails extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8.0),
           child: SelectedSpeciesList(),
         ),
-      ]),
+      ]);
+    }
+    return Container(
+      child: Column(children: body),
     );
   }
 }
