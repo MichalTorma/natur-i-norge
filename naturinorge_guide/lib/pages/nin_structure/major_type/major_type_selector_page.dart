@@ -18,7 +18,7 @@ class MajorTypeSelectorPage extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
+          child: ListView(
             children: [
               MajorTypeGroupDetails(),
               Divider(),
