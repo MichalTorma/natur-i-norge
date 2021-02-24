@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
+import 'package:naturinorge_guide/tools/global_vars.dart';
 
 class AxisLabelNameWidget extends StatelessWidget {
   const AxisLabelNameWidget({
@@ -16,7 +17,8 @@ class AxisLabelNameWidget extends StatelessWidget {
       padding: const EdgeInsets.all(2.0),
       child: GestureDetector(
         onTap: () => null, //Link to LKM info page
-        child: Neumorphic(
+        child: Material(
+          elevation: MATERIAL_ELEVATION,
           // padding: EdgeInsets.all(4),
           child: Center(
             child: AutoSizeText(

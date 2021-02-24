@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/pages/home_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
@@ -70,7 +69,7 @@ class MyApp extends StatelessWidget {
             lazy: false,
           ),
         ],
-        child: NeumorphicApp(
+        child: MaterialApp(
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,

@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 
 class HomePageButton extends StatelessWidget {
   const HomePageButton(
@@ -14,11 +14,7 @@ class HomePageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: NeumorphicButton(
-        style: NeumorphicStyle(
-          shape: NeumorphicShape.convex,
-          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
-        ),
+      child: ElevatedButton(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
