@@ -48,7 +48,8 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
             child: Center(
                 child: Text(
               widget.ninMajorTypeGroup.data.id,
-              style: Theme.of(context).textTheme.headline6,
+              textScaleFactor: 2,
+              // style: Theme.of(context).textTheme.headline6,
             )),
           ),
           Flexible(
@@ -59,6 +60,7 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
                 // softWrap: true,
                 wrapWords: false,
                 minFontSize: 10,
+                // style: Theme.of(context).textTheme.caption,
                 textAlign: TextAlign.center,
               ))
         ],
