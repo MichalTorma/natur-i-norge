@@ -8,13 +8,10 @@ class MajorTypeGroupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          NinAppBar(),
-          SliverToBoxAdapter(
-            child: MajorTypeGroupSelector(),
-          ),
-        ],
+      appBar: AppBar(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: MajorTypeGroupSelector(),
       ),
     );
   }
