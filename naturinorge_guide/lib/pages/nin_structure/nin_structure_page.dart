@@ -7,7 +7,6 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_sele
 import 'package:naturinorge_guide/pages/nin_structure/major_type_group/major_type_group_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'major_type_group/major_type_group_selector.dart';
 
@@ -19,46 +18,27 @@ class StructurePage extends StatefulWidget {
 }
 
 class _StructurePageState extends State<StructurePage> {
-  AutoScrollController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = AutoScrollController(
-      viewportBoundaryGetter: () =>
-          Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-      axis: Axis.vertical,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(
-        Provider.of<NinStructureProvider>(context, listen: false).scrollIndex));
     return Scaffold(
       // appBar: NeumorphicAppBar(
       //   title: Text(LocaleKeys.structure).tr(),
       // ),
       body: Stack(
         children: [
-          CustomScrollView(controller: controller, slivers: [
+          CustomScrollView(slivers: [
             NinAppBar(),
             SliverList(
               delegate: SliverChildListDelegate([
-                AutoScrollTag(
-                  key: ValueKey(0),
-                  controller: controller,
-                  index: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Neumorphic(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            MajorTypeGroupSelector(),
-                          ],
-                        ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Neumorphic(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          MajorTypeGroupSelector(),
+                        ],
                       ),
                     ),
                   ),
@@ -66,22 +46,17 @@ class _StructurePageState extends State<StructurePage> {
                 if (Provider.of<NinStructureProvider>(context)
                         .selectedMajorTypeGroup !=
                     null)
-                  AutoScrollTag(
-                    key: ValueKey(1),
-                    controller: controller,
-                    index: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Neumorphic(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              MajorTypeGroupDetails(),
-                              Divider(),
-                              MajorTypeSelector(),
-                            ],
-                          ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Neumorphic(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            MajorTypeGroupDetails(),
+                            Divider(),
+                            MajorTypeSelector(),
+                          ],
                         ),
                       ),
                     ),
@@ -89,33 +64,28 @@ class _StructurePageState extends State<StructurePage> {
                 if (Provider.of<NinStructureProvider>(context)
                         .selectedMajorType !=
                     null)
-                  AutoScrollTag(
-                    key: ValueKey(2),
-                    controller: controller,
-                    index: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Neumorphic(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: LayoutBuilder(
-                              // stream: null,
-                              builder: (context, boxConstraints) {
-                            if (boxConstraints.maxWidth < 800) {
-                              return MajorTypeDetails(
-                                ninMajorType: Provider.of<NinStructureProvider>(
-                                  context,
-                                ).selectedMajorType,
-                              );
-                            } else {
-                              return MajorTypeDetailsLandscape(
-                                ninMajorType: Provider.of<NinStructureProvider>(
-                                  context,
-                                ).selectedMajorType,
-                              );
-                            }
-                          }),
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Neumorphic(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: LayoutBuilder(
+                            // stream: null,
+                            builder: (context, boxConstraints) {
+                          if (boxConstraints.maxWidth < 800) {
+                            return MajorTypeDetails(
+                              ninMajorType: Provider.of<NinStructureProvider>(
+                                context,
+                              ).selectedMajorType,
+                            );
+                          } else {
+                            return MajorTypeDetailsLandscape(
+                              ninMajorType: Provider.of<NinStructureProvider>(
+                                context,
+                              ).selectedMajorType,
+                            );
+                          }
+                        }),
                       ),
                     ),
                   ),
@@ -130,10 +100,5 @@ class _StructurePageState extends State<StructurePage> {
         ],
       ),
     );
-  }
-
-  Future _scrollToIndex(int index) async {
-    await controller.scrollToIndex(index,
-        preferPosition: AutoScrollPosition.begin);
   }
 }

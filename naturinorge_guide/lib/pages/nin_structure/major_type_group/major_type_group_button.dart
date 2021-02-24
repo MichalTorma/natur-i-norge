@@ -55,15 +55,17 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
               fit: FlexFit.tight,
               child: AutoSizeText(
                 widget.ninMajorTypeGroup.name,
-                maxLines: 2,
-                softWrap: true,
+                // maxLines: 2,
+                // softWrap: true,
+                wrapWords: false,
+                minFontSize: 10,
                 textAlign: TextAlign.center,
               ))
         ],
       ),
       onPressed: () {
         Provider.of<NinStructureProvider>(context, listen: false)
-            .setSelectedMajorTypeGroup(widget.ninMajorTypeGroup);
+            .setSelectedMajorTypeGroup(context, widget.ninMajorTypeGroup);
       },
     );
   }
