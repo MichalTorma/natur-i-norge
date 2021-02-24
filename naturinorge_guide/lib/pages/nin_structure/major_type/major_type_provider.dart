@@ -82,7 +82,8 @@ class MajorTypeProvider extends ChangeNotifier {
 
   _initializeAxis() {
     if (_allAxis.length < 1) {
-      throw Exception('allAxis is empty');
+      print('allAxis is empty');
+      return;
     }
     var visibleAxis = List<AxisBlock>.empty(growable: true);
 

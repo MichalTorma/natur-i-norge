@@ -6,7 +6,7 @@ import 'package:naturinorge_guide/pages/home_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:naturinorge_guide/tools/my_theme.dart';
-import 'package:preferences/preferences.dart';
+// import 'package:preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
 import 'generated/codegen_loader.g.dart';
@@ -15,11 +15,11 @@ NiNDatabase db;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await PrefService.init(prefix: 'pref_');
-  PrefService.setDefaultValues({
-    //   PREFS_DARK: false,
-    //   PREFS_CHILD: false,
-  });
+  // await PrefService.init(prefix: 'pref_');
+  // PrefService.setDefaultValues({
+  //   PREFS_DARK: false,
+  //   PREFS_CHILD: false,
+  // });
   db = NiNDatabase();
   runApp(EasyLocalization(
     child: MyApp(),
