@@ -13,16 +13,14 @@ class NinAppBar extends StatelessWidget {
     if (Provider.of<NinStructureProvider>(context).selectedMajorTypeGroup !=
         null)
       actions.add(NinAppBarAction(
-          onTap: () => Provider.of<NinStructureProvider>(context, listen: false)
-              .setScrollIndex(0),
+          onTap: () => Navigator.of(context).pop(),
           text: Provider.of<NinStructureProvider>(context)
               .selectedMajorTypeGroup
               .data
               .id));
     if (Provider.of<NinStructureProvider>(context).selectedMajorType != null)
       actions.add(NinAppBarAction(
-          onTap: () => Provider.of<NinStructureProvider>(context, listen: false)
-              .setScrollIndex(1),
+          onTap: () => Navigator.of(context).pop(),
           text: Provider.of<NinStructureProvider>(context)
               .selectedMajorType
               .data

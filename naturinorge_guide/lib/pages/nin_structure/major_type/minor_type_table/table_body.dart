@@ -23,7 +23,7 @@ class TableBody extends StatelessWidget {
         .toList();
     var staggeredTiles = Provider.of<MajorTypeProvider>(context)
         .minorTypeScaledBlocks
-        .map((e) => StaggeredTile.count(e.width, e.height))
+        .map((e) => StaggeredTile.count(e.width, e.height.toDouble()))
         .toList();
     return Stack(
       children: [

@@ -35,7 +35,7 @@ class MinorTypeTable extends StatelessWidget {
           .toDouble();
     }
     var maxWidth = boxContrains.maxWidth;
-    var maxHeight = MediaQuery.of(context).size.height;
+    var maxHeight = MediaQuery.of(context).size.height - kToolbarHeight;
 
     double xSize;
     double ySize;
@@ -44,7 +44,7 @@ class MinorTypeTable extends StatelessWidget {
       xSize = boxContrains.maxWidth - sidePadding - labelWidth;
       ySize = xSize / ratio;
     } else {
-      ySize = MediaQuery.of(context).size.height - sidePadding - labelWidth;
+      ySize = maxHeight - sidePadding - labelWidth - 70;
       xSize = ySize * ratio;
     }
     return Size(xSize, ySize);

@@ -2,7 +2,10 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/main.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description_landscape.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_selector_page.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/major_type_page.dart';
 import 'package:provider/provider.dart';
 
 enum ButtonState { AVAILABLE, SELECTED, UNAVAILABLE }
@@ -14,7 +17,6 @@ class NinStructureProvider extends ChangeNotifier {
   Detailed<NinMajorTypeGroupData> _selectedMajorTypeGroupData;
   Detailed<NinMajorTypeData> _selectedMajorTypeData;
   Locale _locale;
-  int _scrollIndex = 0;
 // Scrolling
 
 // MajorTypeGroup
@@ -25,14 +27,16 @@ class NinStructureProvider extends ChangeNotifier {
     _loadMajorTypeGroups();
   }
 
-  setSelectedMajorTypeGroup(Detailed<NinMajorTypeGroupData> data) async {
+  Future setSelectedMajorTypeGroup(
+      BuildContext context, Detailed<NinMajorTypeGroupData> data) async {
     if (_selectedMajorTypeGroupData != data) {
       _selectedMajorTypeGroupData = data;
       _selectedMajorTypeData = null;
       _ninMajorTypes = await db.filteredMajorTypes(data.data.id, _locale);
-      _scrollIndex = 1;
       notifyListeners();
     }
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => MajorTypeSelectorPage()));
   }
 
   Detailed<NinMajorTypeGroupData> get selectedMajorTypeGroup =>
@@ -59,18 +63,13 @@ class NinStructureProvider extends ChangeNotifier {
   List<Detailed<NinMajorTypeData>> get majorTypes => _ninMajorTypes;
 
   setMajorType(BuildContext context, Detailed<NinMajorTypeData> data) async {
-    // if (_selectedMajorTypeData != data) {
-    _selectedMajorTypeData = data;
-    await Provider.of<MajorTypeProvider>(context, listen: false).load(data);
-    _scrollIndex = 2;
-    notifyListeners();
-    // }
-  }
-
-  int get scrollIndex => _scrollIndex;
-  setScrollIndex(int idx) {
-    _scrollIndex = idx;
-    notifyListeners();
+    if (_selectedMajorTypeData != data) {
+      _selectedMajorTypeData = data;
+      await Provider.of<MajorTypeProvider>(context, listen: false).load(data);
+      notifyListeners();
+    }
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => MajorTypePage()));
   }
 
   Locale get locale => _locale;
