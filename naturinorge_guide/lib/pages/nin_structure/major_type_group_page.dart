@@ -11,7 +11,11 @@ class MajorTypeGroupPage extends StatelessWidget {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: MajorTypeGroupSelector(),
+        child: ListView(
+          children: [
+            MajorTypeGroupSelector(),
+          ],
+        ),
       ),
     );
   }
