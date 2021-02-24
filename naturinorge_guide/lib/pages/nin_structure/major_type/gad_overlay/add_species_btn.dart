@@ -1,7 +1,8 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/species_selector.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class AddSpecieButtons extends StatelessWidget {
   const AddSpecieButtons({Key key}) : super(key: key);
@@ -14,7 +15,7 @@ class AddSpecieButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        NeumorphicButton(
+        ElevatedButton(
           child: Text('Legge til arter'), // TODO translation
           onPressed: () => showDialog(
               context: context, builder: (context) => SpeciesSelector()),
@@ -22,43 +23,23 @@ class AddSpecieButtons extends StatelessWidget {
         if (Provider.of<MajorTypeProvider>(context).selectedSpecies.length > 0)
           Expanded(
             child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   width: 26,
                 ),
-                Expanded(
-                  child: NeumorphicToggle(
-                    children: [
-                      ToggleElement(
-                          foreground: Icon(
-                            Icons.visibility,
-                            color: Colors.black87,
-                          ),
-                          background: Center(
-                            child: Icon(
-                              Icons.visibility,
-                              color: Colors.black26,
-                            ),
-                          )),
-                      ToggleElement(
-                          foreground: Icon(
-                            Icons.visibility_off,
-                            color: Colors.black87,
-                          ),
-                          background: Center(
-                            child: Icon(
-                              Icons.visibility_off,
-                              color: Colors.black26,
-                            ),
-                          )),
-                    ],
-                    thumb: Neumorphic(),
-                    onChanged: (idx) =>
-                        Provider.of<MajorTypeProvider>(context, listen: false)
-                            .setShowGad(idx),
-                    selectedIndex:
-                        Provider.of<MajorTypeProvider>(context).showGad,
-                  ),
+                ToggleSwitch(
+                  labels: ['', ''],
+                  icons: [
+                    Icons.visibility,
+                    Icons.visibility_off,
+                  ],
+                  onToggle: (idx) =>
+                      Provider.of<MajorTypeProvider>(context, listen: false)
+                          .setShowGad(idx),
+                  initialLabelIndex:
+                      Provider.of<MajorTypeProvider>(context).showGad,
                 ),
               ],
             ),

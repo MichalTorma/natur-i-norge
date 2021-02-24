@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/app_bar/nin_app_bar.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_selector.dart';
 

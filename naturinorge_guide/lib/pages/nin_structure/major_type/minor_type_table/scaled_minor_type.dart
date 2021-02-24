@@ -1,7 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/minor_type_block.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/minor_type_description.dart';
+import 'package:naturinorge_guide/tools/global_vars.dart';
 
 class ScaledMinorTypeWidget extends StatelessWidget {
   final MinorTypeBlock minorTypeBlock;
@@ -18,7 +19,8 @@ class ScaledMinorTypeWidget extends StatelessWidget {
             builder: (context) => MinorTypeDescription(
                   minorTypes: minorTypeBlock.minorTypeScaled.minorTypes,
                 )),
-        child: Neumorphic(
+        child: Material(
+          elevation: MATERIAL_ELEVATION,
           child: Column(
             children: [
               Expanded(

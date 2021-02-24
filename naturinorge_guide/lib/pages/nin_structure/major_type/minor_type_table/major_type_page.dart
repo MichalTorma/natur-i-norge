@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/app_bar/nin_app_bar.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description_landscape.dart';
@@ -15,7 +15,7 @@ class MajorTypePage extends StatelessWidget {
       context,
     ).selectedMajorType;
     return Scaffold(
-      appBar: NeumorphicAppBar(
+      appBar: AppBar(
         title: AutoSizeText(
           '${mt.data.id} ${mt.name}',
           style: Theme.of(context).textTheme.headline3,
