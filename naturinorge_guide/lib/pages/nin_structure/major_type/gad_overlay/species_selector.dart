@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+// import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/main.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';

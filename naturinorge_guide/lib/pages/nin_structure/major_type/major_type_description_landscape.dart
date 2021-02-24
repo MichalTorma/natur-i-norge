@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/generated/codegen_loader.g.dart';
@@ -9,6 +9,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_prov
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/secondary_axis_dialog.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/table_options.dart';
+import 'package:naturinorge_guide/tools/global_vars.dart';
 import 'package:provider/provider.dart';
 // import 'package:readmore/readmore.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -73,13 +74,19 @@ class MajorTypeDetailsLandscape extends StatelessWidget {
                     //   ),
                     // ),
                     // Divider(),
-                    Text(
-                      ninMajorType.description,
-                      // trimLines: 10,
-                      // trimMode: TrimMode.Line,
-                      // trimExpandedText: LocaleKeys.read_mode.tr(),
-                      // trimCollapsedText: LocaleKeys.show_less.tr(),
-                      style: Theme.of(context).textTheme.bodyText1,
+                    Material(
+                      elevation: MATERIAL_ELEVATION,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          ninMajorType.description,
+                          // trimLines: 10,
+                          // trimMode: TrimMode.Line,
+                          // trimExpandedText: LocaleKeys.read_mode.tr(),
+                          // trimCollapsedText: LocaleKeys.show_less.tr(),
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
                     ),
                     Divider(),
                     TableOptions(),

@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
@@ -15,31 +15,31 @@ class MajorTypeGroupButton extends StatefulWidget {
 }
 
 class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
-  var _shape = NeumorphicShape.convex;
+  // var _shape = NeumorphicShape.convex;
   Color _bgColor;
   _initialize(BuildContext context) {
-    var selected =
-        Provider.of<NinStructureProvider>(context).selectedMajorTypeGroup;
+    // var selected =
+    //     Provider.of<NinStructureProvider>(context).selectedMajorTypeGroup;
 
-    if (selected != null &&
-        selected.data.id == widget.ninMajorTypeGroup.data.id) {
-      _shape = NeumorphicShape.concave;
-      _bgColor = NeumorphicTheme.of(context).current.accentColor;
-    } else {
-      _shape = NeumorphicShape.convex;
-      _bgColor = NeumorphicTheme.of(context).current.baseColor;
-    }
+    // if (selected != null &&
+    //     selected.data.id == widget.ninMajorTypeGroup.data.id) {
+    //   // _shape = NeumorphicShape.concave;
+    //   _bgColor = Theme.of(context).accentColor;
+    // } else {
+    //   // _shape = NeumorphicShape.convex;
+    //   _bgColor = Theme.of(context).backgroundColor;
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     _initialize(context);
-    return NeumorphicButton(
-      style: NeumorphicStyle(
-        color: _bgColor,
-        shape: _shape,
-        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
-      ),
+    return ElevatedButton(
+      // style: NeumorphicStyle(
+      //   color: _bgColor,
+      //   shape: _shape,
+      //   boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
+      // ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.max,

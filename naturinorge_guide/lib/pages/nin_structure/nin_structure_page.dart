@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/app_bar/nin_app_bar.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description_landscape.dart';
@@ -32,7 +32,7 @@ class _StructurePageState extends State<StructurePage> {
               delegate: SliverChildListDelegate([
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Neumorphic(
+                  child: Material(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -48,7 +48,7 @@ class _StructurePageState extends State<StructurePage> {
                     null)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Neumorphic(
+                    child: Material(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -66,7 +66,7 @@ class _StructurePageState extends State<StructurePage> {
                     null)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Neumorphic(
+                    child: Material(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: LayoutBuilder(

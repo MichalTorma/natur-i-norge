@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
+import 'package:naturinorge_guide/tools/global_vars.dart';
 
 class StandardSegmentWidget extends StatelessWidget {
   final StandardSegmentAdapter standardSegmentAdapter;
@@ -14,7 +15,8 @@ class StandardSegmentWidget extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(2.0),
-      child: Neumorphic(
+      child: Material(
+        elevation: MATERIAL_ELEVATION,
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: Center(
