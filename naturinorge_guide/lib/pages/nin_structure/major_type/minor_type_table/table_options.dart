@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/mapping_scale.dart';
 
 class TableOptions extends StatelessWidget {
@@ -6,7 +6,7 @@ class TableOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Neumorphic(
+    return Material(
       child: Column(
         children: [MappingScaleWidget()],
       ),

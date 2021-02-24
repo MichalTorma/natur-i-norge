@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/generated/codegen_loader.g.dart';
 import 'package:naturinorge_guide/pages/home_page_lib/home_page_button.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type_group/major_type_group_selector.dart';
@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-        appBar: NeumorphicAppBar(
+        appBar: AppBar(
           title: Text(LocaleKeys.app_name).tr(),
         ),
         body: GridView(
@@ -30,13 +30,13 @@ class HomePage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MajorTypeGroupPage()))),
-            HomePageButton(
-                icon: Icons.list,
-                text: LocaleKeys.toggle_theme.tr(),
-                onPressed: () => NeumorphicTheme.of(context).themeMode =
-                    NeumorphicTheme.isUsingDark(context)
-                        ? ThemeMode.light
-                        : ThemeMode.dark),
+            // HomePageButton(
+            //     icon: Icons.list,
+            //     text: LocaleKeys.toggle_theme.tr(),
+            //     onPressed: () => Theme.of(context) =
+            //         NeumorphicTheme.isUsingDark(context)
+            //             ? ThemeMode.light
+            //             : ThemeMode.dark),
           ],
         ),
       ),

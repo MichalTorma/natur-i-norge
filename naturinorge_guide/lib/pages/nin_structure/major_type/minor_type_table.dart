@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_label.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/table_body.dart';
@@ -70,7 +70,7 @@ class MinorTypeTable extends StatelessWidget {
                   clipBehavior: Clip.none,
                   height: ySize,
                   width: labelWidth,
-                  child: Neumorphic(
+                  child: Material(
                     child: AxisLabel(
                       axisBlock: Provider.of<MajorTypeProvider>(context).yAxis,
                       orientation: Axis.vertical,
@@ -99,7 +99,7 @@ class MinorTypeTable extends StatelessWidget {
                 padding: EdgeInsets.all(spacing.toDouble()),
                 height: labelWidth,
                 width: xSize,
-                child: Neumorphic(
+                child: Material(
                   child: AxisLabel(
                     axisBlock: Provider.of<MajorTypeProvider>(context).xAxis,
                     orientation: Axis.horizontal,

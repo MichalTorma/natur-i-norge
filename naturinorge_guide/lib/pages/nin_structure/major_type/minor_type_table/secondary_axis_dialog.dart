@@ -1,11 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class SecondaryAxisOptions extends StatelessWidget {
   const SecondaryAxisOptions({Key key}) : super(key: key);
@@ -18,16 +19,7 @@ class SecondaryAxisOptions extends StatelessWidget {
     }
     var body = Provider.of<MajorTypeProvider>(context).zAxis.map((axis) {
       var standarSegments = axis.standardSegments
-          .map((e) => ToggleElement(
-                foreground: SecondaryToggleText(
-                  standardSegmentAdapter: e,
-                  fontWeight: FontWeight.w700,
-                ),
-                background: SecondaryToggleText(
-                  standardSegmentAdapter: e,
-                  fontWeight: FontWeight.w400,
-                ),
-              ))
+          .map((e) => e.standardSegment.data.id.split('.')[1])
           .toList();
       return Container(
         child: Column(children: [
@@ -39,14 +31,16 @@ class SecondaryAxisOptions extends StatelessWidget {
               style: Theme.of(context).textTheme.subtitle1,
             )),
           ),
-          NeumorphicToggle(
+          ToggleSwitch(
+            minWidth: 110.0,
+            // minHeight: 100,
             // height: 100,
-            thumb: Neumorphic(),
-            children: standarSegments,
-            onChanged: (value) =>
+            // thumb: Material(),
+            labels: standarSegments,
+            onToggle: (value) =>
                 Provider.of<MajorTypeProvider>(context, listen: false)
                     .setSecondaryStandardSegment(axis.standardSegments[value]),
-            selectedIndex: axis.standardSegments.indexWhere((e) =>
+            initialLabelIndex: axis.standardSegments.indexWhere((e) =>
                 e.standardSegment.data.id ==
                 Provider.of<MajorTypeProvider>(context)
                     .selectedSecondaryAxisSegments
