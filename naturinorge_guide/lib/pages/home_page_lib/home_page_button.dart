@@ -29,7 +29,8 @@ class HomePageButton extends StatelessWidget {
                     text,
                     maxLines: 1,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline3,
+                    textScaleFactor: 3,
+                    // style: Theme.of(context).textTheme.headline3,
                   ),
                 )
               ],

@@ -18,7 +18,7 @@ class MajorTypePage extends StatelessWidget {
       appBar: AppBar(
         title: AutoSizeText(
           '${mt.data.id} ${mt.name}',
-          style: Theme.of(context).textTheme.headline3,
+          // style: Theme.of(context).textTheme.headline3,
         ),
       ),
       // appBar: PreferredSize(

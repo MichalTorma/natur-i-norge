@@ -11,7 +11,7 @@ class MajorTypeGroupSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.extent(
-      primary: false,
+      // primary: false,
       shrinkWrap: true,
       maxCrossAxisExtent: 140,
       childAspectRatio: 1,

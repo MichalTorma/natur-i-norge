@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
             title: LocaleKeys.app_name.tr(),
             themeMode: ThemeMode.light,
             theme: lightTheme,
-            darkTheme: darkTheme,
+            // darkTheme: darkTheme,
             home: HomePage()));
   }
 }
