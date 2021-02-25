@@ -564,6 +564,10 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ detail_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">☆ mappingScale_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
@@ -817,6 +821,7 @@
 	"MinorType" -> "Detail" [label = "detail_id"]
 	"MinorTypeScaled" -> "MinorType" [label = "minorType_id"]
 	"MinorTypeScaled" -> "MappingScale" [label = "mappingScale_id"]
+	"MinorTypeScaled" -> "Detail" [label = "detail_id"]
 	"MinorTypeStandardSegment" -> "MinorType" [label = "minorType_id"]
 	"MinorTypeStandardSegment" -> "StandardSegment" [label = "standardSegment_id"]
 	"PatternOfVariation" -> "Detail" [label = "detail_id"]
