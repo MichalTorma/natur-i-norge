@@ -182,7 +182,7 @@ packages:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.3"
+    version: "1.0.2"
   dart_numerics:
     dependency: "direct main"
     description:
@@ -579,6 +579,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  sqlite3_flutter_libs:
+    dependency: "direct main"
+    description:
+      name: sqlite3_flutter_libs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0+1"
   sqlparser:
     dependency: transitive
     description:
@@ -638,9 +645,11 @@ packages:
   toggle_switch:
     dependency: "direct main"
     description:
-      name: toggle_switch
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: bb24959b9e95634b411b1159b85eca6fac756db5
+      url: "https://github.com/MichalTorma/toggle_switch.git"
+    source: git
     version: "0.1.8"
   tuple:
     dependency: transitive
@@ -699,5 +708,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.12.0-259.9.beta <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.24.0-6.0.pre"
