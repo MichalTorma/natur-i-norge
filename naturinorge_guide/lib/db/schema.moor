@@ -135,9 +135,11 @@ CREATE TABLE "nin_MinorTypeScaled" (
 	_id TEXT, 
 	"minorType_id" TEXT, 
 	"mappingScale_id" INTEGER, 
+	detail_id TEXT, 
 	PRIMARY KEY (pid), 
 	FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id), 
-	FOREIGN KEY("mappingScale_id") REFERENCES "nin_MappingScale" (_id)
+	FOREIGN KEY("mappingScale_id") REFERENCES "nin_MappingScale" (_id), 
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
 CREATE TABLE "nin_ElementarySegmentGroup" (
 	pid INTEGER NOT NULL, 

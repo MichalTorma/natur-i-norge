@@ -94,6 +94,7 @@ class MinorTypeScaled(Base):
     minorType_id = Column(Text, ForeignKey(
         f'{prefix}MinorType._id'))
     mappingScale_id = Column(Integer, ForeignKey(f'{prefix}MappingScale._id'))
+    detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
     # References
     minorType = relationship('MinorType', back_populates='minorTypeScaled')

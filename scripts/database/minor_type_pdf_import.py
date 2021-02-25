@@ -2,9 +2,16 @@
 from PyPDF4 import PdfFileReader
 import re
 import itertools
-# %%
-source_file = '/Users/amarok/src/natur-i-norge/scripts/data/Beskrivelser_av_kartleggingsenheter_m_lestokk_1_5000.pdf'
 
+source_file = '/Users/amarok/src/natur-i-norge/scripts/data/Beskrivelser_av_kartleggingsenheter_m_lestokk_1_5000.pdf'
+# %%
+from sqlalchemy import create_engine
+import model.model as model
+from sqlalchemy.orm import sessionmaker
+database_file = '/Users/amarok/src/natur-i-norge/naturinorge_guide/assets/nin_database.db'
+engine = create_engine(f'sqlite:///{database_file}')
+Session = sessionmaker(bind=engine)
+session = Session()
 
 # %%
 def get_page(numpage):
@@ -15,7 +22,7 @@ def get_page(numpage):
         return page_content
 # %%
 page_content = get_page(30)
-print(page_content)
+# print(page_content)
 # page_content.splitlines()
 
 # %%
@@ -28,7 +35,7 @@ def get_list_of_types(source):
     int_lst = list(itertools.chain.from_iterable(tmp))
     return [f'{mnt}-{x}' for x in int_lst]
 
-get_list_of_types('T1-9-20,27-32,37-40,49-60,65-68,73-76,79-82,85')
+# get_list_of_types('T1-9-20,27-32,37-40,49-60,65-68,73-76,79-82,85')
 # %%
 def parse_page(page):
 
@@ -72,11 +79,13 @@ def parse_page(page):
         print(scaled_kode)
         print(scaled_gruntype)
 
+        #
+
         # return scaled_gruntype
 
     # print(nin_kar)
     # print(fysiognomi)
-scaled_gruntype = parse_page(page_content)
+parse_page(page_content)
 
 # %%
 with open(source_file, 'rb') as f:
