@@ -21,16 +21,7 @@ class MajorTypeDetails extends StatelessWidget {
     if (Provider.of<MajorTypeProvider>(context).isLoading) {
       return Container();
     }
-    var body = [
-      Center(
-        child: AutoSizeText(
-          ninMajorType.name,
-          wrapWords: false,
-          style: Theme.of(context).textTheme.headline2,
-          textAlign: TextAlign.center,
-        ),
-      ),
-      Divider(),
+    List<Widget> body = [
       Text(ninMajorType.description),
     ];
     if (Provider.of<MajorTypeProvider>(context).xAxis != null) {
@@ -58,7 +49,7 @@ class MajorTypeDetails extends StatelessWidget {
       ]);
     }
     return Container(
-      child: Column(children: body),
+      child: ListView(children: body),
     );
   }
 }
