@@ -17,6 +17,7 @@ class NinStructureProvider extends ChangeNotifier {
   Detailed<NinMajorTypeGroupData> _selectedMajorTypeGroupData;
   Detailed<NinMajorTypeData> _selectedMajorTypeData;
   Locale _locale;
+  bool _isLoading = true;
 // Scrolling
 
 // MajorTypeGroup
@@ -25,6 +26,8 @@ class NinStructureProvider extends ChangeNotifier {
     _locale = locale;
 
     _loadMajorTypeGroups();
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future setSelectedMajorTypeGroup(
@@ -56,23 +59,26 @@ class NinStructureProvider extends ChangeNotifier {
     var majorTypeGroups = await db.allMajorTypeGroups;
     _ninMajorTypeGroups = await Detailed<NinMajorTypeGroupData>()
         .fromList(majorTypeGroups, locale);
-    notifyListeners();
   }
 
   // MajorType
   List<Detailed<NinMajorTypeData>> get majorTypes => _ninMajorTypes;
 
-  setMajorType(BuildContext context, Detailed<NinMajorTypeData> data) async {
+  bool shouldLoadMajorType(Detailed<NinMajorTypeData> data) {
     if (_selectedMajorTypeData != data) {
       _selectedMajorTypeData = data;
-      await Provider.of<MajorTypeProvider>(context, listen: false).load(data);
-      notifyListeners();
+      return true;
+    } else {
+      return false;
     }
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => MajorTypePage()));
+  }
+
+  set setLoading(bool setLoading) {
+    _isLoading = setLoading;
+    notifyListeners();
   }
 
   Locale get locale => _locale;
-
+  bool get isLoading => _isLoading;
   Detailed<NinMajorTypeData> get selectedMajorType => _selectedMajorTypeData;
 }

@@ -2,9 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/generated/codegen_loader.g.dart';
 import 'package:naturinorge_guide/pages/home_page_lib/home_page_button.dart';
-import 'package:naturinorge_guide/pages/nin_structure/major_type_group/major_type_group_selector.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type_group_page.dart';
-import 'package:naturinorge_guide/pages/nin_structure/nin_structure_page.dart';
+import 'package:naturinorge_guide/pages/nin_structure/other/loading.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -15,6 +14,7 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(LocaleKeys.app_name).tr(),
+          bottom: LoadingWidget(),
         ),
         body: GridView(
           padding: EdgeInsets.all(24),
