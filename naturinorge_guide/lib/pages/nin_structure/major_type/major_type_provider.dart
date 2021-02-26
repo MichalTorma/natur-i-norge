@@ -326,20 +326,23 @@ class MajorTypeProvider extends ChangeNotifier {
     } else {
       mts = mta.minorTypes;
     }
-    var width = mts
+    var widthSSList = mts
         .expand((mnt) => mnt.standardSegments)
-        .where((ss) => ss.lec.lec.data.id == _xAxis.lecAdapter.lec.data.id)
+        .where((ss) => ss.lec.lec.data.id == _xAxis.lecAdapter.lec.data.id);
+    var widthESList = widthSSList
         .expand((ss_f) => ss_f.elementarySegmentGroups)
         .toSet()
-        .length;
+        .toList();
+    var width = widthESList.length;
     var height = 1;
     if (_yAxis != null) {
-      height = mts
+      var heightSSList = mts
           .expand((mnt) => mnt.standardSegments)
           .where((ss) => ss.lec.lec.data.id == _yAxis.lecAdapter.lec.data.id)
           .expand((ss_f) => ss_f.elementarySegmentGroups)
           .toSet()
-          .length;
+          .toList();
+      height = heightSSList.length;
     }
     return [width, height];
   }
