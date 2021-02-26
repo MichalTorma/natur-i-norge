@@ -71,8 +71,8 @@ class LecAdapter {
     // print('Get Lec relations, majorTypeLec.id = ${majorTypeLec.id}');
     lec = await db.getLecById(majorTypeLec.lecId, locale);
     elementarySegments = await db.getElementarySegmentsByLec(lec.data);
-    var elementarySegmentGroupIds = await db
-        .getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec.id);
+    var elementarySegmentGroupIds =
+        await db.getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec);
 
     for (var esg in elementarySegmentGroupIds) {
       var esga = ElementarySegmentGroupAdapter(locale, esg);
@@ -118,7 +118,7 @@ class MinorTypeAdapter {
     for (var ss in standardSegmentsData) {
       var majorTypeLec = await db.getMajorTypeLecByStandardSegment(ss.data);
       var allElementarySegmentGroupIds = await db
-          .getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec.id);
+          .getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec);
       var ssa =
           StandardSegmentAdapter(ss, locale, allElementarySegmentGroupIds);
       await ssa.getRelations();
