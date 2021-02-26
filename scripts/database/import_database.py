@@ -26,6 +26,10 @@ for f in glob.glob(f'{export_path}*.csv'):
     data = pd.read_csv(f)
     cols = list(data.columns)
     cols.remove('pid')
+    try:
+        cols.remove('Unnamed: 0')
+    except:
+        pass
     data = data[cols]
     data.to_sql(table_name,engine, if_exists='append', index=False)
 
