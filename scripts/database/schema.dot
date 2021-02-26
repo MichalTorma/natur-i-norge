@@ -128,6 +128,10 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ standardSegment_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">⚪ _id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
@@ -808,6 +812,7 @@
 	"ElementarySegmentGroup" -> "ElementarySegment" [label = "elementarySegment_id"]
 	"ElementarySegmentGroup" -> "MajorType" [label = "majorType_id"]
 	"ElementarySegmentGroup" -> "LEC" [label = "lec_id"]
+	"ElementarySegmentGroup" -> "StandardSegment" [label = "standardSegment_id"]
 	"ElementarySegmentGroupDetail" -> "ElementarySegmentGroup" [label = "elementarySegmentGroup_id"]
 	"ElementarySegmentGroupDetail" -> "LEC" [label = "lec_id"]
 	"ElementarySegmentGroupDetail" -> "Detail" [label = "detail_id"]
