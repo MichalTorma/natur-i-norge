@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
@@ -52,13 +54,25 @@ class MajorTypeProvider extends ChangeNotifier {
     clear();
     _majorType = majorType;
     _majorTypeAdapter = MajorTypeAdapter(majorType, db, locale);
+    Timeline.startSync('Initialize scales');
     await _initializeScales();
+    Timeline.finishSync();
+    Timeline.startSync("Get major type relations");
     await _majorTypeAdapter.getRelations(_selectedMappingScale);
+    Timeline.finishSync();
+    Timeline.startSync('Populate all axis');
     await _populateAllAxis();
+    Timeline.finishSync();
+    Timeline.startSync('Initialize axis');
     _initializeAxis();
+    Timeline.finishSync();
     if (_xAxis != null) {
+      Timeline.startSync('Initialize minor types');
       await _initializeMinorTypes();
+      Timeline.finishSync();
+      Timeline.startSync('Initialize Minor type array');
       _initializeMinorTypesArray();
+      Timeline.finishSync();
       _gadHelper = GadHelper(
         locale: locale,
         majorType: _majorType.data,
@@ -161,13 +175,17 @@ class MajorTypeProvider extends ChangeNotifier {
   }
 
   Future _initializeMinorTypes() async {
+    Timeline.startSync('Get all minor types');
     var minorTypesScaledIds = await db.getMinorTypeScaledIdsByMajorTypeAndScale(
         _majorType.data, _selectedMappingScale);
+    Timeline.finishSync();
     var res = List<MinorTypeScaledAdapter>.empty(growable: true);
     for (var minorTypeScaledId in minorTypesScaledIds) {
+      Timeline.startSync('Get relations for $minorTypeScaledId');
       var minorTypeScaled = MinorTypeScaledAdapter(
           locale, _selectedMappingScale, minorTypeScaledId);
       await minorTypeScaled.getRelations();
+      Timeline.finishSync();
       res.add(minorTypeScaled);
     }
     _minorTypesScaled = res;
