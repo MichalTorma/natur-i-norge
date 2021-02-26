@@ -20,22 +20,37 @@ def get_page(numpage):
         page = pdf.getPage(numpage)
         page_content = page.extractText()
         return page_content
-# %%
-page_content = get_page(30)
-print(page_content)
-# page_content.splitlines()
 
 # %%
 def get_list_of_types(source):
     mnt = source.split('-')[0]
     ints_str = source[(len(mnt)+1):]
     ints_str_lst = ints_str.split(',')
-    print(ints_str_lst)
+    # print(ints_str_lst)
     tmp = list(map(lambda x: list(range(int(x.split('-')[0]),int(x.split('-')[-1])+1)),ints_str_lst))
     int_lst = list(itertools.chain.from_iterable(tmp))
     return [f'{mnt}-{x}' for x in int_lst]
 
 # get_list_of_types('T1-9-20,27-32,37-40,49-60,65-68,73-76,79-82,85')
+# %%
+def get_list_of_codes(source):
+    mnt = source.split('-')[:2]
+    mnt = '-'.join(mnt)
+    # print(mnt)
+    ints_str = source[(len(mnt)+1):]
+    ints_str_lst = ints_str.split(',')
+    # print(ints_str_lst)
+    tmp = list(map(lambda x: list(range(int(x.split('-')[0]),int(x.split('-')[-1])+1)),ints_str_lst))
+    int_lst = list(itertools.chain.from_iterable(tmp))
+    return [f'{mnt}-{x}' for x in int_lst]
+
+get_list_of_codes('T1-B-7,12,16')
+
+# %%
+page_content = get_page(99)
+print(page_content)
+# page_content.splitlines()
+
 # %%
 def parse_page(page):
 
@@ -45,6 +60,7 @@ def parse_page(page):
     mt_id = mnt_id.split('-')[0]
     if mt_id == 'T4':
         print('Skipping T4')
+        return
     name_re = re.search(r'[0-9FHLMITV,\-\s]*[BCD]?\s?\-?[0-9]*\s*([\S\s]*)N\s?i\s?N\s?-\s?k\s?a\s?r\s?a\s?k\s?t\s?e\s?r\s?i\s?', page)
     name = name_re.group(1).replace('\n','')
     # print(name)
@@ -62,10 +78,20 @@ def parse_page(page):
         print('No mnt_scaled')
     else:
         scaled_kode_str = mnt_scaled_reg.group(1)
+        scaled_gruntype_str = mnt_scaled_reg.group(2)
+        if mnt_id == 'T1-C-7':
+            scaled_kode_str = scaled_kode_str.replace('C1', 'T1')
+        if mnt_id == 'T7-C-1':
+            scaled_kode_str = scaled_kode_str.replace('T7-D1-', 'T7-D-1')
+        if mnt_id == 'T30-C-4':
+            scaled_kode_str = scaled_kode_str.replace('T30-E1', 'T30-E-1')
+        if mnt_id == 'T32-C-4':
+            scaled_gruntype_str = scaled_gruntype_str.replace('T32-3,4,5,', 'T32-3,4,5,16')
+
         # print(scaled_kode_str)
         scaled_kode_re = re.findall(r'([FHLMITV]+[^FHLMITV]*)', scaled_kode_str)
-        scaled_kode = [x.replace(' ','').replace('\n','') for x in scaled_kode_re]
-        scaled_gruntype_str = mnt_scaled_reg.group(2)
+        scaled_kode = [x.replace(' ','').replace('\n','').replace('Oppløs','') for x in scaled_kode_re]
+
         # print(scaled_gruntype_str)
         scaled_gruntype_re = re.findall(r'([FHLMITV]+[^FHLMITV]*)', scaled_gruntype_str)
         scaled_gruntype_last = [x.replace(' ','').replace('\n','') for x in scaled_gruntype_re]
@@ -78,9 +104,24 @@ def parse_page(page):
         if scaled_gruntype[-1] == 'M':
             scaled_gruntype = scaled_gruntype[:-1]
         scaled_gruntype = scaled_gruntype[1:]
+        if mnt_id == 'T7-C-11':
+            scaled_kode = ['T7-B-11', 'T7-C-11']
+            scaled_gruntype = ['T7-11', 'T7-11']
+        if mnt_id == 'T32-C-8':
+            scaled_kode = [None, 'T32-C-8', 'T32-D-6', 'T32-E-3']
+            scaled_gruntype = [None, 'T32-10', 'T32-10,12,18,20,21', 'T32-6-12,17-21']
+        if mnt_id == 'V1-C-1':
+            scaled_kode = ['V1-B-1,2', 'V1-C-1', 'V1-D-1', 'V1-E-1']
+            scaled_gruntype = ['V1-1-5', 'V1-1-5', 'V1-1-9,21-24', 'V1-1-9,21-24']
+        if mnt_id == 'V2-C-1':
+            scaled_kode = ['V2-B-1,2', 'V2-C-1', 'V2-D-1', 'V2-E-1']
+            scaled_gruntype = ['V2-1,2', 'V2-1-2', 'V2-1-2', 'V2-1-2']
         print(mnt_id)
-        # print(scaled_kode)
-        # print(scaled_gruntype)
+        print(scaled_kode)
+        print(scaled_gruntype)
+        # assert len(scaled_kode) == 4
+        assert len(scaled_kode) == len(scaled_gruntype)
+
         # create detail for mnts
         detail_id = f'minor_type_scaled_{mnt_id}'
         session.merge(model.Detail(
@@ -102,24 +143,41 @@ def parse_page(page):
             value = ecologisk_char
         ))
         # delete unused enteries in minor
-        q = session.query(model.MinorTypeScaled)\
-            .filter(model.MinorTypeScaled.mappingScale_id != 500)\
-            .filter(model.MinorTypeScaled.minorType_id.like(f'{mt_id}-%'))
-        q.delete(synchronize_session = False)
+        # q = session.query(model.MinorTypeScaled)\
+        #     .filter(model.MinorTypeScaled.mappingScale_id != 500)\
+        #     .filter(model.MinorTypeScaled.minorType_id.like(f'{mt_id}-%'))
+        # q.delete(synchronize_session = False)
+        # session.commit()
         #
+        guide = [2500, 5000, 10000, 20000]
+        for (i, mapping_scale_id) in enumerate(guide):
+            try:
+                mts_id_str = scaled_kode[i]
+            except:
+                mts_id_str = None
+            if mts_id_str == None:
+                continue
+            mts_id_lst = get_list_of_codes(mts_id_str)
+            for _id in mts_id_lst:
+                minorType_id_str = scaled_gruntype[i]
+                list_of_mnt = get_list_of_types(minorType_id_str)
+                for mnt_id in list_of_mnt:
+                    session.merge(
+                        model.MinorTypeScaled(
+                            _id = _id,
+                            minorType_id = mnt_id,
+                            mappingScale_id = mapping_scale_id,
+                            detail_id = detail_id,
+                            is_implemented = 1
+                        )
+                    )
+                    session.commit()
         # return scaled_gruntype
 
     # print(nin_kar)
     # print(fysiognomi)
-parse_page(page_content)
-#%%
-q = session.query(model.MinorTypeScaled)\
-    .filter(model.MinorTypeScaled.mappingScale_id == 500)\
-    .update({'is_implemented':1}, synchronize_session=False)
-#%%
-session.query(model.MinorTypeScaled)\
-    .filter(model.MinorTypeScaled.minorType_id.like(f'T4-%'))\
-    .update({'is_implemented':1}, synchronize_session=False)
+# parse_page(page_content)
+
 # %%
 with open(source_file, 'rb') as f:
     pdf = PdfFileReader(f)

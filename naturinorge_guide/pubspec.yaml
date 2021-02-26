@@ -52,15 +52,15 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
-  built_value_generator: ^8.0.0 # ns ^7.1.0
+  # built_value_generator: ^8.0.0 # ns ^7.1.0
   moor_generator: ^4.1.0 # ns #^4.0.0-dev
   build_runner: ^1.11.5 # ns
   flutter_test:
     sdk: flutter
 
 
-dependency_overrides:
-  analyzer: ^0.41.2
+# dependency_overrides:
+  # analyzer: ^1.1.0
   # yaml: ^3.0.0
   # path: ^1.8.0
   # collection: ^1.15.0
