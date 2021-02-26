@@ -142,17 +142,6 @@ CREATE TABLE "nin_MinorTypeScaled" (
 	FOREIGN KEY("mappingScale_id") REFERENCES "nin_MappingScale" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
-CREATE TABLE "nin_ElementarySegmentGroup" (
-	pid INTEGER NOT NULL, 
-	_id TEXT, 
-	"elementarySegment_id" TEXT, 
-	"majorType_id" TEXT, 
-	lec_id TEXT, 
-	PRIMARY KEY (pid), 
-	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id), 
-	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
-	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)
-);
 CREATE TABLE "nin_StandardSegment" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -185,6 +174,27 @@ CREATE TABLE "nin_MinorTypeStandardSegment" (
 	FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id), 
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)
 );
+CREATE TABLE "nin_ElementarySegmentGroup" (
+	pid INTEGER NOT NULL, 
+	_id TEXT, 
+	"elementarySegment_id" TEXT, 
+	"majorType_id" TEXT, 
+	lec_id TEXT, 
+	"standardSegment_id" TEXT, 
+	PRIMARY KEY (pid), 
+	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id), 
+	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
+	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
+	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)
+);
+CREATE TABLE "nin_StandardSegmentElement" (
+	pid INTEGER NOT NULL, 
+	"standardSegment_id" TEXT, 
+	"elementarySegment_id" TEXT, 
+	PRIMARY KEY (pid), 
+	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id), 
+	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
+);
 CREATE TABLE "nin_ElementarySegmentGroupDetail" (
 	pid INTEGER NOT NULL, 
 	"elementarySegmentGroup_id" TEXT, 
@@ -196,14 +206,6 @@ CREATE TABLE "nin_ElementarySegmentGroupDetail" (
 	FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" ("elementarySegment_id"), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
-);
-CREATE TABLE "nin_StandardSegmentElement" (
-	pid INTEGER NOT NULL, 
-	"standardSegment_id" TEXT, 
-	"elementarySegment_id" TEXT, 
-	PRIMARY KEY (pid), 
-	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id), 
-	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
 );
 CREATE TABLE "nin_ElementarySegmentCombination" (
 	pid INTEGER NOT NULL, 
