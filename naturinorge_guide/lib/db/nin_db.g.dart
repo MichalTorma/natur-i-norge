@@ -4476,8 +4476,14 @@ class NinElementarySegmentGroupData extends DataClass
   final int pid;
   final String id;
   final String elementarySegmentId;
+  final String majorTypeId;
+  final String lecId;
   NinElementarySegmentGroupData(
-      {@required this.pid, this.id, this.elementarySegmentId});
+      {@required this.pid,
+      this.id,
+      this.elementarySegmentId,
+      this.majorTypeId,
+      this.lecId});
   factory NinElementarySegmentGroupData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -4489,6 +4495,10 @@ class NinElementarySegmentGroupData extends DataClass
       id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
       elementarySegmentId: stringType.mapFromDatabaseResponse(
           data['${effectivePrefix}elementarySegment_id']),
+      majorTypeId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
+      lecId:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
     );
   }
   @override
@@ -4503,6 +4513,12 @@ class NinElementarySegmentGroupData extends DataClass
     if (!nullToAbsent || elementarySegmentId != null) {
       map['elementarySegment_id'] = Variable<String>(elementarySegmentId);
     }
+    if (!nullToAbsent || majorTypeId != null) {
+      map['majorType_id'] = Variable<String>(majorTypeId);
+    }
+    if (!nullToAbsent || lecId != null) {
+      map['lec_id'] = Variable<String>(lecId);
+    }
     return map;
   }
 
@@ -4513,6 +4529,11 @@ class NinElementarySegmentGroupData extends DataClass
       elementarySegmentId: elementarySegmentId == null && nullToAbsent
           ? const Value.absent()
           : Value(elementarySegmentId),
+      majorTypeId: majorTypeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(majorTypeId),
+      lecId:
+          lecId == null && nullToAbsent ? const Value.absent() : Value(lecId),
     );
   }
 
@@ -4524,6 +4545,8 @@ class NinElementarySegmentGroupData extends DataClass
       id: serializer.fromJson<String>(json['_id']),
       elementarySegmentId:
           serializer.fromJson<String>(json['elementarySegment_id']),
+      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
+      lecId: serializer.fromJson<String>(json['lec_id']),
     );
   }
   @override
@@ -4533,36 +4556,52 @@ class NinElementarySegmentGroupData extends DataClass
       'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String>(id),
       'elementarySegment_id': serializer.toJson<String>(elementarySegmentId),
+      'majorType_id': serializer.toJson<String>(majorTypeId),
+      'lec_id': serializer.toJson<String>(lecId),
     };
   }
 
   NinElementarySegmentGroupData copyWith(
-          {int pid, String id, String elementarySegmentId}) =>
+          {int pid,
+          String id,
+          String elementarySegmentId,
+          String majorTypeId,
+          String lecId}) =>
       NinElementarySegmentGroupData(
         pid: pid ?? this.pid,
         id: id ?? this.id,
         elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
+        majorTypeId: majorTypeId ?? this.majorTypeId,
+        lecId: lecId ?? this.lecId,
       );
   @override
   String toString() {
     return (StringBuffer('NinElementarySegmentGroupData(')
           ..write('pid: $pid, ')
           ..write('id: $id, ')
-          ..write('elementarySegmentId: $elementarySegmentId')
+          ..write('elementarySegmentId: $elementarySegmentId, ')
+          ..write('majorTypeId: $majorTypeId, ')
+          ..write('lecId: $lecId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf(
-      $mrjc(pid.hashCode, $mrjc(id.hashCode, elementarySegmentId.hashCode)));
+  int get hashCode => $mrjf($mrjc(
+      pid.hashCode,
+      $mrjc(
+          id.hashCode,
+          $mrjc(elementarySegmentId.hashCode,
+              $mrjc(majorTypeId.hashCode, lecId.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is NinElementarySegmentGroupData &&
           other.pid == this.pid &&
           other.id == this.id &&
-          other.elementarySegmentId == this.elementarySegmentId);
+          other.elementarySegmentId == this.elementarySegmentId &&
+          other.majorTypeId == this.majorTypeId &&
+          other.lecId == this.lecId);
 }
 
 class NinElementarySegmentGroupCompanion
@@ -4570,35 +4609,51 @@ class NinElementarySegmentGroupCompanion
   final Value<int> pid;
   final Value<String> id;
   final Value<String> elementarySegmentId;
+  final Value<String> majorTypeId;
+  final Value<String> lecId;
   const NinElementarySegmentGroupCompanion({
     this.pid = const Value.absent(),
     this.id = const Value.absent(),
     this.elementarySegmentId = const Value.absent(),
+    this.majorTypeId = const Value.absent(),
+    this.lecId = const Value.absent(),
   });
   NinElementarySegmentGroupCompanion.insert({
     this.pid = const Value.absent(),
     this.id = const Value.absent(),
     this.elementarySegmentId = const Value.absent(),
+    this.majorTypeId = const Value.absent(),
+    this.lecId = const Value.absent(),
   });
   static Insertable<NinElementarySegmentGroupData> custom({
     Expression<int> pid,
     Expression<String> id,
     Expression<String> elementarySegmentId,
+    Expression<String> majorTypeId,
+    Expression<String> lecId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
       if (id != null) '_id': id,
       if (elementarySegmentId != null)
         'elementarySegment_id': elementarySegmentId,
+      if (majorTypeId != null) 'majorType_id': majorTypeId,
+      if (lecId != null) 'lec_id': lecId,
     });
   }
 
   NinElementarySegmentGroupCompanion copyWith(
-      {Value<int> pid, Value<String> id, Value<String> elementarySegmentId}) {
+      {Value<int> pid,
+      Value<String> id,
+      Value<String> elementarySegmentId,
+      Value<String> majorTypeId,
+      Value<String> lecId}) {
     return NinElementarySegmentGroupCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
       elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
+      majorTypeId: majorTypeId ?? this.majorTypeId,
+      lecId: lecId ?? this.lecId,
     );
   }
 
@@ -4614,6 +4669,12 @@ class NinElementarySegmentGroupCompanion
     if (elementarySegmentId.present) {
       map['elementarySegment_id'] = Variable<String>(elementarySegmentId.value);
     }
+    if (majorTypeId.present) {
+      map['majorType_id'] = Variable<String>(majorTypeId.value);
+    }
+    if (lecId.present) {
+      map['lec_id'] = Variable<String>(lecId.value);
+    }
     return map;
   }
 
@@ -4622,7 +4683,9 @@ class NinElementarySegmentGroupCompanion
     return (StringBuffer('NinElementarySegmentGroupCompanion(')
           ..write('pid: $pid, ')
           ..write('id: $id, ')
-          ..write('elementarySegmentId: $elementarySegmentId')
+          ..write('elementarySegmentId: $elementarySegmentId, ')
+          ..write('majorTypeId: $majorTypeId, ')
+          ..write('lecId: $lecId')
           ..write(')'))
         .toString();
   }
@@ -4658,8 +4721,27 @@ class NinElementarySegmentGroup extends Table
         $customConstraints: '');
   }
 
+  final VerificationMeta _majorTypeIdMeta =
+      const VerificationMeta('majorTypeId');
+  GeneratedTextColumn _majorTypeId;
+  GeneratedTextColumn get majorTypeId =>
+      _majorTypeId ??= _constructMajorTypeId();
+  GeneratedTextColumn _constructMajorTypeId() {
+    return GeneratedTextColumn('majorType_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
+  GeneratedTextColumn _lecId;
+  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
+  GeneratedTextColumn _constructLecId() {
+    return GeneratedTextColumn('lec_id', $tableName, true,
+        $customConstraints: '');
+  }
+
   @override
-  List<GeneratedColumn> get $columns => [pid, id, elementarySegmentId];
+  List<GeneratedColumn> get $columns =>
+      [pid, id, elementarySegmentId, majorTypeId, lecId];
   @override
   NinElementarySegmentGroup get asDslTable => this;
   @override
@@ -4685,6 +4767,16 @@ class NinElementarySegmentGroup extends Table
           elementarySegmentId.isAcceptableOrUnknown(
               data['elementarySegment_id'], _elementarySegmentIdMeta));
     }
+    if (data.containsKey('majorType_id')) {
+      context.handle(
+          _majorTypeIdMeta,
+          majorTypeId.isAcceptableOrUnknown(
+              data['majorType_id'], _majorTypeIdMeta));
+    }
+    if (data.containsKey('lec_id')) {
+      context.handle(
+          _lecIdMeta, lecId.isAcceptableOrUnknown(data['lec_id'], _lecIdMeta));
+    }
     return context;
   }
 
@@ -4706,7 +4798,9 @@ class NinElementarySegmentGroup extends Table
   @override
   List<String> get customConstraints => const [
         'PRIMARY KEY (pid)',
-        'FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)'
+        'FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)',
+        'FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)',
+        'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)'
       ];
   @override
   bool get dontWriteConstraints => true;

@@ -120,6 +120,14 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ lec_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ majorType_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">⚪ _id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
@@ -798,6 +806,8 @@
 	"ElementarySegmentCombination" -> "ElementarySegmentGroup" [label = "elementarySegmentGroup_id"]
 	"ElementarySegmentCombination" -> "MajorTypeLEC" [label = "majorTypeLEC_id"]
 	"ElementarySegmentGroup" -> "ElementarySegment" [label = "elementarySegment_id"]
+	"ElementarySegmentGroup" -> "MajorType" [label = "majorType_id"]
+	"ElementarySegmentGroup" -> "LEC" [label = "lec_id"]
 	"ElementarySegmentGroupDetail" -> "ElementarySegmentGroup" [label = "elementarySegmentGroup_id"]
 	"ElementarySegmentGroupDetail" -> "LEC" [label = "lec_id"]
 	"ElementarySegmentGroupDetail" -> "Detail" [label = "detail_id"]

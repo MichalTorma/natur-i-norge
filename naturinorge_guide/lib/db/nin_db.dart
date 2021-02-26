@@ -193,26 +193,32 @@ class NiNDatabase extends _$NiNDatabase {
   }
 
   Future<List<String>> getGadElementarySegmentGroupsIdsByMajorTypeLecId(
-      String majorTypeLecId) async {
-    var res = await (select(ninElementarySegmentCombination)
-          ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLecId)))
-        .get();
-    if (res.length > 0) {
-      return res.map((e) => e.elementarySegmentGroupId).toSet().toList();
-    }
-    var mtl = await (select(ninMajorTypeLEC)
-          ..where((tbl) => tbl.id.equals(majorTypeLecId)))
-        .getSingle();
-    var es = await (select(ninElementarySegment)
-          ..where((tbl) => tbl.lecId.equals(mtl.lecId))
-          ..orderBy([(u) => OrderingTerm.asc(ninElementarySegment.order)]))
-        .get();
-    var es_ids = es.map((e) => e.id).toSet().toList();
-    // return es_ids;
+      NinMajorTypeLECData majorTypeLecId) async {
     var esg = await (select(ninElementarySegmentGroup)
-          ..where((tbl) => tbl.elementarySegmentId.isIn(es_ids)))
+          ..where((tbl) =>
+              tbl.majorTypeId.equals(majorTypeLecId.majorTypeId) &
+              tbl.lecId.equals(majorTypeLecId.lecId)))
         .get();
     return esg.map((e) => e.id).toSet().toList();
+    // var res = await (select(ninElementarySegmentCombination)
+    //       ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLecId.id)))
+    //     .get();
+    // if (res.length > 0) {
+    //   return res.map((e) => e.elementarySegmentGroupId).toSet().toList();
+    // }
+    // var mtl = await (select(ninMajorTypeLEC)
+    //       ..where((tbl) => tbl.id.equals(majorTypeLecId)))
+    //     .getSingle();
+    // var es = await (select(ninElementarySegment)
+    //       ..where((tbl) => tbl.lecId.equals(mtl.lecId))
+    //       ..orderBy([(u) => OrderingTerm.asc(ninElementarySegment.order)]))
+    //     .get();
+    // var es_ids = es.map((e) => e.id).toSet().toList();
+    // // return es_ids;
+    // var esg = await (select(ninElementarySegmentGroup)
+    //       ..where((tbl) => tbl.elementarySegmentId.isIn(es_ids)))
+    //     .get();
+    // return esg.map((e) => e.id).toSet().toList();
   }
 
   Future<Detailed<NinLECData>> getLecById(String lecId, Locale locale) async {
@@ -266,7 +272,7 @@ class NiNDatabase extends _$NiNDatabase {
           .get();
 
   @override
-  int get schemaVersion => 33;
+  int get schemaVersion => 34;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
