@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:naturinorge_guide/db/nin_db.dart';
@@ -91,12 +92,16 @@ class MinorTypeScaledAdapter {
   MinorTypeScaledAdapter(
       this.locale, this.mappingScale, this.minorTypeScaledId);
   Future getRelations() async {
+    Timeline.startSync('Get Minor types by minor type scaled id');
     var minorTypesData =
         await db.getMinorTypesByMajorTypeScaledId(minorTypeScaledId, locale);
+    Timeline.finishSync();
     var res = List<MinorTypeAdapter>.empty(growable: true);
     for (var minorType in minorTypesData) {
+      Timeline.startSync('Initialize Minor type adapter');
       var item = MinorTypeAdapter(locale, minorType);
       await item.getRelations();
+      Timeline.finishSync();
       res.add(item);
     }
     minorTypes = res;
@@ -112,8 +117,10 @@ class MinorTypeAdapter {
   MinorTypeAdapter(this.locale, this.minorType);
 
   Future getRelations() async {
+    Timeline.startSync('Get all standard segments');
     var standardSegmentsData =
         await db.getStandardSegmentsByMinorType(minorType.data, locale);
+    Timeline.finishSync();
     var res = List<StandardSegmentAdapter>.empty(growable: true);
     for (var ss in standardSegmentsData) {
       var majorTypeLec = await db.getMajorTypeLecByStandardSegment(ss.data);
