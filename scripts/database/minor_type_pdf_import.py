@@ -22,7 +22,7 @@ def get_page(numpage):
         return page_content
 # %%
 page_content = get_page(30)
-# print(page_content)
+print(page_content)
 # page_content.splitlines()
 
 # %%
@@ -42,9 +42,12 @@ def parse_page(page):
 
     mnt_id_re = re.search(r'([A-Z])([0-9])+-C-([0-9])+', page)
     mnt_id = mnt_id_re.group(0)
-    mntg_id = mnt_id.split('-')[0]
-    if mntg_id == 'T4':
+    mt_id = mnt_id.split('-')[0]
+    if mt_id == 'T4':
         print('Skipping T4')
+    name_re = re.search(r'[0-9FHLMITV,\-\s]*[BCD]?\s?\-?[0-9]*\s*([\S\s]*)N\s?i\s?N\s?-\s?k\s?a\s?r\s?a\s?k\s?t\s?e\s?r\s?i\s?', page)
+    name = name_re.group(1).replace('\n','')
+    # print(name)
     nin_kar_re = re.search(r'N\s?i\s?N\s?-\s?k\s?a\s?r\s?a\s?k\s?t\s?e\s?r\s?i\s?s\s?t\s?i\s?k\s?k\n*:\n*\s*([\S\s]*?)\nFysiognomi\s?:', page)
     nin_kar = nin_kar_re.group(1)
     fysiognomi_re = re.search(r'Fysiognomi\n*:\n*\s*([\S\s]*?)\nØkologisk karakteristikk\s?:', page)
@@ -76,17 +79,47 @@ def parse_page(page):
             scaled_gruntype = scaled_gruntype[:-1]
         scaled_gruntype = scaled_gruntype[1:]
         print(mnt_id)
-        print(scaled_kode)
-        print(scaled_gruntype)
-
+        # print(scaled_kode)
+        # print(scaled_gruntype)
+        # create detail for mnts
+        detail_id = f'minor_type_scaled_{mnt_id}'
+        session.merge(model.Detail(
+            _id = detail_id,
+            language_id = 'nb',
+            key = '<name>',
+            value = name
+        ))
+        session.merge(model.Detail(
+            _id = detail_id,
+            language_id = 'nb',
+            key = '<physiognomy>',
+            value = fysiognomi
+        ))
+        session.merge(model.Detail(
+            _id = detail_id,
+            language_id = 'nb',
+            key = '<ecological_characteristics>',
+            value = ecologisk_char
+        ))
+        # delete unused enteries in minor
+        q = session.query(model.MinorTypeScaled)\
+            .filter(model.MinorTypeScaled.mappingScale_id != 500)\
+            .filter(model.MinorTypeScaled.minorType_id.like(f'{mt_id}-%'))
+        q.delete(synchronize_session = False)
         #
-
         # return scaled_gruntype
 
     # print(nin_kar)
     # print(fysiognomi)
 parse_page(page_content)
-
+#%%
+q = session.query(model.MinorTypeScaled)\
+    .filter(model.MinorTypeScaled.mappingScale_id == 500)\
+    .update({'is_implemented':1}, synchronize_session=False)
+#%%
+session.query(model.MinorTypeScaled)\
+    .filter(model.MinorTypeScaled.minorType_id.like(f'T4-%'))\
+    .update({'is_implemented':1}, synchronize_session=False)
 # %%
 with open(source_file, 'rb') as f:
     pdf = PdfFileReader(f)
