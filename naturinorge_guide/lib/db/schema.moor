@@ -136,6 +136,7 @@ CREATE TABLE "nin_MinorTypeScaled" (
 	"minorType_id" TEXT, 
 	"mappingScale_id" INTEGER, 
 	detail_id TEXT, 
+	is_implemented INTEGER, 
 	PRIMARY KEY (pid), 
 	FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id), 
 	FOREIGN KEY("mappingScale_id") REFERENCES "nin_MappingScale" (_id), 
