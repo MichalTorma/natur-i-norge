@@ -146,8 +146,12 @@ CREATE TABLE "nin_ElementarySegmentGroup" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
 	"elementarySegment_id" TEXT, 
+	"majorType_id" TEXT, 
+	lec_id TEXT, 
 	PRIMARY KEY (pid), 
-	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
+	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id), 
+	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
+	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)
 );
 CREATE TABLE "nin_StandardSegment" (
 	pid INTEGER NOT NULL, 
