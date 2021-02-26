@@ -4100,8 +4100,15 @@ class NinMinorTypeScaledData extends DataClass
   final String id;
   final String minorTypeId;
   final int mappingScaleId;
+  final String detailId;
+  final int isImplemented;
   NinMinorTypeScaledData(
-      {@required this.pid, this.id, this.minorTypeId, this.mappingScaleId});
+      {@required this.pid,
+      this.id,
+      this.minorTypeId,
+      this.mappingScaleId,
+      this.detailId,
+      this.isImplemented});
   factory NinMinorTypeScaledData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -4115,6 +4122,10 @@ class NinMinorTypeScaledData extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}minorType_id']),
       mappingScaleId: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}mappingScale_id']),
+      detailId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
+      isImplemented: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_implemented']),
     );
   }
   @override
@@ -4132,6 +4143,12 @@ class NinMinorTypeScaledData extends DataClass
     if (!nullToAbsent || mappingScaleId != null) {
       map['mappingScale_id'] = Variable<int>(mappingScaleId);
     }
+    if (!nullToAbsent || detailId != null) {
+      map['detail_id'] = Variable<String>(detailId);
+    }
+    if (!nullToAbsent || isImplemented != null) {
+      map['is_implemented'] = Variable<int>(isImplemented);
+    }
     return map;
   }
 
@@ -4145,6 +4162,12 @@ class NinMinorTypeScaledData extends DataClass
       mappingScaleId: mappingScaleId == null && nullToAbsent
           ? const Value.absent()
           : Value(mappingScaleId),
+      detailId: detailId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(detailId),
+      isImplemented: isImplemented == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isImplemented),
     );
   }
 
@@ -4156,6 +4179,8 @@ class NinMinorTypeScaledData extends DataClass
       id: serializer.fromJson<String>(json['_id']),
       minorTypeId: serializer.fromJson<String>(json['minorType_id']),
       mappingScaleId: serializer.fromJson<int>(json['mappingScale_id']),
+      detailId: serializer.fromJson<String>(json['detail_id']),
+      isImplemented: serializer.fromJson<int>(json['is_implemented']),
     );
   }
   @override
@@ -4166,16 +4191,25 @@ class NinMinorTypeScaledData extends DataClass
       '_id': serializer.toJson<String>(id),
       'minorType_id': serializer.toJson<String>(minorTypeId),
       'mappingScale_id': serializer.toJson<int>(mappingScaleId),
+      'detail_id': serializer.toJson<String>(detailId),
+      'is_implemented': serializer.toJson<int>(isImplemented),
     };
   }
 
   NinMinorTypeScaledData copyWith(
-          {int pid, String id, String minorTypeId, int mappingScaleId}) =>
+          {int pid,
+          String id,
+          String minorTypeId,
+          int mappingScaleId,
+          String detailId,
+          int isImplemented}) =>
       NinMinorTypeScaledData(
         pid: pid ?? this.pid,
         id: id ?? this.id,
         minorTypeId: minorTypeId ?? this.minorTypeId,
         mappingScaleId: mappingScaleId ?? this.mappingScaleId,
+        detailId: detailId ?? this.detailId,
+        isImplemented: isImplemented ?? this.isImplemented,
       );
   @override
   String toString() {
@@ -4183,7 +4217,9 @@ class NinMinorTypeScaledData extends DataClass
           ..write('pid: $pid, ')
           ..write('id: $id, ')
           ..write('minorTypeId: $minorTypeId, ')
-          ..write('mappingScaleId: $mappingScaleId')
+          ..write('mappingScaleId: $mappingScaleId, ')
+          ..write('detailId: $detailId, ')
+          ..write('isImplemented: $isImplemented')
           ..write(')'))
         .toString();
   }
@@ -4192,7 +4228,11 @@ class NinMinorTypeScaledData extends DataClass
   int get hashCode => $mrjf($mrjc(
       pid.hashCode,
       $mrjc(
-          id.hashCode, $mrjc(minorTypeId.hashCode, mappingScaleId.hashCode))));
+          id.hashCode,
+          $mrjc(
+              minorTypeId.hashCode,
+              $mrjc(mappingScaleId.hashCode,
+                  $mrjc(detailId.hashCode, isImplemented.hashCode))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -4200,7 +4240,9 @@ class NinMinorTypeScaledData extends DataClass
           other.pid == this.pid &&
           other.id == this.id &&
           other.minorTypeId == this.minorTypeId &&
-          other.mappingScaleId == this.mappingScaleId);
+          other.mappingScaleId == this.mappingScaleId &&
+          other.detailId == this.detailId &&
+          other.isImplemented == this.isImplemented);
 }
 
 class NinMinorTypeScaledCompanion
@@ -4209,29 +4251,39 @@ class NinMinorTypeScaledCompanion
   final Value<String> id;
   final Value<String> minorTypeId;
   final Value<int> mappingScaleId;
+  final Value<String> detailId;
+  final Value<int> isImplemented;
   const NinMinorTypeScaledCompanion({
     this.pid = const Value.absent(),
     this.id = const Value.absent(),
     this.minorTypeId = const Value.absent(),
     this.mappingScaleId = const Value.absent(),
+    this.detailId = const Value.absent(),
+    this.isImplemented = const Value.absent(),
   });
   NinMinorTypeScaledCompanion.insert({
     this.pid = const Value.absent(),
     this.id = const Value.absent(),
     this.minorTypeId = const Value.absent(),
     this.mappingScaleId = const Value.absent(),
+    this.detailId = const Value.absent(),
+    this.isImplemented = const Value.absent(),
   });
   static Insertable<NinMinorTypeScaledData> custom({
     Expression<int> pid,
     Expression<String> id,
     Expression<String> minorTypeId,
     Expression<int> mappingScaleId,
+    Expression<String> detailId,
+    Expression<int> isImplemented,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
       if (id != null) '_id': id,
       if (minorTypeId != null) 'minorType_id': minorTypeId,
       if (mappingScaleId != null) 'mappingScale_id': mappingScaleId,
+      if (detailId != null) 'detail_id': detailId,
+      if (isImplemented != null) 'is_implemented': isImplemented,
     });
   }
 
@@ -4239,12 +4291,16 @@ class NinMinorTypeScaledCompanion
       {Value<int> pid,
       Value<String> id,
       Value<String> minorTypeId,
-      Value<int> mappingScaleId}) {
+      Value<int> mappingScaleId,
+      Value<String> detailId,
+      Value<int> isImplemented}) {
     return NinMinorTypeScaledCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
       minorTypeId: minorTypeId ?? this.minorTypeId,
       mappingScaleId: mappingScaleId ?? this.mappingScaleId,
+      detailId: detailId ?? this.detailId,
+      isImplemented: isImplemented ?? this.isImplemented,
     );
   }
 
@@ -4263,6 +4319,12 @@ class NinMinorTypeScaledCompanion
     if (mappingScaleId.present) {
       map['mappingScale_id'] = Variable<int>(mappingScaleId.value);
     }
+    if (detailId.present) {
+      map['detail_id'] = Variable<String>(detailId.value);
+    }
+    if (isImplemented.present) {
+      map['is_implemented'] = Variable<int>(isImplemented.value);
+    }
     return map;
   }
 
@@ -4272,7 +4334,9 @@ class NinMinorTypeScaledCompanion
           ..write('pid: $pid, ')
           ..write('id: $id, ')
           ..write('minorTypeId: $minorTypeId, ')
-          ..write('mappingScaleId: $mappingScaleId')
+          ..write('mappingScaleId: $mappingScaleId, ')
+          ..write('detailId: $detailId, ')
+          ..write('isImplemented: $isImplemented')
           ..write(')'))
         .toString();
   }
@@ -4318,8 +4382,27 @@ class NinMinorTypeScaled extends Table
         $customConstraints: '');
   }
 
+  final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
+  GeneratedTextColumn _detailId;
+  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
+  GeneratedTextColumn _constructDetailId() {
+    return GeneratedTextColumn('detail_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  final VerificationMeta _isImplementedMeta =
+      const VerificationMeta('isImplemented');
+  GeneratedIntColumn _isImplemented;
+  GeneratedIntColumn get isImplemented =>
+      _isImplemented ??= _constructIsImplemented();
+  GeneratedIntColumn _constructIsImplemented() {
+    return GeneratedIntColumn('is_implemented', $tableName, true,
+        $customConstraints: '');
+  }
+
   @override
-  List<GeneratedColumn> get $columns => [pid, id, minorTypeId, mappingScaleId];
+  List<GeneratedColumn> get $columns =>
+      [pid, id, minorTypeId, mappingScaleId, detailId, isImplemented];
   @override
   NinMinorTypeScaled get asDslTable => this;
   @override
@@ -4351,6 +4434,16 @@ class NinMinorTypeScaled extends Table
           mappingScaleId.isAcceptableOrUnknown(
               data['mappingScale_id'], _mappingScaleIdMeta));
     }
+    if (data.containsKey('detail_id')) {
+      context.handle(_detailIdMeta,
+          detailId.isAcceptableOrUnknown(data['detail_id'], _detailIdMeta));
+    }
+    if (data.containsKey('is_implemented')) {
+      context.handle(
+          _isImplementedMeta,
+          isImplemented.isAcceptableOrUnknown(
+              data['is_implemented'], _isImplementedMeta));
+    }
     return context;
   }
 
@@ -4371,7 +4464,8 @@ class NinMinorTypeScaled extends Table
   List<String> get customConstraints => const [
         'PRIMARY KEY (pid)',
         'FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id)',
-        'FOREIGN KEY("mappingScale_id") REFERENCES "nin_MappingScale" (_id)'
+        'FOREIGN KEY("mappingScale_id") REFERENCES "nin_MappingScale" (_id)',
+        'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
       ];
   @override
   bool get dontWriteConstraints => true;
