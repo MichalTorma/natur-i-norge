@@ -44,10 +44,10 @@ def get_list_of_codes(source):
     int_lst = list(itertools.chain.from_iterable(tmp))
     return [f'{mnt}-{x}' for x in int_lst]
 
-get_list_of_codes('T1-B-7,12,16')
+# get_list_of_codes('T1-B-7,12,16')
 
 # %%
-page_content = get_page(43)
+page_content = get_page(81)
 print(page_content)
 # page_content.splitlines()
 
@@ -55,9 +55,10 @@ print(page_content)
 def parse_page(page):
 
 
-    mnt_id_re = re.search(r'([A-Z])([0-9])+-C-([0-9])+', page)
-    mnt_id = mnt_id_re.group(0)
+    mnt_id_re = re.search(r'([A-Z])([0-9])+-C\s?-([0-9])+', page)
+    mnt_id = mnt_id_re.group(0).replace('\n','')
     mt_id = mnt_id.split('-')[0]
+
     if mt_id == 'T4':
         print('Skipping T4')
         return
@@ -111,6 +112,48 @@ T2-6
 T2-6
 T2-5,6
 T2-5,6
+Diagnostiske arter
+        '''
+    if mnt_id == 'T5-C-1':
+        page = '''
+Målestokk
+1:500
+1:2.500
+1:5.000
+1:10.000
+1:20.000
+Kode
+T5-1,2,4
+T5-B-1,2,4
+T5-C-1
+T5-D-1
+T5-E-1
+Grunntyper
+T5-1,2,4
+T5-1,2,4
+T5-1,2,4
+T5-1,2,4,8,9
+Diagnostiske arter
+        '''
+    if mnt_id == 'T5-C-2':
+        page = '''
+Målestokk
+1:500
+1:2.500
+1:5.000
+1:10.000
+1:20.000
+Kode
+T5-3,5
+T5-B-3,5
+T5-C-2
+T5-D-2
+T5-E-2
+Grunntyper
+T5-3,5
+T5-3,5
+T5-3,5
+T5-3,5,10
 Diagnostiske arter
         '''
 
