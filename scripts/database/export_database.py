@@ -11,7 +11,7 @@ for table_name_tuple in table_names.itertuples():
     table_name = table_name_tuple[1]
     print(table_name)
     data = pd.read_sql_query(f'select * from {table_name}', engine)
-    data.to_csv(f'{export_path}{table_name}.csv', index=True)
+    data.to_csv(f'{export_path}{table_name}.csv', index=False)
 
 
 # %%

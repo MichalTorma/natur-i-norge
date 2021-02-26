@@ -47,7 +47,7 @@ def get_list_of_codes(source):
 get_list_of_codes('T1-B-7,12,16')
 
 # %%
-page_content = get_page(99)
+page_content = get_page(43)
 print(page_content)
 # page_content.splitlines()
 
@@ -71,8 +71,52 @@ def parse_page(page):
     ecologisk_char_reg = re.search(r'Økologisk karakteristikk\n*:\n*\s*([\S\s]*?)\nTerreng', page)
     ecologisk_char = ecologisk_char_reg.group(1)
     page = page.replace('*','')
+    if mnt_id == 'T2-C-5':
+        page = '''
+            Målestokk
+1:500
+1:2.500
+1:5.000
+1:10.000
+1:20.000
+Kode
+T2-5
+T2-B-5
+T2-C-5
+T2-D-3
+T2-E-3
+Grunntyper
+T2-5
+T2-5
+T2-5,6
+T2-5,6
+Diagnostiske arter
+        '''
+    if mnt_id == 'T2-C-6':
+        page = '''
+Målestokk
+1:500
+1:2.500
+1:5.000
+1:10.000
+1:20.000
+Kode
+T2-6
+T2-B-6
+T2-C-6
+T2-D-3
+T2-E-3
+Grunntyper
+T2-6
+T2-6
+T2-5,6
+T2-5,6
+Diagnostiske arter
+        '''
+
     mnt_scaled_reg = re.search(r'\sKode\s([\S\s]*?)\sGrunntyper\s([\S\s]*?)[^0-9FHLMITV\-,\s]+', page)
     mnt_scaled = None
+
 
     if (mnt_scaled_reg == None):
         print('No mnt_scaled')
@@ -176,7 +220,7 @@ def parse_page(page):
 
     # print(nin_kar)
     # print(fysiognomi)
-# parse_page(page_content)
+parse_page(page_content)
 
 # %%
 with open(source_file, 'rb') as f:
