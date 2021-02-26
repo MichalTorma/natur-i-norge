@@ -205,6 +205,8 @@ class ElementarySegmentGroup(Base):
         f'{prefix}ElementarySegment._id'))
     majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
+    standardSegment_id = Column(Text, ForeignKey(
+        f'{prefix}StandardSegment._id'))
 
 
 class ElementarySegmentGroupDetail(Base):
