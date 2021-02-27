@@ -25,9 +25,11 @@ CREATE TABLE "nin_Species" (
 	"scientificName" TEXT, 
 	author TEXT, 
 	"vernacularName" TEXT, 
-	PRIMARY KEY (pid), 
-	UNIQUE ("scientificNameId")
+	PRIMARY KEY (pid)
 );
+CREATE UNIQUE INDEX "ix_nin_Species_scientificNameId" ON "nin_Species" ("scientificNameId");
+CREATE INDEX "ix_nin_Species_scientificName" ON "nin_Species" ("scientificName");
+CREATE INDEX "ix_nin_Species_vernacularName" ON "nin_Species" ("vernacularName");
 CREATE TABLE "nin_Detail" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -37,6 +39,9 @@ CREATE TABLE "nin_Detail" (
 	PRIMARY KEY (pid), 
 	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
 );
+CREATE INDEX "ix_nin_Detail__id" ON "nin_Detail" (_id);
+CREATE INDEX detail_index ON "nin_Detail" (_id, language_id, "key");
+CREATE INDEX "ix_nin_Detail_key" ON "nin_Detail" ("key");
 CREATE TABLE "nin_MajorTypeGroup" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -91,12 +96,12 @@ CREATE TABLE "nin_LEC" (
 	"spatialScale" INTEGER, 
 	detail_id TEXT, 
 	PRIMARY KEY (pid), 
-	UNIQUE (_id), 
 	FOREIGN KEY("parentLec_id") REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY("structuringProcess_id") REFERENCES "nin_StructuringProcess" (_id), 
 	FOREIGN KEY("patternOfVariation_id") REFERENCES "nin_PatternOfVariation" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
+CREATE UNIQUE INDEX "ix_nin_LEC__id" ON "nin_LEC" (_id);
 CREATE TABLE "nin_MinorType" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -107,6 +112,7 @@ CREATE TABLE "nin_MinorType" (
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
+CREATE INDEX "ix_nin_MinorType_majorType_id" ON "nin_MinorType" ("majorType_id");
 CREATE TABLE "nin_MajorTypeLEC" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -115,11 +121,13 @@ CREATE TABLE "nin_MajorTypeLEC" (
 	"lecType_id" TEXT, 
 	axis INTEGER, 
 	PRIMARY KEY (pid), 
-	UNIQUE (_id), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
 	FOREIGN KEY("lecType_id") REFERENCES "nin_LECType" (_id)
 );
+CREATE INDEX "ix_nin_MajorTypeLEC_lec_id" ON "nin_MajorTypeLEC" (lec_id);
+CREATE INDEX "ix_nin_MajorTypeLEC_majorType_id" ON "nin_MajorTypeLEC" ("majorType_id");
+CREATE UNIQUE INDEX "ix_nin_MajorTypeLEC__id" ON "nin_MajorTypeLEC" (_id);
 CREATE TABLE "nin_ElementarySegment" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -127,9 +135,9 @@ CREATE TABLE "nin_ElementarySegment" (
 	value TEXT, 
 	"order" INTEGER, 
 	PRIMARY KEY (pid), 
-	UNIQUE (_id), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)
 );
+CREATE UNIQUE INDEX "ix_nin_ElementarySegment__id" ON "nin_ElementarySegment" (_id);
 CREATE TABLE "nin_MinorTypeScaled" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -142,6 +150,8 @@ CREATE TABLE "nin_MinorTypeScaled" (
 	FOREIGN KEY("mappingScale_id") REFERENCES "nin_MappingScale" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
+CREATE INDEX "ix_nin_MinorTypeScaled_minorType_id" ON "nin_MinorTypeScaled" ("minorType_id");
+CREATE INDEX "MinorTypeScaled_index" ON "nin_MinorTypeScaled" ("minorType_id", "mappingScale_id");
 CREATE TABLE "nin_StandardSegment" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -152,12 +162,14 @@ CREATE TABLE "nin_StandardSegment" (
 	"majorType_id" TEXT, 
 	selected INTEGER, 
 	PRIMARY KEY (pid), 
-	UNIQUE (_id), 
 	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)
 );
+CREATE UNIQUE INDEX "ix_nin_StandardSegment__id" ON "nin_StandardSegment" (_id);
+CREATE INDEX "ix_nin_StandardSegment_majorType_id" ON "nin_StandardSegment" ("majorType_id");
+CREATE INDEX "ix_nin_StandardSegment_majorTypeLEC_id" ON "nin_StandardSegment" ("majorTypeLEC_id");
 CREATE TABLE "nin_GadModifier" (
 	pid INTEGER NOT NULL, 
 	"majorTypeLEC_id" TEXT, 
@@ -171,6 +183,7 @@ CREATE TABLE "nin_GadModifier" (
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY(species_id) REFERENCES "nin_Species" ("scientificNameId")
 );
+CREATE INDEX "ix_nin_GadModifier_species_id" ON "nin_GadModifier" (species_id);
 CREATE TABLE "nin_MinorTypeStandardSegment" (
 	pid INTEGER NOT NULL, 
 	"minorType_id" TEXT, 
@@ -179,6 +192,7 @@ CREATE TABLE "nin_MinorTypeStandardSegment" (
 	FOREIGN KEY("minorType_id") REFERENCES "nin_MinorType" (_id), 
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)
 );
+CREATE INDEX "ix_nin_MinorTypeStandardSegment_minorType_id" ON "nin_MinorTypeStandardSegment" ("minorType_id");
 CREATE TABLE "nin_ElementarySegmentGroup" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -192,6 +206,12 @@ CREATE TABLE "nin_ElementarySegmentGroup" (
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)
 );
+CREATE INDEX "ix_nin_ElementarySegmentGroup_standardSegment_id" ON "nin_ElementarySegmentGroup" ("standardSegment_id");
+CREATE INDEX "ix_nin_ElementarySegmentGroup__id" ON "nin_ElementarySegmentGroup" (_id);
+CREATE INDEX "ix_nin_ElementarySegmentGroup_lec_id" ON "nin_ElementarySegmentGroup" (lec_id);
+CREATE INDEX "ix_nin_ElementarySegmentGroup_elementarySegment_id" ON "nin_ElementarySegmentGroup" ("elementarySegment_id");
+CREATE INDEX "ix_nin_ElementarySegmentGroup_majorType_id" ON "nin_ElementarySegmentGroup" ("majorType_id");
+CREATE INDEX "ElementarySegmentGroup_index" ON "nin_ElementarySegmentGroup" ("standardSegment_id", "majorType_id");
 CREATE TABLE "nin_StandardSegmentElement" (
 	pid INTEGER NOT NULL, 
 	"standardSegment_id" TEXT, 
@@ -200,6 +220,7 @@ CREATE TABLE "nin_StandardSegmentElement" (
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id), 
 	FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)
 );
+CREATE INDEX "ix_nin_StandardSegmentElement_standardSegment_id" ON "nin_StandardSegmentElement" ("standardSegment_id");
 CREATE TABLE "nin_ElementarySegmentGroupDetail" (
 	pid INTEGER NOT NULL, 
 	"elementarySegmentGroup_id" TEXT, 
@@ -207,11 +228,11 @@ CREATE TABLE "nin_ElementarySegmentGroupDetail" (
 	value TEXT, 
 	detail_id TEXT, 
 	PRIMARY KEY (pid), 
-	UNIQUE ("elementarySegmentGroup_id"), 
 	FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" ("elementarySegment_id"), 
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
 );
+CREATE UNIQUE INDEX "ix_nin_ElementarySegmentGroupDetail_elementarySegmentGroup_id" ON "nin_ElementarySegmentGroupDetail" ("elementarySegmentGroup_id");
 CREATE TABLE "nin_ElementarySegmentCombination" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -221,6 +242,7 @@ CREATE TABLE "nin_ElementarySegmentCombination" (
 	FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" (_id), 
 	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id)
 );
+CREATE INDEX "ix_nin_ElementarySegmentCombination__id" ON "nin_ElementarySegmentCombination" (_id);
 CREATE TABLE "nin_GadValue" (
 	pid INTEGER NOT NULL, 
 	"elementarySegmentCombination_id" TEXT, 
@@ -235,3 +257,4 @@ CREATE TABLE "nin_GadValue" (
 	FOREIGN KEY("valueM7Scale_id") REFERENCES "nin_GadScale" ("m7Scale"), 
 	FOREIGN KEY("valueM3Scale_id") REFERENCES "nin_GadScale" ("m3Scale")
 );
+CREATE INDEX "ix_nin_GadValue_species_id" ON "nin_GadValue" (species_id);
