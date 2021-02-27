@@ -46,3 +46,32 @@ for esg in esgs:
     esg.lec_id = es.lec_id
     session.commit()
 # %%
+
+sss = session.query(model.StandardSegment).all()
+
+# %%
+for ss in sss:
+    print(ss._id)
+    if ss.order != None:
+        if ss.order == 0:
+            ss.selected = 1
+        else:
+            ss.selected = 0
+
+    sse = session.query(model.StandardSegmentElement)\
+        .filter(model.StandardSegmentElement.standardSegment_id == ss._id).all()
+    es_ids = [x.elementarySegment_id for x in sse]
+    ess = session.query(model.ElementarySegment)\
+        .filter(model.ElementarySegment._id.in_(es_ids)).all()
+    lec_id = ess[0].lec_id
+    ss.lec_id = lec_id
+    mtlec = session.query(model.MajorTypeLEC)\
+        .filter(model.MajorTypeLEC._id == ss.majorTypeLEC_id).first()
+    ss.majorType_id = mtlec.majorType_id
+    esgs = session.query(model.ElementarySegmentGroup)\
+        .filter(model.ElementarySegmentGroup.majorType_id == mtlec.majorType_id)\
+        .filter(model.ElementarySegmentGroup.lec_id == lec_id)\
+        .filter(model.ElementarySegmentGroup.elementarySegment_id.in_(es_ids))\
+        .update({'standardSegment_id': ss._id}, synchronize_session =  False)
+    session.commit()
+# %%
