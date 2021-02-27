@@ -14,7 +14,7 @@ class StandardSegmentAdapter {
   // final List<String> allElementarySegmentGroupIds;
   List<NinElementarySegmentData> elementarySegments;
   List<String> elementarySegmentGroups;
-  LecAdapter lec;
+  // final LecAdapter lec;
 
   StandardSegmentAdapter(this.standardSegment, this.locale, this.majorTypeId);
   Future getRelations() async {
@@ -27,15 +27,21 @@ class StandardSegmentAdapter {
     //         standardSegment.data,
     //         allElementarySegmentGroupIds,
     //         elementarySegments.map((e) => e.id).toList());
+    Timeline.startSync('get esgs');
     var esgs = await db.getElementarySegmentGroupByStandardSegmentAndMajorType(
         standardSegment.data.id, majorTypeId);
     var esIds = esgs.map((e) => e.elementarySegmentId).toSet().toList();
+    Timeline.finishSync();
+    Timeline.startSync('get es ids');
     elementarySegments = await db.getElementarySegmentsByIds(esIds);
+    Timeline.finishSync();
     elementarySegmentGroups = esgs.map((e) => e.id).toSet().toList();
-    var majorTypeLec =
-        await db.getMajorTypeLecByStandardSegment(standardSegment.data);
-    lec = LecAdapter(locale, majorTypeLec);
-    await lec.getRelations();
+    // Timeline.startSync('get LEC adapter');
+    // // var majorTypeLec =
+    // //     await db.getMajorTypeLecByStandardSegment(standardSegment.data);
+    // // lec = LecAdapter(locale, majorTypeLec);
+    // // await lec.getRelations();
+    // Timeline.finishSync();
   }
 }
 
