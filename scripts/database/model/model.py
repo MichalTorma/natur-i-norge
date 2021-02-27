@@ -1,5 +1,5 @@
 # from jinja2.nodes import For
-from sqlalchemy import Column, Text, Integer, ForeignKey
+from sqlalchemy import Column, Text, Integer, ForeignKey, Index
 from sqlalchemy.orm import relation, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.sqltypes import String
@@ -22,12 +22,12 @@ class Detail(Base):
 
     __tablename__ = f'{prefix}Detail'
     pid = Column(Integer, autoincrement=True, primary_key=True)
-    _id = Column(Text)
+    _id = Column(Text, index=True)
     language_id = Column(Text, ForeignKey(
         f'{prefix}Language._id'))
-    key = Column(Text)
+    key = Column(Text, index=True)
     value = Column(Text)
-
+    __table_args__ = (Index('detail_index', "_id", "language_id", "key"), )
 
 
 class MajorTypeGroup(Base):
@@ -40,6 +40,7 @@ class MajorTypeGroup(Base):
 
     # References
     majorType = relationship('MajorType', back_populates='majorTypeGroup')
+
 
 
 class MajorType(Base):
@@ -63,7 +64,7 @@ class MinorType(Base):
     __tablename__ = f'{prefix}MinorType'
     pid = Column(Integer, autoincrement=True, primary_key=True)
     _id = Column(Text, unique=True)
-    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
+    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'), index=True)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
 
     # References
@@ -77,7 +78,7 @@ class MinorTypeStandardSegment(Base):
     __tablename__ = f'{prefix}MinorTypeStandardSegment'
     pid = Column(Integer, autoincrement=True, primary_key=True)
     minorType_id = Column(Text, ForeignKey(
-        f'{prefix}MinorType._id'))
+        f'{prefix}MinorType._id'), index=True)
     standardSegment_id = Column(Text, ForeignKey(
         f'{prefix}StandardSegment._id'))
 
@@ -93,10 +94,12 @@ class MinorTypeScaled(Base):
     pid = Column(Integer, autoincrement=True, primary_key=True)
     _id = Column(Text)
     minorType_id = Column(Text, ForeignKey(
-        f'{prefix}MinorType._id'))
+        f'{prefix}MinorType._id'), index=True)
     mappingScale_id = Column(Integer, ForeignKey(f'{prefix}MappingScale._id'))
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
     is_implemented = Column(Integer, default=0)
+
+    __table_args__ = (Index('MinorTypeScaled_index', "minorType_id", "mappingScale_id"), )
 
     # References
     minorType = relationship('MinorType', back_populates='minorTypeScaled')
@@ -116,7 +119,7 @@ class LEC(Base):
 
     __tablename__ = f'{prefix}LEC'
     pid = Column(Integer, autoincrement=True, primary_key=True)
-    _id = Column(Text, unique=True)
+    _id = Column(Text, unique=True, index=True)
     parentLec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
     structuringProcess_id = Column(
         Text, ForeignKey(f'{prefix}StructuringProcess._id'))
@@ -168,9 +171,9 @@ class MajorTypeLEC(Base):
 
     __tablename__ = f'{prefix}MajorTypeLEC'
     pid = Column(Integer, autoincrement=True, primary_key=True)
-    _id = Column(Text, unique=True)
-    lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
-    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
+    _id = Column(Text, unique=True, index=True)
+    lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'), index=True)
+    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'), index=True)
     lecType_id = Column(Text, ForeignKey(f'{prefix}LECType._id'))
     axis = Column(Integer)
 
@@ -192,7 +195,7 @@ class LECType(Base):
 class ElementarySegment(Base):
     __tablename__ = f'{prefix}ElementarySegment'
     pid = Column(Integer, autoincrement=True, primary_key=True)
-    _id = Column(Text, unique=True)
+    _id = Column(Text, unique=True, index=True)
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
     value = Column(Text)
     order = Column(Integer)
@@ -201,13 +204,15 @@ class ElementarySegment(Base):
 class ElementarySegmentGroup(Base):
     __tablename__ = f'{prefix}ElementarySegmentGroup'
     pid = Column(Integer, autoincrement=True, primary_key=True)
-    _id = Column(Text)
+    _id = Column(Text, index=True)
     elementarySegment_id = Column(Text, ForeignKey(
-        f'{prefix}ElementarySegment._id'))
-    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
-    lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
+        f'{prefix}ElementarySegment._id'), index=True)
+    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'), index=True)
+    lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'), index=True)
     standardSegment_id = Column(Text, ForeignKey(
-        f'{prefix}StandardSegment._id'))
+        f'{prefix}StandardSegment._id'), index=True)
+
+    __table_args__ = (Index('ElementarySegmentGroup_index', "standardSegment_id", "majorType_id"), )
 
 
 class ElementarySegmentGroupDetail(Base):
@@ -216,7 +221,7 @@ class ElementarySegmentGroupDetail(Base):
     __tablename__ = f'{prefix}ElementarySegmentGroupDetail'
     pid = Column(Integer, autoincrement=True, primary_key=True)
     elementarySegmentGroup_id = Column(Text, ForeignKey(
-        f'{prefix}ElementarySegmentGroup.elementarySegment_id'), unique=True)
+        f'{prefix}ElementarySegmentGroup.elementarySegment_id'), unique=True, index=True)
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
     value = Column(Text)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
@@ -231,7 +236,7 @@ class StandardSegmentElement(Base):
     __tablename__ = f'{prefix}StandardSegmentElement'
     pid = Column(Integer, autoincrement=True, primary_key=True)
     standardSegment_id = Column(Text, ForeignKey(
-        f'{prefix}StandardSegment._id'))
+        f'{prefix}StandardSegment._id'), index=True)
     elementarySegment_id = Column(Text, ForeignKey(
         f'{prefix}ElementarySegment._id'))
 
@@ -246,12 +251,12 @@ class StandardSegment(Base):
 
     __tablename__ = f'{prefix}StandardSegment'
     pid = Column(Integer, autoincrement=True, primary_key=True)
-    _id = Column(Text, unique=True)
-    majorTypeLEC_id = Column(Text, ForeignKey(f'{prefix}MajorTypeLEC._id'))
+    _id = Column(Text, unique=True, index=True)
+    majorTypeLEC_id = Column(Text, ForeignKey(f'{prefix}MajorTypeLEC._id'), index=True)
     order = Column(Integer)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
     lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
-    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
+    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'), index=True)
     selected = Column(Integer)
 
     # References
@@ -266,7 +271,7 @@ class GadValue(Base):
     elementarySegmentCombination_id = Column(Text, ForeignKey(
         f'{prefix}ElementarySegmentCombination._id'))
     species_id = Column(Integer, ForeignKey(
-        f'{prefix}Species.scientificNameId'))
+        f'{prefix}Species.scientificNameId'), index=True)
     majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
     valueM7Scale_id = Column(Integer, ForeignKey(
         f'{prefix}GadScale.m7Scale'), nullable=True)
@@ -298,14 +303,14 @@ class GadModifier(Base):
         ForeignKey(f'{prefix}LEC._id')
     )
     species_id = Column(Integer, ForeignKey(
-        f'{prefix}Species.scientificNameId'))
+        f'{prefix}Species.scientificNameId'), index=True)
     value = Column(Integer)
 
 
 class ElementarySegmentCombination(Base):
     __tablename__ = f'{prefix}ElementarySegmentCombination'
     pid = Column(Integer, autoincrement=True, primary_key=True)
-    _id = Column(Text)
+    _id = Column(Text, index=True)
     elementarySegmentGroup_id = Column(Text, ForeignKey(
         f'{prefix}ElementarySegmentGroup._id'))
     majorTypeLEC_id = Column(
@@ -330,7 +335,7 @@ class GadScale(Base):
 class Species(Base):
     __tablename__ = f'{prefix}Species'
     pid = Column(Integer, autoincrement=True, primary_key=True)
-    scientificNameId = Column(Integer, unique=True)
-    scientificName = Column(Text)
+    scientificNameId = Column(Integer, unique=True, index=True)
+    scientificName = Column(Text, index=True)
     author = Column(Text)
-    vernacularName = Column(Text)
+    vernacularName = Column(Text, index=True)
