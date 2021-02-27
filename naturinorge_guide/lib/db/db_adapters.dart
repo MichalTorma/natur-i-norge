@@ -10,23 +10,28 @@ import 'package:naturinorge_guide/main.dart';
 class StandardSegmentAdapter {
   final Locale locale;
   final Detailed<NinStandardSegmentData> standardSegment;
-  final List<String> allElementarySegmentGroupIds;
+  final String majorTypeId;
+  // final List<String> allElementarySegmentGroupIds;
   List<NinElementarySegmentData> elementarySegments;
   List<String> elementarySegmentGroups;
   LecAdapter lec;
 
-  StandardSegmentAdapter(
-      this.standardSegment, this.locale, this.allElementarySegmentGroupIds);
+  StandardSegmentAdapter(this.standardSegment, this.locale, this.majorTypeId);
   Future getRelations() async {
-    elementarySegments =
-        await db.getElementarySegmentByStandardSegment(standardSegment.data);
+    // elementarySegments =
+    //     await db.getElementarySegmentByStandardSegment(standardSegment.data);
 
-    // print(elementarySegments);
-    elementarySegmentGroups =
-        await db.getGadElementarySegmentGroupIdsByStandardSegment(
-            standardSegment.data,
-            allElementarySegmentGroupIds,
-            elementarySegments.map((e) => e.id).toList());
+    // // print(elementarySegments);
+    // elementarySegmentGroups =
+    //     await db.getGadElementarySegmentGroupIdsByStandardSegment(
+    //         standardSegment.data,
+    //         allElementarySegmentGroupIds,
+    //         elementarySegments.map((e) => e.id).toList());
+    var esgs = await db.getElementarySegmentGroupByStandardSegmentAndMajorType(
+        standardSegment.data.id, majorTypeId);
+    var esIds = esgs.map((e) => e.elementarySegmentId).toSet().toList();
+    elementarySegments = await db.getElementarySegmentsByIds(esIds);
+    elementarySegmentGroups = esgs.map((e) => e.id).toSet().toList();
     var majorTypeLec =
         await db.getMajorTypeLecByStandardSegment(standardSegment.data);
     lec = LecAdapter(locale, majorTypeLec);
@@ -123,11 +128,10 @@ class MinorTypeAdapter {
     Timeline.finishSync();
     var res = List<StandardSegmentAdapter>.empty(growable: true);
     for (var ss in standardSegmentsData) {
-      var majorTypeLec = await db.getMajorTypeLecByStandardSegment(ss.data);
-      var allElementarySegmentGroupIds = await db
-          .getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec);
-      var ssa =
-          StandardSegmentAdapter(ss, locale, allElementarySegmentGroupIds);
+      // var majorTypeLec = await db.getMajorTypeLecByStandardSegment(ss.data);
+      // var allElementarySegmentGroupIds = await db
+      //     .getGadElementarySegmentGroupsIdsByMajorTypeLecId(majorTypeLec);
+      var ssa = StandardSegmentAdapter(ss, locale, minorType.data.majorTypeId);
       await ssa.getRelations();
       res.add(ssa);
     }

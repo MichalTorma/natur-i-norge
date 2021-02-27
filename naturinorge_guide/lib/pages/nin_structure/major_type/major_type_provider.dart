@@ -159,12 +159,7 @@ class MajorTypeProvider extends ChangeNotifier {
       var standardSegmentAdapters =
           List<StandardSegmentAdapter>.empty(growable: true);
       for (var e in standardSegments) {
-        var res = StandardSegmentAdapter(
-            e,
-            locale,
-            lecAdapter.gadElementarySegmentGroups
-                .map((e) => e.elementarySegmentGroupId)
-                .toList());
+        var res = StandardSegmentAdapter(e, locale, _majorType.data.id);
         await res.getRelations();
         standardSegmentAdapters.add(res);
       }

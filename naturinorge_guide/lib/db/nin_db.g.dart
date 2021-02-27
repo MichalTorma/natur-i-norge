@@ -4471,341 +4471,6 @@ class NinMinorTypeScaled extends Table
   bool get dontWriteConstraints => true;
 }
 
-class NinElementarySegmentGroupData extends DataClass
-    implements Insertable<NinElementarySegmentGroupData> {
-  final int pid;
-  final String id;
-  final String elementarySegmentId;
-  final String majorTypeId;
-  final String lecId;
-  NinElementarySegmentGroupData(
-      {@required this.pid,
-      this.id,
-      this.elementarySegmentId,
-      this.majorTypeId,
-      this.lecId});
-  factory NinElementarySegmentGroupData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    return NinElementarySegmentGroupData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      elementarySegmentId: stringType.mapFromDatabaseResponse(
-          data['${effectivePrefix}elementarySegment_id']),
-      majorTypeId: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
-      lecId:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int>(pid);
-    }
-    if (!nullToAbsent || id != null) {
-      map['_id'] = Variable<String>(id);
-    }
-    if (!nullToAbsent || elementarySegmentId != null) {
-      map['elementarySegment_id'] = Variable<String>(elementarySegmentId);
-    }
-    if (!nullToAbsent || majorTypeId != null) {
-      map['majorType_id'] = Variable<String>(majorTypeId);
-    }
-    if (!nullToAbsent || lecId != null) {
-      map['lec_id'] = Variable<String>(lecId);
-    }
-    return map;
-  }
-
-  NinElementarySegmentGroupCompanion toCompanion(bool nullToAbsent) {
-    return NinElementarySegmentGroupCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      elementarySegmentId: elementarySegmentId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(elementarySegmentId),
-      majorTypeId: majorTypeId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(majorTypeId),
-      lecId:
-          lecId == null && nullToAbsent ? const Value.absent() : Value(lecId),
-    );
-  }
-
-  factory NinElementarySegmentGroupData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return NinElementarySegmentGroupData(
-      pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      elementarySegmentId:
-          serializer.fromJson<String>(json['elementarySegment_id']),
-      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
-      lecId: serializer.fromJson<String>(json['lec_id']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'pid': serializer.toJson<int>(pid),
-      '_id': serializer.toJson<String>(id),
-      'elementarySegment_id': serializer.toJson<String>(elementarySegmentId),
-      'majorType_id': serializer.toJson<String>(majorTypeId),
-      'lec_id': serializer.toJson<String>(lecId),
-    };
-  }
-
-  NinElementarySegmentGroupData copyWith(
-          {int pid,
-          String id,
-          String elementarySegmentId,
-          String majorTypeId,
-          String lecId}) =>
-      NinElementarySegmentGroupData(
-        pid: pid ?? this.pid,
-        id: id ?? this.id,
-        elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
-        majorTypeId: majorTypeId ?? this.majorTypeId,
-        lecId: lecId ?? this.lecId,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('NinElementarySegmentGroupData(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('elementarySegmentId: $elementarySegmentId, ')
-          ..write('majorTypeId: $majorTypeId, ')
-          ..write('lecId: $lecId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => $mrjf($mrjc(
-      pid.hashCode,
-      $mrjc(
-          id.hashCode,
-          $mrjc(elementarySegmentId.hashCode,
-              $mrjc(majorTypeId.hashCode, lecId.hashCode)))));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is NinElementarySegmentGroupData &&
-          other.pid == this.pid &&
-          other.id == this.id &&
-          other.elementarySegmentId == this.elementarySegmentId &&
-          other.majorTypeId == this.majorTypeId &&
-          other.lecId == this.lecId);
-}
-
-class NinElementarySegmentGroupCompanion
-    extends UpdateCompanion<NinElementarySegmentGroupData> {
-  final Value<int> pid;
-  final Value<String> id;
-  final Value<String> elementarySegmentId;
-  final Value<String> majorTypeId;
-  final Value<String> lecId;
-  const NinElementarySegmentGroupCompanion({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.elementarySegmentId = const Value.absent(),
-    this.majorTypeId = const Value.absent(),
-    this.lecId = const Value.absent(),
-  });
-  NinElementarySegmentGroupCompanion.insert({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.elementarySegmentId = const Value.absent(),
-    this.majorTypeId = const Value.absent(),
-    this.lecId = const Value.absent(),
-  });
-  static Insertable<NinElementarySegmentGroupData> custom({
-    Expression<int> pid,
-    Expression<String> id,
-    Expression<String> elementarySegmentId,
-    Expression<String> majorTypeId,
-    Expression<String> lecId,
-  }) {
-    return RawValuesInsertable({
-      if (pid != null) 'pid': pid,
-      if (id != null) '_id': id,
-      if (elementarySegmentId != null)
-        'elementarySegment_id': elementarySegmentId,
-      if (majorTypeId != null) 'majorType_id': majorTypeId,
-      if (lecId != null) 'lec_id': lecId,
-    });
-  }
-
-  NinElementarySegmentGroupCompanion copyWith(
-      {Value<int> pid,
-      Value<String> id,
-      Value<String> elementarySegmentId,
-      Value<String> majorTypeId,
-      Value<String> lecId}) {
-    return NinElementarySegmentGroupCompanion(
-      pid: pid ?? this.pid,
-      id: id ?? this.id,
-      elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
-      majorTypeId: majorTypeId ?? this.majorTypeId,
-      lecId: lecId ?? this.lecId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (pid.present) {
-      map['pid'] = Variable<int>(pid.value);
-    }
-    if (id.present) {
-      map['_id'] = Variable<String>(id.value);
-    }
-    if (elementarySegmentId.present) {
-      map['elementarySegment_id'] = Variable<String>(elementarySegmentId.value);
-    }
-    if (majorTypeId.present) {
-      map['majorType_id'] = Variable<String>(majorTypeId.value);
-    }
-    if (lecId.present) {
-      map['lec_id'] = Variable<String>(lecId.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NinElementarySegmentGroupCompanion(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('elementarySegmentId: $elementarySegmentId, ')
-          ..write('majorTypeId: $majorTypeId, ')
-          ..write('lecId: $lecId')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class NinElementarySegmentGroup extends Table
-    with TableInfo<NinElementarySegmentGroup, NinElementarySegmentGroupData> {
-  final GeneratedDatabase _db;
-  final String _alias;
-  NinElementarySegmentGroup(this._db, [this._alias]);
-  final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
-  final VerificationMeta _elementarySegmentIdMeta =
-      const VerificationMeta('elementarySegmentId');
-  GeneratedTextColumn _elementarySegmentId;
-  GeneratedTextColumn get elementarySegmentId =>
-      _elementarySegmentId ??= _constructElementarySegmentId();
-  GeneratedTextColumn _constructElementarySegmentId() {
-    return GeneratedTextColumn('elementarySegment_id', $tableName, true,
-        $customConstraints: '');
-  }
-
-  final VerificationMeta _majorTypeIdMeta =
-      const VerificationMeta('majorTypeId');
-  GeneratedTextColumn _majorTypeId;
-  GeneratedTextColumn get majorTypeId =>
-      _majorTypeId ??= _constructMajorTypeId();
-  GeneratedTextColumn _constructMajorTypeId() {
-    return GeneratedTextColumn('majorType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
-  final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
-  GeneratedTextColumn _lecId;
-  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
-  GeneratedTextColumn _constructLecId() {
-    return GeneratedTextColumn('lec_id', $tableName, true,
-        $customConstraints: '');
-  }
-
-  @override
-  List<GeneratedColumn> get $columns =>
-      [pid, id, elementarySegmentId, majorTypeId, lecId];
-  @override
-  NinElementarySegmentGroup get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'nin_ElementarySegmentGroup';
-  @override
-  final String actualTableName = 'nin_ElementarySegmentGroup';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<NinElementarySegmentGroupData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('pid')) {
-      context.handle(
-          _pidMeta, pid.isAcceptableOrUnknown(data['pid'], _pidMeta));
-    }
-    if (data.containsKey('_id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id'], _idMeta));
-    }
-    if (data.containsKey('elementarySegment_id')) {
-      context.handle(
-          _elementarySegmentIdMeta,
-          elementarySegmentId.isAcceptableOrUnknown(
-              data['elementarySegment_id'], _elementarySegmentIdMeta));
-    }
-    if (data.containsKey('majorType_id')) {
-      context.handle(
-          _majorTypeIdMeta,
-          majorTypeId.isAcceptableOrUnknown(
-              data['majorType_id'], _majorTypeIdMeta));
-    }
-    if (data.containsKey('lec_id')) {
-      context.handle(
-          _lecIdMeta, lecId.isAcceptableOrUnknown(data['lec_id'], _lecIdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {pid};
-  @override
-  NinElementarySegmentGroupData map(Map<String, dynamic> data,
-      {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinElementarySegmentGroupData.fromData(data, _db,
-        prefix: effectivePrefix);
-  }
-
-  @override
-  NinElementarySegmentGroup createAlias(String alias) {
-    return NinElementarySegmentGroup(_db, alias);
-  }
-
-  @override
-  List<String> get customConstraints => const [
-        'PRIMARY KEY (pid)',
-        'FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)',
-        'FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)',
-        'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)'
-      ];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
 class NinStandardSegmentData extends DataClass
     implements Insertable<NinStandardSegmentData> {
   final int pid;
@@ -4813,12 +4478,18 @@ class NinStandardSegmentData extends DataClass
   final String majorTypeLECId;
   final int order;
   final String detailId;
+  final String lecId;
+  final String majorTypeId;
+  final int selected;
   NinStandardSegmentData(
       {@required this.pid,
       this.id,
       this.majorTypeLECId,
       this.order,
-      this.detailId});
+      this.detailId,
+      this.lecId,
+      this.majorTypeId,
+      this.selected});
   factory NinStandardSegmentData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -4833,6 +4504,12 @@ class NinStandardSegmentData extends DataClass
       order: intType.mapFromDatabaseResponse(data['${effectivePrefix}order']),
       detailId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
+      lecId:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
+      majorTypeId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
+      selected:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}selected']),
     );
   }
   @override
@@ -4853,6 +4530,15 @@ class NinStandardSegmentData extends DataClass
     if (!nullToAbsent || detailId != null) {
       map['detail_id'] = Variable<String>(detailId);
     }
+    if (!nullToAbsent || lecId != null) {
+      map['lec_id'] = Variable<String>(lecId);
+    }
+    if (!nullToAbsent || majorTypeId != null) {
+      map['majorType_id'] = Variable<String>(majorTypeId);
+    }
+    if (!nullToAbsent || selected != null) {
+      map['selected'] = Variable<int>(selected);
+    }
     return map;
   }
 
@@ -4868,6 +4554,14 @@ class NinStandardSegmentData extends DataClass
       detailId: detailId == null && nullToAbsent
           ? const Value.absent()
           : Value(detailId),
+      lecId:
+          lecId == null && nullToAbsent ? const Value.absent() : Value(lecId),
+      majorTypeId: majorTypeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(majorTypeId),
+      selected: selected == null && nullToAbsent
+          ? const Value.absent()
+          : Value(selected),
     );
   }
 
@@ -4880,6 +4574,9 @@ class NinStandardSegmentData extends DataClass
       majorTypeLECId: serializer.fromJson<String>(json['majorTypeLEC_id']),
       order: serializer.fromJson<int>(json['order']),
       detailId: serializer.fromJson<String>(json['detail_id']),
+      lecId: serializer.fromJson<String>(json['lec_id']),
+      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
+      selected: serializer.fromJson<int>(json['selected']),
     );
   }
   @override
@@ -4891,6 +4588,9 @@ class NinStandardSegmentData extends DataClass
       'majorTypeLEC_id': serializer.toJson<String>(majorTypeLECId),
       'order': serializer.toJson<int>(order),
       'detail_id': serializer.toJson<String>(detailId),
+      'lec_id': serializer.toJson<String>(lecId),
+      'majorType_id': serializer.toJson<String>(majorTypeId),
+      'selected': serializer.toJson<int>(selected),
     };
   }
 
@@ -4899,13 +4599,19 @@ class NinStandardSegmentData extends DataClass
           String id,
           String majorTypeLECId,
           int order,
-          String detailId}) =>
+          String detailId,
+          String lecId,
+          String majorTypeId,
+          int selected}) =>
       NinStandardSegmentData(
         pid: pid ?? this.pid,
         id: id ?? this.id,
         majorTypeLECId: majorTypeLECId ?? this.majorTypeLECId,
         order: order ?? this.order,
         detailId: detailId ?? this.detailId,
+        lecId: lecId ?? this.lecId,
+        majorTypeId: majorTypeId ?? this.majorTypeId,
+        selected: selected ?? this.selected,
       );
   @override
   String toString() {
@@ -4914,7 +4620,10 @@ class NinStandardSegmentData extends DataClass
           ..write('id: $id, ')
           ..write('majorTypeLECId: $majorTypeLECId, ')
           ..write('order: $order, ')
-          ..write('detailId: $detailId')
+          ..write('detailId: $detailId, ')
+          ..write('lecId: $lecId, ')
+          ..write('majorTypeId: $majorTypeId, ')
+          ..write('selected: $selected')
           ..write(')'))
         .toString();
   }
@@ -4924,8 +4633,14 @@ class NinStandardSegmentData extends DataClass
       pid.hashCode,
       $mrjc(
           id.hashCode,
-          $mrjc(majorTypeLECId.hashCode,
-              $mrjc(order.hashCode, detailId.hashCode)))));
+          $mrjc(
+              majorTypeLECId.hashCode,
+              $mrjc(
+                  order.hashCode,
+                  $mrjc(
+                      detailId.hashCode,
+                      $mrjc(lecId.hashCode,
+                          $mrjc(majorTypeId.hashCode, selected.hashCode))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -4934,7 +4649,10 @@ class NinStandardSegmentData extends DataClass
           other.id == this.id &&
           other.majorTypeLECId == this.majorTypeLECId &&
           other.order == this.order &&
-          other.detailId == this.detailId);
+          other.detailId == this.detailId &&
+          other.lecId == this.lecId &&
+          other.majorTypeId == this.majorTypeId &&
+          other.selected == this.selected);
 }
 
 class NinStandardSegmentCompanion
@@ -4944,12 +4662,18 @@ class NinStandardSegmentCompanion
   final Value<String> majorTypeLECId;
   final Value<int> order;
   final Value<String> detailId;
+  final Value<String> lecId;
+  final Value<String> majorTypeId;
+  final Value<int> selected;
   const NinStandardSegmentCompanion({
     this.pid = const Value.absent(),
     this.id = const Value.absent(),
     this.majorTypeLECId = const Value.absent(),
     this.order = const Value.absent(),
     this.detailId = const Value.absent(),
+    this.lecId = const Value.absent(),
+    this.majorTypeId = const Value.absent(),
+    this.selected = const Value.absent(),
   });
   NinStandardSegmentCompanion.insert({
     this.pid = const Value.absent(),
@@ -4957,6 +4681,9 @@ class NinStandardSegmentCompanion
     this.majorTypeLECId = const Value.absent(),
     this.order = const Value.absent(),
     this.detailId = const Value.absent(),
+    this.lecId = const Value.absent(),
+    this.majorTypeId = const Value.absent(),
+    this.selected = const Value.absent(),
   });
   static Insertable<NinStandardSegmentData> custom({
     Expression<int> pid,
@@ -4964,6 +4691,9 @@ class NinStandardSegmentCompanion
     Expression<String> majorTypeLECId,
     Expression<int> order,
     Expression<String> detailId,
+    Expression<String> lecId,
+    Expression<String> majorTypeId,
+    Expression<int> selected,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -4971,6 +4701,9 @@ class NinStandardSegmentCompanion
       if (majorTypeLECId != null) 'majorTypeLEC_id': majorTypeLECId,
       if (order != null) 'order': order,
       if (detailId != null) 'detail_id': detailId,
+      if (lecId != null) 'lec_id': lecId,
+      if (majorTypeId != null) 'majorType_id': majorTypeId,
+      if (selected != null) 'selected': selected,
     });
   }
 
@@ -4979,13 +4712,19 @@ class NinStandardSegmentCompanion
       Value<String> id,
       Value<String> majorTypeLECId,
       Value<int> order,
-      Value<String> detailId}) {
+      Value<String> detailId,
+      Value<String> lecId,
+      Value<String> majorTypeId,
+      Value<int> selected}) {
     return NinStandardSegmentCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
       majorTypeLECId: majorTypeLECId ?? this.majorTypeLECId,
       order: order ?? this.order,
       detailId: detailId ?? this.detailId,
+      lecId: lecId ?? this.lecId,
+      majorTypeId: majorTypeId ?? this.majorTypeId,
+      selected: selected ?? this.selected,
     );
   }
 
@@ -5007,6 +4746,15 @@ class NinStandardSegmentCompanion
     if (detailId.present) {
       map['detail_id'] = Variable<String>(detailId.value);
     }
+    if (lecId.present) {
+      map['lec_id'] = Variable<String>(lecId.value);
+    }
+    if (majorTypeId.present) {
+      map['majorType_id'] = Variable<String>(majorTypeId.value);
+    }
+    if (selected.present) {
+      map['selected'] = Variable<int>(selected.value);
+    }
     return map;
   }
 
@@ -5017,7 +4765,10 @@ class NinStandardSegmentCompanion
           ..write('id: $id, ')
           ..write('majorTypeLECId: $majorTypeLECId, ')
           ..write('order: $order, ')
-          ..write('detailId: $detailId')
+          ..write('detailId: $detailId, ')
+          ..write('lecId: $lecId, ')
+          ..write('majorTypeId: $majorTypeId, ')
+          ..write('selected: $selected')
           ..write(')'))
         .toString();
   }
@@ -5069,9 +4820,35 @@ class NinStandardSegment extends Table
         $customConstraints: '');
   }
 
+  final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
+  GeneratedTextColumn _lecId;
+  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
+  GeneratedTextColumn _constructLecId() {
+    return GeneratedTextColumn('lec_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  final VerificationMeta _majorTypeIdMeta =
+      const VerificationMeta('majorTypeId');
+  GeneratedTextColumn _majorTypeId;
+  GeneratedTextColumn get majorTypeId =>
+      _majorTypeId ??= _constructMajorTypeId();
+  GeneratedTextColumn _constructMajorTypeId() {
+    return GeneratedTextColumn('majorType_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  final VerificationMeta _selectedMeta = const VerificationMeta('selected');
+  GeneratedIntColumn _selected;
+  GeneratedIntColumn get selected => _selected ??= _constructSelected();
+  GeneratedIntColumn _constructSelected() {
+    return GeneratedIntColumn('selected', $tableName, true,
+        $customConstraints: '');
+  }
+
   @override
   List<GeneratedColumn> get $columns =>
-      [pid, id, majorTypeLECId, order, detailId];
+      [pid, id, majorTypeLECId, order, detailId, lecId, majorTypeId, selected];
   @override
   NinStandardSegment get asDslTable => this;
   @override
@@ -5105,6 +4882,20 @@ class NinStandardSegment extends Table
       context.handle(_detailIdMeta,
           detailId.isAcceptableOrUnknown(data['detail_id'], _detailIdMeta));
     }
+    if (data.containsKey('lec_id')) {
+      context.handle(
+          _lecIdMeta, lecId.isAcceptableOrUnknown(data['lec_id'], _lecIdMeta));
+    }
+    if (data.containsKey('majorType_id')) {
+      context.handle(
+          _majorTypeIdMeta,
+          majorTypeId.isAcceptableOrUnknown(
+              data['majorType_id'], _majorTypeIdMeta));
+    }
+    if (data.containsKey('selected')) {
+      context.handle(_selectedMeta,
+          selected.isAcceptableOrUnknown(data['selected'], _selectedMeta));
+    }
     return context;
   }
 
@@ -5126,7 +4917,9 @@ class NinStandardSegment extends Table
         'PRIMARY KEY (pid)',
         'UNIQUE (_id)',
         'FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id)',
-        'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
+        'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)',
+        'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)',
+        'FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -5760,6 +5553,643 @@ class NinMinorTypeStandardSegment extends Table
   bool get dontWriteConstraints => true;
 }
 
+class NinElementarySegmentGroupData extends DataClass
+    implements Insertable<NinElementarySegmentGroupData> {
+  final int pid;
+  final String id;
+  final String elementarySegmentId;
+  final String majorTypeId;
+  final String lecId;
+  final String standardSegmentId;
+  NinElementarySegmentGroupData(
+      {@required this.pid,
+      this.id,
+      this.elementarySegmentId,
+      this.majorTypeId,
+      this.lecId,
+      this.standardSegmentId});
+  factory NinElementarySegmentGroupData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return NinElementarySegmentGroupData(
+      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
+      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      elementarySegmentId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}elementarySegment_id']),
+      majorTypeId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
+      lecId:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
+      standardSegmentId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}standardSegment_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || pid != null) {
+      map['pid'] = Variable<int>(pid);
+    }
+    if (!nullToAbsent || id != null) {
+      map['_id'] = Variable<String>(id);
+    }
+    if (!nullToAbsent || elementarySegmentId != null) {
+      map['elementarySegment_id'] = Variable<String>(elementarySegmentId);
+    }
+    if (!nullToAbsent || majorTypeId != null) {
+      map['majorType_id'] = Variable<String>(majorTypeId);
+    }
+    if (!nullToAbsent || lecId != null) {
+      map['lec_id'] = Variable<String>(lecId);
+    }
+    if (!nullToAbsent || standardSegmentId != null) {
+      map['standardSegment_id'] = Variable<String>(standardSegmentId);
+    }
+    return map;
+  }
+
+  NinElementarySegmentGroupCompanion toCompanion(bool nullToAbsent) {
+    return NinElementarySegmentGroupCompanion(
+      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      elementarySegmentId: elementarySegmentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(elementarySegmentId),
+      majorTypeId: majorTypeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(majorTypeId),
+      lecId:
+          lecId == null && nullToAbsent ? const Value.absent() : Value(lecId),
+      standardSegmentId: standardSegmentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(standardSegmentId),
+    );
+  }
+
+  factory NinElementarySegmentGroupData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return NinElementarySegmentGroupData(
+      pid: serializer.fromJson<int>(json['pid']),
+      id: serializer.fromJson<String>(json['_id']),
+      elementarySegmentId:
+          serializer.fromJson<String>(json['elementarySegment_id']),
+      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
+      lecId: serializer.fromJson<String>(json['lec_id']),
+      standardSegmentId:
+          serializer.fromJson<String>(json['standardSegment_id']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'pid': serializer.toJson<int>(pid),
+      '_id': serializer.toJson<String>(id),
+      'elementarySegment_id': serializer.toJson<String>(elementarySegmentId),
+      'majorType_id': serializer.toJson<String>(majorTypeId),
+      'lec_id': serializer.toJson<String>(lecId),
+      'standardSegment_id': serializer.toJson<String>(standardSegmentId),
+    };
+  }
+
+  NinElementarySegmentGroupData copyWith(
+          {int pid,
+          String id,
+          String elementarySegmentId,
+          String majorTypeId,
+          String lecId,
+          String standardSegmentId}) =>
+      NinElementarySegmentGroupData(
+        pid: pid ?? this.pid,
+        id: id ?? this.id,
+        elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
+        majorTypeId: majorTypeId ?? this.majorTypeId,
+        lecId: lecId ?? this.lecId,
+        standardSegmentId: standardSegmentId ?? this.standardSegmentId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NinElementarySegmentGroupData(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('elementarySegmentId: $elementarySegmentId, ')
+          ..write('majorTypeId: $majorTypeId, ')
+          ..write('lecId: $lecId, ')
+          ..write('standardSegmentId: $standardSegmentId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      pid.hashCode,
+      $mrjc(
+          id.hashCode,
+          $mrjc(
+              elementarySegmentId.hashCode,
+              $mrjc(majorTypeId.hashCode,
+                  $mrjc(lecId.hashCode, standardSegmentId.hashCode))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is NinElementarySegmentGroupData &&
+          other.pid == this.pid &&
+          other.id == this.id &&
+          other.elementarySegmentId == this.elementarySegmentId &&
+          other.majorTypeId == this.majorTypeId &&
+          other.lecId == this.lecId &&
+          other.standardSegmentId == this.standardSegmentId);
+}
+
+class NinElementarySegmentGroupCompanion
+    extends UpdateCompanion<NinElementarySegmentGroupData> {
+  final Value<int> pid;
+  final Value<String> id;
+  final Value<String> elementarySegmentId;
+  final Value<String> majorTypeId;
+  final Value<String> lecId;
+  final Value<String> standardSegmentId;
+  const NinElementarySegmentGroupCompanion({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.elementarySegmentId = const Value.absent(),
+    this.majorTypeId = const Value.absent(),
+    this.lecId = const Value.absent(),
+    this.standardSegmentId = const Value.absent(),
+  });
+  NinElementarySegmentGroupCompanion.insert({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.elementarySegmentId = const Value.absent(),
+    this.majorTypeId = const Value.absent(),
+    this.lecId = const Value.absent(),
+    this.standardSegmentId = const Value.absent(),
+  });
+  static Insertable<NinElementarySegmentGroupData> custom({
+    Expression<int> pid,
+    Expression<String> id,
+    Expression<String> elementarySegmentId,
+    Expression<String> majorTypeId,
+    Expression<String> lecId,
+    Expression<String> standardSegmentId,
+  }) {
+    return RawValuesInsertable({
+      if (pid != null) 'pid': pid,
+      if (id != null) '_id': id,
+      if (elementarySegmentId != null)
+        'elementarySegment_id': elementarySegmentId,
+      if (majorTypeId != null) 'majorType_id': majorTypeId,
+      if (lecId != null) 'lec_id': lecId,
+      if (standardSegmentId != null) 'standardSegment_id': standardSegmentId,
+    });
+  }
+
+  NinElementarySegmentGroupCompanion copyWith(
+      {Value<int> pid,
+      Value<String> id,
+      Value<String> elementarySegmentId,
+      Value<String> majorTypeId,
+      Value<String> lecId,
+      Value<String> standardSegmentId}) {
+    return NinElementarySegmentGroupCompanion(
+      pid: pid ?? this.pid,
+      id: id ?? this.id,
+      elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
+      majorTypeId: majorTypeId ?? this.majorTypeId,
+      lecId: lecId ?? this.lecId,
+      standardSegmentId: standardSegmentId ?? this.standardSegmentId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (pid.present) {
+      map['pid'] = Variable<int>(pid.value);
+    }
+    if (id.present) {
+      map['_id'] = Variable<String>(id.value);
+    }
+    if (elementarySegmentId.present) {
+      map['elementarySegment_id'] = Variable<String>(elementarySegmentId.value);
+    }
+    if (majorTypeId.present) {
+      map['majorType_id'] = Variable<String>(majorTypeId.value);
+    }
+    if (lecId.present) {
+      map['lec_id'] = Variable<String>(lecId.value);
+    }
+    if (standardSegmentId.present) {
+      map['standardSegment_id'] = Variable<String>(standardSegmentId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinElementarySegmentGroupCompanion(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('elementarySegmentId: $elementarySegmentId, ')
+          ..write('majorTypeId: $majorTypeId, ')
+          ..write('lecId: $lecId, ')
+          ..write('standardSegmentId: $standardSegmentId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class NinElementarySegmentGroup extends Table
+    with TableInfo<NinElementarySegmentGroup, NinElementarySegmentGroupData> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  NinElementarySegmentGroup(this._db, [this._alias]);
+  final VerificationMeta _pidMeta = const VerificationMeta('pid');
+  GeneratedIntColumn _pid;
+  GeneratedIntColumn get pid => _pid ??= _constructPid();
+  GeneratedIntColumn _constructPid() {
+    return GeneratedIntColumn('pid', $tableName, false,
+        $customConstraints: 'NOT NULL');
+  }
+
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedTextColumn _id;
+  GeneratedTextColumn get id => _id ??= _constructId();
+  GeneratedTextColumn _constructId() {
+    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
+  }
+
+  final VerificationMeta _elementarySegmentIdMeta =
+      const VerificationMeta('elementarySegmentId');
+  GeneratedTextColumn _elementarySegmentId;
+  GeneratedTextColumn get elementarySegmentId =>
+      _elementarySegmentId ??= _constructElementarySegmentId();
+  GeneratedTextColumn _constructElementarySegmentId() {
+    return GeneratedTextColumn('elementarySegment_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  final VerificationMeta _majorTypeIdMeta =
+      const VerificationMeta('majorTypeId');
+  GeneratedTextColumn _majorTypeId;
+  GeneratedTextColumn get majorTypeId =>
+      _majorTypeId ??= _constructMajorTypeId();
+  GeneratedTextColumn _constructMajorTypeId() {
+    return GeneratedTextColumn('majorType_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
+  GeneratedTextColumn _lecId;
+  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
+  GeneratedTextColumn _constructLecId() {
+    return GeneratedTextColumn('lec_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  final VerificationMeta _standardSegmentIdMeta =
+      const VerificationMeta('standardSegmentId');
+  GeneratedTextColumn _standardSegmentId;
+  GeneratedTextColumn get standardSegmentId =>
+      _standardSegmentId ??= _constructStandardSegmentId();
+  GeneratedTextColumn _constructStandardSegmentId() {
+    return GeneratedTextColumn('standardSegment_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [pid, id, elementarySegmentId, majorTypeId, lecId, standardSegmentId];
+  @override
+  NinElementarySegmentGroup get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'nin_ElementarySegmentGroup';
+  @override
+  final String actualTableName = 'nin_ElementarySegmentGroup';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<NinElementarySegmentGroupData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('pid')) {
+      context.handle(
+          _pidMeta, pid.isAcceptableOrUnknown(data['pid'], _pidMeta));
+    }
+    if (data.containsKey('_id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id'], _idMeta));
+    }
+    if (data.containsKey('elementarySegment_id')) {
+      context.handle(
+          _elementarySegmentIdMeta,
+          elementarySegmentId.isAcceptableOrUnknown(
+              data['elementarySegment_id'], _elementarySegmentIdMeta));
+    }
+    if (data.containsKey('majorType_id')) {
+      context.handle(
+          _majorTypeIdMeta,
+          majorTypeId.isAcceptableOrUnknown(
+              data['majorType_id'], _majorTypeIdMeta));
+    }
+    if (data.containsKey('lec_id')) {
+      context.handle(
+          _lecIdMeta, lecId.isAcceptableOrUnknown(data['lec_id'], _lecIdMeta));
+    }
+    if (data.containsKey('standardSegment_id')) {
+      context.handle(
+          _standardSegmentIdMeta,
+          standardSegmentId.isAcceptableOrUnknown(
+              data['standardSegment_id'], _standardSegmentIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pid};
+  @override
+  NinElementarySegmentGroupData map(Map<String, dynamic> data,
+      {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return NinElementarySegmentGroupData.fromData(data, _db,
+        prefix: effectivePrefix);
+  }
+
+  @override
+  NinElementarySegmentGroup createAlias(String alias) {
+    return NinElementarySegmentGroup(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'PRIMARY KEY (pid)',
+        'FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)',
+        'FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)',
+        'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)',
+        'FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class NinStandardSegmentElementData extends DataClass
+    implements Insertable<NinStandardSegmentElementData> {
+  final int pid;
+  final String standardSegmentId;
+  final String elementarySegmentId;
+  NinStandardSegmentElementData(
+      {@required this.pid, this.standardSegmentId, this.elementarySegmentId});
+  factory NinStandardSegmentElementData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return NinStandardSegmentElementData(
+      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
+      standardSegmentId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}standardSegment_id']),
+      elementarySegmentId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}elementarySegment_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || pid != null) {
+      map['pid'] = Variable<int>(pid);
+    }
+    if (!nullToAbsent || standardSegmentId != null) {
+      map['standardSegment_id'] = Variable<String>(standardSegmentId);
+    }
+    if (!nullToAbsent || elementarySegmentId != null) {
+      map['elementarySegment_id'] = Variable<String>(elementarySegmentId);
+    }
+    return map;
+  }
+
+  NinStandardSegmentElementCompanion toCompanion(bool nullToAbsent) {
+    return NinStandardSegmentElementCompanion(
+      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      standardSegmentId: standardSegmentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(standardSegmentId),
+      elementarySegmentId: elementarySegmentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(elementarySegmentId),
+    );
+  }
+
+  factory NinStandardSegmentElementData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return NinStandardSegmentElementData(
+      pid: serializer.fromJson<int>(json['pid']),
+      standardSegmentId:
+          serializer.fromJson<String>(json['standardSegment_id']),
+      elementarySegmentId:
+          serializer.fromJson<String>(json['elementarySegment_id']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'pid': serializer.toJson<int>(pid),
+      'standardSegment_id': serializer.toJson<String>(standardSegmentId),
+      'elementarySegment_id': serializer.toJson<String>(elementarySegmentId),
+    };
+  }
+
+  NinStandardSegmentElementData copyWith(
+          {int pid, String standardSegmentId, String elementarySegmentId}) =>
+      NinStandardSegmentElementData(
+        pid: pid ?? this.pid,
+        standardSegmentId: standardSegmentId ?? this.standardSegmentId,
+        elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NinStandardSegmentElementData(')
+          ..write('pid: $pid, ')
+          ..write('standardSegmentId: $standardSegmentId, ')
+          ..write('elementarySegmentId: $elementarySegmentId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(pid.hashCode,
+      $mrjc(standardSegmentId.hashCode, elementarySegmentId.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is NinStandardSegmentElementData &&
+          other.pid == this.pid &&
+          other.standardSegmentId == this.standardSegmentId &&
+          other.elementarySegmentId == this.elementarySegmentId);
+}
+
+class NinStandardSegmentElementCompanion
+    extends UpdateCompanion<NinStandardSegmentElementData> {
+  final Value<int> pid;
+  final Value<String> standardSegmentId;
+  final Value<String> elementarySegmentId;
+  const NinStandardSegmentElementCompanion({
+    this.pid = const Value.absent(),
+    this.standardSegmentId = const Value.absent(),
+    this.elementarySegmentId = const Value.absent(),
+  });
+  NinStandardSegmentElementCompanion.insert({
+    this.pid = const Value.absent(),
+    this.standardSegmentId = const Value.absent(),
+    this.elementarySegmentId = const Value.absent(),
+  });
+  static Insertable<NinStandardSegmentElementData> custom({
+    Expression<int> pid,
+    Expression<String> standardSegmentId,
+    Expression<String> elementarySegmentId,
+  }) {
+    return RawValuesInsertable({
+      if (pid != null) 'pid': pid,
+      if (standardSegmentId != null) 'standardSegment_id': standardSegmentId,
+      if (elementarySegmentId != null)
+        'elementarySegment_id': elementarySegmentId,
+    });
+  }
+
+  NinStandardSegmentElementCompanion copyWith(
+      {Value<int> pid,
+      Value<String> standardSegmentId,
+      Value<String> elementarySegmentId}) {
+    return NinStandardSegmentElementCompanion(
+      pid: pid ?? this.pid,
+      standardSegmentId: standardSegmentId ?? this.standardSegmentId,
+      elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (pid.present) {
+      map['pid'] = Variable<int>(pid.value);
+    }
+    if (standardSegmentId.present) {
+      map['standardSegment_id'] = Variable<String>(standardSegmentId.value);
+    }
+    if (elementarySegmentId.present) {
+      map['elementarySegment_id'] = Variable<String>(elementarySegmentId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinStandardSegmentElementCompanion(')
+          ..write('pid: $pid, ')
+          ..write('standardSegmentId: $standardSegmentId, ')
+          ..write('elementarySegmentId: $elementarySegmentId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class NinStandardSegmentElement extends Table
+    with TableInfo<NinStandardSegmentElement, NinStandardSegmentElementData> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  NinStandardSegmentElement(this._db, [this._alias]);
+  final VerificationMeta _pidMeta = const VerificationMeta('pid');
+  GeneratedIntColumn _pid;
+  GeneratedIntColumn get pid => _pid ??= _constructPid();
+  GeneratedIntColumn _constructPid() {
+    return GeneratedIntColumn('pid', $tableName, false,
+        $customConstraints: 'NOT NULL');
+  }
+
+  final VerificationMeta _standardSegmentIdMeta =
+      const VerificationMeta('standardSegmentId');
+  GeneratedTextColumn _standardSegmentId;
+  GeneratedTextColumn get standardSegmentId =>
+      _standardSegmentId ??= _constructStandardSegmentId();
+  GeneratedTextColumn _constructStandardSegmentId() {
+    return GeneratedTextColumn('standardSegment_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  final VerificationMeta _elementarySegmentIdMeta =
+      const VerificationMeta('elementarySegmentId');
+  GeneratedTextColumn _elementarySegmentId;
+  GeneratedTextColumn get elementarySegmentId =>
+      _elementarySegmentId ??= _constructElementarySegmentId();
+  GeneratedTextColumn _constructElementarySegmentId() {
+    return GeneratedTextColumn('elementarySegment_id', $tableName, true,
+        $customConstraints: '');
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [pid, standardSegmentId, elementarySegmentId];
+  @override
+  NinStandardSegmentElement get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'nin_StandardSegmentElement';
+  @override
+  final String actualTableName = 'nin_StandardSegmentElement';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<NinStandardSegmentElementData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('pid')) {
+      context.handle(
+          _pidMeta, pid.isAcceptableOrUnknown(data['pid'], _pidMeta));
+    }
+    if (data.containsKey('standardSegment_id')) {
+      context.handle(
+          _standardSegmentIdMeta,
+          standardSegmentId.isAcceptableOrUnknown(
+              data['standardSegment_id'], _standardSegmentIdMeta));
+    }
+    if (data.containsKey('elementarySegment_id')) {
+      context.handle(
+          _elementarySegmentIdMeta,
+          elementarySegmentId.isAcceptableOrUnknown(
+              data['elementarySegment_id'], _elementarySegmentIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pid};
+  @override
+  NinStandardSegmentElementData map(Map<String, dynamic> data,
+      {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return NinStandardSegmentElementData.fromData(data, _db,
+        prefix: effectivePrefix);
+  }
+
+  @override
+  NinStandardSegmentElement createAlias(String alias) {
+    return NinStandardSegmentElement(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'PRIMARY KEY (pid)',
+        'FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)',
+        'FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class NinElementarySegmentGroupDetailData extends DataClass
     implements Insertable<NinElementarySegmentGroupDetailData> {
   final int pid;
@@ -6098,261 +6528,6 @@ class NinElementarySegmentGroupDetail extends Table
         'FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" ("elementarySegment_id")',
         'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)',
         'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
-      ];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class NinStandardSegmentElementData extends DataClass
-    implements Insertable<NinStandardSegmentElementData> {
-  final int pid;
-  final String standardSegmentId;
-  final String elementarySegmentId;
-  NinStandardSegmentElementData(
-      {@required this.pid, this.standardSegmentId, this.elementarySegmentId});
-  factory NinStandardSegmentElementData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    return NinStandardSegmentElementData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      standardSegmentId: stringType.mapFromDatabaseResponse(
-          data['${effectivePrefix}standardSegment_id']),
-      elementarySegmentId: stringType.mapFromDatabaseResponse(
-          data['${effectivePrefix}elementarySegment_id']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int>(pid);
-    }
-    if (!nullToAbsent || standardSegmentId != null) {
-      map['standardSegment_id'] = Variable<String>(standardSegmentId);
-    }
-    if (!nullToAbsent || elementarySegmentId != null) {
-      map['elementarySegment_id'] = Variable<String>(elementarySegmentId);
-    }
-    return map;
-  }
-
-  NinStandardSegmentElementCompanion toCompanion(bool nullToAbsent) {
-    return NinStandardSegmentElementCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
-      standardSegmentId: standardSegmentId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(standardSegmentId),
-      elementarySegmentId: elementarySegmentId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(elementarySegmentId),
-    );
-  }
-
-  factory NinStandardSegmentElementData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return NinStandardSegmentElementData(
-      pid: serializer.fromJson<int>(json['pid']),
-      standardSegmentId:
-          serializer.fromJson<String>(json['standardSegment_id']),
-      elementarySegmentId:
-          serializer.fromJson<String>(json['elementarySegment_id']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'pid': serializer.toJson<int>(pid),
-      'standardSegment_id': serializer.toJson<String>(standardSegmentId),
-      'elementarySegment_id': serializer.toJson<String>(elementarySegmentId),
-    };
-  }
-
-  NinStandardSegmentElementData copyWith(
-          {int pid, String standardSegmentId, String elementarySegmentId}) =>
-      NinStandardSegmentElementData(
-        pid: pid ?? this.pid,
-        standardSegmentId: standardSegmentId ?? this.standardSegmentId,
-        elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('NinStandardSegmentElementData(')
-          ..write('pid: $pid, ')
-          ..write('standardSegmentId: $standardSegmentId, ')
-          ..write('elementarySegmentId: $elementarySegmentId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => $mrjf($mrjc(pid.hashCode,
-      $mrjc(standardSegmentId.hashCode, elementarySegmentId.hashCode)));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is NinStandardSegmentElementData &&
-          other.pid == this.pid &&
-          other.standardSegmentId == this.standardSegmentId &&
-          other.elementarySegmentId == this.elementarySegmentId);
-}
-
-class NinStandardSegmentElementCompanion
-    extends UpdateCompanion<NinStandardSegmentElementData> {
-  final Value<int> pid;
-  final Value<String> standardSegmentId;
-  final Value<String> elementarySegmentId;
-  const NinStandardSegmentElementCompanion({
-    this.pid = const Value.absent(),
-    this.standardSegmentId = const Value.absent(),
-    this.elementarySegmentId = const Value.absent(),
-  });
-  NinStandardSegmentElementCompanion.insert({
-    this.pid = const Value.absent(),
-    this.standardSegmentId = const Value.absent(),
-    this.elementarySegmentId = const Value.absent(),
-  });
-  static Insertable<NinStandardSegmentElementData> custom({
-    Expression<int> pid,
-    Expression<String> standardSegmentId,
-    Expression<String> elementarySegmentId,
-  }) {
-    return RawValuesInsertable({
-      if (pid != null) 'pid': pid,
-      if (standardSegmentId != null) 'standardSegment_id': standardSegmentId,
-      if (elementarySegmentId != null)
-        'elementarySegment_id': elementarySegmentId,
-    });
-  }
-
-  NinStandardSegmentElementCompanion copyWith(
-      {Value<int> pid,
-      Value<String> standardSegmentId,
-      Value<String> elementarySegmentId}) {
-    return NinStandardSegmentElementCompanion(
-      pid: pid ?? this.pid,
-      standardSegmentId: standardSegmentId ?? this.standardSegmentId,
-      elementarySegmentId: elementarySegmentId ?? this.elementarySegmentId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (pid.present) {
-      map['pid'] = Variable<int>(pid.value);
-    }
-    if (standardSegmentId.present) {
-      map['standardSegment_id'] = Variable<String>(standardSegmentId.value);
-    }
-    if (elementarySegmentId.present) {
-      map['elementarySegment_id'] = Variable<String>(elementarySegmentId.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NinStandardSegmentElementCompanion(')
-          ..write('pid: $pid, ')
-          ..write('standardSegmentId: $standardSegmentId, ')
-          ..write('elementarySegmentId: $elementarySegmentId')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class NinStandardSegmentElement extends Table
-    with TableInfo<NinStandardSegmentElement, NinStandardSegmentElementData> {
-  final GeneratedDatabase _db;
-  final String _alias;
-  NinStandardSegmentElement(this._db, [this._alias]);
-  final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
-  final VerificationMeta _standardSegmentIdMeta =
-      const VerificationMeta('standardSegmentId');
-  GeneratedTextColumn _standardSegmentId;
-  GeneratedTextColumn get standardSegmentId =>
-      _standardSegmentId ??= _constructStandardSegmentId();
-  GeneratedTextColumn _constructStandardSegmentId() {
-    return GeneratedTextColumn('standardSegment_id', $tableName, true,
-        $customConstraints: '');
-  }
-
-  final VerificationMeta _elementarySegmentIdMeta =
-      const VerificationMeta('elementarySegmentId');
-  GeneratedTextColumn _elementarySegmentId;
-  GeneratedTextColumn get elementarySegmentId =>
-      _elementarySegmentId ??= _constructElementarySegmentId();
-  GeneratedTextColumn _constructElementarySegmentId() {
-    return GeneratedTextColumn('elementarySegment_id', $tableName, true,
-        $customConstraints: '');
-  }
-
-  @override
-  List<GeneratedColumn> get $columns =>
-      [pid, standardSegmentId, elementarySegmentId];
-  @override
-  NinStandardSegmentElement get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'nin_StandardSegmentElement';
-  @override
-  final String actualTableName = 'nin_StandardSegmentElement';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<NinStandardSegmentElementData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('pid')) {
-      context.handle(
-          _pidMeta, pid.isAcceptableOrUnknown(data['pid'], _pidMeta));
-    }
-    if (data.containsKey('standardSegment_id')) {
-      context.handle(
-          _standardSegmentIdMeta,
-          standardSegmentId.isAcceptableOrUnknown(
-              data['standardSegment_id'], _standardSegmentIdMeta));
-    }
-    if (data.containsKey('elementarySegment_id')) {
-      context.handle(
-          _elementarySegmentIdMeta,
-          elementarySegmentId.isAcceptableOrUnknown(
-              data['elementarySegment_id'], _elementarySegmentIdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {pid};
-  @override
-  NinStandardSegmentElementData map(Map<String, dynamic> data,
-      {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinStandardSegmentElementData.fromData(data, _db,
-        prefix: effectivePrefix);
-  }
-
-  @override
-  NinStandardSegmentElement createAlias(String alias) {
-    return NinStandardSegmentElement(_db, alias);
-  }
-
-  @override
-  List<String> get customConstraints => const [
-        'PRIMARY KEY (pid)',
-        'FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)',
-        'FOREIGN KEY("elementarySegment_id") REFERENCES "nin_ElementarySegment" (_id)'
       ];
   @override
   bool get dontWriteConstraints => true;
@@ -7104,9 +7279,6 @@ abstract class _$NiNDatabase extends GeneratedDatabase {
   NinMinorTypeScaled _ninMinorTypeScaled;
   NinMinorTypeScaled get ninMinorTypeScaled =>
       _ninMinorTypeScaled ??= NinMinorTypeScaled(this);
-  NinElementarySegmentGroup _ninElementarySegmentGroup;
-  NinElementarySegmentGroup get ninElementarySegmentGroup =>
-      _ninElementarySegmentGroup ??= NinElementarySegmentGroup(this);
   NinStandardSegment _ninStandardSegment;
   NinStandardSegment get ninStandardSegment =>
       _ninStandardSegment ??= NinStandardSegment(this);
@@ -7115,13 +7287,16 @@ abstract class _$NiNDatabase extends GeneratedDatabase {
   NinMinorTypeStandardSegment _ninMinorTypeStandardSegment;
   NinMinorTypeStandardSegment get ninMinorTypeStandardSegment =>
       _ninMinorTypeStandardSegment ??= NinMinorTypeStandardSegment(this);
+  NinElementarySegmentGroup _ninElementarySegmentGroup;
+  NinElementarySegmentGroup get ninElementarySegmentGroup =>
+      _ninElementarySegmentGroup ??= NinElementarySegmentGroup(this);
+  NinStandardSegmentElement _ninStandardSegmentElement;
+  NinStandardSegmentElement get ninStandardSegmentElement =>
+      _ninStandardSegmentElement ??= NinStandardSegmentElement(this);
   NinElementarySegmentGroupDetail _ninElementarySegmentGroupDetail;
   NinElementarySegmentGroupDetail get ninElementarySegmentGroupDetail =>
       _ninElementarySegmentGroupDetail ??=
           NinElementarySegmentGroupDetail(this);
-  NinStandardSegmentElement _ninStandardSegmentElement;
-  NinStandardSegmentElement get ninStandardSegmentElement =>
-      _ninStandardSegmentElement ??= NinStandardSegmentElement(this);
   NinElementarySegmentCombination _ninElementarySegmentCombination;
   NinElementarySegmentCombination get ninElementarySegmentCombination =>
       _ninElementarySegmentCombination ??=
@@ -7147,12 +7322,12 @@ abstract class _$NiNDatabase extends GeneratedDatabase {
         ninMajorTypeLEC,
         ninElementarySegment,
         ninMinorTypeScaled,
-        ninElementarySegmentGroup,
         ninStandardSegment,
         ninGadModifier,
         ninMinorTypeStandardSegment,
-        ninElementarySegmentGroupDetail,
+        ninElementarySegmentGroup,
         ninStandardSegmentElement,
+        ninElementarySegmentGroupDetail,
         ninElementarySegmentCombination,
         ninGadValue
       ];
