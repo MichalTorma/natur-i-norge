@@ -1,12 +1,23 @@
 import 'package:flutter/services.dart';
+import 'package:moor/backends.dart';
 import 'package:moor/moor_web.dart';
+import 'package:path/path.dart';
 
-dynamic getLazyDb() {
-  return WebDatabase(
-    'nin.sqlite',
+Future<DelegatedDatabase> getLazyDb() async {
+  print("Constructing web database");
+  final dbName = 'nin_database.db';
+  final storage = await MoorWebStorage.indexedDbIfSupported(dbName);
+  return WebDatabase.withStorage(
+    storage,
+    logStatements: false,
     initializer: () async {
-      final dbFile = await rootBundle.load('assets/nin_database.db');
-      return dbFile.buffer.asUint8List();
+      print('Initializer triggered');
+      // Copy from asset
+      var data = await rootBundle.load(join('assets', dbName));
+      final bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await storage.store(bytes);
+      return bytes;
     },
   );
 }
