@@ -712,7 +712,15 @@
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ lec_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">☆ majorTypeLEC_id</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">☆ majorType_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
@@ -721,6 +729,10 @@
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
         ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
         ><FONT FACE="Bitstream Vera Sans">⚪ order</FONT
+        ></TD><TD ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        ><FONT FACE="Bitstream Vera Sans">⚪ selected</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
         ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
@@ -846,6 +858,8 @@
 	"PatternOfVariation" -> "Detail" [label = "detail_id"]
 	"StandardSegment" -> "MajorTypeLEC" [label = "majorTypeLEC_id"]
 	"StandardSegment" -> "Detail" [label = "detail_id"]
+	"StandardSegment" -> "LEC" [label = "lec_id"]
+	"StandardSegment" -> "MajorType" [label = "majorType_id"]
 	"StandardSegmentElement" -> "StandardSegment" [label = "standardSegment_id"]
 	"StandardSegmentElement" -> "ElementarySegment" [label = "elementarySegment_id"]
 	"StructuringProcess" -> "Detail" [label = "detail_id"]

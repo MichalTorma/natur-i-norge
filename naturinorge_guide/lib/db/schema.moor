@@ -148,10 +148,15 @@ CREATE TABLE "nin_StandardSegment" (
 	"majorTypeLEC_id" TEXT, 
 	"order" INTEGER, 
 	detail_id TEXT, 
+	lec_id TEXT, 
+	"majorType_id" TEXT, 
+	selected INTEGER, 
 	PRIMARY KEY (pid), 
 	UNIQUE (_id), 
 	FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id), 
-	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)
+	FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id), 
+	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
+	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)
 );
 CREATE TABLE "nin_GadModifier" (
 	pid INTEGER NOT NULL, 
