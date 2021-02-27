@@ -29,6 +29,7 @@ class Detail(Base):
     value = Column(Text)
 
 
+
 class MajorTypeGroup(Base):
     '''Table of Major type groups lie T,V,M etc..'''
 
