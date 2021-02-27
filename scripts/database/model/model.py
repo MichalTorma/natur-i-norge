@@ -249,6 +249,9 @@ class StandardSegment(Base):
     majorTypeLEC_id = Column(Text, ForeignKey(f'{prefix}MajorTypeLEC._id'))
     order = Column(Integer)
     detail_id = Column(Text, ForeignKey(f'{prefix}Detail._id'))
+    lec_id = Column(Text, ForeignKey(f'{prefix}LEC._id'))
+    majorType_id = Column(Text, ForeignKey(f'{prefix}MajorType._id'))
+    selected = Column(Integer)
 
     # References
     elementarySegment = relationship('StandardSegmentElement')
