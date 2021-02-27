@@ -42,6 +42,21 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» detail_index</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(_id,language_id,key)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_Detail__id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_Detail_key</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(key)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -73,6 +88,11 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_ElementarySegment__id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -100,6 +120,11 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ _id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_ElementarySegmentCombination__id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -135,6 +160,36 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ _id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ElementarySegmentGroup_index</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(standardSegment_id,majorType_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_ElementarySegmentGroup__id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_ElementarySegmentGroup_elementarySegment_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(elementarySegment_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_ElementarySegmentGroup_lec_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(lec_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_ElementarySegmentGroup_majorType_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(majorType_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_ElementarySegmentGroup_standardSegment_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(standardSegment_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -166,6 +221,11 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_ElementarySegmentGroupDetail_elementarySegmentGroup_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(elementarySegmentGroup_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -201,6 +261,11 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ value</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_GadModifier_species_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(species_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -263,6 +328,11 @@
         ><FONT FACE="Bitstream Vera Sans">☆ valueM7Scale_id</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">INTEGER</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_GadValue_species_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(species_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -335,6 +405,11 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ structuringProcess</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_LEC__id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -500,6 +575,21 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ standardSegment</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_MajorTypeLEC__id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_MajorTypeLEC_lec_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(lec_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_MajorTypeLEC_majorType_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(majorType_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -560,6 +650,11 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ standardSegments</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_MinorType_majorType_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(majorType_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -600,6 +695,16 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ minorType</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» MinorTypeScaled_index</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(minorType_id,mappingScale_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_MinorTypeScaled_minorType_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(minorType_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -633,6 +738,11 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ standardSegment</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_MinorTypeStandardSegment_minorType_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(minorType_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -692,6 +802,21 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ vernacularName</FONT
         ></TD><TD ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">TEXT</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_Species_scientificName</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(scientificName)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_Species_scientificNameId</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(scientificNameId)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_Species_vernacularName</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(vernacularName)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -745,6 +870,21 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ majorTypeLEC</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_StandardSegment__id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_StandardSegment_majorTypeLEC_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(majorTypeLEC_id)</FONT
+        ></TD></TR> <TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_StandardSegment_majorType_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(majorType_id)</FONT
         ></TD></TR>
         </TABLE>
     >]
@@ -778,6 +918,11 @@
         ><FONT FACE="Bitstream Vera Sans">⚪ standardSegment</FONT></TD
         ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
         ><FONT FACE="Bitstream Vera Sans">PROPERTY</FONT
+        ></TD></TR><TR><TD ALIGN="LEFT" BORDER="0"
+        BGCOLOR="palegoldenrod"
+        ><FONT FACE="Bitstream Vera Sans">» ix_nin_StandardSegmentElement_standardSegment_id</FONT></TD
+        ><TD BGCOLOR="palegoldenrod" ALIGN="LEFT"
+        ><FONT FACE="Bitstream Vera Sans">INDEX(standardSegment_id)</FONT
         ></TD></TR>
         </TABLE>
     >]

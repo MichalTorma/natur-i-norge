@@ -207,11 +207,12 @@ class MajorTypeProvider extends ChangeNotifier {
         var zSegments;
 
         xSegments = mt.standardSegments.where((element) =>
-            element.lec.lec.data.id == xAxis.lecAdapter.lec.data.id);
+            element.standardSegment.data.lecId == xAxis.lecAdapter.lec.data.id);
         xOrders = xSegments.map((e) => e.standardSegment.data.order);
         if (_yAxis != null) {
           ySegments = mt.standardSegments.where((element) =>
-              element.lec.lec.data.id == _yAxis.lecAdapter.lec.data.id);
+              element.standardSegment.data.lecId ==
+              _yAxis.lecAdapter.lec.data.id);
           yOrders = ySegments.map((e) => e.standardSegment.data.order);
           xySegments = [xSegments, ySegments].expand((element) => element);
         } else {
@@ -223,8 +224,8 @@ class MajorTypeProvider extends ChangeNotifier {
           zSegments = mt.standardSegments
               .where((element) => !xySegments.contains(element));
           zOrdersList = _zAxis.map((zAxis) {
-            var segment = zSegments.firstWhere(
-                (seg) => seg.lec.lec.data.id == zAxis.lecAdapter.lec.data.id);
+            var segment = zSegments.firstWhere((seg) =>
+                seg.standardSegment.data.lecId == zAxis.lecAdapter.lec.data.id);
             return segment.standardSegment.data.order;
           }).toList();
         }
@@ -339,9 +340,8 @@ class MajorTypeProvider extends ChangeNotifier {
     } else {
       mts = mta.minorTypes;
     }
-    var widthSSList = mts
-        .expand((mnt) => mnt.standardSegments)
-        .where((ss) => ss.lec.lec.data.id == _xAxis.lecAdapter.lec.data.id);
+    var widthSSList = mts.expand((mnt) => mnt.standardSegments).where(
+        (ss) => ss.standardSegment.data.lecId == _xAxis.lecAdapter.lec.data.id);
     var widthESList = widthSSList
         .expand((ss_f) => ss_f.elementarySegmentGroups)
         .toSet()
@@ -351,7 +351,8 @@ class MajorTypeProvider extends ChangeNotifier {
     if (_yAxis != null) {
       var heightSSList = mts
           .expand((mnt) => mnt.standardSegments)
-          .where((ss) => ss.lec.lec.data.id == _yAxis.lecAdapter.lec.data.id)
+          .where((ss) =>
+              ss.standardSegment.data.lecId == _yAxis.lecAdapter.lec.data.id)
           .expand((ss_f) => ss_f.elementarySegmentGroups)
           .toSet()
           .toList();
@@ -369,7 +370,8 @@ class MajorTypeProvider extends ChangeNotifier {
 
   setSecondaryStandardSegment(StandardSegmentAdapter standardSegment) {
     var ssIndex = _selectedZAxisSegments.indexWhere((element) =>
-        element.lec.lec.data.id == standardSegment.lec.lec.data.id);
+        element.standardSegment.data.lecId ==
+        standardSegment.standardSegment.data.lecId);
     _selectedZAxisSegments[ssIndex] = standardSegment;
     _initializeMinorTypeSlice();
     _getGadArray();

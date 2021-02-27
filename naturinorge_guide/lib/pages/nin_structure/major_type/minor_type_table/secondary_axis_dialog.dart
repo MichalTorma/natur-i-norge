@@ -45,7 +45,8 @@ class SecondaryAxisOptions extends StatelessWidget {
                 Provider.of<MajorTypeProvider>(context)
                     .selectedSecondaryAxisSegments
                     .firstWhere((element) =>
-                        element.lec.lec.data.id == axis.lecAdapter.lec.data.id)
+                        element.standardSegment.data.lecId ==
+                        axis.lecAdapter.lec.data.id)
                     .standardSegment
                     .data
                     .id),
