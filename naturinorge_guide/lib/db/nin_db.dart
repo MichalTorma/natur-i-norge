@@ -136,17 +136,32 @@ class NiNDatabase extends _$NiNDatabase {
         .get();
   }
 
-  Future<List<NinElementarySegmentData>> getElementarySegmentByStandardSegment(
-      NinStandardSegmentData standardSegment) async {
-    var standardSegmentElements = await (select(ninStandardSegmentElement)
-          ..where((tbl) => tbl.standardSegmentId.equals(standardSegment.id)))
+  // Future<List<NinElementarySegmentData>> getElementarySegmentByStandardSegment(
+  //     NinStandardSegmentData standardSegment) async {
+  //   var standardSegmentElements = await (select(ninStandardSegmentElement)
+  //         ..where((tbl) => tbl.standardSegmentId.equals(standardSegment.id)))
+  //       .get();
+  //   var res = await(select(ninElementarySegment)).get();
+  //   // var res = List<NinElementarySegmentData>.empty(growable: true);
+  //   // for (var es in standardSegmentElements) {
+  //   //   res.add(await this.getElementarySegmentById(es.elementarySegmentId));
+  //   // }
+  //   return res;
+  // }
+
+  Future<List<NinElementarySegmentGroupData>>
+      getElementarySegmentGroupByStandardSegmentAndMajorType(
+          String standardSegment_id, String majorType_id) {
+    return (select(ninElementarySegmentGroup)
+          ..where((tbl) =>
+              tbl.standardSegmentId.equals(standardSegment_id) &
+              tbl.majorTypeId.equals(majorType_id)))
         .get();
-    var res = List<NinElementarySegmentData>.empty(growable: true);
-    for (var es in standardSegmentElements) {
-      res.add(await this.getElementarySegmentById(es.elementarySegmentId));
-    }
-    return res;
   }
+
+  Future<List<NinElementarySegmentData>> getElementarySegmentsByIds(
+          List<String> ids) =>
+      (select(ninElementarySegment)..where((tbl) => tbl.id.isIn(ids))).get();
 
   Future<List<String>> getGadElementarySegmentGroupIdsByStandardSegment(
       NinStandardSegmentData standardSegment,
@@ -272,7 +287,7 @@ class NiNDatabase extends _$NiNDatabase {
           .get();
 
   @override
-  int get schemaVersion => 34;
+  int get schemaVersion => 35;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
