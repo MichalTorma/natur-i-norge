@@ -196,6 +196,12 @@ class NiNDatabase extends _$NiNDatabase {
       (select(ninElementarySegment)..where((tbl) => tbl.lecId.equals(lec.id)))
           .get();
 
+  Future<List<NinElementarySegmentGroupDetailData>>
+      getElementarySegmentsGroupDetailsByLec(NinLECData lec) =>
+          (select(ninElementarySegmentGroupDetail)
+                ..where((tbl) => tbl.lecId.equals(lec.id)))
+              .get();
+
   Future<List<String>> getElementarySegmentGroupsByElementarySegments(
       List<NinElementarySegmentData> elementarySegments) async {
     var elementaryIds = elementarySegments.map((e) => e.id);
@@ -285,6 +291,19 @@ class NiNDatabase extends _$NiNDatabase {
                 tbl.speciesId.equals(speciesId) &
                 tbl.majorTypeId.equals(majorTypeId)))
           .get();
+
+  Future<List<NinLECData>> getAllLec() => select(ninLEC).get();
+
+  Future<List<Detailed<NinMajorTypeData>>> getMajorTypesByLec(
+      String lecId, Locale locale) async {
+    var mtLecs = await (select(ninMajorTypeLEC)
+          ..where((tbl) => tbl.lecId.equals(lecId)))
+        .get();
+    var mt_ids = mtLecs.map((e) => e.majorTypeId);
+    var mts =
+        await (select(ninMajorType)..where((tbl) => tbl.id.isIn(mt_ids))).get();
+    return Detailed<NinMajorTypeData>().fromList(mts, locale);
+  }
 
   @override
   int get schemaVersion => 36;

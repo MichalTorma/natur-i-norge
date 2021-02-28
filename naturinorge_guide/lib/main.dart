@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/pages/home_page.dart';
+import 'package:naturinorge_guide/pages/lec/lec_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:naturinorge_guide/tools/my_theme.dart';
@@ -51,21 +52,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          // DEP
-          // ChangeNotifierProvider<FilterProvider>(
-          //   create: (_) => FilterProvider(MyDatabase().t4Dao),
-          // ),
-          // ChangeNotifierProvider<MapProvider>(
-          //   create: (_) => MapProvider(),
-          // ),
-
-          // ACTIVE
           ChangeNotifierProvider<NinStructureProvider>(
             create: (_) => NinStructureProvider(context.locale),
             lazy: false,
           ),
           ChangeNotifierProvider<MajorTypeProvider>(
             create: (_) => MajorTypeProvider(context.locale),
+            lazy: false,
+          ),
+          ChangeNotifierProvider(
+            create: (_) => LecProvider(context.locale),
             lazy: false,
           ),
         ],

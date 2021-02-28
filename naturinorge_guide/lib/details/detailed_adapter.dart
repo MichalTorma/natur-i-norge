@@ -30,13 +30,9 @@ class Detailed<K> {
     var res = List<Detailed<K>>.empty(growable: true);
     for (var e in dataList) {
       // print('Get details for detailId: ${e.detailId}');
-      try {
-        var detailed = await Detailed<K>().initialize(e, locale);
-        res.add(detailed);
-      } catch (error) {
-        // print(e);
-        print('Unable to get deails for ${e.detailId}');
-      }
+
+      var detailed = await Detailed<K>().initialize(e, locale);
+      res.add(detailed);
     }
     // var res = await Future.forEach(
     //     dataList, (e) async => await Detailed().initialize(e, locale, db));
@@ -59,12 +55,11 @@ class Detailed<K> {
 
     var nameDetail = details.firstWhere((element) => element.key == '<name>',
         orElse: () => null);
-    if (nameDetail == null) {
-      _printDetails(details);
-      throw Exception('Unable to find <name>');
+    if (nameDetail != null) {
+      name = nameDetail.value;
+      nameHeader = tr('<name>');
     }
-    name = nameDetail.value;
-    nameHeader = tr('<name>');
+
     var descriptionDetail = details.firstWhere(
         (element) => element.key == '<description>',
         orElse: () => null);
