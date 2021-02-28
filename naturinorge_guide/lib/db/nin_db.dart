@@ -305,6 +305,19 @@ class NiNDatabase extends _$NiNDatabase {
     return Detailed<NinMajorTypeData>().fromList(mts, locale);
   }
 
+  Future<List<Detailed<NinMajorTypeData>>> getMajorTypesForSpecie(
+      NinSpecie specie, Locale locale) async {
+    // TODO implement when more GAD datasets are available
+    // var q = select(ninGadValue)
+    //   ..where((tbl) => tbl.speciesId.equals(specie.scientificNameId));
+    // var mtIds = (await q.map((e) => e.majorTypeId).get()).toSet();
+    // mtIds
+    var q = select(ninMajorType)..where((tbl) => tbl.id.equals('T-4'));
+    var mts = await q.get();
+    var res = await Detailed<NinMajorTypeData>().fromList(mts, locale);
+    return res;
+  }
+
   @override
   int get schemaVersion => 36;
 

@@ -7,6 +7,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type_group_page.dart
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/other/loading.dart';
 import 'package:naturinorge_guide/pages/nin_structure/other/loading_overlay.dart';
+import 'package:naturinorge_guide/pages/species/species_page.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -41,8 +42,15 @@ class HomePage extends StatelessWidget {
                 HomePageButton(
                     icon: Icons.list,
                     text: 'LEC',
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LecListPage()))),
+                HomePageButton(
+                    icon: Icons.place_outlined,
+                    text: 'Arter',
                     onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LecListPage())))
+                        MaterialPageRoute(builder: (context) => SpeciesPage())))
               ],
             ),
             LoadingOverlay(),
