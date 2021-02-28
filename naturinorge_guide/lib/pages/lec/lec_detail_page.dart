@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
@@ -12,10 +13,11 @@ class LecDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var body = List<Widget>.empty(growable: true);
 
-    body.add(Text(
+    body.add(AutoSizeText(
       lec.detailedLec.name ?? '',
       style: Theme.of(context).textTheme.headline2,
       textAlign: TextAlign.center,
+      wrapWords: false,
     ));
     body.add(Text(lec.detailedLec.description ?? '<<TBF>>'));
     if (lec.detailedLec.other != null) {
@@ -91,19 +93,25 @@ class ElementarySegmentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // height: 20,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Material(
-              child: Text(
-            elementarySegmemnt.data.value,
-            style: Theme.of(context).textTheme.headline4,
-          )),
-          VerticalDivider(),
-          Text(elementarySegmemnt.name ?? ''),
-          Expanded(child: Text(elementarySegmemnt.description ?? '')),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: 40,
+              child: Material(
+                  child: Text(
+                elementarySegmemnt.data.value,
+                style: Theme.of(context).textTheme.headline4,
+              )),
+            ),
+            VerticalDivider(),
+            Text(elementarySegmemnt.name ?? ''),
+            Expanded(child: Text(elementarySegmemnt.description ?? '')),
+          ],
+        ),
       ),
     );
   }
