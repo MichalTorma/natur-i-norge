@@ -22,7 +22,10 @@ class HomePageButton extends StatelessWidget {
               direction: Axis.vertical,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Expanded(child: Icon(icon)),
+                Expanded(
+                    child: Icon(
+                  icon,
+                )),
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
