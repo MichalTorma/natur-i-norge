@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
+import 'package:naturinorge_guide/pages/lec/lec_detail_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_label_name.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/elementary_segment_widget.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/standard_segment_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AxisLabel extends StatelessWidget {
   final AxisBlock axisBlock;
@@ -47,7 +49,7 @@ class AxisLabel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: axisBlock.standardSegments
                 .expand((element) => element.elementarySegmentGroups)
-                .map((e) => ElementarySegmentWidget(
+                .map((e) => ElementarySegmentLabelWidget(
                       elementarySegmentGroupId: e,
                     ))
                 .toList()),
@@ -58,11 +60,22 @@ class AxisLabel extends StatelessWidget {
       bodyParts = bodyParts.reversed.toList();
     }
 
-    var body = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: bodyParts,
-    );
+    var body = GestureDetector(
+        onTap: () async {
+          var lec = LecAdapter(context.locale, axisBlock.lecAdapter.lec.data);
+          await lec.getRelations();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => LecDetailPage(
+                        lec: lec,
+                      )));
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: bodyParts,
+        ));
 
     if (orientation == Axis.vertical)
       return RotatedBox(

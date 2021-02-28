@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
                             builder: (context) => MajorTypeGroupPage()))),
                 HomePageButton(
                     icon: Icons.list,
-                    text: 'LEC',
+                    text: 'LKM',
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(

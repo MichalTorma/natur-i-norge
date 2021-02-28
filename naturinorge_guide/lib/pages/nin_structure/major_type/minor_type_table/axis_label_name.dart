@@ -15,17 +15,14 @@ class AxisLabelNameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
-      child: GestureDetector(
-        onTap: () => null, //Link to LKM info page
-        child: Material(
-          elevation: MATERIAL_ELEVATION,
-          // padding: EdgeInsets.all(4),
-          child: Center(
-            child: AutoSizeText(
-              '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
-              textAlign: TextAlign.center,
-              maxLines: 1,
-            ),
+      child: Material(
+        elevation: MATERIAL_ELEVATION,
+        // padding: EdgeInsets.all(4),
+        child: Center(
+          child: AutoSizeText(
+            '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
+            textAlign: TextAlign.center,
+            maxLines: 1,
           ),
         ),
       ),
