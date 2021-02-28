@@ -61,8 +61,10 @@ class _MajorTypeButtonState extends State<MajorTypeButton> {
                   .load(widget.ninMajorType);
             Provider.of<NinStructureProvider>(context, listen: false)
                 .setLoading = false;
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => MajorTypePage()));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => MajorTypePage(
+                      majorType: widget.ninMajorType,
+                    )));
           }),
     );
   }
