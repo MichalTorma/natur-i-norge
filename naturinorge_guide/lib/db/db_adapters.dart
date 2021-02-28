@@ -69,7 +69,7 @@ class ElementarySegmentGroupAdapter {
   int get hashCode => hash2(elementarySegmentGroupId.hashCode, locale.hashCode);
 }
 
-class LecAdapter {
+class MajorTypeLecAdapter {
   final Locale locale;
   Detailed<NinLECData> lec;
   List<NinElementarySegmentData> elementarySegments;
@@ -78,7 +78,7 @@ class LecAdapter {
 
   final NinMajorTypeLECData majorTypeLec;
 
-  LecAdapter(this.locale, this.majorTypeLec);
+  MajorTypeLecAdapter(this.locale, this.majorTypeLec);
   Future getRelations() async {
     // print('Get Lec relations, majorTypeLec.id = ${majorTypeLec.id}');
     lec = await db.getLecById(majorTypeLec.lecId, locale);
@@ -91,6 +91,23 @@ class LecAdapter {
       await esga.getRelations();
       gadElementarySegmentGroups.add(esga);
     }
+  }
+}
+
+class LecAdapter {
+  final Locale locale;
+  final NinLECData lec;
+  Detailed<NinLECData> detailedLec;
+  List<Detailed<NinElementarySegmentGroupDetailData>> elementarySegments;
+  List<Detailed<NinMajorTypeData>> majorTypes;
+
+  LecAdapter(this.locale, this.lec);
+  Future getRelations() async {
+    var ess = await db.getElementarySegmentsGroupDetailsByLec(lec);
+    elementarySegments = await Detailed<NinElementarySegmentGroupDetailData>()
+        .fromList(ess, locale);
+    detailedLec = await Detailed<NinLECData>().initialize(lec, locale);
+    majorTypes = await db.getMajorTypesByLec(lec.id, locale);
   }
 }
 
@@ -150,7 +167,7 @@ class MajorTypeAdapter {
 
   final Locale locale;
   List<MinorTypeScaledAdapter> minorTypes;
-  List<LecAdapter> lecs;
+  List<MajorTypeLecAdapter> lecs;
 
   // List<StandardSegmentAdapter> standardSegments;
 
@@ -176,7 +193,7 @@ class MajorTypeAdapter {
     var majorTypeLecs =
         await db.getMajorTypeLecByMajorTypeId(majorType.data.id);
     lecs = await Future.forEach(majorTypeLecs, (element) async {
-      var res = LecAdapter(locale, element);
+      var res = MajorTypeLecAdapter(locale, element);
       await res.getRelations();
       return res;
     });
