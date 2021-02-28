@@ -152,7 +152,7 @@ class MajorTypeProvider extends ChangeNotifier {
     var majorTypeLecs =
         await db.getMajorTypeLecByMajorTypeId(_majorType.data.id);
     for (var majorTypeLec in majorTypeLecs) {
-      var lecAdapter = LecAdapter(locale, majorTypeLec);
+      var lecAdapter = MajorTypeLecAdapter(locale, majorTypeLec);
       await lecAdapter.getRelations();
       var standardSegments =
           await db.getStandardSegmentsByMajorTypeLec(majorTypeLec, locale);

@@ -24,8 +24,10 @@ class NinStructureProvider extends ChangeNotifier {
 
   NinStructureProvider(Locale locale) {
     _locale = locale;
+  }
 
-    _loadMajorTypeGroups();
+  Future initialize() async {
+    await _loadMajorTypeGroups();
     _isLoading = false;
     notifyListeners();
   }
@@ -56,7 +58,10 @@ class NinStructureProvider extends ChangeNotifier {
       _ninMajorTypeGroups;
 
   Future _loadMajorTypeGroups() async {
-    var majorTypeGroups = await db.allMajorTypeGroups;
+    List<NinMajorTypeGroupData> majorTypeGroups;
+    while (majorTypeGroups == null || majorTypeGroups.length == 0) {
+      majorTypeGroups = await db.allMajorTypeGroups;
+    }
     _ninMajorTypeGroups = await Detailed<NinMajorTypeGroupData>()
         .fromList(majorTypeGroups, locale);
   }
