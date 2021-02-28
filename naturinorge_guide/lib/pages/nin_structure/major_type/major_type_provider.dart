@@ -141,8 +141,8 @@ class MajorTypeProvider extends ChangeNotifier {
     //     .toList();
     if (_zAxis != null) {
       _selectedZAxisSegments = _zAxis
-          .map((e) => e.standardSegments
-              .firstWhere((element) => element.standardSegment.data.order == 0))
+          .map((e) => e.standardSegments.firstWhere(
+              (element) => element.standardSegment.data.selected == 1))
           .toList();
     }
   }

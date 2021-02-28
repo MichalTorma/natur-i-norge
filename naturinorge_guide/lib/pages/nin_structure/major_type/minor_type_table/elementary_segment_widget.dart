@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/tools/global_vars.dart';
 
-class ElementarySegmentWidget extends StatelessWidget {
+class ElementarySegmentLabelWidget extends StatelessWidget {
   final String elementarySegmentGroupId;
-  const ElementarySegmentWidget({Key key, this.elementarySegmentGroupId})
+  const ElementarySegmentLabelWidget({Key key, this.elementarySegmentGroupId})
       : super(key: key);
 
   @override
