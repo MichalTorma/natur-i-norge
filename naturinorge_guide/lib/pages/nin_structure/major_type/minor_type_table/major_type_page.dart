@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:naturinorge_guide/db/nin_db.dart';
+import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description_landscape.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
@@ -7,17 +9,18 @@ import 'package:naturinorge_guide/pages/nin_structure/other/loading.dart';
 import 'package:provider/provider.dart';
 
 class MajorTypePage extends StatelessWidget {
-  const MajorTypePage({Key key}) : super(key: key);
+  final Detailed<NinMajorTypeData> majorType;
+  const MajorTypePage({Key key, @required this.majorType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var mt = Provider.of<NinStructureProvider>(
-      context,
-    ).selectedMajorType;
+    // var majorType = Provider.of<NinStructureProvider>(
+    //   context,
+    // ).selectedMajorType;
     return Scaffold(
       appBar: AppBar(
         title: AutoSizeText(
-          '${mt.data.id} ${mt.name}',
+          '${majorType.data.id} ${majorType.name}',
           // style: Theme.of(context).textTheme.headline3,
         ),
         bottom: LoadingWidget(),
@@ -32,11 +35,11 @@ class MajorTypePage extends StatelessWidget {
             builder: (context, boxConstraints) {
           if (boxConstraints.maxWidth < 800) {
             return MajorTypeDetails(
-              ninMajorType: mt,
+              ninMajorType: majorType,
             );
           } else {
             return MajorTypeDetailsLandscape(
-              ninMajorType: mt,
+              ninMajorType: majorType,
             );
           }
         }),
