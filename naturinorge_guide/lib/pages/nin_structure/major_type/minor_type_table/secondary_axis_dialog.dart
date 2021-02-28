@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
+import 'package:naturinorge_guide/pages/lec/lec_detail_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -23,13 +24,31 @@ class SecondaryAxisOptions extends StatelessWidget {
           .toList();
       return Container(
         child: Column(children: [
-          Container(
-            height: 30,
-            child: Center(
-                child: Text(
-              axis.lecAdapter.lec.name ?? axis.lecAdapter.lec.data.id,
-              style: Theme.of(context).textTheme.subtitle1,
-            )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 30,
+                child: Center(
+                    child: Text(
+                  '${axis.lecAdapter.lec.data.id} - ${axis.lecAdapter.lec.name ?? ""}',
+                  style: Theme.of(context).textTheme.subtitle1,
+                )),
+              ),
+              IconButton(
+                  icon: Icon(Icons.info),
+                  onPressed: () async {
+                    var lec =
+                        LecAdapter(context.locale, axis.lecAdapter.lec.data);
+                    await lec.getRelations();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => LecDetailPage(
+                                  lec: lec,
+                                )));
+                  })
+            ],
           ),
           ToggleSwitch(
             minWidth: 110.0,
