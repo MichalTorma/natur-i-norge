@@ -86,9 +86,10 @@ class Detailed<K> {
 }
 
 String fixTextFromOutside(String input) {
-  input = input.replaceAll('\n\t', '<<NEW_TAB>>');
-  input = input.replaceAll('\n', '<<NEW_LINE>>');
-  input = input.replaceAll('<<NEW_LINE>>', '\n\n');
-  input = input.replaceAll('<<NEW_TAB>>', '\n\n    ');
-  return input;
+  if (input == null) {
+    return input;
+  }
+  var res = input.replaceAll('\\t', '    ');
+  res = res.replaceAll('\\n', '\n\n');
+  return res;
 }
