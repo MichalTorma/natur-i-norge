@@ -22,6 +22,7 @@ class SecondaryAxisOptions extends StatelessWidget {
     if (Provider.of<MajorTypeProvider>(context).zAxis == null) {
       return Container();
     }
+
     var body = Provider.of<MajorTypeProvider>(context).zAxis.map((axis) {
       var standarSegments = axis.standardSegments
           .map((e) => e.standardSegment.data.id.split('.')[1])
@@ -34,13 +35,23 @@ class SecondaryAxisOptions extends StatelessWidget {
         ),
       );
     }).toList();
-    return Stack(
+    return Column(
       children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'LKM',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            StandardSegmentsResetWidget(),
+          ],
+        ),
         Column(
           mainAxisSize: MainAxisSize.min,
           children: body,
         ),
-        StandardSegmentsResetWidget(),
       ],
     );
   }
