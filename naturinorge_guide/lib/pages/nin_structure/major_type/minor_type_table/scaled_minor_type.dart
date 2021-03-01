@@ -20,6 +20,7 @@ class ScaledMinorTypeWidget extends StatelessWidget {
                   minorTypes: minorTypeBlock.minorTypeScaled.minorTypes,
                 )),
         child: Material(
+          color: Colors.lightGreen[50],
           elevation: MATERIAL_ELEVATION,
           child: Column(
             children: [
