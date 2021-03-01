@@ -5,7 +5,10 @@ import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/lec/lec_detail_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/standard_segments_reset.dart';
+import 'package:naturinorge_guide/tools/get_lec_color.dart';
+import 'package:naturinorge_guide/tools/global_vars.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -23,41 +26,66 @@ class SecondaryAxisOptions extends StatelessWidget {
       var standarSegments = axis.standardSegments
           .map((e) => e.standardSegment.data.id.split('.')[1])
           .toList();
-      return Container(
-        child: Stack(
-          children: [
-            Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 30,
-                    child: Center(
-                        child: Text(
-                      '${axis.lecAdapter.lec.data.id} - ${axis.lecAdapter.lec.name ?? ""}',
-                      style: Theme.of(context).textTheme.subtitle1,
-                    )),
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.info),
-                      onPressed: () async {
-                        var lec = LecAdapter(
-                            context.locale, axis.lecAdapter.lec.data);
-                        await lec.getRelations();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => LecDetailPage(
-                                      lec: lec,
-                                    )));
-                      })
-                ],
-              ),
-              ToggleSwitch(
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: SecondaryAxisWidget(
+          standarSegments: standarSegments,
+          axis: axis,
+        ),
+      );
+    }).toList();
+    return Stack(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: body,
+        ),
+        StandardSegmentsResetWidget(),
+      ],
+    );
+  }
+}
+
+class SecondaryAxisWidget extends StatelessWidget {
+  final AxisBlock axis;
+  const SecondaryAxisWidget({
+    Key key,
+    @required this.standarSegments,
+    this.axis,
+  }) : super(key: key);
+
+  final List<String> standarSegments;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: getLecColor(axis.lecAdapter.majorTypeLec),
+      elevation: MATERIAL_ELEVATION,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListTile(
+          isThreeLine: true,
+          trailing: IconButton(
+              icon: Icon(Icons.info),
+              onPressed: () async {
+                var lec = LecAdapter(context.locale, axis.lecAdapter.lec.data);
+                await lec.getRelations();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => LecDetailPage(
+                              lec: lec,
+                            )));
+              }),
+          title: Text(
+            '${axis.lecAdapter.lec.data.id} - ${axis.lecAdapter.lec.name ?? ""}',
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          subtitle: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: ToggleSwitch(
                 minWidth: 110.0,
-                // minHeight: 100,
-                // height: 100,
-                // thumb: Material(),
                 labels: standarSegments,
                 onToggle: (value) => Provider.of<MajorTypeProvider>(context,
                         listen: false)
@@ -72,15 +100,11 @@ class SecondaryAxisOptions extends StatelessWidget {
                         .standardSegment
                         .data
                         .id),
-              )
-            ]),
-            StandardSegmentsResetWidget(),
-          ],
+              ),
+            ),
+          ),
         ),
-      );
-    }).toList();
-    return Column(
-      children: body,
+      ),
     );
   }
 }
