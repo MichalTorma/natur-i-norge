@@ -7,7 +7,14 @@ class MajorTypeGroupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () => Navigator.of(context)
+                  .popUntil((route) => !route.navigator.canPop()))
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(

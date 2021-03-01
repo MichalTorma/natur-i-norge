@@ -44,6 +44,12 @@ class _SpeciesPageState extends State<SpeciesPage> {
                 });
               }),
         ),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () => Navigator.of(context)
+                  .popUntil((route) => !route.navigator.canPop()))
+        ],
       ),
       body: ListView.builder(
           itemCount: species.length,
