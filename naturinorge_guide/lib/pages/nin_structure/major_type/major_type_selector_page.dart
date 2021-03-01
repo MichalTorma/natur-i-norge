@@ -16,6 +16,12 @@ class MajorTypeSelectorPage extends StatelessWidget {
         appBar: AppBar(
           title: AutoSizeText('${mtg.data.id} - ${mtg.name}'),
           bottom: LoadingWidget(),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.home),
+                onPressed: () => Navigator.of(context)
+                    .popUntil((route) => !route.navigator.canPop()))
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),

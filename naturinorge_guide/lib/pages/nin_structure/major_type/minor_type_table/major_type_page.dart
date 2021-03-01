@@ -24,6 +24,12 @@ class MajorTypePage extends StatelessWidget {
           // style: Theme.of(context).textTheme.headline3,
         ),
         bottom: LoadingWidget(),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () => Navigator.of(context)
+                  .popUntil((route) => !route.navigator.canPop()))
+        ],
       ),
       // appBar: PreferredSize(
       //     preferredSize: Size(MediaQuery.of(context).size.width, 60),

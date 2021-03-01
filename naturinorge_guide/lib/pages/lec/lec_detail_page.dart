@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
+import 'package:naturinorge_guide/pages/home_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_button.dart';
 
 class LecDetailPage extends StatelessWidget {
@@ -52,6 +53,12 @@ class LecDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('${lec.lec.id} - ${lec.detailedLec.name ?? ""}'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () => Navigator.of(context)
+                  .popUntil((route) => !route.navigator.canPop()))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
