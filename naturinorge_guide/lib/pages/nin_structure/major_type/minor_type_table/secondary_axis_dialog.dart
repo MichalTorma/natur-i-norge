@@ -5,6 +5,7 @@ import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/lec/lec_detail_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/standard_segments_reset.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -23,54 +24,59 @@ class SecondaryAxisOptions extends StatelessWidget {
           .map((e) => e.standardSegment.data.id.split('.')[1])
           .toList();
       return Container(
-        child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 30,
-                child: Center(
-                    child: Text(
-                  '${axis.lecAdapter.lec.data.id} - ${axis.lecAdapter.lec.name ?? ""}',
-                  style: Theme.of(context).textTheme.subtitle1,
-                )),
+        child: Stack(
+          children: [
+            Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 30,
+                    child: Center(
+                        child: Text(
+                      '${axis.lecAdapter.lec.data.id} - ${axis.lecAdapter.lec.name ?? ""}',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    )),
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.info),
+                      onPressed: () async {
+                        var lec = LecAdapter(
+                            context.locale, axis.lecAdapter.lec.data);
+                        await lec.getRelations();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => LecDetailPage(
+                                      lec: lec,
+                                    )));
+                      })
+                ],
               ),
-              IconButton(
-                  icon: Icon(Icons.info),
-                  onPressed: () async {
-                    var lec =
-                        LecAdapter(context.locale, axis.lecAdapter.lec.data);
-                    await lec.getRelations();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => LecDetailPage(
-                                  lec: lec,
-                                )));
-                  })
-            ],
-          ),
-          ToggleSwitch(
-            minWidth: 110.0,
-            // minHeight: 100,
-            // height: 100,
-            // thumb: Material(),
-            labels: standarSegments,
-            onToggle: (value) =>
-                Provider.of<MajorTypeProvider>(context, listen: false)
+              ToggleSwitch(
+                minWidth: 110.0,
+                // minHeight: 100,
+                // height: 100,
+                // thumb: Material(),
+                labels: standarSegments,
+                onToggle: (value) => Provider.of<MajorTypeProvider>(context,
+                        listen: false)
                     .setSecondaryStandardSegment(axis.standardSegments[value]),
-            initialLabelIndex: axis.standardSegments.indexWhere((e) =>
-                e.standardSegment.data.id ==
-                Provider.of<MajorTypeProvider>(context)
-                    .selectedSecondaryAxisSegments
-                    .firstWhere((element) =>
-                        element.standardSegment.data.lecId ==
-                        axis.lecAdapter.lec.data.id)
-                    .standardSegment
-                    .data
-                    .id),
-          )
-        ]),
+                initialLabelIndex: axis.standardSegments.indexWhere((e) =>
+                    e.standardSegment.data.id ==
+                    Provider.of<MajorTypeProvider>(context)
+                        .selectedSecondaryAxisSegments
+                        .firstWhere((element) =>
+                            element.standardSegment.data.lecId ==
+                            axis.lecAdapter.lec.data.id)
+                        .standardSegment
+                        .data
+                        .id),
+              )
+            ]),
+            StandardSegmentsResetWidget(),
+          ],
+        ),
       );
     }).toList();
     return Column(

@@ -9,6 +9,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_prov
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/secondary_axis_dialog.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/table_options.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/standard_segments_reset.dart';
 import 'package:naturinorge_guide/tools/global_vars.dart';
 import 'package:provider/provider.dart';
 // import 'package:readmore/readmore.dart';
@@ -89,8 +90,10 @@ class MajorTypeDetailsLandscape extends StatelessWidget {
                       ),
                     ),
                     Divider(),
+
                     TableOptions(),
                     Divider(),
+
                     SecondaryAxisOptions(),
                     Divider(),
                     SelectedSpeciesList(),
