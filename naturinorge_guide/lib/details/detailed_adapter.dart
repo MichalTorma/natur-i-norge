@@ -56,7 +56,7 @@ class Detailed<K> {
     var nameDetail = details.firstWhere((element) => element.key == '<name>',
         orElse: () => null);
     if (nameDetail != null) {
-      name = nameDetail.value;
+      name = fixTextFromOutside(nameDetail.value);
       nameHeader = tr('<name>');
     }
 
@@ -67,7 +67,7 @@ class Detailed<K> {
       // _printDetails(details);
       // print('Unable to find <description>');
     } else {
-      description = descriptionDetail.value;
+      description = fixTextFromOutside(descriptionDetail.value);
     }
     descriptionHeader = tr('<description>');
 
@@ -81,6 +81,14 @@ class Detailed<K> {
           } catch (e) {}
           return header;
         },
-        value: (e) => e.value);
+        value: (e) => fixTextFromOutside(e.value));
   }
+}
+
+String fixTextFromOutside(String input) {
+  input = input.replaceAll('\n\t', '<<NEW_TAB>>');
+  input = input.replaceAll('\n', '<<NEW_LINE>>');
+  input = input.replaceAll('<<NEW_LINE>>', '\n\n');
+  input = input.replaceAll('<<NEW_TAB>>', '\n\n    ');
+  return input;
 }
