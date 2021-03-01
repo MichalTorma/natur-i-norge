@@ -22,6 +22,22 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text(LocaleKeys.app_name).tr(),
           bottom: LoadingWidget(),
+          actions: [
+            PopupMenuButton<int>(
+              itemBuilder: (context) => [
+                PopupMenuItem<int>(value: 0, child: Text('Om os')),
+              ],
+              onSelected: (idx) => showAboutDialog(
+                  context: context,
+                  applicationIcon: Container(
+                    height: 100,
+                    width: 100,
+                    child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Image.asset('assets/icon.png')),
+                  )),
+            )
+          ],
         ),
         body: Stack(
           children: [

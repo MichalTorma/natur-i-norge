@@ -22,6 +22,7 @@ class MajorTypeProvider extends ChangeNotifier {
   List<AxisBlock> _allAxis = List<AxisBlock>.empty(growable: true);
   // List<AxisBlock> _secondaryAxis = List<AxisBlock>.empty(growable: true);
   List<StandardSegmentAdapter> _selectedZAxisSegments;
+  bool _allowReset = false;
 
   AxisBlock _xAxis;
   AxisBlock _yAxis;
@@ -46,6 +47,7 @@ class MajorTypeProvider extends ChangeNotifier {
     _gadHelper = null;
     _gadArray = null;
     _selectedZAxisSegments = null;
+    _allowReset = false;
   }
 
   Future load(Detailed<NinMajorTypeData> majorType) async {
@@ -65,6 +67,7 @@ class MajorTypeProvider extends ChangeNotifier {
     Timeline.finishSync();
     Timeline.startSync('Initialize axis');
     _initializeAxis();
+    _initializeSelectedAxisSegments();
     Timeline.finishSync();
     if (_xAxis != null) {
       Timeline.startSync('Initialize minor types');
@@ -123,28 +126,21 @@ class MajorTypeProvider extends ChangeNotifier {
         _zAxis = visibleAxis.sublist(2);
       }
     }
-    // _zAxis = List<AxisBlock>.empty(growable: true);
-    // if (mLec.length > 0) {
-    //   _xAxis = mLec.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 0);
-    //   if (mLec.length > 1) {
-    //     _yAxis = mLec.firstWhere((e) => e.lecAdapter.majorTypeLec.axis == 1);
-    //   }
-    //   if (mLec.length > 2) {
-    //     _zAxis.addAll(mLec.where((e) => e.lecAdapter.majorTypeLec.axis == 2));
-    //   }
-    // }
+  }
 
-    // _zAxis =
-    //     _allAxis.where((e) => e.lecAdapter.majorTypeLec.axis == 2).toList();
-    // _secondaryAxis = _allAxis
-    //     .where((e) => e.lecAdapter.majorTypeLec.lecTypeId == 'iLEC')
-    //     .toList();
+  _initializeSelectedAxisSegments() {
     if (_zAxis != null) {
       _selectedZAxisSegments = _zAxis
           .map((e) => e.standardSegments.firstWhere(
               (element) => element.standardSegment.data.selected == 1))
           .toList();
     }
+    _allowReset = false;
+  }
+
+  resetSelectedAxisSegments() {
+    _initializeSelectedAxisSegments();
+    notifyListeners();
   }
 
   Future _populateAllAxis() async {
@@ -373,6 +369,7 @@ class MajorTypeProvider extends ChangeNotifier {
         element.standardSegment.data.lecId ==
         standardSegment.standardSegment.data.lecId);
     _selectedZAxisSegments[ssIndex] = standardSegment;
+    _allowReset = true;
     _initializeMinorTypeSlice();
     _getGadArray();
     notifyListeners();
@@ -424,4 +421,5 @@ class MajorTypeProvider extends ChangeNotifier {
   List<List<num>> get gadArray => _gadArray;
   int get showGad => _showGad;
   Detailed<NinMajorTypeData> get majorType => _majorType;
+  bool get allowReset => _allowReset;
 }
