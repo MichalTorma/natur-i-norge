@@ -140,6 +140,8 @@ class MajorTypeProvider extends ChangeNotifier {
 
   resetSelectedAxisSegments() {
     _initializeSelectedAxisSegments();
+    _initializeMinorTypeSlice();
+    _getGadArray();
     notifyListeners();
   }
 
