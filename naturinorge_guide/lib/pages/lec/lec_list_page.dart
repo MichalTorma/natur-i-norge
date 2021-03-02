@@ -14,7 +14,7 @@ class LecListPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(),
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: GridView.extent(
             primary: false,
             shrinkWrap: true,

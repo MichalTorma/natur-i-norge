@@ -25,7 +25,7 @@ class SecondaryAxisOptions extends StatelessWidget {
 
     var body = Provider.of<MajorTypeProvider>(context).zAxis.map((axis) {
       var standarSegments = axis.standardSegments
-          .map((e) => e.standardSegment.data.id.split('.')[1])
+          .map((e) => (e.standardSegment.data.order + 1).toString())
           .toList();
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -96,7 +96,7 @@ class SecondaryAxisWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: ToggleSwitch(
-                minWidth: 110.0,
+                minWidth: 60.0,
                 labels: standarSegments,
                 onToggle: (value) => Provider.of<MajorTypeProvider>(context,
                         listen: false)
