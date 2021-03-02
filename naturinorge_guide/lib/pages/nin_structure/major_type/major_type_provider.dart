@@ -10,6 +10,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/spe
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/minor_type_block.dart';
 import 'package:naturinorge_guide/tools/array_tools.dart';
+import 'package:trotter/trotter.dart';
 
 class MajorTypeProvider extends ChangeNotifier {
   final Locale locale;
@@ -222,9 +223,10 @@ class MajorTypeProvider extends ChangeNotifier {
           zSegments = mt.standardSegments
               .where((element) => !xySegments.contains(element));
           zOrdersList = _zAxis.map((zAxis) {
-            var segment = zSegments.firstWhere((seg) =>
+            var segments = zSegments.where((seg) =>
                 seg.standardSegment.data.lecId == zAxis.lecAdapter.lec.data.id);
-            return segment.standardSegment.data.order;
+
+            return segments.map((e) => e.standardSegment.data.order).toList();
           }).toList();
         }
         for (var xOrder in xOrders) {
@@ -232,19 +234,22 @@ class MajorTypeProvider extends ChangeNotifier {
             for (var yOrder in yOrders) {
               var coors;
               if (zOrdersList != null) {
-                coors = List<int>.from(zOrdersList);
+                coors = List<dynamic>.from(zOrdersList);
               } else {
-                coors = List<int>.empty(growable: true);
+                coors = List<dynamic>.empty(growable: true);
               }
-              coors.add(xOrder);
-              coors.add(yOrder);
-
-              _minorTypesArray =
-                  addToArray(_minorTypesArray, coors, mts.minorTypeScaledId);
+              coors.add([xOrder]);
+              coors.add([yOrder]);
+              // var coorsCombos = Combinations(3, coors);
+              var coorsList = expandCoordinates(coors);
+              for (var c in coorsList) {
+                _minorTypesArray =
+                    addToArray(_minorTypesArray, c, mts.minorTypeScaledId);
+              }
             }
           } else {
             _minorTypesArray =
-                addToArray(_minorTypesArray, [xOrder], mts.minorTypeScaledId);
+                addToArray(_minorTypesArray, xOrder, mts.minorTypeScaledId);
           }
         }
       });
