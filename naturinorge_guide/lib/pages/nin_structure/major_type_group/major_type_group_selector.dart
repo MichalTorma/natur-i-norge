@@ -16,12 +16,15 @@ class MajorTypeGroupSelector extends StatelessWidget {
       maxCrossAxisExtent: 140,
       childAspectRatio: 1,
       clipBehavior: Clip.none,
-      crossAxisSpacing: 12,
-      mainAxisSpacing: 12,
+      // crossAxisSpacing: 12,
+      // mainAxisSpacing: 12,
       children: Provider.of<NinStructureProvider>(context, listen: false)
           .majorTypeGroups
-          .map((e) => MajorTypeGroupButton(
-                ninMajorTypeGroup: e,
+          .map((e) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MajorTypeGroupButton(
+                  ninMajorTypeGroup: e,
+                ),
               ))
           .toList(),
     );
