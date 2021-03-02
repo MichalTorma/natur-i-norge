@@ -64,6 +64,8 @@ class _SpeciesPageState extends State<SpeciesPage> {
                       .load(mts[0]);
                   await Provider.of<MajorTypeProvider>(context, listen: false)
                       .addSpecies(species[index]);
+                  Provider.of<MajorTypeProvider>(context, listen: false)
+                      .setShowGad(1);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
