@@ -10,7 +10,6 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/spe
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/minor_type_block.dart';
 import 'package:naturinorge_guide/tools/array_tools.dart';
-import 'package:trotter/trotter.dart';
 
 class MajorTypeProvider extends ChangeNotifier {
   final Locale locale;
