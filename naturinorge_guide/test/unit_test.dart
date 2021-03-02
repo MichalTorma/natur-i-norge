@@ -8,6 +8,39 @@ main() {
     addToArray(tstArray, coors, 999);
     print(tstArray);
   });
+
+  test('Test expand Coordinates', () {
+    var coors = [
+      [0],
+      [1, 2],
+      [3]
+    ];
+    var res = expandCoordinates(coors);
+    print(res);
+  });
+}
+
+dynamic expandCoordinates(dynamic coors) {
+  if (coors.length == 1) {
+    return coors.first;
+  } else {
+    var firsts = coors.first;
+    coors.removeAt(0);
+    var subs = expandCoordinates(coors);
+    var res = List.empty(growable: true);
+    for (var first in firsts) {
+      for (var sub in subs) {
+        var subres = List.from([first]);
+        if (sub is int) {
+          subres.add(sub);
+        } else {
+          subres.addAll(sub);
+        }
+        res.add(subres);
+      }
+    }
+    return res;
+  }
 }
 
 dynamic createArray(List<int> dims) {
