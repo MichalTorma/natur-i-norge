@@ -10,7 +10,7 @@ dynamic createArray(List<int> dims) {
   }
 }
 
-dynamic addToArray(dynamic array, List<int> coors, dynamic value) {
+dynamic addToArray(dynamic array, List<dynamic> coors, dynamic value) {
   if (coors.length > 0) {
     var index = coors.first;
     var newArray = array[index];
@@ -20,6 +20,49 @@ dynamic addToArray(dynamic array, List<int> coors, dynamic value) {
     return array;
   } else {
     return value;
+  }
+}
+
+addToArrayMultiple(dynamic array, List<dynamic> coors, dynamic value) {
+  var newValue = value;
+  var newCoors = coors;
+  if (newCoors.length > 0) {
+    print(newCoors);
+    var indexList = newCoors.first;
+    newCoors.removeAt(0);
+    var newArray = array;
+
+    for (var index in indexList) {
+      print('in loop: $newCoors');
+      newArray[index] = addToArrayMultiple(newArray[index], newCoors, newValue);
+    }
+    return newArray;
+  } else {
+    print(newValue);
+    return newValue;
+  }
+}
+
+dynamic expandCoordinates(dynamic coors) {
+  if (coors.length == 1) {
+    return coors.first;
+  } else {
+    var firsts = coors.first;
+    coors.removeAt(0);
+    var subs = expandCoordinates(coors);
+    var res = List.empty(growable: true);
+    for (var first in firsts) {
+      for (var sub in subs) {
+        var subres = List.from([first]);
+        if (sub is int) {
+          subres.add(sub);
+        } else {
+          subres.addAll(sub);
+        }
+        res.add(subres);
+      }
+    }
+    return res;
   }
 }
 
