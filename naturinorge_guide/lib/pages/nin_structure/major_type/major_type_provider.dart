@@ -336,16 +336,16 @@ class MajorTypeProvider extends ChangeNotifier {
               _selectedZAxisSegments
                   .map((ss) => ss.standardSegment.data.id)
                   .toSet()
-                  .intersection(mt.standardSegments
+                  .difference(mt.standardSegments
                       .map((e) => e.standardSegment.data.id)
                       .toSet())
-                  .length >
+                  .length ==
               0)
           .toList();
     } else {
       mts = mta.minorTypes;
     }
-    // Filter mnt that are shown in this selected sefments combination
+    // Filter mnt that are shown in this selected segments combination
 
     var widthSSList = mts.expand((mnt) => mnt.standardSegments).where(
         (ss) => ss.standardSegment.data.lecId == _xAxis.lecAdapter.lec.data.id);
