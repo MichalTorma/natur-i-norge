@@ -10,6 +10,9 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/gad_overlay/spe
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/minor_type_block.dart';
 import 'package:naturinorge_guide/tools/array_tools.dart';
+import 'package:uuid/uuid.dart';
+
+var uuid = Uuid();
 
 class MajorTypeProvider extends ChangeNotifier {
   final Locale locale;
@@ -301,7 +304,7 @@ class MajorTypeProvider extends ChangeNotifier {
     }
     if (minorTypeSegmentId == null) {
       var size = _getEmptyBlockSize(x, y);
-      return MinorTypeBlock(size[0], size[1], null);
+      return MinorTypeBlock(size[0], size[1], null, uuid.v4());
     } else if (_usedMinorTypeIds.contains(minorTypeSegmentId)) {
       return null;
     } else {
@@ -311,7 +314,7 @@ class MajorTypeProvider extends ChangeNotifier {
 
       var size = _getMinorTypeBlockSize(mnt);
       // print("$minorTypeSegmentId $size");
-      return MinorTypeBlock(size[0], size[1], mnt);
+      return MinorTypeBlock(size[0], size[1], mnt, uuid.v4());
     }
   }
 
@@ -342,6 +345,8 @@ class MajorTypeProvider extends ChangeNotifier {
     } else {
       mts = mta.minorTypes;
     }
+    // Filter mnt that are shown in this selected sefments combination
+
     var widthSSList = mts.expand((mnt) => mnt.standardSegments).where(
         (ss) => ss.standardSegment.data.lecId == _xAxis.lecAdapter.lec.data.id);
     var widthESList = widthSSList

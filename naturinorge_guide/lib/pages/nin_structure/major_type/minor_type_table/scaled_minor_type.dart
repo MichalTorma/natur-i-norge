@@ -13,15 +13,15 @@ class ScaledMinorTypeWidget extends StatelessWidget {
     if (minorTypeBlock.minorTypeScaled == null) {
       return Container();
     } else
-      return GestureDetector(
-        onTap: () => showDialog(
-            context: context,
-            builder: (context) => MinorTypeDescription(
-                  minorTypes: minorTypeBlock.minorTypeScaled.minorTypes,
-                )),
-        child: Material(
-          color: Colors.lightGreen[50],
-          elevation: MATERIAL_ELEVATION,
+      return Material(
+        color: Colors.lightGreen[50],
+        elevation: MATERIAL_ELEVATION,
+        child: GestureDetector(
+          onTap: () => showDialog(
+              context: context,
+              builder: (context) => MinorTypeDescription(
+                    minorTypes: minorTypeBlock.minorTypeScaled.minorTypes,
+                  )),
           child: Column(
             children: [
               Expanded(
