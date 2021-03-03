@@ -248,7 +248,7 @@ class MajorTypeProvider extends ChangeNotifier {
             }
           } else {
             _minorTypesArray =
-                addToArray(_minorTypesArray, xOrder, mts.minorTypeScaledId);
+                addToArray(_minorTypesArray, [xOrder], mts.minorTypeScaledId);
           }
         }
       });
