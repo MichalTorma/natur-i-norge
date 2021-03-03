@@ -19,7 +19,10 @@ class TableBody extends StatelessWidget {
     }
     var minorTypesBlocks = Provider.of<MajorTypeProvider>(context)
         .minorTypeScaledBlocks
-        .map((e) => ScaledMinorTypeWidget(minorTypeBlock: e))
+        .map((e) => ScaledMinorTypeWidget(
+              // key: ValueKey(uuid.v4()),
+              minorTypeBlock: e,
+            ))
         .toList();
     var staggeredTiles = Provider.of<MajorTypeProvider>(context)
         .minorTypeScaledBlocks
@@ -31,6 +34,7 @@ class TableBody extends StatelessWidget {
           width: xSize,
           height: ySize,
           child: StaggeredGridView.count(
+            key: ValueKey(uuid.v4()),
             addAutomaticKeepAlives: true,
             padding: EdgeInsets.all(4.0),
             crossAxisSpacing: 2.0,
