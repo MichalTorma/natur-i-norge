@@ -116,6 +116,8 @@ class MinorTypeScaledAdapter {
   final String minorTypeScaledId;
   final Locale locale;
   List<MinorTypeAdapter> minorTypes;
+  String name;
+  List<NinDetailData> details;
 
   MinorTypeScaledAdapter(
       this.locale, this.mappingScale, this.minorTypeScaledId);
@@ -133,6 +135,14 @@ class MinorTypeScaledAdapter {
       res.add(item);
     }
     minorTypes = res;
+    // Get details
+    var allDetails =
+        await db.getDetailsForMinorTypeScaled(minorTypeScaledId, locale);
+    var nameDetail = allDetails.where((element) => element.key == '<name>');
+    name = nameDetail == null ? null : nameDetail.map((e) => e.value).join('/');
+    print(name);
+    allDetails.removeWhere((element) => element.key == '<name>');
+    details = allDetails;
   }
 }
 

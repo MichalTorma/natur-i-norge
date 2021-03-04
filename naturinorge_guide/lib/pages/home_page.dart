@@ -9,9 +9,8 @@ import 'package:naturinorge_guide/pages/nin_structure/other/loading.dart';
 import 'package:naturinorge_guide/pages/nin_structure/other/loading_overlay.dart';
 import 'package:naturinorge_guide/pages/species/species_page.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-const _mail_url = 'mailto:miso.torma.dev@gmail.com';
+// const _mail_url = 'mailto:miso.torma.dev@gmail.com';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -23,7 +22,7 @@ class HomePage extends StatelessWidget {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(LocaleKeys.app_name).tr(),
+          title: Text('Natur i Norge guide'),
           bottom: LoadingWidget(),
           actions: [
             PopupMenuButton<int>(
@@ -32,6 +31,7 @@ class HomePage extends StatelessWidget {
               ],
               onSelected: (idx) => showAboutDialog(
                   context: context,
+                  applicationName: 'Natur i Norge guide',
                   applicationIcon: Container(
                     height: 100,
                     width: 100,
@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
             GridView(
               padding: EdgeInsets.all(24),
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 300,
+                  maxCrossAxisExtent: 100,
                   crossAxisSpacing: 24,
                   mainAxisSpacing: 24),
               children: [
