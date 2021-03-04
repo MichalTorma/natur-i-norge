@@ -11,7 +11,7 @@ class StandardSegmentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var name = standardSegmentAdapter.standardSegment.name ??
-        standardSegmentAdapter.standardSegment.data.id.split('.')[1];
+        (standardSegmentAdapter.standardSegment.data.order + 1).toString();
 
     return Padding(
       padding: const EdgeInsets.all(2.0),
