@@ -21,12 +21,13 @@ class LecListPage extends StatelessWidget {
             maxCrossAxisExtent: 200,
             childAspectRatio: 2,
             clipBehavior: Clip.none,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
             children: Provider.of<LecProvider>(context)
                 .lecAdapters
-                .map((e) => LecListTile(
-                      lec: e,
+                .map((e) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: LecListTile(
+                        lec: e,
+                      ),
                     ))
                 .toList(),
           ),
