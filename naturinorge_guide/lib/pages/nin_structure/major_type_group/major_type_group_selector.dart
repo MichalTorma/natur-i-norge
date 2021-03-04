@@ -13,7 +13,7 @@ class MajorTypeGroupSelector extends StatelessWidget {
     return GridView.extent(
       // primary: false,
       shrinkWrap: true,
-      maxCrossAxisExtent: 140,
+      maxCrossAxisExtent: 170,
       childAspectRatio: 1,
       clipBehavior: Clip.none,
       // crossAxisSpacing: 12,

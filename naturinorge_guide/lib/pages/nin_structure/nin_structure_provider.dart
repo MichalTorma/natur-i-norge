@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/main.dart';
-import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_description_landscape.dart';
-import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_selector_page.dart';
-import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/major_type_page.dart';
-import 'package:provider/provider.dart';
 
 enum ButtonState { AVAILABLE, SELECTED, UNAVAILABLE }
 

@@ -136,26 +136,13 @@ class NiNDatabase extends _$NiNDatabase {
         .get();
   }
 
-  // Future<List<NinElementarySegmentData>> getElementarySegmentByStandardSegment(
-  //     NinStandardSegmentData standardSegment) async {
-  //   var standardSegmentElements = await (select(ninStandardSegmentElement)
-  //         ..where((tbl) => tbl.standardSegmentId.equals(standardSegment.id)))
-  //       .get();
-  //   var res = await(select(ninElementarySegment)).get();
-  //   // var res = List<NinElementarySegmentData>.empty(growable: true);
-  //   // for (var es in standardSegmentElements) {
-  //   //   res.add(await this.getElementarySegmentById(es.elementarySegmentId));
-  //   // }
-  //   return res;
-  // }
-
   Future<List<NinElementarySegmentGroupData>>
       getElementarySegmentGroupByStandardSegmentAndMajorType(
-          String standardSegment_id, String majorType_id) {
+          String standardSegmentId, String majorTypeId) {
     return (select(ninElementarySegmentGroup)
           ..where((tbl) =>
-              tbl.standardSegmentId.equals(standardSegment_id) &
-              tbl.majorTypeId.equals(majorType_id)))
+              tbl.standardSegmentId.equals(standardSegmentId) &
+              tbl.majorTypeId.equals(majorTypeId)))
         .get();
   }
 
@@ -299,9 +286,9 @@ class NiNDatabase extends _$NiNDatabase {
     var mtLecs = await (select(ninMajorTypeLEC)
           ..where((tbl) => tbl.lecId.equals(lecId)))
         .get();
-    var mt_ids = mtLecs.map((e) => e.majorTypeId);
+    var mtIds = mtLecs.map((e) => e.majorTypeId);
     var mts =
-        await (select(ninMajorType)..where((tbl) => tbl.id.isIn(mt_ids))).get();
+        await (select(ninMajorType)..where((tbl) => tbl.id.isIn(mtIds))).get();
     return Detailed<NinMajorTypeData>().fromList(mts, locale);
   }
 
@@ -315,6 +302,22 @@ class NiNDatabase extends _$NiNDatabase {
     var q = select(ninMajorType)..where((tbl) => tbl.id.equals('T-4'));
     var mts = await q.get();
     var res = await Detailed<NinMajorTypeData>().fromList(mts, locale);
+    return res;
+  }
+
+  Future<List<NinDetailData>> getDetailsForMinorTypeScaled(
+      String majorTypeScaledId, Locale locale) async {
+    var minorTypesScaled = await (select(ninMinorTypeScaled)
+          ..where((tbl) => tbl.id.equals(majorTypeScaledId))
+          ..map((e) => e.detailId))
+        .get();
+    var detailIds = minorTypesScaled.map((e) => e.detailId).toSet();
+    // print(minorTypesScaled);
+    var res = (select(ninDetail)
+          ..where((tbl) =>
+              tbl.id.isIn(detailIds) &
+              tbl.languageId.equals(locale.languageCode)))
+        .get();
     return res;
   }
 

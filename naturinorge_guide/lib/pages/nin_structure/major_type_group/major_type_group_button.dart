@@ -15,31 +15,12 @@ class MajorTypeGroupButton extends StatefulWidget {
 }
 
 class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
-  // var _shape = NeumorphicShape.convex;
-  Color _bgColor;
-  _initialize(BuildContext context) {
-    // var selected =
-    //     Provider.of<NinStructureProvider>(context).selectedMajorTypeGroup;
-
-    // if (selected != null &&
-    //     selected.data.id == widget.ninMajorTypeGroup.data.id) {
-    //   // _shape = NeumorphicShape.concave;
-    //   _bgColor = Theme.of(context).accentColor;
-    // } else {
-    //   // _shape = NeumorphicShape.convex;
-    //   _bgColor = Theme.of(context).backgroundColor;
-    // }
-  }
+  _initialize(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {
     _initialize(context);
     return ElevatedButton(
-      // style: NeumorphicStyle(
-      //   color: _bgColor,
-      //   shape: _shape,
-      //   boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
-      // ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.max,
@@ -49,18 +30,15 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
                 child: Text(
               widget.ninMajorTypeGroup.data.id,
               textScaleFactor: 2,
-              // style: Theme.of(context).textTheme.headline6,
             )),
           ),
           Flexible(
               fit: FlexFit.tight,
               child: AutoSizeText(
                 widget.ninMajorTypeGroup.name,
-                // maxLines: 2,
-                // softWrap: true,
+                maxLines: 3,
                 wrapWords: false,
                 minFontSize: 10,
-                // style: Theme.of(context).textTheme.caption,
                 textAlign: TextAlign.center,
               ))
         ],
