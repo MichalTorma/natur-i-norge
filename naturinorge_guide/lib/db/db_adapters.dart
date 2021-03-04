@@ -139,7 +139,9 @@ class MinorTypeScaledAdapter {
     var allDetails =
         await db.getDetailsForMinorTypeScaled(minorTypeScaledId, locale);
     var nameDetail = allDetails.where((element) => element.key == '<name>');
-    name = nameDetail == null ? null : nameDetail.map((e) => e.value).join('/');
+    name = nameDetail.length == 0
+        ? null
+        : nameDetail.map((e) => e.value).join('/');
     print(name);
     allDetails.removeWhere((element) => element.key == '<name>');
     details = allDetails;
