@@ -14,12 +14,15 @@ class MajorTypeSelector extends StatelessWidget {
       maxCrossAxisExtent: 200,
       childAspectRatio: 2,
       clipBehavior: Clip.none,
-      crossAxisSpacing: 12,
-      mainAxisSpacing: 12,
+      // crossAxisSpacing: 12,
+      // mainAxisSpacing: 12,
       children: Provider.of<NinStructureProvider>(context)
           .majorTypes
-          .map((e) => MajorTypeButton(
-                ninMajorType: e,
+          .map((e) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MajorTypeButton(
+                  ninMajorType: e,
+                ),
               ))
           .toList(),
     );
