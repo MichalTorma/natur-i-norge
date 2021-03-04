@@ -34,7 +34,7 @@ class ScaledMinorTypeWidget extends StatelessWidget {
                   maxLines: 1,
                 ),
               );
-            } else if (constrains.maxHeight < 60 || constrains.maxWidth < 50) {
+            } else if (constrains.maxHeight < 62 || constrains.maxWidth < 50) {
               return Center(
                 child: AutoSizeText(
                   minorTypeBlock.minorTypeScaled.minorTypeScaledId
