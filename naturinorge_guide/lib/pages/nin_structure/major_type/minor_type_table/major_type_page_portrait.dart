@@ -8,22 +8,26 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_prov
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/secondary_axis_dialog.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/table_options.dart';
-import 'package:naturinorge_guide/pages/nin_structure/major_type/standard_segments_reset.dart';
+import 'package:naturinorge_guide/pages/nin_structure/other/loading.dart';
 import 'package:provider/provider.dart';
 
-class MajorTypeDetails extends StatelessWidget {
-  const MajorTypeDetails({Key key, @required this.ninMajorType})
+class MajorTypePagePortrait extends StatelessWidget {
+  final Detailed<NinMajorTypeData> majorType;
+  const MajorTypePagePortrait({Key key, @required this.majorType})
       : super(key: key);
-  final Detailed<NinMajorTypeData> ninMajorType;
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<NinStructureProvider>(context).selectedMajorType;
     if (Provider.of<MajorTypeProvider>(context).isLoading) {
       return Container();
     }
     List<Widget> body = [
-      Text(ninMajorType.description),
+      AutoSizeText(
+        majorType.name,
+        style: Theme.of(context).textTheme.headline4,
+        textAlign: TextAlign.center,
+      ),
+      Text(majorType.description),
     ];
     if (Provider.of<MajorTypeProvider>(context).xAxis != null) {
       body.addAll([
@@ -49,8 +53,26 @@ class MajorTypeDetails extends StatelessWidget {
         ),
       ]);
     }
-    return Container(
-      child: ListView(children: body),
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            title: AutoSizeText(
+              '${majorType.data.id} ${majorType.name}',
+              // style: Theme.of(context).textTheme.headline3,
+            ),
+            bottom: LoadingWidget(),
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.home),
+                  onPressed: () => Navigator.of(context)
+                      .popUntil((route) => !route.navigator.canPop()))
+            ],
+          ),
+          SliverList(delegate: SliverChildListDelegate.fixed(body))
+        ],
+      ),
     );
   }
 }

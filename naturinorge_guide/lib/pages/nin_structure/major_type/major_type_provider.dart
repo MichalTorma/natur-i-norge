@@ -86,10 +86,6 @@ class MajorTypeProvider extends ChangeNotifier {
         yAxis: _yAxis,
         zAxis: _zAxis,
       );
-    } else {
-      //TODO remove once DB is complete
-
-      // _secondaryAxis = null;
     }
     _isLoading = false;
     notifyListeners();
@@ -358,7 +354,7 @@ class MajorTypeProvider extends ChangeNotifier {
     var widthSSList = mts.expand((mnt) => mnt.standardSegments).where(
         (ss) => ss.standardSegment.data.lecId == _xAxis.lecAdapter.lec.data.id);
     var widthESList = widthSSList
-        .expand((ss_f) => ss_f.elementarySegmentGroups)
+        .expand((ssF) => ssF.elementarySegmentGroups)
         .toSet()
         .toList();
     var width = widthESList.length;
@@ -368,7 +364,7 @@ class MajorTypeProvider extends ChangeNotifier {
           .expand((mnt) => mnt.standardSegments)
           .where((ss) =>
               ss.standardSegment.data.lecId == _yAxis.lecAdapter.lec.data.id)
-          .expand((ss_f) => ss_f.elementarySegmentGroups)
+          .expand((ssF) => ssF.elementarySegmentGroups)
           .toSet()
           .toList();
       height = heightSSList.length;
@@ -377,9 +373,12 @@ class MajorTypeProvider extends ChangeNotifier {
   }
 
   setMappingScale(int mappingScaleId) async {
+    _isLoading = true;
+    notifyListeners();
     _selectedMappingScale = _allMappingScales[mappingScaleId];
     await _initializeMinorTypes();
     _initializeMinorTypesArray();
+    _isLoading = false;
     notifyListeners();
   }
 

@@ -1,8 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
-import 'package:naturinorge_guide/db/nin_db.dart';
-import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/lec/lec_detail_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
@@ -10,7 +8,6 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/standard_segmen
 import 'package:naturinorge_guide/tools/get_lec_color.dart';
 import 'package:naturinorge_guide/tools/global_vars.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class SecondaryAxisOptions extends StatelessWidget {
@@ -115,46 +112,6 @@ class SecondaryAxisWidget extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class SecondaryToggleText extends StatelessWidget {
-  final FontWeight fontWeight;
-  final StandardSegmentAdapter standardSegmentAdapter;
-  const SecondaryToggleText({
-    Key key,
-    @required this.fontWeight,
-    @required this.standardSegmentAdapter,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var name = standardSegmentAdapter.standardSegment.name;
-    // print(standardSegmentAdapter.standardSegment.data);
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Text(
-            standardSegmentAdapter.standardSegment.data.id.split('-').last,
-            style: TextStyle(fontWeight: fontWeight),
-          ),
-          // if (name != null) Divider(),
-          // if (name != null)
-          //   Expanded(
-          //       child: Padding(
-          //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          //     child: AutoSizeText(
-          //       name,
-          //       textAlign: TextAlign.center,
-          //       style: TextStyle(fontWeight: fontWeight),
-          //       maxLines: 3,
-          //       overflow: TextOverflow.ellipsis,
-          //     ),
-          //   ))
-        ],
       ),
     );
   }

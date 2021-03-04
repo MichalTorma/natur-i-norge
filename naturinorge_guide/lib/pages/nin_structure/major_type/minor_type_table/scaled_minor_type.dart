@@ -13,41 +13,70 @@ class ScaledMinorTypeWidget extends StatelessWidget {
     if (minorTypeBlock.minorTypeScaled == null) {
       return Container();
     } else
-      return Material(
-        color: Colors.lightGreen[50],
-        elevation: MATERIAL_ELEVATION,
-        child: GestureDetector(
-          onTap: () => showDialog(
-              context: context,
-              builder: (context) => MinorTypeDescription(
-                    minorTypes: minorTypeBlock.minorTypeScaled.minorTypes,
-                  )),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: AutoSizeText(
-                      minorTypeBlock.minorTypeScaled.minorTypeScaledId),
+      return GestureDetector(
+        onTap: () => showDialog(
+            context: context,
+            builder: (context) => MinorTypeDescription(
+                  minorTypeBlock: minorTypeBlock,
+                )),
+        child: Material(
+          color: Colors.lightGreen[50],
+          elevation: MATERIAL_ELEVATION,
+          child: LayoutBuilder(builder: (context, constrains) {
+            // print(
+            //     'width:${constrains.maxWidth} height:${constrains.maxHeight}');
+            if (constrains.maxHeight < 20 || constrains.maxWidth < 40) {
+              return Center(
+                child: AutoSizeText(
+                  minorTypeBlock.minorTypeScaled.minorTypeScaledId
+                      .split('-')
+                      .last,
+                  maxLines: 1,
                 ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Center(
-                  child: AutoSizeText(
-                    minorTypeBlock.minorTypeScaled.minorTypes
-                        .map((e) => e.minorType.name)
-                        .toList()
-                        .join('/'),
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    wrapWords: false,
-                  ),
+              );
+            } else if (constrains.maxHeight < 60 || constrains.maxWidth < 50) {
+              return Center(
+                child: AutoSizeText(
+                  minorTypeBlock.minorTypeScaled.minorTypeScaledId
+                      .split('-')
+                      .sublist(1)
+                      .join('-'),
+                  maxLines: 1,
                 ),
-              )
-            ],
-          ),
+              );
+            } else {
+              var name = minorTypeBlock.minorTypeScaled.name ??
+                  minorTypeBlock.minorTypeScaled.minorTypes
+                      .map((e) => e.minorType.name)
+                      .toList()
+                      .join('/');
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      // height: 20,
+                      child: Center(
+                        child: AutoSizeText(
+                          minorTypeBlock.minorTypeScaled.minorTypeScaledId,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: AutoSizeText(
+                        name,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        wrapWords: false,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+          }),
         ),
       );
   }

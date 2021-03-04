@@ -18,6 +18,5 @@ class LoadingWidget extends StatelessWidget with PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(4.0);
 }
