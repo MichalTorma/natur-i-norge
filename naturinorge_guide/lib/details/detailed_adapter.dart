@@ -1,8 +1,6 @@
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
-
-import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/main.dart';
 
 class Detailed<K> {
@@ -29,27 +27,16 @@ class Detailed<K> {
       List<dynamic> dataList, Locale locale) async {
     var res = List<Detailed<K>>.empty(growable: true);
     for (var e in dataList) {
-      // print('Get details for detailId: ${e.detailId}');
-
       var detailed = await Detailed<K>().initialize(e, locale);
       res.add(detailed);
     }
-    // var res = await Future.forEach(
-    //     dataList, (e) async => await Detailed().initialize(e, locale, db));
-    return res;
-  }
 
-  _printDetails(List<NinDetailData> details) {
-    // for (var detail in details) {
-    //   print(
-    //       '${detail.id} - ${detail.key} - ${detail.value} - ${detail.languageId}');
-    // }
+    return res;
   }
 
   Future _getRelations() async {
     var details = await db.getDetails(detailId, locale);
     if (details == null || details.length == 0) {
-      // print('unable to find details');
       return;
     }
 
@@ -64,8 +51,6 @@ class Detailed<K> {
         (element) => element.key == '<description>',
         orElse: () => null);
     if (descriptionDetail == null) {
-      // _printDetails(details);
-      // print('Unable to find <description>');
     } else {
       description = fixTextFromOutside(descriptionDetail.value);
     }

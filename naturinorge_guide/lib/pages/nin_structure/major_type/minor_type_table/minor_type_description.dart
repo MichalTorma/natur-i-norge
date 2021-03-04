@@ -1,13 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:naturinorge_guide/db/db_adapters.dart';
-import 'package:naturinorge_guide/db/nin_db.dart';
-import 'package:naturinorge_guide/details/detailed_adapter.dart';
+import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/minor_type_block.dart';
 
 class MinorTypeDescription extends StatefulWidget {
-  final List<MinorTypeAdapter> minorTypes;
+  final MinorTypeBlock minorTypeBlock;
 
-  const MinorTypeDescription({Key key, this.minorTypes}) : super(key: key);
+  const MinorTypeDescription({Key key, this.minorTypeBlock}) : super(key: key);
 
   @override
   _MinorTypeDescriptionState createState() => _MinorTypeDescriptionState();
@@ -21,7 +18,9 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: widget.minorTypes.length, vsync: this);
+    _controller = TabController(
+        length: widget.minorTypeBlock.minorTypeScaled.minorTypes.length,
+        vsync: this);
     _controller.addListener(() {
       if (_controller.index != selected) {
         setState(() {
@@ -33,7 +32,7 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
 
   @override
   Widget build(BuildContext context) {
-    var mt = widget.minorTypes[selected];
+    var mt = widget.minorTypeBlock.minorTypeScaled.minorTypes[selected];
     var body = List<Widget>.empty(growable: true);
     body.add(Padding(
       padding: const EdgeInsets.all(8.0),
@@ -67,7 +66,7 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
         child: Text(value),
       ));
     });
-    var tabs = widget.minorTypes
+    var tabs = widget.minorTypeBlock.minorTypeScaled.minorTypes
         .map((e) => Tab(
               text: e.minorType.name,
             ))
@@ -78,20 +77,22 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
         slivers: [
           SliverAppBar(
               stretch: true,
-              title: Text(mt.minorType.name),
-              bottom: widget.minorTypes.length > 1
-                  ? PreferredSize(
-                      preferredSize: Size.fromHeight(50.0),
-                      child: Container(
-                        // width: 100,
-                        child: TabBar(
-                          controller: _controller,
-                          // isScrollable: true,
-                          tabs: tabs,
-                        ),
-                      ),
-                    )
-                  : null),
+              title:
+                  Text(widget.minorTypeBlock.minorTypeScaled.minorTypeScaledId),
+              bottom:
+                  widget.minorTypeBlock.minorTypeScaled.minorTypes.length > 1
+                      ? PreferredSize(
+                          preferredSize: Size.fromHeight(50.0),
+                          child: Container(
+                            // width: 100,
+                            child: TabBar(
+                              controller: _controller,
+                              // isScrollable: true,
+                              tabs: tabs,
+                            ),
+                          ),
+                        )
+                      : null),
           SliverList(delegate: SliverChildListDelegate.fixed(body))
         ],
       ),

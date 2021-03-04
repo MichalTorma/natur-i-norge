@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class MinorTypeTable extends StatelessWidget {
   const MinorTypeTable({Key key}) : super(key: key);
   static int spacing = 2;
-  static int sidePadding = 2 * (8 + 2) + spacing;
+  static int sidePadding = spacing;
   static double labelWidth = 70.0;
 
   Size getSize(BuildContext context, BoxConstraints boxContrains) {
@@ -44,7 +44,7 @@ class MinorTypeTable extends StatelessWidget {
       xSize = boxContrains.maxWidth - sidePadding - labelWidth;
       ySize = xSize / ratio;
     } else {
-      ySize = maxHeight - sidePadding - labelWidth - 60;
+      ySize = maxHeight - sidePadding - labelWidth - 40;
       xSize = ySize * ratio;
     }
     return Size(xSize, ySize);

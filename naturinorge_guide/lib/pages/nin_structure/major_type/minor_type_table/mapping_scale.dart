@@ -17,8 +17,8 @@ class MappingScaleWidget extends StatelessWidget {
               (e) => e.name,
             )
             .toList(),
-        onToggle: (value) {
-          Provider.of<MajorTypeProvider>(context, listen: false)
+        onToggle: (value) async {
+          await Provider.of<MajorTypeProvider>(context, listen: false)
               .setMappingScale(value);
         },
         initialLabelIndex:

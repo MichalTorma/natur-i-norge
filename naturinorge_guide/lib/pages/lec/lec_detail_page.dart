@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
-import 'package:naturinorge_guide/pages/home_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_button.dart';
 
 class LecDetailPage extends StatelessWidget {
