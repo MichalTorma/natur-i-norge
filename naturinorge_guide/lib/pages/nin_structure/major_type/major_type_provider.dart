@@ -292,6 +292,13 @@ class MajorTypeProvider extends ChangeNotifier {
     }
     minorTypesScaledBlocks.removeWhere((mtsb) => mtsb == null);
     _minorTypesScaledBlocks = minorTypesScaledBlocks; //.sublist(0, 2);
+    _printSlice(minorTypeSlice);
+  }
+
+  _printSlice(List<dynamic> slice) {
+    for (var i in slice) {
+      print(i);
+    }
   }
 
   MinorTypeBlock _addMinorTypeScaledBlock(
@@ -302,6 +309,7 @@ class MajorTypeProvider extends ChangeNotifier {
     } else {
       minorTypeSegmentId = minorTypeSlice[x][y];
     }
+    print(minorTypeSegmentId);
     if (minorTypeSegmentId == null) {
       var size = _getEmptyBlockSize(x, y);
       return MinorTypeBlock(size[0], size[1], null, uuid.v4());
