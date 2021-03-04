@@ -9,6 +9,9 @@ import 'package:naturinorge_guide/pages/nin_structure/other/loading.dart';
 import 'package:naturinorge_guide/pages/nin_structure/other/loading_overlay.dart';
 import 'package:naturinorge_guide/pages/species/species_page.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const _mail_url = 'mailto:miso.torma.dev@gmail.com';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -32,10 +35,23 @@ class HomePage extends StatelessWidget {
                   applicationIcon: Container(
                     height: 100,
                     width: 100,
-                    child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Image.asset('assets/icon.png')),
-                  )),
+                    child: Image.asset(
+                      'assets/icon.png',
+                      width: 100,
+                      height: 100,
+                    ),
+                  ),
+                  children: [
+                    Text('Rune Halvorsen'),
+                    Text('Michal Torma'),
+                    Text('Artsdatabanken'),
+                    // ElevatedButton(
+                    //     onPressed: () async => await launch(_mail_url),
+                    //     // onPressed: () async => await canLaunch(_mail_url)
+                    //     //     ? await launch(_mail_url)
+                    //     //     : throw 'Could not launch $_mail_url',
+                    //     child: Text('Kontakt os'))
+                  ]),
             )
           ],
         ),
