@@ -40,8 +40,8 @@ CREATE TABLE "nin_Detail" (
 	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
 );
 CREATE INDEX "ix_nin_Detail__id" ON "nin_Detail" (_id);
-CREATE INDEX "ix_nin_Detail_key" ON "nin_Detail" ("key");
 CREATE INDEX detail_index ON "nin_Detail" (_id, language_id, "key");
+CREATE INDEX "ix_nin_Detail_key" ON "nin_Detail" ("key");
 CREATE TABLE "nin_MajorTypeGroup" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
