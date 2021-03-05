@@ -65,6 +65,7 @@ class HomePage extends StatelessWidget {
                   mainAxisSpacing: 24),
               children: [
                 HomePageButton(
+                    key: ValueKey('nin_structure_btn'),
                     icon: Icons.map_outlined,
                     text: LocaleKeys.structure.tr(),
                     onPressed: () => Navigator.push(
@@ -72,6 +73,7 @@ class HomePage extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => MajorTypeGroupPage()))),
                 HomePageButton(
+                    key: ValueKey('lkm_btn'),
                     icon: Icons.list,
                     text: 'LKM',
                     onPressed: () => Navigator.push(
@@ -79,6 +81,7 @@ class HomePage extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => LecListPage()))),
                 HomePageButton(
+                    key: ValueKey('species_btn'),
                     icon: Icons.place_outlined,
                     text: 'Arter',
                     onPressed: () => Navigator.push(context,
