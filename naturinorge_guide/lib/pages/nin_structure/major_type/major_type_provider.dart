@@ -14,6 +14,11 @@ import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
 
+class GadVisibility {
+  static const int Visible = 0;
+  static const int Invisible = 1;
+}
+
 class MajorTypeProvider extends ChangeNotifier {
   final Locale locale;
 
@@ -39,7 +44,7 @@ class MajorTypeProvider extends ChangeNotifier {
   List<String> _usedMinorTypeIds;
   List<MinorTypeBlock> _minorTypesScaledBlocks;
 
-  int _showGad = 0;
+  int _showGad = GadVisibility.Visible;
   GadHelper _gadHelper;
   List<List<num>> _gadArray;
 

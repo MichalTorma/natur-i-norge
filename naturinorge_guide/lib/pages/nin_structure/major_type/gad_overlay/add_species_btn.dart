@@ -37,7 +37,7 @@ class AddSpecieButtons extends StatelessWidget {
                   ],
                   onToggle: (idx) =>
                       Provider.of<MajorTypeProvider>(context, listen: false)
-                          .setShowGad(idx),
+                          .setShowGad(GadVisibility.Visible),
                   initialLabelIndex:
                       Provider.of<MajorTypeProvider>(context).showGad,
                 ),
