@@ -1,1 +1,3 @@
 const double MATERIAL_ELEVATION = 4;
+const double GRIDVIEW_CROSS_AXIS_EXTENT = 210;
+const double GRIDVIEW_ASPECT_RATIO = 1.618;
