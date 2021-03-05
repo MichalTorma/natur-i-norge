@@ -14,13 +14,18 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
     with SingleTickerProviderStateMixin {
   int selected = 0;
   TabController _controller;
+  List<dynamic> detailsList;
 
   @override
   void initState() {
     super.initState();
-    _controller = TabController(
-        length: widget.minorTypeBlock.minorTypeScaled.minorTypes.length,
-        vsync: this);
+    detailsList =
+        widget.minorTypeBlock.minorTypeScaled.detailedMinorTypesScaled.length >
+                0
+            ? widget.minorTypeBlock.minorTypeScaled.detailedMinorTypesScaled
+            : widget.minorTypeBlock.minorTypeScaled.minorTypes
+                .map((e) => e.minorType);
+    _controller = TabController(length: detailsList.length, vsync: this);
     _controller.addListener(() {
       if (_controller.index != selected) {
         setState(() {
@@ -32,27 +37,28 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
 
   @override
   Widget build(BuildContext context) {
-    var mt = widget.minorTypeBlock.minorTypeScaled.minorTypes[selected];
+    var mt = detailsList[selected];
+
     var body = List<Widget>.empty(growable: true);
     body.add(Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-        mt.minorType.name,
+        mt.name,
         style: Theme.of(context).textTheme.headline4,
         textAlign: TextAlign.center,
       ),
     ));
-    if (mt.minorType.description != null) {
+    if (mt.description != null) {
       body.add(Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          mt.minorType.description,
+          mt.description,
           style: Theme.of(context).textTheme.subtitle2,
           textAlign: TextAlign.center,
         ),
       ));
     }
-    mt.minorType.other.forEach((key, value) {
+    mt.other.forEach((key, value) {
       body.add(Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
@@ -66,9 +72,9 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
         child: Text(value),
       ));
     });
-    var tabs = widget.minorTypeBlock.minorTypeScaled.minorTypes
+    var tabs = detailsList
         .map((e) => Tab(
-              text: e.minorType.name,
+              text: e.name,
             ))
         .toList();
 
@@ -79,20 +85,19 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
               stretch: true,
               title:
                   Text(widget.minorTypeBlock.minorTypeScaled.minorTypeScaledId),
-              bottom:
-                  widget.minorTypeBlock.minorTypeScaled.minorTypes.length > 1
-                      ? PreferredSize(
-                          preferredSize: Size.fromHeight(50.0),
-                          child: Container(
-                            // width: 100,
-                            child: TabBar(
-                              controller: _controller,
-                              // isScrollable: true,
-                              tabs: tabs,
-                            ),
-                          ),
-                        )
-                      : null),
+              bottom: detailsList.length > 1
+                  ? PreferredSize(
+                      preferredSize: Size.fromHeight(50.0),
+                      child: Container(
+                        // width: 100,
+                        child: TabBar(
+                          controller: _controller,
+                          // isScrollable: true,
+                          tabs: tabs,
+                        ),
+                      ),
+                    )
+                  : null),
           SliverList(delegate: SliverChildListDelegate.fixed(body))
         ],
       ),

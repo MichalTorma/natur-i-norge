@@ -305,24 +305,21 @@ class NiNDatabase extends _$NiNDatabase {
     return res;
   }
 
-  Future<List<NinDetailData>> getDetailsForMinorTypeScaled(
-      String majorTypeScaledId, Locale locale) async {
+  Future<List<Detailed<NinMinorTypeScaledData>>>
+      getDetailedMinorTypesScaledById(
+          String minorTypeScaledId, Locale locale) async {
     var minorTypesScaled = await (select(ninMinorTypeScaled)
-          ..where((tbl) => tbl.id.equals(majorTypeScaledId))
+          ..where((tbl) => tbl.id.equals(minorTypeScaledId))
           ..map((e) => e.detailId))
         .get();
-    var detailIds = minorTypesScaled.map((e) => e.detailId).toSet();
-    // print(minorTypesScaled);
-    var res = (select(ninDetail)
-          ..where((tbl) =>
-              tbl.id.isIn(detailIds) &
-              tbl.languageId.equals(locale.languageCode)))
-        .get();
+    var res = await Detailed<NinMinorTypeScaledData>()
+        .fromList(minorTypesScaled, locale);
+    res.removeWhere((element) => element.name == null);
     return res;
   }
 
   @override
-  int get schemaVersion => 74;
+  int get schemaVersion => 75;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
