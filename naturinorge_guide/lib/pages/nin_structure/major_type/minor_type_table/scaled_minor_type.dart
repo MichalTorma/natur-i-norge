@@ -45,11 +45,7 @@ class ScaledMinorTypeWidget extends StatelessWidget {
                 ),
               );
             } else {
-              var name = minorTypeBlock.minorTypeScaled.name ??
-                  minorTypeBlock.minorTypeScaled.minorTypes
-                      .map((e) => e.minorType.name)
-                      .toList()
-                      .join('/');
+              var name = minorTypeBlock.minorTypeScaled.name;
               return Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

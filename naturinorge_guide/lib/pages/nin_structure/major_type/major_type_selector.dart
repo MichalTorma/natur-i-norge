@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_button.dart';
 import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dart';
+import 'package:naturinorge_guide/tools/global_vars.dart';
 import 'package:provider/provider.dart';
 
 class MajorTypeSelector extends StatelessWidget {
@@ -11,8 +12,8 @@ class MajorTypeSelector extends StatelessWidget {
     return GridView.extent(
       primary: false,
       shrinkWrap: true,
-      maxCrossAxisExtent: 210,
-      childAspectRatio: 1.618,
+      maxCrossAxisExtent: GRIDVIEW_CROSS_AXIS_EXTENT,
+      childAspectRatio: GRIDVIEW_ASPECT_RATIO,
       clipBehavior: Clip.none,
       // crossAxisSpacing: 12,
       // mainAxisSpacing: 12,
