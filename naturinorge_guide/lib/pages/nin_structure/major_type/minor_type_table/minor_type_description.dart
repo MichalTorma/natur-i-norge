@@ -63,7 +63,7 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
         padding: const EdgeInsets.all(8.0),
         child: Text(
           key,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.headline5,
           textAlign: TextAlign.center,
         ),
       ));
