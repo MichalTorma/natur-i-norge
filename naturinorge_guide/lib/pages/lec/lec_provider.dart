@@ -12,7 +12,7 @@ class LecProvider extends ChangeNotifier {
     if (_lecAdapters.length > 0) {
       return;
     }
-    var allLec = await db.getAllLec();
+    var allLec = await db!.getAllLec();
     var lecAdapters = allLec.map((e) => LecAdapter(locale, e));
     for (var lec in lecAdapters) {
       await lec.getRelations();

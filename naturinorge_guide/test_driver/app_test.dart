@@ -15,7 +15,7 @@ void main() {
     final backBtnFinder = find.byTooltip('Tilbake');
     final LoadingFinder = find.byType('LoadingWidget');
 
-    FlutterDriver driver;
+    FlutterDriver? driver;
 
     // Connect to the Flutter driver before running any tests.
     setUpAll(() async {
@@ -25,16 +25,16 @@ void main() {
     // Close the connection to the driver after the tests have completed.
     tearDownAll(() async {
       if (driver != null) {
-        driver.close();
+        driver!.close();
       }
     });
 
     test('Check all major types', () async {
       // Use the `driver.getText` method to verify the counter starts at 0.
-      await driver.waitForAbsent(LoadingFinder);
-      await driver.tap(ninStructureBtnFinder);
-      await driver.waitFor(majorTypeGroupFinder);
-      await driver.tap(majorTypeGroupFinder);
+      await driver!.waitForAbsent(LoadingFinder);
+      await driver!.tap(ninStructureBtnFinder);
+      await driver!.waitFor(majorTypeGroupFinder);
+      await driver!.tap(majorTypeGroupFinder);
 
       // expect(await driver.(counterTextFinder), "0");
     });

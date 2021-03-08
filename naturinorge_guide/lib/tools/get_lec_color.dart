@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/nin_db.dart';
 
-Color getLecColor(NinMajorTypeLECData majorTypeLec) {
+Color? getLecColor(NinMajorTypeLECData majorTypeLec) {
   switch (majorTypeLec.lecTypeId) {
     case 'dLEC':
       return Colors.red[700];

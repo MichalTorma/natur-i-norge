@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type_group/major_type_group_selector.dart';
 
 class MajorTypeGroupPage extends StatelessWidget {
-  const MajorTypeGroupPage({Key key}) : super(key: key);
+  const MajorTypeGroupPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class MajorTypeGroupPage extends StatelessWidget {
           IconButton(
               icon: Icon(Icons.home),
               onPressed: () => Navigator.of(context)
-                  .popUntil((route) => !route.navigator.canPop()))
+                  .popUntil((route) => !route.navigator!.canPop()))
         ],
       ),
       body: Padding(

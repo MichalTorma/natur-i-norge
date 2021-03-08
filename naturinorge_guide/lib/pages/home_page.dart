@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 // const _mail_url = 'mailto:miso.torma.dev@gmail.com';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

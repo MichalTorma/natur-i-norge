@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class AddSpecieButtons extends StatelessWidget {
-  const AddSpecieButtons({Key key}) : super(key: key);
+  const AddSpecieButtons({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (Provider.of<MajorTypeProvider>(context).majorType.data.id != 'T-4') {
+    if (Provider.of<MajorTypeProvider>(context).majorType!.data!.id != 'T-4') {
       return Container();
     }
     return Row(

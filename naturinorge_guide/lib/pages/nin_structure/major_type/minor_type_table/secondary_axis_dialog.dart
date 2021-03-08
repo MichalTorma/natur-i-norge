@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class SecondaryAxisOptions extends StatelessWidget {
-  const SecondaryAxisOptions({Key key}) : super(key: key);
+  const SecondaryAxisOptions({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,9 @@ class SecondaryAxisOptions extends StatelessWidget {
       return Container();
     }
 
-    var body = Provider.of<MajorTypeProvider>(context).zAxis.map((axis) {
+    var body = Provider.of<MajorTypeProvider>(context).zAxis!.map((axis) {
       var standarSegments = axis.standardSegments
-          .map((e) => (e.standardSegment.data.order + 1).toString())
+          .map((e) => (e.standardSegment.data!.order! + 1).toString())
           .toList();
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -55,10 +55,10 @@ class SecondaryAxisOptions extends StatelessWidget {
 }
 
 class SecondaryAxisWidget extends StatelessWidget {
-  final AxisBlock axis;
+  final AxisBlock? axis;
   const SecondaryAxisWidget({
-    Key key,
-    @required this.standarSegments,
+    Key? key,
+    required this.standarSegments,
     this.axis,
   }) : super(key: key);
 
@@ -67,7 +67,7 @@ class SecondaryAxisWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: getLecColor(axis.lecAdapter.majorTypeLec),
+      color: getLecColor(axis!.lecAdapter.majorTypeLec),
       elevation: MATERIAL_ELEVATION,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -76,7 +76,7 @@ class SecondaryAxisWidget extends StatelessWidget {
           trailing: IconButton(
               icon: Icon(Icons.info),
               onPressed: () async {
-                var lec = LecAdapter(context.locale, axis.lecAdapter.lec.data);
+                var lec = LecAdapter(context.locale, axis!.lecAdapter.lec.data);
                 await lec.getRelations();
                 Navigator.push(
                     context,
@@ -86,7 +86,7 @@ class SecondaryAxisWidget extends StatelessWidget {
                             )));
               }),
           title: Text(
-            '${axis.lecAdapter.lec.data.id} - ${axis.lecAdapter.lec.name ?? ""}',
+            '${axis!.lecAdapter.lec.data!.id} - ${axis!.lecAdapter.lec.name ?? ""}',
             style: Theme.of(context).textTheme.subtitle1,
           ),
           subtitle: Center(
@@ -97,16 +97,16 @@ class SecondaryAxisWidget extends StatelessWidget {
                 labels: standarSegments,
                 onToggle: (value) => Provider.of<MajorTypeProvider>(context,
                         listen: false)
-                    .setSecondaryStandardSegment(axis.standardSegments[value]),
-                initialLabelIndex: axis.standardSegments.indexWhere((e) =>
-                    e.standardSegment.data.id ==
+                    .setSecondaryStandardSegment(axis!.standardSegments[value]),
+                initialLabelIndex: axis!.standardSegments.indexWhere((e) =>
+                    e.standardSegment.data!.id ==
                     Provider.of<MajorTypeProvider>(context)
-                        .selectedSecondaryAxisSegments
+                        .selectedSecondaryAxisSegments!
                         .firstWhere((element) =>
-                            element.standardSegment.data.lecId ==
-                            axis.lecAdapter.lec.data.id)
+                            element.standardSegment.data!.lecId ==
+                            axis!.lecAdapter.lec.data!.id)
                         .standardSegment
-                        .data
+                        .data!
                         .id),
               ),
             ),

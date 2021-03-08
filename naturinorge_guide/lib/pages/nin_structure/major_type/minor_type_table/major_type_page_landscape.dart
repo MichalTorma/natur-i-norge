@@ -15,9 +15,9 @@ import 'package:provider/provider.dart';
 const double sidebarWidth = 450.0;
 
 class MajorTypePageLandscape extends StatelessWidget {
-  final Detailed<NinMajorTypeData> majorType;
+  final Detailed<NinMajorTypeData>? majorType;
 
-  const MajorTypePageLandscape({Key key, @required this.majorType})
+  const MajorTypePageLandscape({Key? key, required this.majorType})
       : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class MajorTypePageLandscape extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              majorType.description,
+              majorType!.description!,
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ],
@@ -66,7 +66,7 @@ class MajorTypePageLandscape extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            majorType.description,
+                            majorType!.description!,
                             // trimLines: 10,
                             // trimMode: TrimMode.Line,
                             // trimExpandedText: LocaleKeys.read_mode.tr(),
@@ -100,7 +100,7 @@ class MajorTypePageLandscape extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: AutoSizeText(
-            '${majorType.data.id} ${majorType.name}',
+            '${majorType!.data!.id} ${majorType!.name}',
             // style: Theme.of(context).textTheme.headline3,
           ),
           bottom: LoadingWidget(),
@@ -108,7 +108,7 @@ class MajorTypePageLandscape extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () => Navigator.of(context)
-                    .popUntil((route) => !route.navigator.canPop()))
+                    .popUntil((route) => !route.navigator!.canPop()))
           ],
         ),
         body: body);

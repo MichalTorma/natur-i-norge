@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/tools/global_vars.dart';
 
 class ElementarySegmentLabelWidget extends StatelessWidget {
-  final String elementarySegmentGroupId;
-  const ElementarySegmentLabelWidget({Key key, this.elementarySegmentGroupId})
+  final String? elementarySegmentGroupId;
+  const ElementarySegmentLabelWidget({Key? key, this.elementarySegmentGroupId})
       : super(key: key);
 
   @override
@@ -16,7 +16,7 @@ class ElementarySegmentLabelWidget extends StatelessWidget {
           elevation: MATERIAL_ELEVATION,
           // padding: EdgeInsets.all(2),
           child: Center(
-            child: AutoSizeText(elementarySegmentGroupId.split('.')[1]),
+            child: AutoSizeText(elementarySegmentGroupId!.split('.')[1]),
           ),
         ),
       ),

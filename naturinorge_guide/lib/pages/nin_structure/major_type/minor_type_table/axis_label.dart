@@ -8,16 +8,16 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_tabl
 import 'package:easy_localization/easy_localization.dart';
 
 class AxisLabel extends StatelessWidget {
-  final AxisBlock axisBlock;
+  final AxisBlock? axisBlock;
   final Axis orientation;
   const AxisLabel(
-      {Key key, @required this.axisBlock, @required this.orientation})
+      {Key? key, required this.axisBlock, required this.orientation})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var standardSegmentWidgets = List<Widget>.empty(growable: true);
-    for (var ss in axisBlock.standardSegments) {
+    for (var ss in axisBlock!.standardSegments) {
       // print('${ss.standardSegment.data.id} ${ss.elementarySegments.length}');
       standardSegmentWidgets.add(Expanded(
         flex: ss.elementarySegmentGroups.length,
@@ -47,7 +47,7 @@ class AxisLabel extends StatelessWidget {
             direction: Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: axisBlock.standardSegments
+            children: axisBlock!.standardSegments
                 .expand((element) => element.elementarySegmentGroups)
                 .map((e) => ElementarySegmentLabelWidget(
                       elementarySegmentGroupId: e,
@@ -62,7 +62,7 @@ class AxisLabel extends StatelessWidget {
 
     var body = GestureDetector(
         onTap: () async {
-          var lec = LecAdapter(context.locale, axisBlock.lecAdapter.lec.data);
+          var lec = LecAdapter(context.locale, axisBlock!.lecAdapter.lec.data);
           await lec.getRelations();
           Navigator.push(
               context,

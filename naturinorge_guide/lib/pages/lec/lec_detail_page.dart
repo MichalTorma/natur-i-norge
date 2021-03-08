@@ -6,22 +6,22 @@ import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_button.dart';
 
 class LecDetailPage extends StatelessWidget {
-  final LecAdapter lec;
-  const LecDetailPage({Key key, this.lec}) : super(key: key);
+  final LecAdapter? lec;
+  const LecDetailPage({Key? key, this.lec}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var body = List<Widget>.empty(growable: true);
 
     body.add(AutoSizeText(
-      lec.detailedLec.name ?? '',
+      lec!.detailedLec.name ?? '',
       style: Theme.of(context).textTheme.headline2,
       textAlign: TextAlign.center,
       wrapWords: false,
     ));
-    body.add(Text(lec.detailedLec.description ?? '<<TBF>>'));
-    if (lec.detailedLec.other != null) {
-      lec.detailedLec.other.forEach((key, value) {
+    body.add(Text(lec!.detailedLec.description ?? '<<TBF>>'));
+    if (lec!.detailedLec.other != null) {
+      lec!.detailedLec.other!.forEach((key, value) {
         body.add(Text(
           key,
           style: Theme.of(context).textTheme.headline2,
@@ -30,7 +30,7 @@ class LecDetailPage extends StatelessWidget {
       });
       body.add(Divider());
       body.add(ElementarySegmentsWidget(
-        elementarySegments: lec.elementarySegments,
+        elementarySegments: lec!.elementarySegments,
       ));
       body.add(Divider());
       body.add(GridView.extent(
@@ -41,7 +41,7 @@ class LecDetailPage extends StatelessWidget {
         clipBehavior: Clip.none,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
-        children: lec.majorTypes
+        children: lec!.majorTypes
             .map((e) => MajorTypeButton(
                   ninMajorType: e,
                 ))
@@ -51,12 +51,12 @@ class LecDetailPage extends StatelessWidget {
     // body.addAll(lec.detailedLec.other.((key, value) => Column()).toList());
     return Scaffold(
       appBar: AppBar(
-        title: Text('${lec.lec.id} - ${lec.detailedLec.name ?? ""}'),
+        title: Text('${lec!.lec!.id} - ${lec!.detailedLec.name ?? ""}'),
         actions: [
           IconButton(
               icon: Icon(Icons.home),
               onPressed: () => Navigator.of(context)
-                  .popUntil((route) => !route.navigator.canPop()))
+                  .popUntil((route) => !route.navigator!.canPop()))
         ],
       ),
       body: Padding(
@@ -70,9 +70,9 @@ class LecDetailPage extends StatelessWidget {
 }
 
 class ElementarySegmentsWidget extends StatelessWidget {
-  const ElementarySegmentsWidget({Key key, this.elementarySegments})
+  const ElementarySegmentsWidget({Key? key, this.elementarySegments})
       : super(key: key);
-  final List<Detailed<NinElementarySegmentGroupDetailData>> elementarySegments;
+  final List<Detailed<NinElementarySegmentGroupDetailData>>? elementarySegments;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class ElementarySegmentsWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: elementarySegments
+        children: elementarySegments!
             .map((e) => ElementarySegmentWidget(
                   elementarySegmemnt: e,
                 ))
@@ -91,9 +91,9 @@ class ElementarySegmentsWidget extends StatelessWidget {
 }
 
 class ElementarySegmentWidget extends StatelessWidget {
-  const ElementarySegmentWidget({Key key, this.elementarySegmemnt})
+  const ElementarySegmentWidget({Key? key, this.elementarySegmemnt})
       : super(key: key);
-  final Detailed<NinElementarySegmentGroupDetailData> elementarySegmemnt;
+  final Detailed<NinElementarySegmentGroupDetailData>? elementarySegmemnt;
 
   @override
   Widget build(BuildContext context) {
@@ -109,13 +109,13 @@ class ElementarySegmentWidget extends StatelessWidget {
               width: 40,
               child: Material(
                   child: Text(
-                elementarySegmemnt.data.value,
+                elementarySegmemnt!.data!.value!,
                 style: Theme.of(context).textTheme.headline4,
               )),
             ),
             VerticalDivider(),
-            Text(elementarySegmemnt.name ?? ''),
-            Expanded(child: Text(elementarySegmemnt.description ?? '')),
+            Text(elementarySegmemnt!.name ?? ''),
+            Expanded(child: Text(elementarySegmemnt!.description ?? '')),
           ],
         ),
       ),

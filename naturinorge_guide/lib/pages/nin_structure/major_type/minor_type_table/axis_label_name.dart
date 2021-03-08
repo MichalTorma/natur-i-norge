@@ -6,11 +6,11 @@ import 'package:naturinorge_guide/tools/global_vars.dart';
 
 class AxisLabelNameWidget extends StatelessWidget {
   const AxisLabelNameWidget({
-    Key key,
-    @required this.axisBlock,
+    Key? key,
+    required this.axisBlock,
   }) : super(key: key);
 
-  final AxisBlock axisBlock;
+  final AxisBlock? axisBlock;
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +18,11 @@ class AxisLabelNameWidget extends StatelessWidget {
       padding: const EdgeInsets.all(2.0),
       child: Material(
         elevation: MATERIAL_ELEVATION,
-        color: getLecColor(axisBlock.lecAdapter.majorTypeLec),
+        color: getLecColor(axisBlock!.lecAdapter.majorTypeLec),
         // padding: EdgeInsets.all(4),
         child: Center(
           child: AutoSizeText(
-            '${axisBlock.lecAdapter.lec.data.id} - ${axisBlock.lecAdapter.lec.name}',
+            '${axisBlock!.lecAdapter.lec.data!.id} - ${axisBlock!.lecAdapter.lec.name}',
             textAlign: TextAlign.center,
             maxLines: 1,
           ),

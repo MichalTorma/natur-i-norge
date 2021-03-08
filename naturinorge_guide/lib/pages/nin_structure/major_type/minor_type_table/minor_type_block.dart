@@ -4,7 +4,7 @@ class MinorTypeBlock {
   final String key;
   final int width;
   final int height;
-  final MinorTypeScaledAdapter minorTypeScaled;
+  final MinorTypeScaledAdapter? minorTypeScaled;
 
   MinorTypeBlock(this.width, this.height, this.minorTypeScaled, this.key);
 }

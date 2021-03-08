@@ -4,19 +4,20 @@ import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class MappingScaleWidget extends StatelessWidget {
-  const MappingScaleWidget({Key key}) : super(key: key);
+  const MappingScaleWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var labels = Provider.of<MajorTypeProvider>(context)
+        .mappingScales!
+        .map(
+          (e) => e!.name!,
+        )
+        .toList();
     return Material(
       child: ToggleSwitch(
         minWidth: 80,
-        labels: Provider.of<MajorTypeProvider>(context)
-            .mappingScales
-            .map(
-              (e) => e.name,
-            )
-            .toList(),
+        labels: labels,
         onToggle: (value) async {
           await Provider.of<MajorTypeProvider>(context, listen: false)
               .setMappingScale(value);
