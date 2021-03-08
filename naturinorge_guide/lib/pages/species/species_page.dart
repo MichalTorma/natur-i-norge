@@ -7,7 +7,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_tabl
 import 'package:provider/provider.dart';
 
 class SpeciesPage extends StatefulWidget {
-  const SpeciesPage({Key key}) : super(key: key);
+  const SpeciesPage({Key? key}) : super(key: key);
 
   @override
   _SpeciesPageState createState() => _SpeciesPageState();
@@ -18,7 +18,7 @@ class _SpeciesPageState extends State<SpeciesPage> {
 
   @override
   void initState() {
-    db.getSpeciesByFilter('').then((value) => setState(() {
+    db!.getSpeciesByFilter('').then((value) => setState(() {
           species = value;
         }));
     super.initState();
@@ -38,7 +38,7 @@ class _SpeciesPageState extends State<SpeciesPage> {
               // initialValue: ,
               autocorrect: false,
               onChanged: (filter) async {
-                var newSpecies = await db.getSpeciesByFilter(filter);
+                var newSpecies = await db!.getSpeciesByFilter(filter);
                 setState(() {
                   species = newSpecies;
                 });
@@ -48,18 +48,18 @@ class _SpeciesPageState extends State<SpeciesPage> {
           IconButton(
               icon: Icon(Icons.home),
               onPressed: () => Navigator.of(context)
-                  .popUntil((route) => !route.navigator.canPop()))
+                  .popUntil((route) => !route.navigator!.canPop()))
         ],
       ),
       body: ListView.builder(
           itemCount: species.length,
           itemBuilder: (context, index) => ListTile(
-                leading: Text(species[index].scientificName),
-                subtitle: Text(species[index].vernacularName),
+                leading: Text(species[index].scientificName!),
+                subtitle: Text(species[index].vernacularName!),
                 onTap: () async {
                   var specie = species[index];
                   var mts =
-                      await db.getMajorTypesForSpecie(specie, context.locale);
+                      await db!.getMajorTypesForSpecie(specie, context.locale);
                   await Provider.of<MajorTypeProvider>(context, listen: false)
                       .load(mts[0]);
                   await Provider.of<MajorTypeProvider>(context, listen: false)

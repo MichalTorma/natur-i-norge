@@ -1,20 +1,21 @@
 import 'dart:ui';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:naturinorge_guide/main.dart';
 
 class Detailed<K> {
-  K data;
-  String name;
+  K? data;
+  String? name;
 
-  Locale locale;
-  String detailId;
-  String nameHeader;
-  String description;
-  String descriptionHeader;
-  Map<String, String> other;
+  Locale? locale;
+  String? detailId;
+  String? nameHeader;
+  String? description;
+  String? descriptionHeader;
+  Map<String, String?>? other;
 
-  Future initialize(dynamic data, Locale locale) async {
+  Future initialize(dynamic data, Locale? locale) async {
     this.data = data;
     this.locale = locale;
     this.detailId = data.detailId;
@@ -24,7 +25,7 @@ class Detailed<K> {
   }
 
   Future<List<Detailed<K>>> fromList(
-      List<dynamic> dataList, Locale locale) async {
+      List<dynamic> dataList, Locale? locale) async {
     var res = List<Detailed<K>>.empty(growable: true);
     for (var e in dataList) {
       var detailed = await Detailed<K>().initialize(e, locale);
@@ -35,21 +36,19 @@ class Detailed<K> {
   }
 
   Future _getRelations() async {
-    var details = await db.getDetails(detailId, locale);
+    var details = await db!.getDetails(detailId, locale);
     if (details == null || details.length == 0) {
       return;
     }
 
-    var nameDetail = details.firstWhere((element) => element.key == '<name>',
-        orElse: () => null);
+    var nameDetail = details.firstWhereOrNull((element) => element.key == '<name>');
     if (nameDetail != null) {
       name = fixTextFromOutside(nameDetail.value);
       nameHeader = tr('<name>');
     }
 
-    var descriptionDetail = details.firstWhere(
-        (element) => element.key == '<description>',
-        orElse: () => null);
+    var descriptionDetail = details.firstWhereOrNull(
+        (element) => element.key == '<description>');
     if (descriptionDetail == null) {
     } else {
       description = fixTextFromOutside(descriptionDetail.value);
@@ -70,7 +69,7 @@ class Detailed<K> {
   }
 }
 
-String fixTextFromOutside(String input) {
+String? fixTextFromOutside(String? input) {
   if (input == null) {
     return input;
   }

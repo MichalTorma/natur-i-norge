@@ -12,8 +12,8 @@ import 'package:naturinorge_guide/pages/nin_structure/other/loading.dart';
 import 'package:provider/provider.dart';
 
 class MajorTypePagePortrait extends StatelessWidget {
-  final Detailed<NinMajorTypeData> majorType;
-  const MajorTypePagePortrait({Key key, @required this.majorType})
+  final Detailed<NinMajorTypeData>? majorType;
+  const MajorTypePagePortrait({Key? key, required this.majorType})
       : super(key: key);
 
   @override
@@ -23,11 +23,11 @@ class MajorTypePagePortrait extends StatelessWidget {
     }
     List<Widget> body = [
       AutoSizeText(
-        majorType.name,
+        majorType!.name!,
         style: Theme.of(context).textTheme.headline4,
         textAlign: TextAlign.center,
       ),
-      Text(majorType.description),
+      Text(majorType!.description!),
     ];
     if (Provider.of<MajorTypeProvider>(context).xAxis != null) {
       body.addAll([
@@ -59,7 +59,7 @@ class MajorTypePagePortrait extends StatelessWidget {
           SliverAppBar(
             floating: true,
             title: AutoSizeText(
-              '${majorType.data.id} ${majorType.name}',
+              '${majorType!.data!.id} ${majorType!.name}',
               // style: Theme.of(context).textTheme.headline3,
             ),
             bottom: LoadingWidget(),
@@ -67,7 +67,7 @@ class MajorTypePagePortrait extends StatelessWidget {
               IconButton(
                   icon: Icon(Icons.home),
                   onPressed: () => Navigator.of(context)
-                      .popUntil((route) => !route.navigator.canPop()))
+                      .popUntil((route) => !route.navigator!.canPop()))
             ],
           ),
           SliverList(delegate: SliverChildListDelegate.fixed(body))

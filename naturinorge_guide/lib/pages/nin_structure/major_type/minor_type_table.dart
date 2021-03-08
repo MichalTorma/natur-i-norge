@@ -5,7 +5,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_tabl
 import 'package:provider/provider.dart';
 
 class MinorTypeTable extends StatelessWidget {
-  const MinorTypeTable({Key key}) : super(key: key);
+  const MinorTypeTable({Key? key}) : super(key: key);
   static int spacing = 2;
   static int sidePadding = spacing;
   static double labelWidth = 70.0;
@@ -17,18 +17,18 @@ class MinorTypeTable extends StatelessWidget {
     var ratio;
     if (Provider.of<MajorTypeProvider>(context).yAxis != null) {
       ratio = Provider.of<MajorTypeProvider>(context)
-              .xAxis
+              .xAxis!
               .standardSegments
               .expand((element) => element.elementarySegmentGroups)
               .length /
           Provider.of<MajorTypeProvider>(context)
-              .yAxis
+              .yAxis!
               .standardSegments
               .expand((element) => element.elementarySegmentGroups)
               .length;
     } else {
       ratio = Provider.of<MajorTypeProvider>(context)
-          .xAxis
+          .xAxis!
           .standardSegments
           .expand((element) => element.elementarySegmentGroups)
           .length

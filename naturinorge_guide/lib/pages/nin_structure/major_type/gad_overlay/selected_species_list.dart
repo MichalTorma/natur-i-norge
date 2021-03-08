@@ -3,7 +3,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_prov
 import 'package:provider/provider.dart';
 
 class SelectedSpeciesList extends StatelessWidget {
-  const SelectedSpeciesList({Key key}) : super(key: key);
+  const SelectedSpeciesList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +11,8 @@ class SelectedSpeciesList extends StatelessWidget {
         .selectedSpecies
         .map((e) => ListTile(
               // tileColor: Colors.lightBlue,
-              title: Text(e.specie.scientificName),
-              subtitle: Text(e.specie.vernacularName),
+              title: Text(e.specie.scientificName!),
+              subtitle: Text(e.specie.vernacularName!),
               trailing: GestureDetector(
                 child: Icon(
                   Icons.delete,

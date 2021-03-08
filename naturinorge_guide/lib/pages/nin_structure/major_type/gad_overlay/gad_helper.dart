@@ -7,14 +7,14 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_tabl
 import 'package:naturinorge_guide/tools/array_tools.dart';
 
 class GadHelper {
-  final Locale locale;
-  final NinMajorTypeData majorType;
-  final AxisBlock xAxis;
-  final AxisBlock yAxis;
-  final List<AxisBlock> zAxis;
+  final Locale? locale;
+  final NinMajorTypeData? majorType;
+  final AxisBlock? xAxis;
+  final AxisBlock? yAxis;
+  final List<AxisBlock>? zAxis;
   // dynamic finalArray;
   List<dynamic> allArrays = List<dynamic>.empty(growable: true);
-  List<int> dims;
+  late List<int> dims;
   dynamic _meanArray;
 
   List<SpecieAdapter> selectedSpecies =
@@ -36,16 +36,16 @@ class GadHelper {
     for (var gadValue in specieAdapter.gadValues) {
       var xElem = gadValue.elementarySegmentGroupAdapters.firstWhere(
           (element) =>
-              xAxis.lecAdapter.gadElementarySegmentGroups.contains(element));
-      var xCoor = xAxis.lecAdapter.gadElementarySegmentGroups.indexOf(xElem);
+              xAxis!.lecAdapter.gadElementarySegmentGroups.contains(element));
+      var xCoor = xAxis!.lecAdapter.gadElementarySegmentGroups.indexOf(xElem);
 
       var yElem = gadValue.elementarySegmentGroupAdapters.firstWhere(
           (element) =>
-              yAxis.lecAdapter.gadElementarySegmentGroups.contains(element));
-      var yCoor = yAxis.lecAdapter.gadElementarySegmentGroups.indexOf(yElem);
+              yAxis!.lecAdapter.gadElementarySegmentGroups.contains(element));
+      var yCoor = yAxis!.lecAdapter.gadElementarySegmentGroups.indexOf(yElem);
 
       var coors = List<int>.empty(growable: true);
-      for (var axis in zAxis) {
+      for (var axis in zAxis!) {
         var zElem = gadValue.elementarySegmentGroupAdapters.firstWhere(
             (element) =>
                 axis.lecAdapter.gadElementarySegmentGroups.contains(element));
@@ -71,13 +71,13 @@ class GadHelper {
   _generateDims() {
     dims = List<int>.empty(growable: true);
     if (zAxis != null) {
-      for (var axis in zAxis) {
+      for (var axis in zAxis!) {
         dims.add(axis.lecAdapter.gadElementarySegmentGroups.length);
       }
     }
-    dims.add(xAxis.lecAdapter.gadElementarySegmentGroups.length);
+    dims.add(xAxis!.lecAdapter.gadElementarySegmentGroups.length);
     if (yAxis != null) {
-      dims.add(yAxis.lecAdapter.gadElementarySegmentGroups.length);
+      dims.add(yAxis!.lecAdapter.gadElementarySegmentGroups.length);
     }
   }
 
@@ -95,13 +95,14 @@ class GadHelper {
     }
   }
 
-  List<List<num>> getSlice(List<StandardSegmentAdapter> selectedZAxisSegments) {
+  List<dynamic>? getSlice(List<StandardSegmentAdapter> selectedZAxisSegments) {
     dynamic slice = _meanArray;
     for (var selectedStandardSegment in selectedZAxisSegments) {
-      slice = slice[selectedStandardSegment.standardSegment.data.order];
+      slice = slice[selectedStandardSegment.standardSegment.data!.order];
     }
-    List<List<num>> res =
-        slice.map<List<num>>((e) => List<num>.from(e)).toList();
-    return res;
+    // List<List<dynamic?>>? res = slice
+    //     .map<List<dynamic?>?>((e) => List<dynamic?>.from(e, growable: false))
+    //     .toList();
+    return slice;
   }
 }
