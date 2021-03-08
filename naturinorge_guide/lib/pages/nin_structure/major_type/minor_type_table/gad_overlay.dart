@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class GadOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var gadArray = Provider.of<MajorTypeProvider>(context).gadArray;
+    var gadArray = Provider.of<MajorTypeProvider>(context).gadArray!;
     return Container(
         color: Colors.white70,
         child: Row(
@@ -19,7 +19,7 @@ class GadOverlay extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: column
-                          .map((cell) => GadCell(
+                          .map<Widget>((cell) => GadCell(
                                 number: cell,
                               ))
                           .toList()

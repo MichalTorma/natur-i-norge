@@ -7,20 +7,20 @@ import 'package:naturinorge_guide/pages/nin_structure/other/loading.dart';
 import 'package:provider/provider.dart';
 
 class MajorTypeSelectorPage extends StatelessWidget {
-  const MajorTypeSelectorPage({Key key}) : super(key: key);
+  const MajorTypeSelectorPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var mtg = Provider.of<NinStructureProvider>(context).selectedMajorTypeGroup;
+    var mtg = Provider.of<NinStructureProvider>(context).selectedMajorTypeGroup!;
     return Scaffold(
         appBar: AppBar(
-          title: AutoSizeText('${mtg.data.id} - ${mtg.name}'),
+          title: AutoSizeText('${mtg.data!.id} - ${mtg.name}'),
           bottom: LoadingWidget(),
           actions: [
             IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () => Navigator.of(context)
-                    .popUntil((route) => !route.navigator.canPop()))
+                    .popUntil((route) => !route.navigator!.canPop()))
           ],
         ),
         body: Padding(

@@ -3,7 +3,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_prov
 import 'package:provider/provider.dart';
 
 class StandardSegmentsResetWidget extends StatelessWidget {
-  const StandardSegmentsResetWidget({Key key}) : super(key: key);
+  const StandardSegmentsResetWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

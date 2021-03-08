@@ -8,8 +8,8 @@ import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dar
 import 'package:provider/provider.dart';
 
 class MajorTypeButton extends StatefulWidget {
-  const MajorTypeButton({Key key, this.ninMajorType}) : super(key: key);
-  final Detailed<NinMajorTypeData> ninMajorType;
+  const MajorTypeButton({Key? key, this.ninMajorType}) : super(key: key);
+  final Detailed<NinMajorTypeData>? ninMajorType;
 
   @override
   _MajorTypeButtonState createState() => _MajorTypeButtonState();
@@ -41,11 +41,11 @@ class _MajorTypeButtonState extends State<MajorTypeButton> {
           // ),
           child: Row(
             children: [
-              Text(widget.ninMajorType.data.id),
+              Text(widget.ninMajorType!.data!.id!),
               VerticalDivider(),
               Flexible(
                   child: AutoSizeText(
-                widget.ninMajorType.name,
+                widget.ninMajorType!.name!,
                 maxLines: 4,
                 wrapWords: false,
                 minFontSize: 8,

@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'generated/codegen_loader.g.dart';
 
-NiNDatabase db;
+NiNDatabase? db;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

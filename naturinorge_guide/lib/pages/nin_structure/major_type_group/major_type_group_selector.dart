@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class MajorTypeGroupSelector extends StatelessWidget {
   const MajorTypeGroupSelector({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

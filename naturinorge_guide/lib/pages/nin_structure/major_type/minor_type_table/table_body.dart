@@ -6,9 +6,9 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_tabl
 import 'package:provider/provider.dart';
 
 class TableBody extends StatelessWidget {
-  const TableBody({Key key, this.xSize, this.ySize}) : super(key: key);
-  final double xSize;
-  final double ySize;
+  const TableBody({Key? key, this.xSize, this.ySize}) : super(key: key);
+  final double? xSize;
+  final double? ySize;
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +18,15 @@ class TableBody extends StatelessWidget {
       );
     }
     var minorTypesBlocks = Provider.of<MajorTypeProvider>(context)
-        .minorTypeScaledBlocks
+        .minorTypeScaledBlocks!
         .map((e) => ScaledMinorTypeWidget(
               // key: ValueKey(uuid.v4()),
               minorTypeBlock: e,
             ))
         .toList();
     var staggeredTiles = Provider.of<MajorTypeProvider>(context)
-        .minorTypeScaledBlocks
-        .map((e) => StaggeredTile.count(e.width, e.height.toDouble()))
+        .minorTypeScaledBlocks!
+        .map((e) => StaggeredTile.count(e!.width, e.height.toDouble()))
         .toList();
     return Stack(
       children: [
@@ -41,7 +41,7 @@ class TableBody extends StatelessWidget {
             mainAxisSpacing: 2.0,
             physics: new NeverScrollableScrollPhysics(),
             crossAxisCount: Provider.of<MajorTypeProvider>(context)
-                .xAxis
+                .xAxis!
                 .standardSegments
                 .expand((element) => element.elementarySegmentGroups)
                 .length,

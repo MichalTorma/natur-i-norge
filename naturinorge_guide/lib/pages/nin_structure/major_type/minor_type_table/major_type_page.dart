@@ -5,8 +5,8 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_tabl
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/major_type_page_portrait.dart';
 
 class MajorTypePage extends StatelessWidget {
-  const MajorTypePage({Key key, this.majorType}) : super(key: key);
-  final Detailed<NinMajorTypeData> majorType;
+  const MajorTypePage({Key? key, this.majorType}) : super(key: key);
+  final Detailed<NinMajorTypeData>? majorType;
 
   @override
   Widget build(BuildContext context) {

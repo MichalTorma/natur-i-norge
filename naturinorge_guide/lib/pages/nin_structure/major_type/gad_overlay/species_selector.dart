@@ -6,7 +6,7 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_prov
 import 'package:provider/provider.dart';
 
 class SpeciesSelector extends StatefulWidget {
-  const SpeciesSelector({Key key}) : super(key: key);
+  const SpeciesSelector({Key? key}) : super(key: key);
 
   @override
   _SpeciesSelectorState createState() => _SpeciesSelectorState();
@@ -17,7 +17,7 @@ class _SpeciesSelectorState extends State<SpeciesSelector> {
 
   @override
   void initState() {
-    db.getSpeciesByFilter('').then((value) => setState(() {
+    db!.getSpeciesByFilter('').then((value) => setState(() {
           species = value;
         }));
     super.initState();
@@ -41,7 +41,7 @@ class _SpeciesSelectorState extends State<SpeciesSelector> {
                     // initialValue: ,
                     autocorrect: false,
                     onChanged: (filter) async {
-                      var newSpecies = await db.getSpeciesByFilter(filter);
+                      var newSpecies = await db!.getSpeciesByFilter(filter);
                       setState(() {
                         species = newSpecies;
                       });
@@ -52,8 +52,8 @@ class _SpeciesSelectorState extends State<SpeciesSelector> {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                     (context, index) => ListTile(
-                          leading: Text(species[index].scientificName),
-                          subtitle: Text(species[index].vernacularName),
+                          leading: Text(species[index].scientificName!),
+                          subtitle: Text(species[index].vernacularName!),
                           onTap: () {
                             Provider.of<MajorTypeProvider>(context,
                                     listen: false)
