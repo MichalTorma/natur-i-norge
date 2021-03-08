@@ -4,7 +4,7 @@ import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dar
 import 'package:provider/provider.dart';
 
 class LoadingWidget extends StatelessWidget with PreferredSizeWidget {
-  const LoadingWidget({Key key}) : super(key: key);
+  const LoadingWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

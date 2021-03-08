@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class HomePageButton extends StatelessWidget {
   const HomePageButton(
-      {Key key,
-      @required this.icon,
-      @required this.text,
-      @required this.onPressed})
+      {Key? key,
+      required this.icon,
+      required this.text,
+      required this.onPressed})
       : super(key: key);
   final IconData icon;
   final String text;
@@ -40,7 +40,7 @@ class HomePageButton extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: onPressed,
+        onPressed: onPressed as void Function()?,
       ),
     );
   }

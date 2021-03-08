@@ -5,7 +5,7 @@ import 'package:naturinorge_guide/tools/global_vars.dart';
 import 'package:provider/provider.dart';
 
 class MajorTypeSelector extends StatelessWidget {
-  const MajorTypeSelector({Key key}) : super(key: key);
+  const MajorTypeSelector({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

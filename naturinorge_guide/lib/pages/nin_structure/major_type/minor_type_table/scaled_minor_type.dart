@@ -5,12 +5,12 @@ import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_tabl
 import 'package:naturinorge_guide/tools/global_vars.dart';
 
 class ScaledMinorTypeWidget extends StatelessWidget {
-  final MinorTypeBlock minorTypeBlock;
-  const ScaledMinorTypeWidget({Key key, this.minorTypeBlock}) : super(key: key);
+  final MinorTypeBlock? minorTypeBlock;
+  const ScaledMinorTypeWidget({Key? key, this.minorTypeBlock}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (minorTypeBlock.minorTypeScaled == null) {
+    if (minorTypeBlock!.minorTypeScaled == null) {
       return Container();
     } else
       return GestureDetector(
@@ -28,7 +28,7 @@ class ScaledMinorTypeWidget extends StatelessWidget {
             if (constrains.maxHeight < 20 || constrains.maxWidth < 40) {
               return Center(
                 child: AutoSizeText(
-                  minorTypeBlock.minorTypeScaled.minorTypeScaledId
+                  minorTypeBlock!.minorTypeScaled!.minorTypeScaledId!
                       .split('-')
                       .last,
                   maxLines: 1,
@@ -37,7 +37,7 @@ class ScaledMinorTypeWidget extends StatelessWidget {
             } else if (constrains.maxHeight < 62 || constrains.maxWidth < 50) {
               return Center(
                 child: AutoSizeText(
-                  minorTypeBlock.minorTypeScaled.minorTypeScaledId
+                  minorTypeBlock!.minorTypeScaled!.minorTypeScaledId!
                       .split('-')
                       .sublist(1)
                       .join('-'),
@@ -45,7 +45,7 @@ class ScaledMinorTypeWidget extends StatelessWidget {
                 ),
               );
             } else {
-              var name = minorTypeBlock.minorTypeScaled.name;
+              var name = minorTypeBlock!.minorTypeScaled!.name;
               return Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -54,7 +54,7 @@ class ScaledMinorTypeWidget extends StatelessWidget {
                       // height: 20,
                       child: Center(
                         child: AutoSizeText(
-                          minorTypeBlock.minorTypeScaled.minorTypeScaledId,
+                          minorTypeBlock!.minorTypeScaled!.minorTypeScaledId!,
                           maxLines: 1,
                         ),
                       ),

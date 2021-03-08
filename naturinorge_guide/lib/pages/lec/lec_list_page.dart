@@ -8,7 +8,7 @@ import 'package:naturinorge_guide/tools/global_vars.dart';
 import 'package:provider/provider.dart';
 
 class LecListPage extends StatelessWidget {
-  const LecListPage({Key key}) : super(key: key);
+  const LecListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class LecListPage extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () => Navigator.of(context)
-                    .popUntil((route) => !route.navigator.canPop()))
+                    .popUntil((route) => !route.navigator!.canPop()))
           ],
         ),
         body: Padding(
@@ -48,8 +48,8 @@ class LecListPage extends StatelessWidget {
 
 //
 class LecListTile extends StatelessWidget {
-  const LecListTile({Key key, this.lec}) : super(key: key);
-  final LecAdapter lec;
+  const LecListTile({Key? key, this.lec}) : super(key: key);
+  final LecAdapter? lec;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -59,11 +59,11 @@ class LecListTile extends StatelessWidget {
       // ),
       child: Row(
         children: [
-          Text(lec.lec.id),
+          Text(lec!.lec!.id!),
           VerticalDivider(),
           Flexible(
               child: AutoSizeText(
-            lec.detailedLec.name ?? '<<TBF>>',
+            lec!.detailedLec.name ?? '<<TBF>>',
             maxLines: 4,
             wrapWords: false,
             minFontSize: 8,

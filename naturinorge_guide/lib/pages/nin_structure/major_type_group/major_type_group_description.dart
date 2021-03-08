@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 class MajorTypeGroupDetails extends StatelessWidget {
   const MajorTypeGroupDetails({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -20,15 +20,15 @@ class MajorTypeGroupDetails extends StatelessWidget {
           children: [
             Text(
               Provider.of<NinStructureProvider>(context)
-                  .selectedMajorTypeGroup
-                  .name,
+                  .selectedMajorTypeGroup!
+                  .name!,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.subtitle1,
             ),
             Divider(),
             Text(Provider.of<NinStructureProvider>(context)
-                .selectedMajorTypeGroup
-                .description),
+                .selectedMajorTypeGroup!
+                .description!),
           ],
         ),
       ),
