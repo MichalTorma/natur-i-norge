@@ -27,18 +27,15 @@ addToArrayMultiple(dynamic array, List<dynamic> coors, dynamic value) {
   var newValue = value;
   var newCoors = coors;
   if (newCoors.length > 0) {
-    print(newCoors);
     var indexList = newCoors.first;
     newCoors.removeAt(0);
     var newArray = array;
 
     for (var index in indexList) {
-      print('in loop: $newCoors');
       newArray[index] = addToArrayMultiple(newArray[index], newCoors, newValue);
     }
     return newArray;
   } else {
-    print(newValue);
     return newValue;
   }
 }
