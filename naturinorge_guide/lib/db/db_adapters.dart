@@ -143,7 +143,7 @@ class MinorTypeScaledAdapter {
     name = detailedMinorTypesScaled.length == 0
         ? minorTypes.map((e) => e.minorType.name).join('/')
         : detailedMinorTypesScaled.map((e) => e.name).join('/');
-    print(name);
+    // print(name);
   }
 }
 
