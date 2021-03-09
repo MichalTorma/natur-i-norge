@@ -33,16 +33,16 @@ class HomePage extends StatelessWidget {
                   context: context,
                   applicationName: 'Natur i Norge guide',
                   applicationIcon: Container(
-                    height: 100,
-                    width: 100,
+                    height: 150,
+                    width: 150,
                     child: Image.asset(
-                      'assets/icon.png',
-                      width: 100,
-                      height: 100,
+                      'assets/launch_icon/foreground.png',
+                      width: 150,
+                      height: 150,
                     ),
                   ),
                   children: [
-                    Text('Rune Halvorsen'),
+                    Text('Prof. Rune Halvorsen'),
                     Text('Michal Torma'),
                     Text('Artsdatabanken'),
                     // ElevatedButton(
@@ -60,7 +60,8 @@ class HomePage extends StatelessWidget {
             GridView(
               padding: EdgeInsets.all(24),
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 100,
+                  childAspectRatio: 1.618,
+                  maxCrossAxisExtent: 200,
                   crossAxisSpacing: 24,
                   mainAxisSpacing: 24),
               children: [
