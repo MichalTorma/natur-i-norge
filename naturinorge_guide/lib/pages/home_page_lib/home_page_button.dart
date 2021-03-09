@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class HomePageButton extends StatelessWidget {
@@ -23,15 +24,13 @@ class HomePageButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Expanded(child: image),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    text,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    textScaleFactor: 1.7,
-                    // style: Theme.of(context).textTheme.headline3,
-                  ),
+                AutoSizeText(
+                  text,
+                  maxLines: 1,
+                  wrapWords: false,
+                  textAlign: TextAlign.center,
+                  textScaleFactor: 1.7,
+                  // style: Theme.of(context).textTheme.headline3,
                 )
               ],
             ),
