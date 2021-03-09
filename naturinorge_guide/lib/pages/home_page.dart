@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
               children: [
                 HomePageButton(
                     key: ValueKey('nin_structure_btn'),
-                    icon: Icons.map_outlined,
+                    image: Image.asset('assets/network_icon.png'),
                     text: LocaleKeys.structure.tr(),
                     onPressed: () => Navigator.push(
                         context,
@@ -74,7 +74,7 @@ class HomePage extends StatelessWidget {
                             builder: (context) => MajorTypeGroupPage()))),
                 HomePageButton(
                     key: ValueKey('lkm_btn'),
-                    icon: Icons.list,
+                    image: Image.asset('assets/gradient_icon.png'),
                     text: 'LKM',
                     onPressed: () => Navigator.push(
                         context,
@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
                             builder: (context) => LecListPage()))),
                 HomePageButton(
                     key: ValueKey('species_btn'),
-                    icon: Icons.place_outlined,
+                    image: Image.asset('assets/species_icon.png'),
                     text: 'Arter',
                     onPressed: () => Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SpeciesPage())))

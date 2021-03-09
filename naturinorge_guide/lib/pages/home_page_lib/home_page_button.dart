@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class HomePageButton extends StatelessWidget {
   const HomePageButton(
       {Key? key,
-      required this.icon,
+      required this.image,
       required this.text,
       required this.onPressed})
       : super(key: key);
-  final IconData icon;
+  final Image image;
   final String text;
   final Function onPressed;
 
@@ -22,10 +22,7 @@ class HomePageButton extends StatelessWidget {
               direction: Axis.vertical,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Expanded(
-                    child: Icon(
-                  icon,
-                )),
+                Expanded(child: image),
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
