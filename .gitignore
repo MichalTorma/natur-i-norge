@@ -15,3 +15,4 @@
 ninEnv/
 .venv/
 scripts/database/db_env/
+.vim/
