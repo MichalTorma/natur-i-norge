@@ -17,3 +17,4 @@ ninEnv/
 scripts/database/db_env/
 .vim/
 invoices/
+**/.DS_Store
