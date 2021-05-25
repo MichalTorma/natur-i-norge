@@ -33,10 +33,10 @@ class _SpeciesPageState extends State<SpeciesPage> {
           child: TextFormField(
               decoration: InputDecoration(
                 icon: Icon(Icons.search),
-                hintText: 'Søk',
+                hintText: 'Søk i Fastmarksskogsmark (T-4)',
               ),
               // initialValue: ,
-              autocorrect: false,
+              autocorrect: true,
               onChanged: (filter) async {
                 var newSpecies = await db!.getSpeciesByFilter(filter);
                 setState(() {

@@ -15,11 +15,8 @@ class MajorTypeGroupButton extends StatefulWidget {
 }
 
 class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
-  _initialize(BuildContext context) {}
-
   @override
   Widget build(BuildContext context) {
-    _initialize(context);
     return ElevatedButton(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
