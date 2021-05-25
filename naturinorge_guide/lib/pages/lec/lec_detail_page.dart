@@ -15,7 +15,7 @@ class LecDetailPage extends StatelessWidget {
 
     body.add(AutoSizeText(
       lec!.detailedLec.name ?? '',
-      style: Theme.of(context).textTheme.headline2,
+      style: Theme.of(context).textTheme.headline4,
       textAlign: TextAlign.center,
       wrapWords: false,
     ));
