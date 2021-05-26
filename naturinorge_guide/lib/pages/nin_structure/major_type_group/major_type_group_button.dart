@@ -23,14 +23,15 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
+            flex: 3,
             child: Center(
                 child: Text(
               widget.ninMajorTypeGroup!.data!.id!,
               textScaleFactor: 2,
             )),
           ),
-          Flexible(
-              fit: FlexFit.tight,
+          Expanded(
+              flex: 2,
               child: AutoSizeText(
                 widget.ninMajorTypeGroup!.name!,
                 maxLines: 3,
