@@ -5,7 +5,6 @@ Color? getLecColor(NinMajorTypeLECData majorTypeLec) {
   switch (majorTypeLec.lecTypeId) {
     case 'dLEC':
       return Colors.red[700];
-      break;
     case 'mLEC':
       return Colors.deepOrange[50];
     case 'iLEC':
