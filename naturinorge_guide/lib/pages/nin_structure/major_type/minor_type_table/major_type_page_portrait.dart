@@ -22,12 +22,18 @@ class MajorTypePagePortrait extends StatelessWidget {
       return Container();
     }
     List<Widget> body = [
-      AutoSizeText(
-        majorType!.name!,
-        style: Theme.of(context).textTheme.headline4,
-        textAlign: TextAlign.center,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: AutoSizeText(
+          majorType!.name!,
+          style: Theme.of(context).textTheme.headline4,
+          textAlign: TextAlign.center,
+        ),
       ),
-      Text(majorType!.description!),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: Text(majorType!.description!),
+      ),
     ];
     if (Provider.of<MajorTypeProvider>(context).xAxis != null) {
       body.addAll([
