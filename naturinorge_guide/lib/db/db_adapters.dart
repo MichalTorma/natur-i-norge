@@ -4,7 +4,6 @@ import 'dart:ui';
 
 import 'package:naturinorge_guide/db/nin_db.dart';
 import 'package:naturinorge_guide/details/detailed_adapter.dart';
-import 'dart:math';
 import 'package:naturinorge_guide/main.dart';
 
 class StandardSegmentAdapter {
