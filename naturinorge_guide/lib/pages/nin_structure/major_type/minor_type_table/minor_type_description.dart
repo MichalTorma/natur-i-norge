@@ -19,12 +19,14 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
   @override
   void initState() {
     super.initState();
-    detailsList =
-        widget.minorTypeBlock!.minorTypeScaled!.detailedMinorTypesScaled!.length >
-                0
-            ? widget.minorTypeBlock!.minorTypeScaled!.detailedMinorTypesScaled
-            : widget.minorTypeBlock!.minorTypeScaled!.minorTypes!
-                .map((e) => e.minorType) as List<dynamic>?;
+    var details = widget.minorTypeBlock!.minorTypeScaled!
+                .detailedMinorTypesScaled!.length >
+            0
+        ? widget.minorTypeBlock!.minorTypeScaled!.detailedMinorTypesScaled
+        : widget.minorTypeBlock!.minorTypeScaled!.minorTypes!
+            .map((e) => e.minorType)
+            .toList();
+    detailsList = details;
     _controller = TabController(length: detailsList!.length, vsync: this);
     _controller!.addListener(() {
       if (_controller!.index != selected) {
@@ -83,8 +85,8 @@ class _MinorTypeDescriptionState extends State<MinorTypeDescription>
         slivers: [
           SliverAppBar(
               stretch: true,
-              title:
-                  Text(widget.minorTypeBlock!.minorTypeScaled!.minorTypeScaledId!),
+              title: Text(
+                  widget.minorTypeBlock!.minorTypeScaled!.minorTypeScaledId!),
               bottom: detailsList!.length > 1
                   ? PreferredSize(
                       preferredSize: Size.fromHeight(50.0),
