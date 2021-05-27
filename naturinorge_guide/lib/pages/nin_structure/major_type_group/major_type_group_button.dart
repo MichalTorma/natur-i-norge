@@ -33,6 +33,7 @@ class _MajorTypeGroupButtonState extends State<MajorTypeGroupButton> {
           Expanded(
               flex: 2,
               child: AutoSizeText(
+                // 'Maaaaaaaaaa\u00ADrgaret­Are­You­Grieving­Over­Goldengrove­Unleaving­Leaves­Like­The­Things­Of­Man­You­With­Your­Fresh­Thoughts­Care­For­Can­You­Ah­As­The­Heart­Grows­Older­It­Will­Come­To­Such­Sights­Colder­By­And­By­Nor­Spare­A­Sigh­Though­Worlds­Of­Wanwood­Leafmeal­Lie­And­Yet­You­Will­Weep­And­Know­Why­Now­No­Matter­Child­The­Name­Sorrows­Springs­Are­The­Same­Nor­Mouth­Had­No­Nor­Mind­Expressed­What­Heart­Heard­Of­Ghost­Guessed­It­Is­The­Blight­Man­Was­Born­For­It­Is­Margaret­You­Mourn­For',
                 widget.ninMajorTypeGroup!.name!,
                 maxLines: 3,
                 wrapWords: false,
