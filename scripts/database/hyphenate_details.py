@@ -18,9 +18,7 @@ engine = create_engine(f'sqlite:///{database_file}')
 # %%
 Session = sessionmaker(bind=engine)
 session = Session()
-# %%
-details = session.query(model.Detail)\
-    .filter(model.Detail.language_id == 'nb').all()
+
 # %%
 def hyphenate_word(word):
     if word == None:
@@ -37,6 +35,18 @@ def hyphenate_detail(detail):
     session.commit()
 
 # %%
-for detail in details:
+# %%
+details_nb = session.query(model.Detail)\
+    .filter(model.Detail.language_id == 'nb').all()
+for detail in details_nb:
+    hyphenate_detail(detail)
+# %%
+pyphen.language_fallback('en_GB')
+dic = pyphen.Pyphen(lang='en')
+
+# %%
+details_nb = session.query(model.Detail)\
+    .filter(model.Detail.language_id == 'en').all()
+for detail in details_nb:
     hyphenate_detail(detail)
 # %%
