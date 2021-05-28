@@ -47,8 +47,10 @@ class _MajorTypeButtonState extends State<MajorTypeButton> {
                   child: AutoSizeText(
                 widget.ninMajorType!.name!,
                 maxLines: 4,
-                wrapWords: false,
+                wrapWords: true,
+                softWrap: true,
                 minFontSize: 8,
+                overflow: TextOverflow.ellipsis,
               )),
             ],
           ),
