@@ -34,7 +34,7 @@ class MajorTypePagePortrait extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
         child: AutoSizeText(
           majorType!.description!,
-          wrapWords: false,
+          wrapWords: true,
           softWrap: true,
         ),
       ),
