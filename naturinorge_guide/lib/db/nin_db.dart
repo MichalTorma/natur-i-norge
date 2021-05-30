@@ -291,8 +291,13 @@ class NiNDatabase extends _$NiNDatabase {
           ..where((tbl) => tbl.lecId.equals(lecId)))
         .get();
     var mtIds = mtLecs.map((e) => e.majorTypeId);
-    var mts =
-        await (select(ninMajorType)..where((tbl) => tbl.id.isIn(mtIds))).get();
+    var mts = await (select(ninMajorType)
+          ..where((tbl) => tbl.id.isIn(mtIds))
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.majorTypeGroupId),
+            (t) => OrderingTerm(expression: t.order)
+          ]))
+        .get();
     return Detailed<NinMajorTypeData>().fromList(mts, locale);
   }
 
