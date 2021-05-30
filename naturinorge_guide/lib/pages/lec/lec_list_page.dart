@@ -15,7 +15,7 @@ class LecListPage extends StatelessWidget {
     Provider.of<LecProvider>(context, listen: false).initalize();
     return Scaffold(
         appBar: AppBar(
-          title: Text('LEC'),
+          title: Text('LKM'),
           bottom: LoadingWidget(),
           actions: [
             IconButton(
