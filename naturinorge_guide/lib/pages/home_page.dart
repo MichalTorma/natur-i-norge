@@ -112,7 +112,7 @@ class HomePage extends StatelessWidget {
                 HomePageButton(
                     key: ValueKey('lkm_btn'),
                     image: Image.asset('assets/gradient_icon.png'),
-                    text: 'LKM',
+                    text: 'LEC',
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
