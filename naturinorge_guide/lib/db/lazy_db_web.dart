@@ -9,7 +9,7 @@ Future<DelegatedDatabase> getLazyDb() async {
   final storage = await MoorWebStorage.indexedDbIfSupported(dbName);
   return WebDatabase.withStorage(
     storage,
-    logStatements: false,
+    logStatements: true,
     initializer: () async {
       print('Initializer triggered');
       // Copy from asset
