@@ -9,6 +9,7 @@ import 'package:naturinorge_guide/pages/nin_structure/nin_structure_provider.dar
 import 'package:naturinorge_guide/pages/nin_structure/other/loading.dart';
 import 'package:naturinorge_guide/pages/nin_structure/other/loading_overlay.dart';
 import 'package:naturinorge_guide/pages/species/species_page.dart';
+import 'package:naturinorge_guide/tools/beta_banner.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,6 +28,7 @@ class HomePage extends StatelessWidget {
           title: Text('Natur i Norge guide'),
           bottom: LoadingWidget(),
           actions: [
+            BetaBanner(),
             PopupMenuButton<int>(
               itemBuilder: (context) => [
                 PopupMenuItem<int>(value: 0, child: Text('Om NiN-Guide')),
