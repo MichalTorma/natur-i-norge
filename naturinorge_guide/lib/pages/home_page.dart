@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
                     Text(
                         'Natur i Norge Guide er utviklet av Naturhistorisk Museum ved Universitetet i Oslo (NHM) i samarbeid med Artsdatabanken. Appen er et hjelpemiddel for naturkartleggere i arbeidet med å typifisere norsk natur etter typesystemet Natur i Norge.'),
                     Text(
-                        'Appen ligger nå ute i en testversjon, og inneholder foreløpig kun art-/habitatrelasjoner for utvalgte arter i skogsmark. Datagrunnlaget appen bygger på er utarbeidet av NHM med bistand fra flere norske fagmiljø under utviklingen av Natur i Norge versjon 2. Dette datagrunnlaget er også tilgjengelig via'),
+                        'Appen ligger nå ute i en testversjon, og inneholder foreløpig kun art-/habitatrelasjoner for utvalgte arter i skogsmark. Datagrunnlaget appen bygger på, er sammenstilt av Rune Halvorsen ved Naturhistorisk museum med bistand fra flere norske fagmiljøer som ledd i arbeidet med utvikling av NiN versjon 2. Dette datagrunnlaget er også tilgjengelig via'),
                     ElevatedButton(
                       onPressed: () async => await launch(
                           'https://artsdatabanken.no/egenskapsbanken'),
@@ -78,9 +78,8 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
 
-                    Text('Prof. Rune Halvorsen'),
-                    Text('Michal Torma'),
-                    Text('Artsdatabanken'),
+                    Text(
+                        'Natur i Norge guide er utviklet av Michal Torma i samarbeid med øvrige ansatte ved Geo-økologisk forskningsgruppe, Naturhistorisk museum, Universitetet i Oslo og med Artsdatabanken.'),
                     // ElevatedButton(
                     //     onPressed: () async => await launch(_mail_url),
                     //     // onPressed: () async => await canLaunch(_mail_url)
