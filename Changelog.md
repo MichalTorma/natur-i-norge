@@ -1,5 +1,7 @@
-# 1.0.2
+# 1.0.3
 
+
+# 1.0.2
 - Set new text in 'about us' (øb)
 - Fix "LKM" and "LEC" confusion (øb,ph)
 - Fix some LEC shown in english (øb,ph)
