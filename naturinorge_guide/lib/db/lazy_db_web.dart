@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 Future<DelegatedDatabase> getLazyDb() async {
   print("Constructing web database");
   final dbAssetName = 'nin_database.db';
-  final dbName = 'nin_84.db';
+  final dbName = 'nin_85.db';
   final storage = await MoorWebStorage.indexedDbIfSupported(dbName);
   // await MoorWebStorage.volatile();
   return WebDatabase.withStorage(
