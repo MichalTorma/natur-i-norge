@@ -210,25 +210,6 @@ class NiNDatabase extends _$NiNDatabase {
               tbl.lecId.equals(majorTypeLecId.lecId)))
         .get();
     return esg.map((e) => e.id).toSet().toList();
-    // var res = await (select(ninElementarySegmentCombination)
-    //       ..where((tbl) => tbl.majorTypeLECId.equals(majorTypeLecId.id)))
-    //     .get();
-    // if (res.length > 0) {
-    //   return res.map((e) => e.elementarySegmentGroupId).toSet().toList();
-    // }
-    // var mtl = await (select(ninMajorTypeLEC)
-    //       ..where((tbl) => tbl.id.equals(majorTypeLecId)))
-    //     .getSingle();
-    // var es = await (select(ninElementarySegment)
-    //       ..where((tbl) => tbl.lecId.equals(mtl.lecId))
-    //       ..orderBy([(u) => OrderingTerm.asc(ninElementarySegment.order)]))
-    //     .get();
-    // var es_ids = es.map((e) => e.id).toSet().toList();
-    // // return es_ids;
-    // var esg = await (select(ninElementarySegmentGroup)
-    //       ..where((tbl) => tbl.elementarySegmentId.isIn(es_ids)))
-    //     .get();
-    // return esg.map((e) => e.id).toSet().toList();
   }
 
   Future<Detailed<NinLECData>> getLecById(String? lecId, Locale? locale) async {
@@ -328,7 +309,7 @@ class NiNDatabase extends _$NiNDatabase {
   }
 
   @override
-  int get schemaVersion => 77;
+  int get schemaVersion => 80;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
