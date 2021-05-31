@@ -43,20 +43,15 @@ class NinStructureProvider extends ChangeNotifier {
   Detailed<NinMajorTypeGroupData>? get selectedMajorTypeGroup =>
       _selectedMajorTypeGroupData;
 
-  int get getMajorTypeGroupLength {
-    if (_ninMajorTypeGroups == null)
-      return 0;
-    else
-      return _ninMajorTypeGroups.length;
-  }
-
   List<Detailed<NinMajorTypeGroupData>> get majorTypeGroups =>
       _ninMajorTypeGroups;
 
   Future _loadMajorTypeGroups() async {
     List<NinMajorTypeGroupData>? majorTypeGroups;
     while (majorTypeGroups == null || majorTypeGroups.length == 0) {
-      majorTypeGroups = await db!.allMajorTypeGroups;
+      try {
+        majorTypeGroups = await db!.allMajorTypeGroups;
+      } catch (e) {}
     }
     _ninMajorTypeGroups = await Detailed<NinMajorTypeGroupData>()
         .fromList(majorTypeGroups, locale);
