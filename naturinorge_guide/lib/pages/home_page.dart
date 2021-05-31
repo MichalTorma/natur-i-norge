@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
                   ),
                   children: [
                     Text(
-                        'Natur i Norge Guide er utviklet av Naturhistorisk Museum ved Universitetet i Oslo (NHM) i samarbeid med Artsdatabanken. Appen er et hjelpemiddel for naturkartleggere i arbeidet med å typifisere norsk natur etter typesystemet Natur i Norge.'),
+                        'Natur i Norge guide er utviklet av Michal Torma i samarbeid med øvrige ansatte ved Geo-økologisk forskningsgruppe, Naturhistorisk museum, Universitetet i Oslo og med Artsdatabanken. Appen er et hjelpemiddel for naturkartleggere i arbeidet med å typifisere norsk natur etter typesystemet Natur i Norge.'),
                     Text(
                         'Appen ligger nå ute i en testversjon, og inneholder foreløpig kun art-/habitatrelasjoner for utvalgte arter i skogsmark. Datagrunnlaget appen bygger på, er sammenstilt av Rune Halvorsen ved Naturhistorisk museum med bistand fra flere norske fagmiljøer som ledd i arbeidet med utvikling av NiN versjon 2. Dette datagrunnlaget er også tilgjengelig via'),
                     ElevatedButton(
