@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/db/db_adapters.dart';
+import 'package:naturinorge_guide/db/nin_db.dart';
+import 'package:naturinorge_guide/details/detailed_adapter.dart';
 import 'package:naturinorge_guide/pages/lec/lec_detail_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/minor_type_table/axis_block.dart';
@@ -13,6 +15,12 @@ import 'package:toggle_switch/toggle_switch.dart';
 class SecondaryAxisOptions extends StatelessWidget {
   const SecondaryAxisOptions({Key? key}) : super(key: key);
 
+  String _buildsegmentString(StandardSegmentAdapter ssa) {
+    var order = ssa.standardSegment.data!.order!;
+    var es = ssa.elementarySegments!.map((e) => e.value).join('|');
+    return '$order\n$es';
+  }
+
   @override
   Widget build(BuildContext context) {
     // List<Widget> body = List<Widget>.empty(growable: true);
@@ -22,7 +30,7 @@ class SecondaryAxisOptions extends StatelessWidget {
 
     var body = Provider.of<MajorTypeProvider>(context).zAxis!.map((axis) {
       var standarSegments = axis.standardSegments
-          .map((e) => (e.standardSegment.data!.order! + 1).toString())
+          .map((e) => (_buildsegmentString(e)).toString())
           .toList();
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 4.0),
