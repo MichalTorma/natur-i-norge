@@ -20,7 +20,7 @@ class GadVisibility {
 }
 
 class MajorTypeProvider extends ChangeNotifier {
-  final Locale locale;
+  Locale locale;
 
   MajorTypeProvider(this.locale);
 
@@ -47,6 +47,10 @@ class MajorTypeProvider extends ChangeNotifier {
   int _showGad = GadVisibility.Visible;
   GadHelper? _gadHelper;
   List<dynamic>? _gadArray;
+
+  setLocale(Locale locale) {
+    this.locale = locale;
+  }
 
   clear() {
     _xAxis = null;
