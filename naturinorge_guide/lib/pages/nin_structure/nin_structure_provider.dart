@@ -22,6 +22,11 @@ class NinStructureProvider extends ChangeNotifier {
     _locale = locale;
   }
 
+  Future setLocale(Locale locale) async {
+    _locale = locale;
+    await initialize();
+  }
+
   Future initialize() async {
     await _loadMajorTypeGroups();
     _isLoading = false;
