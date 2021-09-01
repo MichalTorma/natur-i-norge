@@ -214,19 +214,19 @@ Diagnostiske arter
         session.merge(model.Detail(
             _id = detail_id,
             language_id = 'nb',
-            key = '<name>',
+            key = '__name__',
             value = name
         ))
         session.merge(model.Detail(
             _id = detail_id,
             language_id = 'nb',
-            key = '<physiognomy>',
+            key = '__physiognomy__',
             value = fysiognomi
         ))
         session.merge(model.Detail(
             _id = detail_id,
             language_id = 'nb',
-            key = '<ecological_characteristics>',
+            key = '__ecological_characteristics__',
             value = ecologisk_char
         ))
         # delete unused enteries in minor

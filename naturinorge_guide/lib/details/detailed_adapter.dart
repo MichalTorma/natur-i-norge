@@ -41,22 +41,23 @@ class Detailed<K> {
       return;
     }
 
-    var nameDetail = details.firstWhereOrNull((element) => element.key == '<name>');
+    var nameDetail =
+        details.firstWhereOrNull((element) => element.key == '__name__');
     if (nameDetail != null) {
       name = fixTextFromOutside(nameDetail.value);
-      nameHeader = tr('<name>');
+      nameHeader = tr('__name__');
     }
 
-    var descriptionDetail = details.firstWhereOrNull(
-        (element) => element.key == '<description>');
+    var descriptionDetail =
+        details.firstWhereOrNull((element) => element.key == '__description__');
     if (descriptionDetail == null) {
     } else {
       description = fixTextFromOutside(descriptionDetail.value);
     }
-    descriptionHeader = tr('<description>');
+    descriptionHeader = tr('__description__');
 
-    details.removeWhere(
-        (element) => element.key == '<name>' || element.key == '<description>');
+    details.removeWhere((element) =>
+        element.key == '__name__' || element.key == '__description__');
     other = Map.fromIterable(details,
         key: (e) {
           var header = e.key;
