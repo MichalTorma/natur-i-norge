@@ -27,9 +27,101 @@ CREATE TABLE "nin_Species" (
 	"vernacularName" TEXT, 
 	PRIMARY KEY (pid)
 );
-CREATE UNIQUE INDEX "ix_nin_Species_scientificNameId" ON "nin_Species" ("scientificNameId");
 CREATE INDEX "ix_nin_Species_scientificName" ON "nin_Species" ("scientificName");
 CREATE INDEX "ix_nin_Species_vernacularName" ON "nin_Species" ("vernacularName");
+CREATE UNIQUE INDEX "ix_nin_Species_scientificNameId" ON "nin_Species" ("scientificNameId");
+CREATE TABLE dummy_table_830f838c_6a15_4435_9077_c8077311a1b5 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_1c7d4377_32c5_4412_8932_8d7f7690aea8 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_57111ed7_42be_4551_b991_9a81f85a0e78 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4051ad47_989e_4f79_9c74_c25d3db093dc (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_ba5a6b32_d3a3_43bf_9109_3aaad23a7c81 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_d54bfa92_87e5_42f8_92b4_a31a1258d29d (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_1c33d1da_3fb0_4f01_9d9d_30682022b6e6 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_e229d889_6e8f_41eb_9c42_992338187275 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_8491bcb2_684d_4e98_a284_7541a9738c9a (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_ba7abe56_1b65_4874_b41e_d66bcce639d2 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_a63acf8f_07b7_42a1_a416_cd59a95312cc (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_4738fc97_b4c9_45ec_a203_d1fd35fd2326 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_e97f2beb_7171_4bcd_84a6_d80e27160aa1 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_71ab73ad_cdd9_4fcf_87c8_ef6d7d1e6093 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_9dced642_cb04_4c51_892c_613b01991aad (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c019d6e8_428e_4437_bb98_5d5fd36b8052 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_1fa3eed9_bd5d_4e40_9b19_bdaf1ccf86dd (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_15dafdab_6b53_4b8a_813a_7cd2756a24f9 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_fc5ea5b2_f9dc_46da_b80d_804ed00a5c09 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_eec10076_cfce_414f_acee_78f6b64b9333 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_46eff8b3_fd17_42ac_b361_959e3219ba01 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_c74d2b86_dbc5_4345_a748_a40068354466 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
+CREATE TABLE dummy_table_be108c9a_e0fa_4a60_8a87_a1fff82f6994 (
+	dummy_id_col INTEGER NOT NULL, 
+	PRIMARY KEY (dummy_id_col)
+);
 CREATE TABLE "nin_Detail" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -39,9 +131,9 @@ CREATE TABLE "nin_Detail" (
 	PRIMARY KEY (pid), 
 	FOREIGN KEY(language_id) REFERENCES "nin_Language" (_id)
 );
+CREATE INDEX "ix_nin_Detail_key" ON "nin_Detail" ("key");
 CREATE INDEX "ix_nin_Detail__id" ON "nin_Detail" (_id);
 CREATE INDEX detail_index ON "nin_Detail" (_id, language_id, "key");
-CREATE INDEX "ix_nin_Detail_key" ON "nin_Detail" ("key");
 CREATE TABLE "nin_MajorTypeGroup" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -125,9 +217,9 @@ CREATE TABLE "nin_MajorTypeLEC" (
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id), 
 	FOREIGN KEY("lecType_id") REFERENCES "nin_LECType" (_id)
 );
+CREATE UNIQUE INDEX "ix_nin_MajorTypeLEC__id" ON "nin_MajorTypeLEC" (_id);
 CREATE INDEX "ix_nin_MajorTypeLEC_lec_id" ON "nin_MajorTypeLEC" (lec_id);
 CREATE INDEX "ix_nin_MajorTypeLEC_majorType_id" ON "nin_MajorTypeLEC" ("majorType_id");
-CREATE UNIQUE INDEX "ix_nin_MajorTypeLEC__id" ON "nin_MajorTypeLEC" (_id);
 CREATE TABLE "nin_ElementarySegment" (
 	pid INTEGER NOT NULL, 
 	_id TEXT, 
@@ -167,9 +259,9 @@ CREATE TABLE "nin_StandardSegment" (
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)
 );
-CREATE UNIQUE INDEX "ix_nin_StandardSegment__id" ON "nin_StandardSegment" (_id);
-CREATE INDEX "ix_nin_StandardSegment_majorType_id" ON "nin_StandardSegment" ("majorType_id");
 CREATE INDEX "ix_nin_StandardSegment_majorTypeLEC_id" ON "nin_StandardSegment" ("majorTypeLEC_id");
+CREATE INDEX "ix_nin_StandardSegment_majorType_id" ON "nin_StandardSegment" ("majorType_id");
+CREATE UNIQUE INDEX "ix_nin_StandardSegment__id" ON "nin_StandardSegment" (_id);
 CREATE TABLE "nin_GadModifier" (
 	pid INTEGER NOT NULL, 
 	"majorTypeLEC_id" TEXT, 
@@ -206,12 +298,12 @@ CREATE TABLE "nin_ElementarySegmentGroup" (
 	FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id), 
 	FOREIGN KEY("standardSegment_id") REFERENCES "nin_StandardSegment" (_id)
 );
-CREATE INDEX "ix_nin_ElementarySegmentGroup_standardSegment_id" ON "nin_ElementarySegmentGroup" ("standardSegment_id");
 CREATE INDEX "ix_nin_ElementarySegmentGroup__id" ON "nin_ElementarySegmentGroup" (_id);
 CREATE INDEX "ix_nin_ElementarySegmentGroup_lec_id" ON "nin_ElementarySegmentGroup" (lec_id);
 CREATE INDEX "ix_nin_ElementarySegmentGroup_elementarySegment_id" ON "nin_ElementarySegmentGroup" ("elementarySegment_id");
 CREATE INDEX "ix_nin_ElementarySegmentGroup_majorType_id" ON "nin_ElementarySegmentGroup" ("majorType_id");
 CREATE INDEX "ElementarySegmentGroup_index" ON "nin_ElementarySegmentGroup" ("standardSegment_id", "majorType_id");
+CREATE INDEX "ix_nin_ElementarySegmentGroup_standardSegment_id" ON "nin_ElementarySegmentGroup" ("standardSegment_id");
 CREATE TABLE "nin_StandardSegmentElement" (
 	pid INTEGER NOT NULL, 
 	"standardSegment_id" TEXT, 
