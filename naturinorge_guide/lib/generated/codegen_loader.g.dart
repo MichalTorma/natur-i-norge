@@ -7,10 +7,10 @@ abstract class LocaleKeys {
   static const T4_helper = 'T4_helper';
   static const read_mode = 'read_mode';
   static const show_less = 'show_less';
-  // static const <name> = '<name>';
-  // static const <description> = '<description>';
-  // static const <ecological_characteristics> = '<ecological_characteristics>';
-  // static const <physiognomy> = '<physiognomy>';
-  // static const <terrain_and_aerial_photo_characteristics> = '<terrain_and_aerial_photo_characteristics>';
+  // static const __name__ = '__name__';
+  // static const __description__ = '__description__';
+  // static const __ecological_characteristics__ = '__ecological_characteristics__';
+  // static const __physiognomy__ = '__physiognomy__';
+  // static const __terrain_and_aerial_photo_characteristics__ = '__terrain_and_aerial_photo_characteristics__';
 
 }

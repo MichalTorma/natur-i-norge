@@ -43,7 +43,7 @@ def get_minor_type(minor_type):
         model.Detail(
             _id=detail_id,
             language_id='nb',
-            key='<name>',
+            key='__name__',
             value=name
         )
     )
@@ -52,7 +52,7 @@ def get_minor_type(minor_type):
             model.Detail(
             _id=detail_id,
             language_id='nb',
-            key='<description>',
+            key='__description__',
             value=desc
         )
         )

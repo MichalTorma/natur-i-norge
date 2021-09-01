@@ -5,9 +5,9 @@
     "T4_helper": "T4 helper",
     "read_mode": "Read more",
     "show_less": "Show less",
-    "<name>": "Name",
-    "<description>": "Description",
-    "<ecological_characteristics>": "Ecological characteristics",
-    "<physiognomy>": "Physiognomy",
-    "<terrain_and_aerial_photo_characteristics>": "Terrain and aerial photo characteristics"
+    "__name__": "Name",
+    "__description__": "Description",
+    "__ecological_characteristics__": "Ecological characteristics",
+    "__physiognomy__": "Physiognomy",
+    "__terrain_and_aerial_photo_characteristics__": "Terrain and aerial photo characteristics"
 }

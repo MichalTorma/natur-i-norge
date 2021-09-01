@@ -5,10 +5,10 @@
     "T4_helper": "T4 hjelper",
     "read_mode": "Lese mer",
     "show_less": "Vis mindre",
-    "<name>": "Navn",
-    "<description>": "Beskrivelse",
-    "<ecological_characteristics>": "Økologisk karakteristikk",
-    "<physiognomy>": "Fysiognomi",
-    "<terrain_and_aerial_photo_characteristics>": "Terreng- og flyfotokarakteristikk"
+    "__name__": "Navn",
+    "__description__": "Beskrivelse",
+    "__ecological_characteristics__": "Økologisk karakteristikk",
+    "__physiognomy__": "Fysiognomi",
+    "__terrain_and_aerial_photo_characteristics__": "Terreng- og flyfotokarakteristikk"
 
 }
