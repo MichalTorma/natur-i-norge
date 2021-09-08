@@ -101,6 +101,7 @@ class SecondaryAxisWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: ToggleSwitch(
+                totalSwitches: standarSegments.length,
                 minWidth: 60.0,
                 labels: standarSegments,
                 onToggle: (value) => Provider.of<MajorTypeProvider>(context,

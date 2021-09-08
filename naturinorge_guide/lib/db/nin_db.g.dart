@@ -7,725 +7,8 @@ part of 'nin_db.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-class NinLanguageData extends DataClass implements Insertable<NinLanguageData> {
-  final int? pid;
-  final String? id;
-  final String? name;
-  NinLanguageData({required this.pid, this.id, this.name});
-  factory NinLanguageData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    return NinLanguageData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
-    if (!nullToAbsent || id != null) {
-      map['_id'] = Variable<String?>(id);
-    }
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String?>(name);
-    }
-    return map;
-  }
-
-  NinLanguageCompanion toCompanion(bool nullToAbsent) {
-    return NinLanguageCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-    );
-  }
-
-  factory NinLanguageData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return NinLanguageData(
-      pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      name: serializer.fromJson<String>(json['name']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
-      '_id': serializer.toJson<String?>(id),
-      'name': serializer.toJson<String?>(name),
-    };
-  }
-
-  NinLanguageData copyWith({int? pid, String? id, String? name}) =>
-      NinLanguageData(
-        pid: pid ?? this.pid,
-        id: id ?? this.id,
-        name: name ?? this.name,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('NinLanguageData(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('name: $name')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, name.hashCode)));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is NinLanguageData &&
-          other.pid == this.pid &&
-          other.id == this.id &&
-          other.name == this.name);
-}
-
-class NinLanguageCompanion extends UpdateCompanion<NinLanguageData> {
-  final Value<int?> pid;
-  final Value<String?> id;
-  final Value<String?> name;
-  const NinLanguageCompanion({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.name = const Value.absent(),
-  });
-  NinLanguageCompanion.insert({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.name = const Value.absent(),
-  });
-  static Insertable<NinLanguageData> custom({
-    Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? name,
-  }) {
-    return RawValuesInsertable({
-      if (pid != null) 'pid': pid,
-      if (id != null) '_id': id,
-      if (name != null) 'name': name,
-    });
-  }
-
-  NinLanguageCompanion copyWith(
-      {Value<int>? pid, Value<String>? id, Value<String>? name}) {
-    return NinLanguageCompanion(
-      pid: pid ?? this.pid,
-      id: id ?? this.id,
-      name: name ?? this.name,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
-    }
-    if (id.present) {
-      map['_id'] = Variable<String?>(id.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String?>(name.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NinLanguageCompanion(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('name: $name')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class NinLanguage extends Table with TableInfo<NinLanguage, NinLanguageData> {
-  final GeneratedDatabase _db;
-  final String? _alias;
-  NinLanguage(this._db, [this._alias]);
-  final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn? _name;
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn('name', $tableName, true,
-        $customConstraints: '');
-  }
-
-  @override
-  List<GeneratedColumn> get $columns => [pid, id, name];
-  @override
-  NinLanguage get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'nin_Language';
-  @override
-  final String actualTableName = 'nin_Language';
-  @override
-  VerificationContext validateIntegrity(Insertable<NinLanguageData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('pid')) {
-      context.handle(
-          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
-    }
-    if (data.containsKey('_id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {pid};
-  @override
-  NinLanguageData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinLanguageData.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  NinLanguage createAlias(String alias) {
-    return NinLanguage(_db, alias);
-  }
-
-  @override
-  List<String> get customConstraints => const ['PRIMARY KEY (pid)'];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class NinMappingScaleData extends DataClass
-    implements Insertable<NinMappingScaleData> {
-  final int? pid;
-  final int? id;
-  final String? name;
-  NinMappingScaleData({required this.pid, this.id, this.name});
-  factory NinMappingScaleData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    return NinMappingScaleData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
-    if (!nullToAbsent || id != null) {
-      map['_id'] = Variable<int?>(id);
-    }
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String?>(name);
-    }
-    return map;
-  }
-
-  NinMappingScaleCompanion toCompanion(bool nullToAbsent) {
-    return NinMappingScaleCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-    );
-  }
-
-  factory NinMappingScaleData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return NinMappingScaleData(
-      pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<int>(json['_id']),
-      name: serializer.fromJson<String>(json['name']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
-      '_id': serializer.toJson<int?>(id),
-      'name': serializer.toJson<String?>(name),
-    };
-  }
-
-  NinMappingScaleData copyWith({int? pid, int? id, String? name}) =>
-      NinMappingScaleData(
-        pid: pid ?? this.pid,
-        id: id ?? this.id,
-        name: name ?? this.name,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('NinMappingScaleData(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('name: $name')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, name.hashCode)));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is NinMappingScaleData &&
-          other.pid == this.pid &&
-          other.id == this.id &&
-          other.name == this.name);
-}
-
-class NinMappingScaleCompanion extends UpdateCompanion<NinMappingScaleData> {
-  final Value<int?> pid;
-  final Value<int?> id;
-  final Value<String?> name;
-  const NinMappingScaleCompanion({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.name = const Value.absent(),
-  });
-  NinMappingScaleCompanion.insert({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.name = const Value.absent(),
-  });
-  static Insertable<NinMappingScaleData> custom({
-    Expression<int>? pid,
-    Expression<int>? id,
-    Expression<String>? name,
-  }) {
-    return RawValuesInsertable({
-      if (pid != null) 'pid': pid,
-      if (id != null) '_id': id,
-      if (name != null) 'name': name,
-    });
-  }
-
-  NinMappingScaleCompanion copyWith(
-      {Value<int>? pid, Value<int>? id, Value<String>? name}) {
-    return NinMappingScaleCompanion(
-      pid: pid ?? this.pid,
-      id: id ?? this.id,
-      name: name ?? this.name,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
-    }
-    if (id.present) {
-      map['_id'] = Variable<int?>(id.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String?>(name.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NinMappingScaleCompanion(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('name: $name')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class NinMappingScale extends Table
-    with TableInfo<NinMappingScale, NinMappingScaleData> {
-  final GeneratedDatabase _db;
-  final String? _alias;
-  NinMappingScale(this._db, [this._alias]);
-  final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn? _id;
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn? _name;
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn('name', $tableName, true,
-        $customConstraints: '');
-  }
-
-  @override
-  List<GeneratedColumn> get $columns => [pid, id, name];
-  @override
-  NinMappingScale get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'nin_MappingScale';
-  @override
-  final String actualTableName = 'nin_MappingScale';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<NinMappingScaleData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('pid')) {
-      context.handle(
-          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
-    }
-    if (data.containsKey('_id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {pid};
-  @override
-  NinMappingScaleData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinMappingScaleData.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  NinMappingScale createAlias(String alias) {
-    return NinMappingScale(_db, alias);
-  }
-
-  @override
-  List<String> get customConstraints =>
-      const ['PRIMARY KEY (pid)', 'UNIQUE (_id)'];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class NinGadScaleData extends DataClass implements Insertable<NinGadScaleData> {
-  final int? pid;
-  final int? m7Scale;
-  final int? m3Scale;
-  final String? constancy;
-  NinGadScaleData(
-      {required this.pid, this.m7Scale, this.m3Scale, this.constancy});
-  factory NinGadScaleData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    return NinGadScaleData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      m7Scale:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}m7Scale']),
-      m3Scale:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}m3Scale']),
-      constancy: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}Constancy']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
-    if (!nullToAbsent || m7Scale != null) {
-      map['m7Scale'] = Variable<int?>(m7Scale);
-    }
-    if (!nullToAbsent || m3Scale != null) {
-      map['m3Scale'] = Variable<int?>(m3Scale);
-    }
-    if (!nullToAbsent || constancy != null) {
-      map['Constancy'] = Variable<String?>(constancy);
-    }
-    return map;
-  }
-
-  NinGadScaleCompanion toCompanion(bool nullToAbsent) {
-    return NinGadScaleCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
-      m7Scale: m7Scale == null && nullToAbsent
-          ? const Value.absent()
-          : Value(m7Scale),
-      m3Scale: m3Scale == null && nullToAbsent
-          ? const Value.absent()
-          : Value(m3Scale),
-      constancy: constancy == null && nullToAbsent
-          ? const Value.absent()
-          : Value(constancy),
-    );
-  }
-
-  factory NinGadScaleData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return NinGadScaleData(
-      pid: serializer.fromJson<int>(json['pid']),
-      m7Scale: serializer.fromJson<int>(json['m7Scale']),
-      m3Scale: serializer.fromJson<int>(json['m3Scale']),
-      constancy: serializer.fromJson<String>(json['Constancy']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
-      'm7Scale': serializer.toJson<int?>(m7Scale),
-      'm3Scale': serializer.toJson<int?>(m3Scale),
-      'Constancy': serializer.toJson<String?>(constancy),
-    };
-  }
-
-  NinGadScaleData copyWith(
-          {int? pid, int? m7Scale, int? m3Scale, String? constancy}) =>
-      NinGadScaleData(
-        pid: pid ?? this.pid,
-        m7Scale: m7Scale ?? this.m7Scale,
-        m3Scale: m3Scale ?? this.m3Scale,
-        constancy: constancy ?? this.constancy,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('NinGadScaleData(')
-          ..write('pid: $pid, ')
-          ..write('m7Scale: $m7Scale, ')
-          ..write('m3Scale: $m3Scale, ')
-          ..write('constancy: $constancy')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => $mrjf($mrjc(pid.hashCode,
-      $mrjc(m7Scale.hashCode, $mrjc(m3Scale.hashCode, constancy.hashCode))));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is NinGadScaleData &&
-          other.pid == this.pid &&
-          other.m7Scale == this.m7Scale &&
-          other.m3Scale == this.m3Scale &&
-          other.constancy == this.constancy);
-}
-
-class NinGadScaleCompanion extends UpdateCompanion<NinGadScaleData> {
-  final Value<int?> pid;
-  final Value<int?> m7Scale;
-  final Value<int?> m3Scale;
-  final Value<String?> constancy;
-  const NinGadScaleCompanion({
-    this.pid = const Value.absent(),
-    this.m7Scale = const Value.absent(),
-    this.m3Scale = const Value.absent(),
-    this.constancy = const Value.absent(),
-  });
-  NinGadScaleCompanion.insert({
-    this.pid = const Value.absent(),
-    this.m7Scale = const Value.absent(),
-    this.m3Scale = const Value.absent(),
-    this.constancy = const Value.absent(),
-  });
-  static Insertable<NinGadScaleData> custom({
-    Expression<int>? pid,
-    Expression<int>? m7Scale,
-    Expression<int>? m3Scale,
-    Expression<String>? constancy,
-  }) {
-    return RawValuesInsertable({
-      if (pid != null) 'pid': pid,
-      if (m7Scale != null) 'm7Scale': m7Scale,
-      if (m3Scale != null) 'm3Scale': m3Scale,
-      if (constancy != null) 'Constancy': constancy,
-    });
-  }
-
-  NinGadScaleCompanion copyWith(
-      {Value<int>? pid,
-      Value<int>? m7Scale,
-      Value<int>? m3Scale,
-      Value<String>? constancy}) {
-    return NinGadScaleCompanion(
-      pid: pid ?? this.pid,
-      m7Scale: m7Scale ?? this.m7Scale,
-      m3Scale: m3Scale ?? this.m3Scale,
-      constancy: constancy ?? this.constancy,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
-    }
-    if (m7Scale.present) {
-      map['m7Scale'] = Variable<int?>(m7Scale.value);
-    }
-    if (m3Scale.present) {
-      map['m3Scale'] = Variable<int?>(m3Scale.value);
-    }
-    if (constancy.present) {
-      map['Constancy'] = Variable<String?>(constancy.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NinGadScaleCompanion(')
-          ..write('pid: $pid, ')
-          ..write('m7Scale: $m7Scale, ')
-          ..write('m3Scale: $m3Scale, ')
-          ..write('constancy: $constancy')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class NinGadScale extends Table with TableInfo<NinGadScale, NinGadScaleData> {
-  final GeneratedDatabase _db;
-  final String? _alias;
-  NinGadScale(this._db, [this._alias]);
-  final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
-  final VerificationMeta _m7ScaleMeta = const VerificationMeta('m7Scale');
-  GeneratedIntColumn? _m7Scale;
-  GeneratedIntColumn get m7Scale => _m7Scale ??= _constructM7Scale();
-  GeneratedIntColumn _constructM7Scale() {
-    return GeneratedIntColumn('m7Scale', $tableName, true,
-        $customConstraints: '');
-  }
-
-  final VerificationMeta _m3ScaleMeta = const VerificationMeta('m3Scale');
-  GeneratedIntColumn? _m3Scale;
-  GeneratedIntColumn get m3Scale => _m3Scale ??= _constructM3Scale();
-  GeneratedIntColumn _constructM3Scale() {
-    return GeneratedIntColumn('m3Scale', $tableName, true,
-        $customConstraints: '');
-  }
-
-  final VerificationMeta _constancyMeta = const VerificationMeta('constancy');
-  GeneratedTextColumn? _constancy;
-  GeneratedTextColumn get constancy => _constancy ??= _constructConstancy();
-  GeneratedTextColumn _constructConstancy() {
-    return GeneratedTextColumn('Constancy', $tableName, true,
-        $customConstraints: '');
-  }
-
-  @override
-  List<GeneratedColumn> get $columns => [pid, m7Scale, m3Scale, constancy];
-  @override
-  NinGadScale get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'nin_GadScale';
-  @override
-  final String actualTableName = 'nin_GadScale';
-  @override
-  VerificationContext validateIntegrity(Insertable<NinGadScaleData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('pid')) {
-      context.handle(
-          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
-    }
-    if (data.containsKey('m7Scale')) {
-      context.handle(_m7ScaleMeta,
-          m7Scale.isAcceptableOrUnknown(data['m7Scale']!, _m7ScaleMeta));
-    }
-    if (data.containsKey('m3Scale')) {
-      context.handle(_m3ScaleMeta,
-          m3Scale.isAcceptableOrUnknown(data['m3Scale']!, _m3ScaleMeta));
-    }
-    if (data.containsKey('Constancy')) {
-      context.handle(_constancyMeta,
-          constancy.isAcceptableOrUnknown(data['Constancy']!, _constancyMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {pid};
-  @override
-  NinGadScaleData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinGadScaleData.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  NinGadScale createAlias(String alias) {
-    return NinGadScale(_db, alias);
-  }
-
-  @override
-  List<String> get customConstraints =>
-      const ['PRIMARY KEY (pid)', 'UNIQUE ("m7Scale")'];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
 class NinSpecie extends DataClass implements Insertable<NinSpecie> {
-  final int? pid;
+  final int pid;
   final int? scientificNameId;
   final String? scientificName;
   final String? author;
@@ -739,26 +22,23 @@ class NinSpecie extends DataClass implements Insertable<NinSpecie> {
   factory NinSpecie.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinSpecie(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      scientificNameId: intType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      scientificNameId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}scientificNameId']),
-      scientificName: stringType
+      scientificName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}scientificName']),
-      author:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}author']),
-      vernacularName: stringType
+      author: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}author']),
+      vernacularName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}vernacularName']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || scientificNameId != null) {
       map['scientificNameId'] = Variable<int?>(scientificNameId);
     }
@@ -776,7 +56,7 @@ class NinSpecie extends DataClass implements Insertable<NinSpecie> {
 
   NinSpeciesCompanion toCompanion(bool nullToAbsent) {
     return NinSpeciesCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       scientificNameId: scientificNameId == null && nullToAbsent
           ? const Value.absent()
           : Value(scientificNameId),
@@ -796,17 +76,17 @@ class NinSpecie extends DataClass implements Insertable<NinSpecie> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinSpecie(
       pid: serializer.fromJson<int>(json['pid']),
-      scientificNameId: serializer.fromJson<int>(json['scientificNameId']),
-      scientificName: serializer.fromJson<String>(json['scientificName']),
-      author: serializer.fromJson<String>(json['author']),
-      vernacularName: serializer.fromJson<String>(json['vernacularName']),
+      scientificNameId: serializer.fromJson<int?>(json['scientificNameId']),
+      scientificName: serializer.fromJson<String?>(json['scientificName']),
+      author: serializer.fromJson<String?>(json['author']),
+      vernacularName: serializer.fromJson<String?>(json['vernacularName']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       'scientificNameId': serializer.toJson<int?>(scientificNameId),
       'scientificName': serializer.toJson<String?>(scientificName),
       'author': serializer.toJson<String?>(author),
@@ -847,7 +127,7 @@ class NinSpecie extends DataClass implements Insertable<NinSpecie> {
           $mrjc(scientificName.hashCode,
               $mrjc(author.hashCode, vernacularName.hashCode)))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinSpecie &&
           other.pid == this.pid &&
@@ -858,7 +138,7 @@ class NinSpecie extends DataClass implements Insertable<NinSpecie> {
 }
 
 class NinSpeciesCompanion extends UpdateCompanion<NinSpecie> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<int?> scientificNameId;
   final Value<String?> scientificName;
   final Value<String?> author;
@@ -879,10 +159,10 @@ class NinSpeciesCompanion extends UpdateCompanion<NinSpecie> {
   });
   static Insertable<NinSpecie> custom({
     Expression<int>? pid,
-    Expression<int>? scientificNameId,
-    Expression<String>? scientificName,
-    Expression<String>? author,
-    Expression<String>? vernacularName,
+    Expression<int?>? scientificNameId,
+    Expression<String?>? scientificName,
+    Expression<String?>? author,
+    Expression<String?>? vernacularName,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -895,10 +175,10 @@ class NinSpeciesCompanion extends UpdateCompanion<NinSpecie> {
 
   NinSpeciesCompanion copyWith(
       {Value<int>? pid,
-      Value<int>? scientificNameId,
-      Value<String>? scientificName,
-      Value<String>? author,
-      Value<String>? vernacularName}) {
+      Value<int?>? scientificNameId,
+      Value<String?>? scientificName,
+      Value<String?>? author,
+      Value<String?>? vernacularName}) {
     return NinSpeciesCompanion(
       pid: pid ?? this.pid,
       scientificNameId: scientificNameId ?? this.scientificNameId,
@@ -912,7 +192,7 @@ class NinSpeciesCompanion extends UpdateCompanion<NinSpecie> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (scientificNameId.present) {
       map['scientificNameId'] = Variable<int?>(scientificNameId.value);
@@ -947,60 +227,37 @@ class NinSpecies extends Table with TableInfo<NinSpecies, NinSpecie> {
   final String? _alias;
   NinSpecies(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _scientificNameIdMeta =
       const VerificationMeta('scientificNameId');
-  GeneratedIntColumn? _scientificNameId;
-  GeneratedIntColumn get scientificNameId =>
-      _scientificNameId ??= _constructScientificNameId();
-  GeneratedIntColumn _constructScientificNameId() {
-    return GeneratedIntColumn('scientificNameId', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> scientificNameId = GeneratedColumn<int?>(
+      'scientificNameId', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _scientificNameMeta =
       const VerificationMeta('scientificName');
-  GeneratedTextColumn? _scientificName;
-  GeneratedTextColumn get scientificName =>
-      _scientificName ??= _constructScientificName();
-  GeneratedTextColumn _constructScientificName() {
-    return GeneratedTextColumn('scientificName', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> scientificName = GeneratedColumn<String?>(
+      'scientificName', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _authorMeta = const VerificationMeta('author');
-  GeneratedTextColumn? _author;
-  GeneratedTextColumn get author => _author ??= _constructAuthor();
-  GeneratedTextColumn _constructAuthor() {
-    return GeneratedTextColumn('author', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> author = GeneratedColumn<String?>(
+      'author', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _vernacularNameMeta =
       const VerificationMeta('vernacularName');
-  GeneratedTextColumn? _vernacularName;
-  GeneratedTextColumn get vernacularName =>
-      _vernacularName ??= _constructVernacularName();
-  GeneratedTextColumn _constructVernacularName() {
-    return GeneratedTextColumn('vernacularName', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> vernacularName = GeneratedColumn<String?>(
+      'vernacularName', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [pid, scientificNameId, scientificName, author, vernacularName];
   @override
-  NinSpecies get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_Species';
   @override
-  String get $tableName => _alias ?? 'nin_Species';
-  @override
-  final String actualTableName = 'nin_Species';
+  String get actualTableName => 'nin_Species';
   @override
   VerificationContext validateIntegrity(Insertable<NinSpecie> instance,
       {bool isInserting = false}) {
@@ -1039,8 +296,8 @@ class NinSpecies extends Table with TableInfo<NinSpecies, NinSpecie> {
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinSpecie map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinSpecie.fromData(data, _db, prefix: effectivePrefix);
+    return NinSpecie.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -1049,14 +306,222 @@ class NinSpecies extends Table with TableInfo<NinSpecies, NinSpecie> {
   }
 
   @override
-  List<String> get customConstraints =>
-      const ['PRIMARY KEY (pid)', 'UNIQUE ("scientificNameId")'];
+  List<String> get customConstraints => const ['PRIMARY KEY (pid)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class NinLanguageData extends DataClass implements Insertable<NinLanguageData> {
+  final int pid;
+  final String? id;
+  final String? name;
+  NinLanguageData({required this.pid, this.id, this.name});
+  factory NinLanguageData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return NinLanguageData(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['pid'] = Variable<int>(pid);
+    if (!nullToAbsent || id != null) {
+      map['_id'] = Variable<String?>(id);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String?>(name);
+    }
+    return map;
+  }
+
+  NinLanguageCompanion toCompanion(bool nullToAbsent) {
+    return NinLanguageCompanion(
+      pid: Value(pid),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+    );
+  }
+
+  factory NinLanguageData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return NinLanguageData(
+      pid: serializer.fromJson<int>(json['pid']),
+      id: serializer.fromJson<String?>(json['_id']),
+      name: serializer.fromJson<String?>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'pid': serializer.toJson<int>(pid),
+      '_id': serializer.toJson<String?>(id),
+      'name': serializer.toJson<String?>(name),
+    };
+  }
+
+  NinLanguageData copyWith({int? pid, String? id, String? name}) =>
+      NinLanguageData(
+        pid: pid ?? this.pid,
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NinLanguageData(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, name.hashCode)));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NinLanguageData &&
+          other.pid == this.pid &&
+          other.id == this.id &&
+          other.name == this.name);
+}
+
+class NinLanguageCompanion extends UpdateCompanion<NinLanguageData> {
+  final Value<int> pid;
+  final Value<String?> id;
+  final Value<String?> name;
+  const NinLanguageCompanion({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  NinLanguageCompanion.insert({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  static Insertable<NinLanguageData> custom({
+    Expression<int>? pid,
+    Expression<String?>? id,
+    Expression<String?>? name,
+  }) {
+    return RawValuesInsertable({
+      if (pid != null) 'pid': pid,
+      if (id != null) '_id': id,
+      if (name != null) 'name': name,
+    });
+  }
+
+  NinLanguageCompanion copyWith(
+      {Value<int>? pid, Value<String?>? id, Value<String?>? name}) {
+    return NinLanguageCompanion(
+      pid: pid ?? this.pid,
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (pid.present) {
+      map['pid'] = Variable<int>(pid.value);
+    }
+    if (id.present) {
+      map['_id'] = Variable<String?>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String?>(name.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinLanguageCompanion(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class NinLanguage extends Table with TableInfo<NinLanguage, NinLanguageData> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  NinLanguage(this._db, [this._alias]);
+  final VerificationMeta _pidMeta = const VerificationMeta('pid');
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [pid, id, name];
+  @override
+  String get aliasedName => _alias ?? 'nin_Language';
+  @override
+  String get actualTableName => 'nin_Language';
+  @override
+  VerificationContext validateIntegrity(Insertable<NinLanguageData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('pid')) {
+      context.handle(
+          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
+    }
+    if (data.containsKey('_id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pid};
+  @override
+  NinLanguageData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return NinLanguageData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  NinLanguage createAlias(String alias) {
+    return NinLanguage(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const ['PRIMARY KEY (pid)'];
   @override
   bool get dontWriteConstraints => true;
 }
 
 class NinDetailData extends DataClass implements Insertable<NinDetailData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? languageId;
   final String? key;
@@ -1067,24 +532,23 @@ class NinDetailData extends DataClass implements Insertable<NinDetailData> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinDetailData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      languageId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      languageId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}language_id']),
-      key: stringType.mapFromDatabaseResponse(data['${effectivePrefix}key']),
-      value:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}value']),
+      key: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}key']),
+      value: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}value']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -1102,7 +566,7 @@ class NinDetailData extends DataClass implements Insertable<NinDetailData> {
 
   NinDetailCompanion toCompanion(bool nullToAbsent) {
     return NinDetailCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       languageId: languageId == null && nullToAbsent
           ? const Value.absent()
@@ -1118,17 +582,17 @@ class NinDetailData extends DataClass implements Insertable<NinDetailData> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinDetailData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      languageId: serializer.fromJson<String>(json['language_id']),
-      key: serializer.fromJson<String>(json['key']),
-      value: serializer.fromJson<String>(json['value']),
+      id: serializer.fromJson<String?>(json['_id']),
+      languageId: serializer.fromJson<String?>(json['language_id']),
+      key: serializer.fromJson<String?>(json['key']),
+      value: serializer.fromJson<String?>(json['value']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'language_id': serializer.toJson<String?>(languageId),
       'key': serializer.toJson<String?>(key),
@@ -1137,7 +601,11 @@ class NinDetailData extends DataClass implements Insertable<NinDetailData> {
   }
 
   NinDetailData copyWith(
-          {int? pid, String? id, String? languageId, String? key, String? value}) =>
+          {int? pid,
+          String? id,
+          String? languageId,
+          String? key,
+          String? value}) =>
       NinDetailData(
         pid: pid ?? this.pid,
         id: id ?? this.id,
@@ -1163,7 +631,7 @@ class NinDetailData extends DataClass implements Insertable<NinDetailData> {
       $mrjc(id.hashCode,
           $mrjc(languageId.hashCode, $mrjc(key.hashCode, value.hashCode)))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinDetailData &&
           other.pid == this.pid &&
@@ -1174,7 +642,7 @@ class NinDetailData extends DataClass implements Insertable<NinDetailData> {
 }
 
 class NinDetailCompanion extends UpdateCompanion<NinDetailData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> languageId;
   final Value<String?> key;
@@ -1195,10 +663,10 @@ class NinDetailCompanion extends UpdateCompanion<NinDetailData> {
   });
   static Insertable<NinDetailData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? languageId,
-    Expression<String>? key,
-    Expression<String>? value,
+    Expression<String?>? id,
+    Expression<String?>? languageId,
+    Expression<String?>? key,
+    Expression<String?>? value,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -1211,10 +679,10 @@ class NinDetailCompanion extends UpdateCompanion<NinDetailData> {
 
   NinDetailCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? languageId,
-      Value<String>? key,
-      Value<String>? value}) {
+      Value<String?>? id,
+      Value<String?>? languageId,
+      Value<String?>? key,
+      Value<String?>? value}) {
     return NinDetailCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -1228,7 +696,7 @@ class NinDetailCompanion extends UpdateCompanion<NinDetailData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -1263,51 +731,33 @@ class NinDetail extends Table with TableInfo<NinDetail, NinDetailData> {
   final String? _alias;
   NinDetail(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _languageIdMeta = const VerificationMeta('languageId');
-  GeneratedTextColumn? _languageId;
-  GeneratedTextColumn get languageId => _languageId ??= _constructLanguageId();
-  GeneratedTextColumn _constructLanguageId() {
-    return GeneratedTextColumn('language_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> languageId = GeneratedColumn<String?>(
+      'language_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _keyMeta = const VerificationMeta('key');
-  GeneratedTextColumn? _key;
-  GeneratedTextColumn get key => _key ??= _constructKey();
-  GeneratedTextColumn _constructKey() {
-    return GeneratedTextColumn('key', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> key = GeneratedColumn<String?>(
+      'key', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _valueMeta = const VerificationMeta('value');
-  GeneratedTextColumn? _value;
-  GeneratedTextColumn get value => _value ??= _constructValue();
-  GeneratedTextColumn _constructValue() {
-    return GeneratedTextColumn('value', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> value = GeneratedColumn<String?>(
+      'value', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [pid, id, languageId, key, value];
   @override
-  NinDetail get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_Detail';
   @override
-  String get $tableName => _alias ?? 'nin_Detail';
-  @override
-  final String actualTableName = 'nin_Detail';
+  String get actualTableName => 'nin_Detail';
   @override
   VerificationContext validateIntegrity(Insertable<NinDetailData> instance,
       {bool isInserting = false}) {
@@ -1341,8 +791,8 @@ class NinDetail extends Table with TableInfo<NinDetail, NinDetailData> {
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinDetailData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinDetailData.fromData(data, _db, prefix: effectivePrefix);
+    return NinDetailData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -1359,241 +809,9 @@ class NinDetail extends Table with TableInfo<NinDetail, NinDetailData> {
   bool get dontWriteConstraints => true;
 }
 
-class NinMajorTypeGroupData extends DataClass
-    implements Insertable<NinMajorTypeGroupData> {
-  final int? pid;
-  final String? id;
-  final String? detailId;
-  NinMajorTypeGroupData({required this.pid, this.id, this.detailId});
-  factory NinMajorTypeGroupData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    return NinMajorTypeGroupData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      detailId: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
-    if (!nullToAbsent || id != null) {
-      map['_id'] = Variable<String?>(id);
-    }
-    if (!nullToAbsent || detailId != null) {
-      map['detail_id'] = Variable<String?>(detailId);
-    }
-    return map;
-  }
-
-  NinMajorTypeGroupCompanion toCompanion(bool nullToAbsent) {
-    return NinMajorTypeGroupCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      detailId: detailId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(detailId),
-    );
-  }
-
-  factory NinMajorTypeGroupData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return NinMajorTypeGroupData(
-      pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
-      '_id': serializer.toJson<String?>(id),
-      'detail_id': serializer.toJson<String?>(detailId),
-    };
-  }
-
-  NinMajorTypeGroupData copyWith({int? pid, String? id, String? detailId}) =>
-      NinMajorTypeGroupData(
-        pid: pid ?? this.pid,
-        id: id ?? this.id,
-        detailId: detailId ?? this.detailId,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('NinMajorTypeGroupData(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('detailId: $detailId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, detailId.hashCode)));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is NinMajorTypeGroupData &&
-          other.pid == this.pid &&
-          other.id == this.id &&
-          other.detailId == this.detailId);
-}
-
-class NinMajorTypeGroupCompanion
-    extends UpdateCompanion<NinMajorTypeGroupData> {
-  final Value<int?> pid;
-  final Value<String?> id;
-  final Value<String?> detailId;
-  const NinMajorTypeGroupCompanion({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.detailId = const Value.absent(),
-  });
-  NinMajorTypeGroupCompanion.insert({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.detailId = const Value.absent(),
-  });
-  static Insertable<NinMajorTypeGroupData> custom({
-    Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? detailId,
-  }) {
-    return RawValuesInsertable({
-      if (pid != null) 'pid': pid,
-      if (id != null) '_id': id,
-      if (detailId != null) 'detail_id': detailId,
-    });
-  }
-
-  NinMajorTypeGroupCompanion copyWith(
-      {Value<int>? pid, Value<String>? id, Value<String>? detailId}) {
-    return NinMajorTypeGroupCompanion(
-      pid: pid ?? this.pid,
-      id: id ?? this.id,
-      detailId: detailId ?? this.detailId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
-    }
-    if (id.present) {
-      map['_id'] = Variable<String?>(id.value);
-    }
-    if (detailId.present) {
-      map['detail_id'] = Variable<String?>(detailId.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NinMajorTypeGroupCompanion(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('detailId: $detailId')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class NinMajorTypeGroup extends Table
-    with TableInfo<NinMajorTypeGroup, NinMajorTypeGroupData> {
-  final GeneratedDatabase _db;
-  final String? _alias;
-  NinMajorTypeGroup(this._db, [this._alias]);
-  final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
-  final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
-  @override
-  List<GeneratedColumn> get $columns => [pid, id, detailId];
-  @override
-  NinMajorTypeGroup get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'nin_MajorTypeGroup';
-  @override
-  final String actualTableName = 'nin_MajorTypeGroup';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<NinMajorTypeGroupData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('pid')) {
-      context.handle(
-          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
-    }
-    if (data.containsKey('_id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
-    }
-    if (data.containsKey('detail_id')) {
-      context.handle(_detailIdMeta,
-          detailId.isAcceptableOrUnknown(data['detail_id']!, _detailIdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {pid};
-  @override
-  NinMajorTypeGroupData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinMajorTypeGroupData.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  NinMajorTypeGroup createAlias(String alias) {
-    return NinMajorTypeGroup(_db, alias);
-  }
-
-  @override
-  List<String> get customConstraints => const [
-        'PRIMARY KEY (pid)',
-        'UNIQUE (_id)',
-        'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
-      ];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
 class NinStructuringProces extends DataClass
     implements Insertable<NinStructuringProces> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? detailId;
   NinStructuringProces({required this.pid, this.id, this.detailId});
@@ -1601,21 +819,19 @@ class NinStructuringProces extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinStructuringProces(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      detailId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      detailId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -1627,7 +843,7 @@ class NinStructuringProces extends DataClass
 
   NinStructuringProcessCompanion toCompanion(bool nullToAbsent) {
     return NinStructuringProcessCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       detailId: detailId == null && nullToAbsent
           ? const Value.absent()
@@ -1640,15 +856,15 @@ class NinStructuringProces extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinStructuringProces(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
+      id: serializer.fromJson<String?>(json['_id']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'detail_id': serializer.toJson<String?>(detailId),
     };
@@ -1674,7 +890,7 @@ class NinStructuringProces extends DataClass
   int get hashCode =>
       $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, detailId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinStructuringProces &&
           other.pid == this.pid &&
@@ -1684,7 +900,7 @@ class NinStructuringProces extends DataClass
 
 class NinStructuringProcessCompanion
     extends UpdateCompanion<NinStructuringProces> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> detailId;
   const NinStructuringProcessCompanion({
@@ -1699,8 +915,8 @@ class NinStructuringProcessCompanion
   });
   static Insertable<NinStructuringProces> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? detailId,
+    Expression<String?>? id,
+    Expression<String?>? detailId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -1710,7 +926,7 @@ class NinStructuringProcessCompanion
   }
 
   NinStructuringProcessCompanion copyWith(
-      {Value<int>? pid, Value<String>? id, Value<String>? detailId}) {
+      {Value<int>? pid, Value<String?>? id, Value<String?>? detailId}) {
     return NinStructuringProcessCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -1722,7 +938,7 @@ class NinStructuringProcessCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -1750,36 +966,25 @@ class NinStructuringProcess extends Table
   final String? _alias;
   NinStructuringProcess(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [pid, id, detailId];
   @override
-  NinStructuringProcess get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_StructuringProcess';
   @override
-  String get $tableName => _alias ?? 'nin_StructuringProcess';
-  @override
-  final String actualTableName = 'nin_StructuringProcess';
+  String get actualTableName => 'nin_StructuringProcess';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinStructuringProces> instance,
@@ -1804,8 +1009,8 @@ class NinStructuringProcess extends Table
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinStructuringProces map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinStructuringProces.fromData(data, _db, prefix: effectivePrefix);
+    return NinStructuringProces.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -1825,7 +1030,7 @@ class NinStructuringProcess extends Table
 
 class NinPatternOfVariationData extends DataClass
     implements Insertable<NinPatternOfVariationData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? detailId;
   NinPatternOfVariationData({required this.pid, this.id, this.detailId});
@@ -1833,21 +1038,19 @@ class NinPatternOfVariationData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinPatternOfVariationData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      detailId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      detailId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -1859,7 +1062,7 @@ class NinPatternOfVariationData extends DataClass
 
   NinPatternOfVariationCompanion toCompanion(bool nullToAbsent) {
     return NinPatternOfVariationCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       detailId: detailId == null && nullToAbsent
           ? const Value.absent()
@@ -1872,21 +1075,22 @@ class NinPatternOfVariationData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinPatternOfVariationData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
+      id: serializer.fromJson<String?>(json['_id']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'detail_id': serializer.toJson<String?>(detailId),
     };
   }
 
-  NinPatternOfVariationData copyWith({int? pid, String? id, String? detailId}) =>
+  NinPatternOfVariationData copyWith(
+          {int? pid, String? id, String? detailId}) =>
       NinPatternOfVariationData(
         pid: pid ?? this.pid,
         id: id ?? this.id,
@@ -1906,7 +1110,7 @@ class NinPatternOfVariationData extends DataClass
   int get hashCode =>
       $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, detailId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinPatternOfVariationData &&
           other.pid == this.pid &&
@@ -1916,7 +1120,7 @@ class NinPatternOfVariationData extends DataClass
 
 class NinPatternOfVariationCompanion
     extends UpdateCompanion<NinPatternOfVariationData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> detailId;
   const NinPatternOfVariationCompanion({
@@ -1931,8 +1135,8 @@ class NinPatternOfVariationCompanion
   });
   static Insertable<NinPatternOfVariationData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? detailId,
+    Expression<String?>? id,
+    Expression<String?>? detailId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -1942,7 +1146,7 @@ class NinPatternOfVariationCompanion
   }
 
   NinPatternOfVariationCompanion copyWith(
-      {Value<int>? pid, Value<String>? id, Value<String>? detailId}) {
+      {Value<int>? pid, Value<String?>? id, Value<String?>? detailId}) {
     return NinPatternOfVariationCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -1954,7 +1158,7 @@ class NinPatternOfVariationCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -1982,36 +1186,25 @@ class NinPatternOfVariation extends Table
   final String? _alias;
   NinPatternOfVariation(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [pid, id, detailId];
   @override
-  NinPatternOfVariation get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_PatternOfVariation';
   @override
-  String get $tableName => _alias ?? 'nin_PatternOfVariation';
-  @override
-  final String actualTableName = 'nin_PatternOfVariation';
+  String get actualTableName => 'nin_PatternOfVariation';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinPatternOfVariationData> instance,
@@ -2037,9 +1230,8 @@ class NinPatternOfVariation extends Table
   @override
   NinPatternOfVariationData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return NinPatternOfVariationData.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -2057,560 +1249,8 @@ class NinPatternOfVariation extends Table
   bool get dontWriteConstraints => true;
 }
 
-class NinLECTypeData extends DataClass implements Insertable<NinLECTypeData> {
-  final int? pid;
-  final String? id;
-  final String? detailId;
-  NinLECTypeData({required this.pid, this.id, this.detailId});
-  factory NinLECTypeData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    return NinLECTypeData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      detailId: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
-    if (!nullToAbsent || id != null) {
-      map['_id'] = Variable<String?>(id);
-    }
-    if (!nullToAbsent || detailId != null) {
-      map['detail_id'] = Variable<String?>(detailId);
-    }
-    return map;
-  }
-
-  NinLECTypeCompanion toCompanion(bool nullToAbsent) {
-    return NinLECTypeCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      detailId: detailId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(detailId),
-    );
-  }
-
-  factory NinLECTypeData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return NinLECTypeData(
-      pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
-      '_id': serializer.toJson<String?>(id),
-      'detail_id': serializer.toJson<String?>(detailId),
-    };
-  }
-
-  NinLECTypeData copyWith({int? pid, String? id, String? detailId}) =>
-      NinLECTypeData(
-        pid: pid ?? this.pid,
-        id: id ?? this.id,
-        detailId: detailId ?? this.detailId,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('NinLECTypeData(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('detailId: $detailId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, detailId.hashCode)));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is NinLECTypeData &&
-          other.pid == this.pid &&
-          other.id == this.id &&
-          other.detailId == this.detailId);
-}
-
-class NinLECTypeCompanion extends UpdateCompanion<NinLECTypeData> {
-  final Value<int?> pid;
-  final Value<String?> id;
-  final Value<String?> detailId;
-  const NinLECTypeCompanion({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.detailId = const Value.absent(),
-  });
-  NinLECTypeCompanion.insert({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.detailId = const Value.absent(),
-  });
-  static Insertable<NinLECTypeData> custom({
-    Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? detailId,
-  }) {
-    return RawValuesInsertable({
-      if (pid != null) 'pid': pid,
-      if (id != null) '_id': id,
-      if (detailId != null) 'detail_id': detailId,
-    });
-  }
-
-  NinLECTypeCompanion copyWith(
-      {Value<int>? pid, Value<String>? id, Value<String>? detailId}) {
-    return NinLECTypeCompanion(
-      pid: pid ?? this.pid,
-      id: id ?? this.id,
-      detailId: detailId ?? this.detailId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
-    }
-    if (id.present) {
-      map['_id'] = Variable<String?>(id.value);
-    }
-    if (detailId.present) {
-      map['detail_id'] = Variable<String?>(detailId.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NinLECTypeCompanion(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('detailId: $detailId')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class NinLECType extends Table with TableInfo<NinLECType, NinLECTypeData> {
-  final GeneratedDatabase _db;
-  final String? _alias;
-  NinLECType(this._db, [this._alias]);
-  final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
-  final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
-  @override
-  List<GeneratedColumn> get $columns => [pid, id, detailId];
-  @override
-  NinLECType get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'nin_LECType';
-  @override
-  final String actualTableName = 'nin_LECType';
-  @override
-  VerificationContext validateIntegrity(Insertable<NinLECTypeData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('pid')) {
-      context.handle(
-          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
-    }
-    if (data.containsKey('_id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
-    }
-    if (data.containsKey('detail_id')) {
-      context.handle(_detailIdMeta,
-          detailId.isAcceptableOrUnknown(data['detail_id']!, _detailIdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {pid};
-  @override
-  NinLECTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinLECTypeData.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  NinLECType createAlias(String alias) {
-    return NinLECType(_db, alias);
-  }
-
-  @override
-  List<String> get customConstraints => const [
-        'PRIMARY KEY (pid)',
-        'UNIQUE (_id)',
-        'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
-      ];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class NinMajorTypeData extends DataClass
-    implements Insertable<NinMajorTypeData> {
-  final int? pid;
-  final String? id;
-  final String? majorTypeGroupId;
-  final int? order;
-  final String? detailId;
-  NinMajorTypeData(
-      {required this.pid,
-      this.id,
-      this.majorTypeGroupId,
-      this.order,
-      this.detailId});
-  factory NinMajorTypeData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    return NinMajorTypeData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      majorTypeGroupId: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}majorTypeGroup_id']),
-      order: intType.mapFromDatabaseResponse(data['${effectivePrefix}order']),
-      detailId: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
-    if (!nullToAbsent || id != null) {
-      map['_id'] = Variable<String?>(id);
-    }
-    if (!nullToAbsent || majorTypeGroupId != null) {
-      map['majorTypeGroup_id'] = Variable<String?>(majorTypeGroupId);
-    }
-    if (!nullToAbsent || order != null) {
-      map['order'] = Variable<int?>(order);
-    }
-    if (!nullToAbsent || detailId != null) {
-      map['detail_id'] = Variable<String?>(detailId);
-    }
-    return map;
-  }
-
-  NinMajorTypeCompanion toCompanion(bool nullToAbsent) {
-    return NinMajorTypeCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      majorTypeGroupId: majorTypeGroupId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(majorTypeGroupId),
-      order:
-          order == null && nullToAbsent ? const Value.absent() : Value(order),
-      detailId: detailId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(detailId),
-    );
-  }
-
-  factory NinMajorTypeData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return NinMajorTypeData(
-      pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      majorTypeGroupId: serializer.fromJson<String>(json['majorTypeGroup_id']),
-      order: serializer.fromJson<int>(json['order']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
-      '_id': serializer.toJson<String?>(id),
-      'majorTypeGroup_id': serializer.toJson<String?>(majorTypeGroupId),
-      'order': serializer.toJson<int?>(order),
-      'detail_id': serializer.toJson<String?>(detailId),
-    };
-  }
-
-  NinMajorTypeData copyWith(
-          {int? pid,
-          String? id,
-          String? majorTypeGroupId,
-          int? order,
-          String? detailId}) =>
-      NinMajorTypeData(
-        pid: pid ?? this.pid,
-        id: id ?? this.id,
-        majorTypeGroupId: majorTypeGroupId ?? this.majorTypeGroupId,
-        order: order ?? this.order,
-        detailId: detailId ?? this.detailId,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('NinMajorTypeData(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('majorTypeGroupId: $majorTypeGroupId, ')
-          ..write('order: $order, ')
-          ..write('detailId: $detailId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => $mrjf($mrjc(
-      pid.hashCode,
-      $mrjc(
-          id.hashCode,
-          $mrjc(majorTypeGroupId.hashCode,
-              $mrjc(order.hashCode, detailId.hashCode)))));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is NinMajorTypeData &&
-          other.pid == this.pid &&
-          other.id == this.id &&
-          other.majorTypeGroupId == this.majorTypeGroupId &&
-          other.order == this.order &&
-          other.detailId == this.detailId);
-}
-
-class NinMajorTypeCompanion extends UpdateCompanion<NinMajorTypeData> {
-  final Value<int?> pid;
-  final Value<String?> id;
-  final Value<String?> majorTypeGroupId;
-  final Value<int?> order;
-  final Value<String?> detailId;
-  const NinMajorTypeCompanion({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.majorTypeGroupId = const Value.absent(),
-    this.order = const Value.absent(),
-    this.detailId = const Value.absent(),
-  });
-  NinMajorTypeCompanion.insert({
-    this.pid = const Value.absent(),
-    this.id = const Value.absent(),
-    this.majorTypeGroupId = const Value.absent(),
-    this.order = const Value.absent(),
-    this.detailId = const Value.absent(),
-  });
-  static Insertable<NinMajorTypeData> custom({
-    Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? majorTypeGroupId,
-    Expression<int>? order,
-    Expression<String>? detailId,
-  }) {
-    return RawValuesInsertable({
-      if (pid != null) 'pid': pid,
-      if (id != null) '_id': id,
-      if (majorTypeGroupId != null) 'majorTypeGroup_id': majorTypeGroupId,
-      if (order != null) 'order': order,
-      if (detailId != null) 'detail_id': detailId,
-    });
-  }
-
-  NinMajorTypeCompanion copyWith(
-      {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? majorTypeGroupId,
-      Value<int>? order,
-      Value<String>? detailId}) {
-    return NinMajorTypeCompanion(
-      pid: pid ?? this.pid,
-      id: id ?? this.id,
-      majorTypeGroupId: majorTypeGroupId ?? this.majorTypeGroupId,
-      order: order ?? this.order,
-      detailId: detailId ?? this.detailId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
-    }
-    if (id.present) {
-      map['_id'] = Variable<String?>(id.value);
-    }
-    if (majorTypeGroupId.present) {
-      map['majorTypeGroup_id'] = Variable<String?>(majorTypeGroupId.value);
-    }
-    if (order.present) {
-      map['order'] = Variable<int?>(order.value);
-    }
-    if (detailId.present) {
-      map['detail_id'] = Variable<String?>(detailId.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NinMajorTypeCompanion(')
-          ..write('pid: $pid, ')
-          ..write('id: $id, ')
-          ..write('majorTypeGroupId: $majorTypeGroupId, ')
-          ..write('order: $order, ')
-          ..write('detailId: $detailId')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class NinMajorType extends Table
-    with TableInfo<NinMajorType, NinMajorTypeData> {
-  final GeneratedDatabase _db;
-  final String? _alias;
-  NinMajorType(this._db, [this._alias]);
-  final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
-  final VerificationMeta _majorTypeGroupIdMeta =
-      const VerificationMeta('majorTypeGroupId');
-  GeneratedTextColumn? _majorTypeGroupId;
-  GeneratedTextColumn get majorTypeGroupId =>
-      _majorTypeGroupId ??= _constructMajorTypeGroupId();
-  GeneratedTextColumn _constructMajorTypeGroupId() {
-    return GeneratedTextColumn('majorTypeGroup_id', $tableName, true,
-        $customConstraints: '');
-  }
-
-  final VerificationMeta _orderMeta = const VerificationMeta('order');
-  GeneratedIntColumn? _order;
-  GeneratedIntColumn get order => _order ??= _constructOrder();
-  GeneratedIntColumn _constructOrder() {
-    return GeneratedIntColumn('order', $tableName, true,
-        $customConstraints: '');
-  }
-
-  final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
-  @override
-  List<GeneratedColumn> get $columns =>
-      [pid, id, majorTypeGroupId, order, detailId];
-  @override
-  NinMajorType get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'nin_MajorType';
-  @override
-  final String actualTableName = 'nin_MajorType';
-  @override
-  VerificationContext validateIntegrity(Insertable<NinMajorTypeData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('pid')) {
-      context.handle(
-          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
-    }
-    if (data.containsKey('_id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
-    }
-    if (data.containsKey('majorTypeGroup_id')) {
-      context.handle(
-          _majorTypeGroupIdMeta,
-          majorTypeGroupId.isAcceptableOrUnknown(
-              data['majorTypeGroup_id']!, _majorTypeGroupIdMeta));
-    }
-    if (data.containsKey('order')) {
-      context.handle(
-          _orderMeta, order.isAcceptableOrUnknown(data['order']!, _orderMeta));
-    }
-    if (data.containsKey('detail_id')) {
-      context.handle(_detailIdMeta,
-          detailId.isAcceptableOrUnknown(data['detail_id']!, _detailIdMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {pid};
-  @override
-  NinMajorTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinMajorTypeData.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  NinMajorType createAlias(String alias) {
-    return NinMajorType(_db, alias);
-  }
-
-  @override
-  List<String> get customConstraints => const [
-        'PRIMARY KEY (pid)',
-        'UNIQUE (_id)',
-        'FOREIGN KEY("majorTypeGroup_id") REFERENCES "nin_MajorTypeGroup" (_id)',
-        'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
-      ];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
 class NinLECData extends DataClass implements Insertable<NinLECData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? parentLecId;
   final String? structuringProcessId;
@@ -2632,33 +1272,31 @@ class NinLECData extends DataClass implements Insertable<NinLECData> {
   factory NinLECData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinLECData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      parentLecId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      parentLecId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}parentLec_id']),
-      structuringProcessId: stringType.mapFromDatabaseResponse(
+      structuringProcessId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}structuringProcess_id']),
-      patternOfVariationId: stringType.mapFromDatabaseResponse(
+      patternOfVariationId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}patternOfVariation_id']),
-      knowledgeBaseRelations: intType.mapFromDatabaseResponse(
+      knowledgeBaseRelations: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}knowledgeBaseRelations']),
-      knowledgeBaseDivision: intType.mapFromDatabaseResponse(
+      knowledgeBaseDivision: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}knowledgeBaseDivision']),
-      spatialScale: intType
+      spatialScale: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}spatialScale']),
-      detailId: stringType
+      detailId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -2688,7 +1326,7 @@ class NinLECData extends DataClass implements Insertable<NinLECData> {
 
   NinLECCompanion toCompanion(bool nullToAbsent) {
     return NinLECCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       parentLecId: parentLecId == null && nullToAbsent
           ? const Value.absent()
@@ -2719,25 +1357,25 @@ class NinLECData extends DataClass implements Insertable<NinLECData> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinLECData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      parentLecId: serializer.fromJson<String>(json['parentLec_id']),
+      id: serializer.fromJson<String?>(json['_id']),
+      parentLecId: serializer.fromJson<String?>(json['parentLec_id']),
       structuringProcessId:
-          serializer.fromJson<String>(json['structuringProcess_id']),
+          serializer.fromJson<String?>(json['structuringProcess_id']),
       patternOfVariationId:
-          serializer.fromJson<String>(json['patternOfVariation_id']),
+          serializer.fromJson<String?>(json['patternOfVariation_id']),
       knowledgeBaseRelations:
-          serializer.fromJson<int>(json['knowledgeBaseRelations']),
+          serializer.fromJson<int?>(json['knowledgeBaseRelations']),
       knowledgeBaseDivision:
-          serializer.fromJson<int>(json['knowledgeBaseDivision']),
-      spatialScale: serializer.fromJson<int>(json['spatialScale']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
+          serializer.fromJson<int?>(json['knowledgeBaseDivision']),
+      spatialScale: serializer.fromJson<int?>(json['spatialScale']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'parentLec_id': serializer.toJson<String?>(parentLecId),
       'structuringProcess_id': serializer.toJson<String?>(structuringProcessId),
@@ -2806,7 +1444,7 @@ class NinLECData extends DataClass implements Insertable<NinLECData> {
                               $mrjc(spatialScale.hashCode,
                                   detailId.hashCode)))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinLECData &&
           other.pid == this.pid &&
@@ -2821,7 +1459,7 @@ class NinLECData extends DataClass implements Insertable<NinLECData> {
 }
 
 class NinLECCompanion extends UpdateCompanion<NinLECData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> parentLecId;
   final Value<String?> structuringProcessId;
@@ -2854,14 +1492,14 @@ class NinLECCompanion extends UpdateCompanion<NinLECData> {
   });
   static Insertable<NinLECData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? parentLecId,
-    Expression<String>? structuringProcessId,
-    Expression<String>? patternOfVariationId,
-    Expression<int>? knowledgeBaseRelations,
-    Expression<int>? knowledgeBaseDivision,
-    Expression<int>? spatialScale,
-    Expression<String>? detailId,
+    Expression<String?>? id,
+    Expression<String?>? parentLecId,
+    Expression<String?>? structuringProcessId,
+    Expression<String?>? patternOfVariationId,
+    Expression<int?>? knowledgeBaseRelations,
+    Expression<int?>? knowledgeBaseDivision,
+    Expression<int?>? spatialScale,
+    Expression<String?>? detailId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -2882,14 +1520,14 @@ class NinLECCompanion extends UpdateCompanion<NinLECData> {
 
   NinLECCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? parentLecId,
-      Value<String>? structuringProcessId,
-      Value<String>? patternOfVariationId,
-      Value<int>? knowledgeBaseRelations,
-      Value<int>? knowledgeBaseDivision,
-      Value<int>? spatialScale,
-      Value<String>? detailId}) {
+      Value<String?>? id,
+      Value<String?>? parentLecId,
+      Value<String?>? structuringProcessId,
+      Value<String?>? patternOfVariationId,
+      Value<int?>? knowledgeBaseRelations,
+      Value<int?>? knowledgeBaseDivision,
+      Value<int?>? spatialScale,
+      Value<String?>? detailId}) {
     return NinLECCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -2909,7 +1547,7 @@ class NinLECCompanion extends UpdateCompanion<NinLECData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -2930,7 +1568,8 @@ class NinLECCompanion extends UpdateCompanion<NinLECData> {
           Variable<int?>(knowledgeBaseRelations.value);
     }
     if (knowledgeBaseDivision.present) {
-      map['knowledgeBaseDivision'] = Variable<int?>(knowledgeBaseDivision.value);
+      map['knowledgeBaseDivision'] =
+          Variable<int?>(knowledgeBaseDivision.value);
     }
     if (spatialScale.present) {
       map['spatialScale'] = Variable<int?>(spatialScale.value);
@@ -2963,88 +1602,57 @@ class NinLEC extends Table with TableInfo<NinLEC, NinLECData> {
   final String? _alias;
   NinLEC(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _parentLecIdMeta =
       const VerificationMeta('parentLecId');
-  GeneratedTextColumn? _parentLecId;
-  GeneratedTextColumn get parentLecId =>
-      _parentLecId ??= _constructParentLecId();
-  GeneratedTextColumn _constructParentLecId() {
-    return GeneratedTextColumn('parentLec_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> parentLecId = GeneratedColumn<String?>(
+      'parentLec_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _structuringProcessIdMeta =
       const VerificationMeta('structuringProcessId');
-  GeneratedTextColumn? _structuringProcessId;
-  GeneratedTextColumn get structuringProcessId =>
-      _structuringProcessId ??= _constructStructuringProcessId();
-  GeneratedTextColumn _constructStructuringProcessId() {
-    return GeneratedTextColumn('structuringProcess_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> structuringProcessId =
+      GeneratedColumn<String?>('structuringProcess_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _patternOfVariationIdMeta =
       const VerificationMeta('patternOfVariationId');
-  GeneratedTextColumn? _patternOfVariationId;
-  GeneratedTextColumn get patternOfVariationId =>
-      _patternOfVariationId ??= _constructPatternOfVariationId();
-  GeneratedTextColumn _constructPatternOfVariationId() {
-    return GeneratedTextColumn('patternOfVariation_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> patternOfVariationId =
+      GeneratedColumn<String?>('patternOfVariation_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _knowledgeBaseRelationsMeta =
       const VerificationMeta('knowledgeBaseRelations');
-  GeneratedIntColumn? _knowledgeBaseRelations;
-  GeneratedIntColumn get knowledgeBaseRelations =>
-      _knowledgeBaseRelations ??= _constructKnowledgeBaseRelations();
-  GeneratedIntColumn _constructKnowledgeBaseRelations() {
-    return GeneratedIntColumn('knowledgeBaseRelations', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> knowledgeBaseRelations =
+      GeneratedColumn<int?>('knowledgeBaseRelations', aliasedName, true,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _knowledgeBaseDivisionMeta =
       const VerificationMeta('knowledgeBaseDivision');
-  GeneratedIntColumn? _knowledgeBaseDivision;
-  GeneratedIntColumn get knowledgeBaseDivision =>
-      _knowledgeBaseDivision ??= _constructKnowledgeBaseDivision();
-  GeneratedIntColumn _constructKnowledgeBaseDivision() {
-    return GeneratedIntColumn('knowledgeBaseDivision', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> knowledgeBaseDivision =
+      GeneratedColumn<int?>('knowledgeBaseDivision', aliasedName, true,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _spatialScaleMeta =
       const VerificationMeta('spatialScale');
-  GeneratedIntColumn? _spatialScale;
-  GeneratedIntColumn get spatialScale =>
-      _spatialScale ??= _constructSpatialScale();
-  GeneratedIntColumn _constructSpatialScale() {
-    return GeneratedIntColumn('spatialScale', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> spatialScale = GeneratedColumn<int?>(
+      'spatialScale', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         pid,
@@ -3058,11 +1666,9 @@ class NinLEC extends Table with TableInfo<NinLEC, NinLECData> {
         detailId
       ];
   @override
-  NinLEC get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_LEC';
   @override
-  String get $tableName => _alias ?? 'nin_LEC';
-  @override
-  final String actualTableName = 'nin_LEC';
+  String get actualTableName => 'nin_LEC';
   @override
   VerificationContext validateIntegrity(Insertable<NinLECData> instance,
       {bool isInserting = false}) {
@@ -3122,8 +1728,8 @@ class NinLEC extends Table with TableInfo<NinLEC, NinLECData> {
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinLECData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinLECData.fromData(data, _db, prefix: effectivePrefix);
+    return NinLECData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -3134,7 +1740,6 @@ class NinLEC extends Table with TableInfo<NinLEC, NinLECData> {
   @override
   List<String> get customConstraints => const [
         'PRIMARY KEY (pid)',
-        'UNIQUE (_id)',
         'FOREIGN KEY("parentLec_id") REFERENCES "nin_LEC" (_id)',
         'FOREIGN KEY("structuringProcess_id") REFERENCES "nin_StructuringProcess" (_id)',
         'FOREIGN KEY("patternOfVariation_id") REFERENCES "nin_PatternOfVariation" (_id)',
@@ -3144,9 +1749,533 @@ class NinLEC extends Table with TableInfo<NinLEC, NinLECData> {
   bool get dontWriteConstraints => true;
 }
 
+class NinMajorTypeGroupData extends DataClass
+    implements Insertable<NinMajorTypeGroupData> {
+  final int pid;
+  final String? id;
+  final String? detailId;
+  NinMajorTypeGroupData({required this.pid, this.id, this.detailId});
+  factory NinMajorTypeGroupData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return NinMajorTypeGroupData(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      detailId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['pid'] = Variable<int>(pid);
+    if (!nullToAbsent || id != null) {
+      map['_id'] = Variable<String?>(id);
+    }
+    if (!nullToAbsent || detailId != null) {
+      map['detail_id'] = Variable<String?>(detailId);
+    }
+    return map;
+  }
+
+  NinMajorTypeGroupCompanion toCompanion(bool nullToAbsent) {
+    return NinMajorTypeGroupCompanion(
+      pid: Value(pid),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      detailId: detailId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(detailId),
+    );
+  }
+
+  factory NinMajorTypeGroupData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return NinMajorTypeGroupData(
+      pid: serializer.fromJson<int>(json['pid']),
+      id: serializer.fromJson<String?>(json['_id']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'pid': serializer.toJson<int>(pid),
+      '_id': serializer.toJson<String?>(id),
+      'detail_id': serializer.toJson<String?>(detailId),
+    };
+  }
+
+  NinMajorTypeGroupData copyWith({int? pid, String? id, String? detailId}) =>
+      NinMajorTypeGroupData(
+        pid: pid ?? this.pid,
+        id: id ?? this.id,
+        detailId: detailId ?? this.detailId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NinMajorTypeGroupData(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('detailId: $detailId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, detailId.hashCode)));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NinMajorTypeGroupData &&
+          other.pid == this.pid &&
+          other.id == this.id &&
+          other.detailId == this.detailId);
+}
+
+class NinMajorTypeGroupCompanion
+    extends UpdateCompanion<NinMajorTypeGroupData> {
+  final Value<int> pid;
+  final Value<String?> id;
+  final Value<String?> detailId;
+  const NinMajorTypeGroupCompanion({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.detailId = const Value.absent(),
+  });
+  NinMajorTypeGroupCompanion.insert({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.detailId = const Value.absent(),
+  });
+  static Insertable<NinMajorTypeGroupData> custom({
+    Expression<int>? pid,
+    Expression<String?>? id,
+    Expression<String?>? detailId,
+  }) {
+    return RawValuesInsertable({
+      if (pid != null) 'pid': pid,
+      if (id != null) '_id': id,
+      if (detailId != null) 'detail_id': detailId,
+    });
+  }
+
+  NinMajorTypeGroupCompanion copyWith(
+      {Value<int>? pid, Value<String?>? id, Value<String?>? detailId}) {
+    return NinMajorTypeGroupCompanion(
+      pid: pid ?? this.pid,
+      id: id ?? this.id,
+      detailId: detailId ?? this.detailId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (pid.present) {
+      map['pid'] = Variable<int>(pid.value);
+    }
+    if (id.present) {
+      map['_id'] = Variable<String?>(id.value);
+    }
+    if (detailId.present) {
+      map['detail_id'] = Variable<String?>(detailId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinMajorTypeGroupCompanion(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('detailId: $detailId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class NinMajorTypeGroup extends Table
+    with TableInfo<NinMajorTypeGroup, NinMajorTypeGroupData> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  NinMajorTypeGroup(this._db, [this._alias]);
+  final VerificationMeta _pidMeta = const VerificationMeta('pid');
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [pid, id, detailId];
+  @override
+  String get aliasedName => _alias ?? 'nin_MajorTypeGroup';
+  @override
+  String get actualTableName => 'nin_MajorTypeGroup';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<NinMajorTypeGroupData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('pid')) {
+      context.handle(
+          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
+    }
+    if (data.containsKey('_id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
+    }
+    if (data.containsKey('detail_id')) {
+      context.handle(_detailIdMeta,
+          detailId.isAcceptableOrUnknown(data['detail_id']!, _detailIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pid};
+  @override
+  NinMajorTypeGroupData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return NinMajorTypeGroupData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  NinMajorTypeGroup createAlias(String alias) {
+    return NinMajorTypeGroup(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'PRIMARY KEY (pid)',
+        'UNIQUE (_id)',
+        'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class NinMajorTypeData extends DataClass
+    implements Insertable<NinMajorTypeData> {
+  final int pid;
+  final String? id;
+  final String? majorTypeGroupId;
+  final int? order;
+  final String? detailId;
+  NinMajorTypeData(
+      {required this.pid,
+      this.id,
+      this.majorTypeGroupId,
+      this.order,
+      this.detailId});
+  factory NinMajorTypeData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return NinMajorTypeData(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      majorTypeGroupId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}majorTypeGroup_id']),
+      order: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}order']),
+      detailId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['pid'] = Variable<int>(pid);
+    if (!nullToAbsent || id != null) {
+      map['_id'] = Variable<String?>(id);
+    }
+    if (!nullToAbsent || majorTypeGroupId != null) {
+      map['majorTypeGroup_id'] = Variable<String?>(majorTypeGroupId);
+    }
+    if (!nullToAbsent || order != null) {
+      map['order'] = Variable<int?>(order);
+    }
+    if (!nullToAbsent || detailId != null) {
+      map['detail_id'] = Variable<String?>(detailId);
+    }
+    return map;
+  }
+
+  NinMajorTypeCompanion toCompanion(bool nullToAbsent) {
+    return NinMajorTypeCompanion(
+      pid: Value(pid),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      majorTypeGroupId: majorTypeGroupId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(majorTypeGroupId),
+      order:
+          order == null && nullToAbsent ? const Value.absent() : Value(order),
+      detailId: detailId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(detailId),
+    );
+  }
+
+  factory NinMajorTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return NinMajorTypeData(
+      pid: serializer.fromJson<int>(json['pid']),
+      id: serializer.fromJson<String?>(json['_id']),
+      majorTypeGroupId: serializer.fromJson<String?>(json['majorTypeGroup_id']),
+      order: serializer.fromJson<int?>(json['order']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'pid': serializer.toJson<int>(pid),
+      '_id': serializer.toJson<String?>(id),
+      'majorTypeGroup_id': serializer.toJson<String?>(majorTypeGroupId),
+      'order': serializer.toJson<int?>(order),
+      'detail_id': serializer.toJson<String?>(detailId),
+    };
+  }
+
+  NinMajorTypeData copyWith(
+          {int? pid,
+          String? id,
+          String? majorTypeGroupId,
+          int? order,
+          String? detailId}) =>
+      NinMajorTypeData(
+        pid: pid ?? this.pid,
+        id: id ?? this.id,
+        majorTypeGroupId: majorTypeGroupId ?? this.majorTypeGroupId,
+        order: order ?? this.order,
+        detailId: detailId ?? this.detailId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NinMajorTypeData(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('majorTypeGroupId: $majorTypeGroupId, ')
+          ..write('order: $order, ')
+          ..write('detailId: $detailId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      pid.hashCode,
+      $mrjc(
+          id.hashCode,
+          $mrjc(majorTypeGroupId.hashCode,
+              $mrjc(order.hashCode, detailId.hashCode)))));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NinMajorTypeData &&
+          other.pid == this.pid &&
+          other.id == this.id &&
+          other.majorTypeGroupId == this.majorTypeGroupId &&
+          other.order == this.order &&
+          other.detailId == this.detailId);
+}
+
+class NinMajorTypeCompanion extends UpdateCompanion<NinMajorTypeData> {
+  final Value<int> pid;
+  final Value<String?> id;
+  final Value<String?> majorTypeGroupId;
+  final Value<int?> order;
+  final Value<String?> detailId;
+  const NinMajorTypeCompanion({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.majorTypeGroupId = const Value.absent(),
+    this.order = const Value.absent(),
+    this.detailId = const Value.absent(),
+  });
+  NinMajorTypeCompanion.insert({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.majorTypeGroupId = const Value.absent(),
+    this.order = const Value.absent(),
+    this.detailId = const Value.absent(),
+  });
+  static Insertable<NinMajorTypeData> custom({
+    Expression<int>? pid,
+    Expression<String?>? id,
+    Expression<String?>? majorTypeGroupId,
+    Expression<int?>? order,
+    Expression<String?>? detailId,
+  }) {
+    return RawValuesInsertable({
+      if (pid != null) 'pid': pid,
+      if (id != null) '_id': id,
+      if (majorTypeGroupId != null) 'majorTypeGroup_id': majorTypeGroupId,
+      if (order != null) 'order': order,
+      if (detailId != null) 'detail_id': detailId,
+    });
+  }
+
+  NinMajorTypeCompanion copyWith(
+      {Value<int>? pid,
+      Value<String?>? id,
+      Value<String?>? majorTypeGroupId,
+      Value<int?>? order,
+      Value<String?>? detailId}) {
+    return NinMajorTypeCompanion(
+      pid: pid ?? this.pid,
+      id: id ?? this.id,
+      majorTypeGroupId: majorTypeGroupId ?? this.majorTypeGroupId,
+      order: order ?? this.order,
+      detailId: detailId ?? this.detailId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (pid.present) {
+      map['pid'] = Variable<int>(pid.value);
+    }
+    if (id.present) {
+      map['_id'] = Variable<String?>(id.value);
+    }
+    if (majorTypeGroupId.present) {
+      map['majorTypeGroup_id'] = Variable<String?>(majorTypeGroupId.value);
+    }
+    if (order.present) {
+      map['order'] = Variable<int?>(order.value);
+    }
+    if (detailId.present) {
+      map['detail_id'] = Variable<String?>(detailId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinMajorTypeCompanion(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('majorTypeGroupId: $majorTypeGroupId, ')
+          ..write('order: $order, ')
+          ..write('detailId: $detailId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class NinMajorType extends Table
+    with TableInfo<NinMajorType, NinMajorTypeData> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  NinMajorType(this._db, [this._alias]);
+  final VerificationMeta _pidMeta = const VerificationMeta('pid');
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _majorTypeGroupIdMeta =
+      const VerificationMeta('majorTypeGroupId');
+  late final GeneratedColumn<String?> majorTypeGroupId =
+      GeneratedColumn<String?>('majorTypeGroup_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  final VerificationMeta _orderMeta = const VerificationMeta('order');
+  late final GeneratedColumn<int?> order = GeneratedColumn<int?>(
+      'order', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns =>
+      [pid, id, majorTypeGroupId, order, detailId];
+  @override
+  String get aliasedName => _alias ?? 'nin_MajorType';
+  @override
+  String get actualTableName => 'nin_MajorType';
+  @override
+  VerificationContext validateIntegrity(Insertable<NinMajorTypeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('pid')) {
+      context.handle(
+          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
+    }
+    if (data.containsKey('_id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
+    }
+    if (data.containsKey('majorTypeGroup_id')) {
+      context.handle(
+          _majorTypeGroupIdMeta,
+          majorTypeGroupId.isAcceptableOrUnknown(
+              data['majorTypeGroup_id']!, _majorTypeGroupIdMeta));
+    }
+    if (data.containsKey('order')) {
+      context.handle(
+          _orderMeta, order.isAcceptableOrUnknown(data['order']!, _orderMeta));
+    }
+    if (data.containsKey('detail_id')) {
+      context.handle(_detailIdMeta,
+          detailId.isAcceptableOrUnknown(data['detail_id']!, _detailIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pid};
+  @override
+  NinMajorTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return NinMajorTypeData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  NinMajorType createAlias(String alias) {
+    return NinMajorType(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'PRIMARY KEY (pid)',
+        'UNIQUE (_id)',
+        'FOREIGN KEY("majorTypeGroup_id") REFERENCES "nin_MajorTypeGroup" (_id)',
+        'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class NinMinorTypeData extends DataClass
     implements Insertable<NinMinorTypeData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? majorTypeId;
   final String? detailId;
@@ -3156,23 +2285,21 @@ class NinMinorTypeData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinMinorTypeData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      majorTypeId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      majorTypeId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
-      detailId: stringType
+      detailId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -3187,7 +2314,7 @@ class NinMinorTypeData extends DataClass
 
   NinMinorTypeCompanion toCompanion(bool nullToAbsent) {
     return NinMinorTypeCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       majorTypeId: majorTypeId == null && nullToAbsent
           ? const Value.absent()
@@ -3203,16 +2330,16 @@ class NinMinorTypeData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinMinorTypeData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
+      id: serializer.fromJson<String?>(json['_id']),
+      majorTypeId: serializer.fromJson<String?>(json['majorType_id']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'majorType_id': serializer.toJson<String?>(majorTypeId),
       'detail_id': serializer.toJson<String?>(detailId),
@@ -3242,7 +2369,7 @@ class NinMinorTypeData extends DataClass
   int get hashCode => $mrjf($mrjc(pid.hashCode,
       $mrjc(id.hashCode, $mrjc(majorTypeId.hashCode, detailId.hashCode))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinMinorTypeData &&
           other.pid == this.pid &&
@@ -3252,7 +2379,7 @@ class NinMinorTypeData extends DataClass
 }
 
 class NinMinorTypeCompanion extends UpdateCompanion<NinMinorTypeData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> majorTypeId;
   final Value<String?> detailId;
@@ -3270,9 +2397,9 @@ class NinMinorTypeCompanion extends UpdateCompanion<NinMinorTypeData> {
   });
   static Insertable<NinMinorTypeData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? majorTypeId,
-    Expression<String>? detailId,
+    Expression<String?>? id,
+    Expression<String?>? majorTypeId,
+    Expression<String?>? detailId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -3284,9 +2411,9 @@ class NinMinorTypeCompanion extends UpdateCompanion<NinMinorTypeData> {
 
   NinMinorTypeCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? majorTypeId,
-      Value<String>? detailId}) {
+      Value<String?>? id,
+      Value<String?>? majorTypeId,
+      Value<String?>? detailId}) {
     return NinMinorTypeCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -3299,7 +2426,7 @@ class NinMinorTypeCompanion extends UpdateCompanion<NinMinorTypeData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -3331,46 +2458,30 @@ class NinMinorType extends Table
   final String? _alias;
   NinMinorType(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _majorTypeIdMeta =
       const VerificationMeta('majorTypeId');
-  GeneratedTextColumn? _majorTypeId;
-  GeneratedTextColumn get majorTypeId =>
-      _majorTypeId ??= _constructMajorTypeId();
-  GeneratedTextColumn _constructMajorTypeId() {
-    return GeneratedTextColumn('majorType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> majorTypeId = GeneratedColumn<String?>(
+      'majorType_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [pid, id, majorTypeId, detailId];
   @override
-  NinMinorType get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_MinorType';
   @override
-  String get $tableName => _alias ?? 'nin_MinorType';
-  @override
-  final String actualTableName = 'nin_MinorType';
+  String get actualTableName => 'nin_MinorType';
   @override
   VerificationContext validateIntegrity(Insertable<NinMinorTypeData> instance,
       {bool isInserting = false}) {
@@ -3400,8 +2511,8 @@ class NinMinorType extends Table
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinMinorTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinMinorTypeData.fromData(data, _db, prefix: effectivePrefix);
+    return NinMinorTypeData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -3420,9 +2531,224 @@ class NinMinorType extends Table
   bool get dontWriteConstraints => true;
 }
 
+class NinLECTypeData extends DataClass implements Insertable<NinLECTypeData> {
+  final int pid;
+  final String? id;
+  final String? detailId;
+  NinLECTypeData({required this.pid, this.id, this.detailId});
+  factory NinLECTypeData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return NinLECTypeData(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      detailId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['pid'] = Variable<int>(pid);
+    if (!nullToAbsent || id != null) {
+      map['_id'] = Variable<String?>(id);
+    }
+    if (!nullToAbsent || detailId != null) {
+      map['detail_id'] = Variable<String?>(detailId);
+    }
+    return map;
+  }
+
+  NinLECTypeCompanion toCompanion(bool nullToAbsent) {
+    return NinLECTypeCompanion(
+      pid: Value(pid),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      detailId: detailId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(detailId),
+    );
+  }
+
+  factory NinLECTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return NinLECTypeData(
+      pid: serializer.fromJson<int>(json['pid']),
+      id: serializer.fromJson<String?>(json['_id']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'pid': serializer.toJson<int>(pid),
+      '_id': serializer.toJson<String?>(id),
+      'detail_id': serializer.toJson<String?>(detailId),
+    };
+  }
+
+  NinLECTypeData copyWith({int? pid, String? id, String? detailId}) =>
+      NinLECTypeData(
+        pid: pid ?? this.pid,
+        id: id ?? this.id,
+        detailId: detailId ?? this.detailId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NinLECTypeData(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('detailId: $detailId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, detailId.hashCode)));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NinLECTypeData &&
+          other.pid == this.pid &&
+          other.id == this.id &&
+          other.detailId == this.detailId);
+}
+
+class NinLECTypeCompanion extends UpdateCompanion<NinLECTypeData> {
+  final Value<int> pid;
+  final Value<String?> id;
+  final Value<String?> detailId;
+  const NinLECTypeCompanion({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.detailId = const Value.absent(),
+  });
+  NinLECTypeCompanion.insert({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.detailId = const Value.absent(),
+  });
+  static Insertable<NinLECTypeData> custom({
+    Expression<int>? pid,
+    Expression<String?>? id,
+    Expression<String?>? detailId,
+  }) {
+    return RawValuesInsertable({
+      if (pid != null) 'pid': pid,
+      if (id != null) '_id': id,
+      if (detailId != null) 'detail_id': detailId,
+    });
+  }
+
+  NinLECTypeCompanion copyWith(
+      {Value<int>? pid, Value<String?>? id, Value<String?>? detailId}) {
+    return NinLECTypeCompanion(
+      pid: pid ?? this.pid,
+      id: id ?? this.id,
+      detailId: detailId ?? this.detailId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (pid.present) {
+      map['pid'] = Variable<int>(pid.value);
+    }
+    if (id.present) {
+      map['_id'] = Variable<String?>(id.value);
+    }
+    if (detailId.present) {
+      map['detail_id'] = Variable<String?>(detailId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinLECTypeCompanion(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('detailId: $detailId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class NinLECType extends Table with TableInfo<NinLECType, NinLECTypeData> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  NinLECType(this._db, [this._alias]);
+  final VerificationMeta _pidMeta = const VerificationMeta('pid');
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [pid, id, detailId];
+  @override
+  String get aliasedName => _alias ?? 'nin_LECType';
+  @override
+  String get actualTableName => 'nin_LECType';
+  @override
+  VerificationContext validateIntegrity(Insertable<NinLECTypeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('pid')) {
+      context.handle(
+          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
+    }
+    if (data.containsKey('_id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
+    }
+    if (data.containsKey('detail_id')) {
+      context.handle(_detailIdMeta,
+          detailId.isAcceptableOrUnknown(data['detail_id']!, _detailIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pid};
+  @override
+  NinLECTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return NinLECTypeData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  NinLECType createAlias(String alias) {
+    return NinLECType(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const [
+        'PRIMARY KEY (pid)',
+        'UNIQUE (_id)',
+        'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
+      ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class NinMajorTypeLECData extends DataClass
     implements Insertable<NinMajorTypeLECData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? lecId;
   final String? majorTypeId;
@@ -3439,26 +2765,25 @@ class NinMajorTypeLECData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinMajorTypeLECData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      lecId:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
-      majorTypeId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      lecId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
+      majorTypeId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
-      lecTypeId: stringType
+      lecTypeId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}lecType_id']),
-      axis: intType.mapFromDatabaseResponse(data['${effectivePrefix}axis']),
+      axis: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}axis']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -3479,7 +2804,7 @@ class NinMajorTypeLECData extends DataClass
 
   NinMajorTypeLECCompanion toCompanion(bool nullToAbsent) {
     return NinMajorTypeLECCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       lecId:
           lecId == null && nullToAbsent ? const Value.absent() : Value(lecId),
@@ -3498,18 +2823,18 @@ class NinMajorTypeLECData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinMajorTypeLECData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      lecId: serializer.fromJson<String>(json['lec_id']),
-      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
-      lecTypeId: serializer.fromJson<String>(json['lecType_id']),
-      axis: serializer.fromJson<int>(json['axis']),
+      id: serializer.fromJson<String?>(json['_id']),
+      lecId: serializer.fromJson<String?>(json['lec_id']),
+      majorTypeId: serializer.fromJson<String?>(json['majorType_id']),
+      lecTypeId: serializer.fromJson<String?>(json['lecType_id']),
+      axis: serializer.fromJson<int?>(json['axis']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'lec_id': serializer.toJson<String?>(lecId),
       'majorType_id': serializer.toJson<String?>(majorTypeId),
@@ -3556,7 +2881,7 @@ class NinMajorTypeLECData extends DataClass
               $mrjc(majorTypeId.hashCode,
                   $mrjc(lecTypeId.hashCode, axis.hashCode))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinMajorTypeLECData &&
           other.pid == this.pid &&
@@ -3568,7 +2893,7 @@ class NinMajorTypeLECData extends DataClass
 }
 
 class NinMajorTypeLECCompanion extends UpdateCompanion<NinMajorTypeLECData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> lecId;
   final Value<String?> majorTypeId;
@@ -3592,11 +2917,11 @@ class NinMajorTypeLECCompanion extends UpdateCompanion<NinMajorTypeLECData> {
   });
   static Insertable<NinMajorTypeLECData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? lecId,
-    Expression<String>? majorTypeId,
-    Expression<String>? lecTypeId,
-    Expression<int>? axis,
+    Expression<String?>? id,
+    Expression<String?>? lecId,
+    Expression<String?>? majorTypeId,
+    Expression<String?>? lecTypeId,
+    Expression<int?>? axis,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -3610,11 +2935,11 @@ class NinMajorTypeLECCompanion extends UpdateCompanion<NinMajorTypeLECData> {
 
   NinMajorTypeLECCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? lecId,
-      Value<String>? majorTypeId,
-      Value<String>? lecTypeId,
-      Value<int>? axis}) {
+      Value<String?>? id,
+      Value<String?>? lecId,
+      Value<String?>? majorTypeId,
+      Value<String?>? lecTypeId,
+      Value<int?>? axis}) {
     return NinMajorTypeLECCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -3629,7 +2954,7 @@ class NinMajorTypeLECCompanion extends UpdateCompanion<NinMajorTypeLECData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -3669,62 +2994,39 @@ class NinMajorTypeLEC extends Table
   final String? _alias;
   NinMajorTypeLEC(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
-  GeneratedTextColumn? _lecId;
-  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
-  GeneratedTextColumn _constructLecId() {
-    return GeneratedTextColumn('lec_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> lecId = GeneratedColumn<String?>(
+      'lec_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _majorTypeIdMeta =
       const VerificationMeta('majorTypeId');
-  GeneratedTextColumn? _majorTypeId;
-  GeneratedTextColumn get majorTypeId =>
-      _majorTypeId ??= _constructMajorTypeId();
-  GeneratedTextColumn _constructMajorTypeId() {
-    return GeneratedTextColumn('majorType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> majorTypeId = GeneratedColumn<String?>(
+      'majorType_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _lecTypeIdMeta = const VerificationMeta('lecTypeId');
-  GeneratedTextColumn? _lecTypeId;
-  GeneratedTextColumn get lecTypeId => _lecTypeId ??= _constructLecTypeId();
-  GeneratedTextColumn _constructLecTypeId() {
-    return GeneratedTextColumn('lecType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> lecTypeId = GeneratedColumn<String?>(
+      'lecType_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _axisMeta = const VerificationMeta('axis');
-  GeneratedIntColumn? _axis;
-  GeneratedIntColumn get axis => _axis ??= _constructAxis();
-  GeneratedIntColumn _constructAxis() {
-    return GeneratedIntColumn('axis', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> axis = GeneratedColumn<int?>(
+      'axis', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [pid, id, lecId, majorTypeId, lecTypeId, axis];
   @override
-  NinMajorTypeLEC get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_MajorTypeLEC';
   @override
-  String get $tableName => _alias ?? 'nin_MajorTypeLEC';
-  @override
-  final String actualTableName = 'nin_MajorTypeLEC';
+  String get actualTableName => 'nin_MajorTypeLEC';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinMajorTypeLECData> instance,
@@ -3763,8 +3065,8 @@ class NinMajorTypeLEC extends Table
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinMajorTypeLECData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinMajorTypeLECData.fromData(data, _db, prefix: effectivePrefix);
+    return NinMajorTypeLECData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -3775,7 +3077,6 @@ class NinMajorTypeLEC extends Table
   @override
   List<String> get customConstraints => const [
         'PRIMARY KEY (pid)',
-        'UNIQUE (_id)',
         'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)',
         'FOREIGN KEY("majorType_id") REFERENCES "nin_MajorType" (_id)',
         'FOREIGN KEY("lecType_id") REFERENCES "nin_LECType" (_id)'
@@ -3786,7 +3087,7 @@ class NinMajorTypeLEC extends Table
 
 class NinElementarySegmentData extends DataClass
     implements Insertable<NinElementarySegmentData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? lecId;
   final String? value;
@@ -3797,24 +3098,23 @@ class NinElementarySegmentData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinElementarySegmentData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      lecId:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
-      value:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}value']),
-      order: intType.mapFromDatabaseResponse(data['${effectivePrefix}order']),
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      lecId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
+      value: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}value']),
+      order: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}order']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -3832,7 +3132,7 @@ class NinElementarySegmentData extends DataClass
 
   NinElementarySegmentCompanion toCompanion(bool nullToAbsent) {
     return NinElementarySegmentCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       lecId:
           lecId == null && nullToAbsent ? const Value.absent() : Value(lecId),
@@ -3848,17 +3148,17 @@ class NinElementarySegmentData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinElementarySegmentData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      lecId: serializer.fromJson<String>(json['lec_id']),
-      value: serializer.fromJson<String>(json['value']),
-      order: serializer.fromJson<int>(json['order']),
+      id: serializer.fromJson<String?>(json['_id']),
+      lecId: serializer.fromJson<String?>(json['lec_id']),
+      value: serializer.fromJson<String?>(json['value']),
+      order: serializer.fromJson<int?>(json['order']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'lec_id': serializer.toJson<String?>(lecId),
       'value': serializer.toJson<String?>(value),
@@ -3893,7 +3193,7 @@ class NinElementarySegmentData extends DataClass
       $mrjc(id.hashCode,
           $mrjc(lecId.hashCode, $mrjc(value.hashCode, order.hashCode)))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinElementarySegmentData &&
           other.pid == this.pid &&
@@ -3905,7 +3205,7 @@ class NinElementarySegmentData extends DataClass
 
 class NinElementarySegmentCompanion
     extends UpdateCompanion<NinElementarySegmentData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> lecId;
   final Value<String?> value;
@@ -3926,10 +3226,10 @@ class NinElementarySegmentCompanion
   });
   static Insertable<NinElementarySegmentData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? lecId,
-    Expression<String>? value,
-    Expression<int>? order,
+    Expression<String?>? id,
+    Expression<String?>? lecId,
+    Expression<String?>? value,
+    Expression<int?>? order,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -3942,10 +3242,10 @@ class NinElementarySegmentCompanion
 
   NinElementarySegmentCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? lecId,
-      Value<String>? value,
-      Value<int>? order}) {
+      Value<String?>? id,
+      Value<String?>? lecId,
+      Value<String?>? value,
+      Value<int?>? order}) {
     return NinElementarySegmentCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -3959,7 +3259,7 @@ class NinElementarySegmentCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -3995,52 +3295,33 @@ class NinElementarySegment extends Table
   final String? _alias;
   NinElementarySegment(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
-  GeneratedTextColumn? _lecId;
-  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
-  GeneratedTextColumn _constructLecId() {
-    return GeneratedTextColumn('lec_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> lecId = GeneratedColumn<String?>(
+      'lec_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _valueMeta = const VerificationMeta('value');
-  GeneratedTextColumn? _value;
-  GeneratedTextColumn get value => _value ??= _constructValue();
-  GeneratedTextColumn _constructValue() {
-    return GeneratedTextColumn('value', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> value = GeneratedColumn<String?>(
+      'value', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _orderMeta = const VerificationMeta('order');
-  GeneratedIntColumn? _order;
-  GeneratedIntColumn get order => _order ??= _constructOrder();
-  GeneratedIntColumn _constructOrder() {
-    return GeneratedIntColumn('order', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> order = GeneratedColumn<int?>(
+      'order', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [pid, id, lecId, value, order];
   @override
-  NinElementarySegment get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_ElementarySegment';
   @override
-  String get $tableName => _alias ?? 'nin_ElementarySegment';
-  @override
-  final String actualTableName = 'nin_ElementarySegment';
+  String get actualTableName => 'nin_ElementarySegment';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinElementarySegmentData> instance,
@@ -4074,9 +3355,8 @@ class NinElementarySegment extends Table
   @override
   NinElementarySegmentData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return NinElementarySegmentData.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -4087,16 +3367,228 @@ class NinElementarySegment extends Table
   @override
   List<String> get customConstraints => const [
         'PRIMARY KEY (pid)',
-        'UNIQUE (_id)',
         'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)'
       ];
   @override
   bool get dontWriteConstraints => true;
 }
 
+class NinMappingScaleData extends DataClass
+    implements Insertable<NinMappingScaleData> {
+  final int pid;
+  final int? id;
+  final String? name;
+  NinMappingScaleData({required this.pid, this.id, this.name});
+  factory NinMappingScaleData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return NinMappingScaleData(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['pid'] = Variable<int>(pid);
+    if (!nullToAbsent || id != null) {
+      map['_id'] = Variable<int?>(id);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String?>(name);
+    }
+    return map;
+  }
+
+  NinMappingScaleCompanion toCompanion(bool nullToAbsent) {
+    return NinMappingScaleCompanion(
+      pid: Value(pid),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+    );
+  }
+
+  factory NinMappingScaleData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return NinMappingScaleData(
+      pid: serializer.fromJson<int>(json['pid']),
+      id: serializer.fromJson<int?>(json['_id']),
+      name: serializer.fromJson<String?>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'pid': serializer.toJson<int>(pid),
+      '_id': serializer.toJson<int?>(id),
+      'name': serializer.toJson<String?>(name),
+    };
+  }
+
+  NinMappingScaleData copyWith({int? pid, int? id, String? name}) =>
+      NinMappingScaleData(
+        pid: pid ?? this.pid,
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NinMappingScaleData(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(pid.hashCode, $mrjc(id.hashCode, name.hashCode)));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NinMappingScaleData &&
+          other.pid == this.pid &&
+          other.id == this.id &&
+          other.name == this.name);
+}
+
+class NinMappingScaleCompanion extends UpdateCompanion<NinMappingScaleData> {
+  final Value<int> pid;
+  final Value<int?> id;
+  final Value<String?> name;
+  const NinMappingScaleCompanion({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  NinMappingScaleCompanion.insert({
+    this.pid = const Value.absent(),
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  static Insertable<NinMappingScaleData> custom({
+    Expression<int>? pid,
+    Expression<int?>? id,
+    Expression<String?>? name,
+  }) {
+    return RawValuesInsertable({
+      if (pid != null) 'pid': pid,
+      if (id != null) '_id': id,
+      if (name != null) 'name': name,
+    });
+  }
+
+  NinMappingScaleCompanion copyWith(
+      {Value<int>? pid, Value<int?>? id, Value<String?>? name}) {
+    return NinMappingScaleCompanion(
+      pid: pid ?? this.pid,
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (pid.present) {
+      map['pid'] = Variable<int>(pid.value);
+    }
+    if (id.present) {
+      map['_id'] = Variable<int?>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String?>(name.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinMappingScaleCompanion(')
+          ..write('pid: $pid, ')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class NinMappingScale extends Table
+    with TableInfo<NinMappingScale, NinMappingScaleData> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  NinMappingScale(this._db, [this._alias]);
+  final VerificationMeta _pidMeta = const VerificationMeta('pid');
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      '_id', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [pid, id, name];
+  @override
+  String get aliasedName => _alias ?? 'nin_MappingScale';
+  @override
+  String get actualTableName => 'nin_MappingScale';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<NinMappingScaleData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('pid')) {
+      context.handle(
+          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
+    }
+    if (data.containsKey('_id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['_id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pid};
+  @override
+  NinMappingScaleData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return NinMappingScaleData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  NinMappingScale createAlias(String alias) {
+    return NinMappingScale(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints =>
+      const ['PRIMARY KEY (pid)', 'UNIQUE (_id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class NinMinorTypeScaledData extends DataClass
     implements Insertable<NinMinorTypeScaledData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? minorTypeId;
   final int? mappingScaleId;
@@ -4113,27 +3605,25 @@ class NinMinorTypeScaledData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinMinorTypeScaledData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      minorTypeId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      minorTypeId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}minorType_id']),
-      mappingScaleId: intType
+      mappingScaleId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}mappingScale_id']),
-      detailId: stringType
+      detailId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
-      isImplemented: intType
+      isImplemented: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}is_implemented']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -4154,7 +3644,7 @@ class NinMinorTypeScaledData extends DataClass
 
   NinMinorTypeScaledCompanion toCompanion(bool nullToAbsent) {
     return NinMinorTypeScaledCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       minorTypeId: minorTypeId == null && nullToAbsent
           ? const Value.absent()
@@ -4176,18 +3666,18 @@ class NinMinorTypeScaledData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinMinorTypeScaledData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      minorTypeId: serializer.fromJson<String>(json['minorType_id']),
-      mappingScaleId: serializer.fromJson<int>(json['mappingScale_id']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
-      isImplemented: serializer.fromJson<int>(json['is_implemented']),
+      id: serializer.fromJson<String?>(json['_id']),
+      minorTypeId: serializer.fromJson<String?>(json['minorType_id']),
+      mappingScaleId: serializer.fromJson<int?>(json['mappingScale_id']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
+      isImplemented: serializer.fromJson<int?>(json['is_implemented']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'minorType_id': serializer.toJson<String?>(minorTypeId),
       'mappingScale_id': serializer.toJson<int?>(mappingScaleId),
@@ -4234,7 +3724,7 @@ class NinMinorTypeScaledData extends DataClass
               $mrjc(mappingScaleId.hashCode,
                   $mrjc(detailId.hashCode, isImplemented.hashCode))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinMinorTypeScaledData &&
           other.pid == this.pid &&
@@ -4247,7 +3737,7 @@ class NinMinorTypeScaledData extends DataClass
 
 class NinMinorTypeScaledCompanion
     extends UpdateCompanion<NinMinorTypeScaledData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> minorTypeId;
   final Value<int?> mappingScaleId;
@@ -4271,11 +3761,11 @@ class NinMinorTypeScaledCompanion
   });
   static Insertable<NinMinorTypeScaledData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? minorTypeId,
-    Expression<int>? mappingScaleId,
-    Expression<String>? detailId,
-    Expression<int>? isImplemented,
+    Expression<String?>? id,
+    Expression<String?>? minorTypeId,
+    Expression<int?>? mappingScaleId,
+    Expression<String?>? detailId,
+    Expression<int?>? isImplemented,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -4289,11 +3779,11 @@ class NinMinorTypeScaledCompanion
 
   NinMinorTypeScaledCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? minorTypeId,
-      Value<int>? mappingScaleId,
-      Value<String>? detailId,
-      Value<int>? isImplemented}) {
+      Value<String?>? id,
+      Value<String?>? minorTypeId,
+      Value<int?>? mappingScaleId,
+      Value<String?>? detailId,
+      Value<int?>? isImplemented}) {
     return NinMinorTypeScaledCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -4308,7 +3798,7 @@ class NinMinorTypeScaledCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -4348,67 +3838,41 @@ class NinMinorTypeScaled extends Table
   final String? _alias;
   NinMinorTypeScaled(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _minorTypeIdMeta =
       const VerificationMeta('minorTypeId');
-  GeneratedTextColumn? _minorTypeId;
-  GeneratedTextColumn get minorTypeId =>
-      _minorTypeId ??= _constructMinorTypeId();
-  GeneratedTextColumn _constructMinorTypeId() {
-    return GeneratedTextColumn('minorType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> minorTypeId = GeneratedColumn<String?>(
+      'minorType_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _mappingScaleIdMeta =
       const VerificationMeta('mappingScaleId');
-  GeneratedIntColumn? _mappingScaleId;
-  GeneratedIntColumn get mappingScaleId =>
-      _mappingScaleId ??= _constructMappingScaleId();
-  GeneratedIntColumn _constructMappingScaleId() {
-    return GeneratedIntColumn('mappingScale_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> mappingScaleId = GeneratedColumn<int?>(
+      'mappingScale_id', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _isImplementedMeta =
       const VerificationMeta('isImplemented');
-  GeneratedIntColumn? _isImplemented;
-  GeneratedIntColumn get isImplemented =>
-      _isImplemented ??= _constructIsImplemented();
-  GeneratedIntColumn _constructIsImplemented() {
-    return GeneratedIntColumn('is_implemented', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> isImplemented = GeneratedColumn<int?>(
+      'is_implemented', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [pid, id, minorTypeId, mappingScaleId, detailId, isImplemented];
   @override
-  NinMinorTypeScaled get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_MinorTypeScaled';
   @override
-  String get $tableName => _alias ?? 'nin_MinorTypeScaled';
-  @override
-  final String actualTableName = 'nin_MinorTypeScaled';
+  String get actualTableName => 'nin_MinorTypeScaled';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinMinorTypeScaledData> instance,
@@ -4451,8 +3915,8 @@ class NinMinorTypeScaled extends Table
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinMinorTypeScaledData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinMinorTypeScaledData.fromData(data, _db, prefix: effectivePrefix);
+    return NinMinorTypeScaledData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -4473,7 +3937,7 @@ class NinMinorTypeScaled extends Table
 
 class NinStandardSegmentData extends DataClass
     implements Insertable<NinStandardSegmentData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? majorTypeLECId;
   final int? order;
@@ -4494,30 +3958,29 @@ class NinStandardSegmentData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinStandardSegmentData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      majorTypeLECId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      majorTypeLECId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}majorTypeLEC_id']),
-      order: intType.mapFromDatabaseResponse(data['${effectivePrefix}order']),
-      detailId: stringType
+      order: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}order']),
+      detailId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
-      lecId:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
-      majorTypeId: stringType
+      lecId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
+      majorTypeId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
-      selected:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}selected']),
+      selected: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}selected']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -4544,7 +4007,7 @@ class NinStandardSegmentData extends DataClass
 
   NinStandardSegmentCompanion toCompanion(bool nullToAbsent) {
     return NinStandardSegmentCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       majorTypeLECId: majorTypeLECId == null && nullToAbsent
           ? const Value.absent()
@@ -4570,20 +4033,20 @@ class NinStandardSegmentData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinStandardSegmentData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
-      majorTypeLECId: serializer.fromJson<String>(json['majorTypeLEC_id']),
-      order: serializer.fromJson<int>(json['order']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
-      lecId: serializer.fromJson<String>(json['lec_id']),
-      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
-      selected: serializer.fromJson<int>(json['selected']),
+      id: serializer.fromJson<String?>(json['_id']),
+      majorTypeLECId: serializer.fromJson<String?>(json['majorTypeLEC_id']),
+      order: serializer.fromJson<int?>(json['order']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
+      lecId: serializer.fromJson<String?>(json['lec_id']),
+      majorTypeId: serializer.fromJson<String?>(json['majorType_id']),
+      selected: serializer.fromJson<int?>(json['selected']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'majorTypeLEC_id': serializer.toJson<String?>(majorTypeLECId),
       'order': serializer.toJson<int?>(order),
@@ -4642,7 +4105,7 @@ class NinStandardSegmentData extends DataClass
                       $mrjc(lecId.hashCode,
                           $mrjc(majorTypeId.hashCode, selected.hashCode))))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinStandardSegmentData &&
           other.pid == this.pid &&
@@ -4657,7 +4120,7 @@ class NinStandardSegmentData extends DataClass
 
 class NinStandardSegmentCompanion
     extends UpdateCompanion<NinStandardSegmentData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> majorTypeLECId;
   final Value<int?> order;
@@ -4687,13 +4150,13 @@ class NinStandardSegmentCompanion
   });
   static Insertable<NinStandardSegmentData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? majorTypeLECId,
-    Expression<int>? order,
-    Expression<String>? detailId,
-    Expression<String>? lecId,
-    Expression<String>? majorTypeId,
-    Expression<int>? selected,
+    Expression<String?>? id,
+    Expression<String?>? majorTypeLECId,
+    Expression<int?>? order,
+    Expression<String?>? detailId,
+    Expression<String?>? lecId,
+    Expression<String?>? majorTypeId,
+    Expression<int?>? selected,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -4709,13 +4172,13 @@ class NinStandardSegmentCompanion
 
   NinStandardSegmentCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? majorTypeLECId,
-      Value<int>? order,
-      Value<String>? detailId,
-      Value<String>? lecId,
-      Value<String>? majorTypeId,
-      Value<int>? selected}) {
+      Value<String?>? id,
+      Value<String?>? majorTypeLECId,
+      Value<int?>? order,
+      Value<String?>? detailId,
+      Value<String?>? lecId,
+      Value<String?>? majorTypeId,
+      Value<int?>? selected}) {
     return NinStandardSegmentCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -4732,7 +4195,7 @@ class NinStandardSegmentCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -4780,81 +4243,48 @@ class NinStandardSegment extends Table
   final String? _alias;
   NinStandardSegment(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _majorTypeLECIdMeta =
       const VerificationMeta('majorTypeLECId');
-  GeneratedTextColumn? _majorTypeLECId;
-  GeneratedTextColumn get majorTypeLECId =>
-      _majorTypeLECId ??= _constructMajorTypeLECId();
-  GeneratedTextColumn _constructMajorTypeLECId() {
-    return GeneratedTextColumn('majorTypeLEC_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> majorTypeLECId = GeneratedColumn<String?>(
+      'majorTypeLEC_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _orderMeta = const VerificationMeta('order');
-  GeneratedIntColumn? _order;
-  GeneratedIntColumn get order => _order ??= _constructOrder();
-  GeneratedIntColumn _constructOrder() {
-    return GeneratedIntColumn('order', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> order = GeneratedColumn<int?>(
+      'order', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
-  GeneratedTextColumn? _lecId;
-  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
-  GeneratedTextColumn _constructLecId() {
-    return GeneratedTextColumn('lec_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> lecId = GeneratedColumn<String?>(
+      'lec_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _majorTypeIdMeta =
       const VerificationMeta('majorTypeId');
-  GeneratedTextColumn? _majorTypeId;
-  GeneratedTextColumn get majorTypeId =>
-      _majorTypeId ??= _constructMajorTypeId();
-  GeneratedTextColumn _constructMajorTypeId() {
-    return GeneratedTextColumn('majorType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> majorTypeId = GeneratedColumn<String?>(
+      'majorType_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _selectedMeta = const VerificationMeta('selected');
-  GeneratedIntColumn? _selected;
-  GeneratedIntColumn get selected => _selected ??= _constructSelected();
-  GeneratedIntColumn _constructSelected() {
-    return GeneratedIntColumn('selected', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> selected = GeneratedColumn<int?>(
+      'selected', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [pid, id, majorTypeLECId, order, detailId, lecId, majorTypeId, selected];
   @override
-  NinStandardSegment get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_StandardSegment';
   @override
-  String get $tableName => _alias ?? 'nin_StandardSegment';
-  @override
-  final String actualTableName = 'nin_StandardSegment';
+  String get actualTableName => 'nin_StandardSegment';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinStandardSegmentData> instance,
@@ -4903,8 +4333,8 @@ class NinStandardSegment extends Table
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinStandardSegmentData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinStandardSegmentData.fromData(data, _db, prefix: effectivePrefix);
+    return NinStandardSegmentData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -4915,7 +4345,6 @@ class NinStandardSegment extends Table
   @override
   List<String> get customConstraints => const [
         'PRIMARY KEY (pid)',
-        'UNIQUE (_id)',
         'FOREIGN KEY("majorTypeLEC_id") REFERENCES "nin_MajorTypeLEC" (_id)',
         'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)',
         'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)',
@@ -4927,7 +4356,7 @@ class NinStandardSegment extends Table
 
 class NinGadModifierData extends DataClass
     implements Insertable<NinGadModifierData> {
-  final int? pid;
+  final int pid;
   final String? majorTypeLECId;
   final String? majorTypeId;
   final String? lecId;
@@ -4944,27 +4373,25 @@ class NinGadModifierData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinGadModifierData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      majorTypeLECId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      majorTypeLECId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}majorTypeLEC_id']),
-      majorTypeId: stringType
+      majorTypeId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
-      lecId:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
-      speciesId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}species_id']),
-      value: intType.mapFromDatabaseResponse(data['${effectivePrefix}value']),
+      lecId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
+      speciesId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}species_id']),
+      value: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}value']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || majorTypeLECId != null) {
       map['majorTypeLEC_id'] = Variable<String?>(majorTypeLECId);
     }
@@ -4985,7 +4412,7 @@ class NinGadModifierData extends DataClass
 
   NinGadModifierCompanion toCompanion(bool nullToAbsent) {
     return NinGadModifierCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       majorTypeLECId: majorTypeLECId == null && nullToAbsent
           ? const Value.absent()
           : Value(majorTypeLECId),
@@ -5007,18 +4434,18 @@ class NinGadModifierData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinGadModifierData(
       pid: serializer.fromJson<int>(json['pid']),
-      majorTypeLECId: serializer.fromJson<String>(json['majorTypeLEC_id']),
-      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
-      lecId: serializer.fromJson<String>(json['lec_id']),
-      speciesId: serializer.fromJson<int>(json['species_id']),
-      value: serializer.fromJson<int>(json['value']),
+      majorTypeLECId: serializer.fromJson<String?>(json['majorTypeLEC_id']),
+      majorTypeId: serializer.fromJson<String?>(json['majorType_id']),
+      lecId: serializer.fromJson<String?>(json['lec_id']),
+      speciesId: serializer.fromJson<int?>(json['species_id']),
+      value: serializer.fromJson<int?>(json['value']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       'majorTypeLEC_id': serializer.toJson<String?>(majorTypeLECId),
       'majorType_id': serializer.toJson<String?>(majorTypeId),
       'lec_id': serializer.toJson<String?>(lecId),
@@ -5065,7 +4492,7 @@ class NinGadModifierData extends DataClass
               $mrjc(lecId.hashCode,
                   $mrjc(speciesId.hashCode, value.hashCode))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinGadModifierData &&
           other.pid == this.pid &&
@@ -5077,7 +4504,7 @@ class NinGadModifierData extends DataClass
 }
 
 class NinGadModifierCompanion extends UpdateCompanion<NinGadModifierData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> majorTypeLECId;
   final Value<String?> majorTypeId;
   final Value<String?> lecId;
@@ -5101,11 +4528,11 @@ class NinGadModifierCompanion extends UpdateCompanion<NinGadModifierData> {
   });
   static Insertable<NinGadModifierData> custom({
     Expression<int>? pid,
-    Expression<String>? majorTypeLECId,
-    Expression<String>? majorTypeId,
-    Expression<String>? lecId,
-    Expression<int>? speciesId,
-    Expression<int>? value,
+    Expression<String?>? majorTypeLECId,
+    Expression<String?>? majorTypeId,
+    Expression<String?>? lecId,
+    Expression<int?>? speciesId,
+    Expression<int?>? value,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -5119,11 +4546,11 @@ class NinGadModifierCompanion extends UpdateCompanion<NinGadModifierData> {
 
   NinGadModifierCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? majorTypeLECId,
-      Value<String>? majorTypeId,
-      Value<String>? lecId,
-      Value<int>? speciesId,
-      Value<int>? value}) {
+      Value<String?>? majorTypeLECId,
+      Value<String?>? majorTypeId,
+      Value<String?>? lecId,
+      Value<int?>? speciesId,
+      Value<int?>? value}) {
     return NinGadModifierCompanion(
       pid: pid ?? this.pid,
       majorTypeLECId: majorTypeLECId ?? this.majorTypeLECId,
@@ -5138,7 +4565,7 @@ class NinGadModifierCompanion extends UpdateCompanion<NinGadModifierData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (majorTypeLECId.present) {
       map['majorTypeLEC_id'] = Variable<String?>(majorTypeLECId.value);
@@ -5178,66 +4605,40 @@ class NinGadModifier extends Table
   final String? _alias;
   NinGadModifier(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _majorTypeLECIdMeta =
       const VerificationMeta('majorTypeLECId');
-  GeneratedTextColumn? _majorTypeLECId;
-  GeneratedTextColumn get majorTypeLECId =>
-      _majorTypeLECId ??= _constructMajorTypeLECId();
-  GeneratedTextColumn _constructMajorTypeLECId() {
-    return GeneratedTextColumn('majorTypeLEC_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> majorTypeLECId = GeneratedColumn<String?>(
+      'majorTypeLEC_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _majorTypeIdMeta =
       const VerificationMeta('majorTypeId');
-  GeneratedTextColumn? _majorTypeId;
-  GeneratedTextColumn get majorTypeId =>
-      _majorTypeId ??= _constructMajorTypeId();
-  GeneratedTextColumn _constructMajorTypeId() {
-    return GeneratedTextColumn('majorType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> majorTypeId = GeneratedColumn<String?>(
+      'majorType_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
-  GeneratedTextColumn? _lecId;
-  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
-  GeneratedTextColumn _constructLecId() {
-    return GeneratedTextColumn('lec_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> lecId = GeneratedColumn<String?>(
+      'lec_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _speciesIdMeta = const VerificationMeta('speciesId');
-  GeneratedIntColumn? _speciesId;
-  GeneratedIntColumn get speciesId => _speciesId ??= _constructSpeciesId();
-  GeneratedIntColumn _constructSpeciesId() {
-    return GeneratedIntColumn('species_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> speciesId = GeneratedColumn<int?>(
+      'species_id', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _valueMeta = const VerificationMeta('value');
-  GeneratedIntColumn? _value;
-  GeneratedIntColumn get value => _value ??= _constructValue();
-  GeneratedIntColumn _constructValue() {
-    return GeneratedIntColumn('value', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> value = GeneratedColumn<int?>(
+      'value', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [pid, majorTypeLECId, majorTypeId, lecId, speciesId, value];
   @override
-  NinGadModifier get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_GadModifier';
   @override
-  String get $tableName => _alias ?? 'nin_GadModifier';
-  @override
-  final String actualTableName = 'nin_GadModifier';
+  String get actualTableName => 'nin_GadModifier';
   @override
   VerificationContext validateIntegrity(Insertable<NinGadModifierData> instance,
       {bool isInserting = false}) {
@@ -5278,8 +4679,8 @@ class NinGadModifier extends Table
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinGadModifierData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinGadModifierData.fromData(data, _db, prefix: effectivePrefix);
+    return NinGadModifierData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5301,7 +4702,7 @@ class NinGadModifier extends Table
 
 class NinMinorTypeStandardSegmentData extends DataClass
     implements Insertable<NinMinorTypeStandardSegmentData> {
-  final int? pid;
+  final int pid;
   final String? minorTypeId;
   final String? standardSegmentId;
   NinMinorTypeStandardSegmentData(
@@ -5310,22 +4711,19 @@ class NinMinorTypeStandardSegmentData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinMinorTypeStandardSegmentData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      minorTypeId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      minorTypeId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}minorType_id']),
-      standardSegmentId: stringType.mapFromDatabaseResponse(
+      standardSegmentId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}standardSegment_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || minorTypeId != null) {
       map['minorType_id'] = Variable<String?>(minorTypeId);
     }
@@ -5337,7 +4735,7 @@ class NinMinorTypeStandardSegmentData extends DataClass
 
   NinMinorTypeStandardSegmentCompanion toCompanion(bool nullToAbsent) {
     return NinMinorTypeStandardSegmentCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       minorTypeId: minorTypeId == null && nullToAbsent
           ? const Value.absent()
           : Value(minorTypeId),
@@ -5352,16 +4750,16 @@ class NinMinorTypeStandardSegmentData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinMinorTypeStandardSegmentData(
       pid: serializer.fromJson<int>(json['pid']),
-      minorTypeId: serializer.fromJson<String>(json['minorType_id']),
+      minorTypeId: serializer.fromJson<String?>(json['minorType_id']),
       standardSegmentId:
-          serializer.fromJson<String>(json['standardSegment_id']),
+          serializer.fromJson<String?>(json['standardSegment_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       'minorType_id': serializer.toJson<String?>(minorTypeId),
       'standardSegment_id': serializer.toJson<String?>(standardSegmentId),
     };
@@ -5388,7 +4786,7 @@ class NinMinorTypeStandardSegmentData extends DataClass
   int get hashCode => $mrjf($mrjc(
       pid.hashCode, $mrjc(minorTypeId.hashCode, standardSegmentId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinMinorTypeStandardSegmentData &&
           other.pid == this.pid &&
@@ -5398,7 +4796,7 @@ class NinMinorTypeStandardSegmentData extends DataClass
 
 class NinMinorTypeStandardSegmentCompanion
     extends UpdateCompanion<NinMinorTypeStandardSegmentData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> minorTypeId;
   final Value<String?> standardSegmentId;
   const NinMinorTypeStandardSegmentCompanion({
@@ -5413,8 +4811,8 @@ class NinMinorTypeStandardSegmentCompanion
   });
   static Insertable<NinMinorTypeStandardSegmentData> custom({
     Expression<int>? pid,
-    Expression<String>? minorTypeId,
-    Expression<String>? standardSegmentId,
+    Expression<String?>? minorTypeId,
+    Expression<String?>? standardSegmentId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -5425,8 +4823,8 @@ class NinMinorTypeStandardSegmentCompanion
 
   NinMinorTypeStandardSegmentCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? minorTypeId,
-      Value<String>? standardSegmentId}) {
+      Value<String?>? minorTypeId,
+      Value<String?>? standardSegmentId}) {
     return NinMinorTypeStandardSegmentCompanion(
       pid: pid ?? this.pid,
       minorTypeId: minorTypeId ?? this.minorTypeId,
@@ -5438,7 +4836,7 @@ class NinMinorTypeStandardSegmentCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (minorTypeId.present) {
       map['minorType_id'] = Variable<String?>(minorTypeId.value);
@@ -5468,41 +4866,29 @@ class NinMinorTypeStandardSegment extends Table
   final String? _alias;
   NinMinorTypeStandardSegment(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _minorTypeIdMeta =
       const VerificationMeta('minorTypeId');
-  GeneratedTextColumn? _minorTypeId;
-  GeneratedTextColumn get minorTypeId =>
-      _minorTypeId ??= _constructMinorTypeId();
-  GeneratedTextColumn _constructMinorTypeId() {
-    return GeneratedTextColumn('minorType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> minorTypeId = GeneratedColumn<String?>(
+      'minorType_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _standardSegmentIdMeta =
       const VerificationMeta('standardSegmentId');
-  GeneratedTextColumn? _standardSegmentId;
-  GeneratedTextColumn get standardSegmentId =>
-      _standardSegmentId ??= _constructStandardSegmentId();
-  GeneratedTextColumn _constructStandardSegmentId() {
-    return GeneratedTextColumn('standardSegment_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> standardSegmentId =
+      GeneratedColumn<String?>('standardSegment_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [pid, minorTypeId, standardSegmentId];
   @override
-  NinMinorTypeStandardSegment get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_MinorTypeStandardSegment';
   @override
-  String get $tableName => _alias ?? 'nin_MinorTypeStandardSegment';
-  @override
-  final String actualTableName = 'nin_MinorTypeStandardSegment';
+  String get actualTableName => 'nin_MinorTypeStandardSegment';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinMinorTypeStandardSegmentData> instance,
@@ -5533,9 +4919,8 @@ class NinMinorTypeStandardSegment extends Table
   @override
   NinMinorTypeStandardSegmentData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return NinMinorTypeStandardSegmentData.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5555,7 +4940,7 @@ class NinMinorTypeStandardSegment extends Table
 
 class NinElementarySegmentGroupData extends DataClass
     implements Insertable<NinElementarySegmentGroupData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? elementarySegmentId;
   final String? majorTypeId;
@@ -5572,27 +4957,25 @@ class NinElementarySegmentGroupData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinElementarySegmentGroupData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      elementarySegmentId: stringType.mapFromDatabaseResponse(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      elementarySegmentId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}elementarySegment_id']),
-      majorTypeId: stringType
+      majorTypeId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
-      lecId:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
-      standardSegmentId: stringType.mapFromDatabaseResponse(
+      lecId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
+      standardSegmentId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}standardSegment_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -5613,7 +4996,7 @@ class NinElementarySegmentGroupData extends DataClass
 
   NinElementarySegmentGroupCompanion toCompanion(bool nullToAbsent) {
     return NinElementarySegmentGroupCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       elementarySegmentId: elementarySegmentId == null && nullToAbsent
           ? const Value.absent()
@@ -5634,20 +5017,20 @@ class NinElementarySegmentGroupData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinElementarySegmentGroupData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
+      id: serializer.fromJson<String?>(json['_id']),
       elementarySegmentId:
-          serializer.fromJson<String>(json['elementarySegment_id']),
-      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
-      lecId: serializer.fromJson<String>(json['lec_id']),
+          serializer.fromJson<String?>(json['elementarySegment_id']),
+      majorTypeId: serializer.fromJson<String?>(json['majorType_id']),
+      lecId: serializer.fromJson<String?>(json['lec_id']),
       standardSegmentId:
-          serializer.fromJson<String>(json['standardSegment_id']),
+          serializer.fromJson<String?>(json['standardSegment_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'elementarySegment_id': serializer.toJson<String?>(elementarySegmentId),
       'majorType_id': serializer.toJson<String?>(majorTypeId),
@@ -5694,7 +5077,7 @@ class NinElementarySegmentGroupData extends DataClass
               $mrjc(majorTypeId.hashCode,
                   $mrjc(lecId.hashCode, standardSegmentId.hashCode))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinElementarySegmentGroupData &&
           other.pid == this.pid &&
@@ -5707,7 +5090,7 @@ class NinElementarySegmentGroupData extends DataClass
 
 class NinElementarySegmentGroupCompanion
     extends UpdateCompanion<NinElementarySegmentGroupData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> elementarySegmentId;
   final Value<String?> majorTypeId;
@@ -5731,11 +5114,11 @@ class NinElementarySegmentGroupCompanion
   });
   static Insertable<NinElementarySegmentGroupData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? elementarySegmentId,
-    Expression<String>? majorTypeId,
-    Expression<String>? lecId,
-    Expression<String>? standardSegmentId,
+    Expression<String?>? id,
+    Expression<String?>? elementarySegmentId,
+    Expression<String?>? majorTypeId,
+    Expression<String?>? lecId,
+    Expression<String?>? standardSegmentId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -5750,11 +5133,11 @@ class NinElementarySegmentGroupCompanion
 
   NinElementarySegmentGroupCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? elementarySegmentId,
-      Value<String>? majorTypeId,
-      Value<String>? lecId,
-      Value<String>? standardSegmentId}) {
+      Value<String?>? id,
+      Value<String?>? elementarySegmentId,
+      Value<String?>? majorTypeId,
+      Value<String?>? lecId,
+      Value<String?>? standardSegmentId}) {
     return NinElementarySegmentGroupCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -5769,13 +5152,14 @@ class NinElementarySegmentGroupCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
     }
     if (elementarySegmentId.present) {
-      map['elementarySegment_id'] = Variable<String?>(elementarySegmentId.value);
+      map['elementarySegment_id'] =
+          Variable<String?>(elementarySegmentId.value);
     }
     if (majorTypeId.present) {
       map['majorType_id'] = Variable<String?>(majorTypeId.value);
@@ -5809,67 +5193,45 @@ class NinElementarySegmentGroup extends Table
   final String? _alias;
   NinElementarySegmentGroup(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _elementarySegmentIdMeta =
       const VerificationMeta('elementarySegmentId');
-  GeneratedTextColumn? _elementarySegmentId;
-  GeneratedTextColumn get elementarySegmentId =>
-      _elementarySegmentId ??= _constructElementarySegmentId();
-  GeneratedTextColumn _constructElementarySegmentId() {
-    return GeneratedTextColumn('elementarySegment_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> elementarySegmentId =
+      GeneratedColumn<String?>('elementarySegment_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _majorTypeIdMeta =
       const VerificationMeta('majorTypeId');
-  GeneratedTextColumn? _majorTypeId;
-  GeneratedTextColumn get majorTypeId =>
-      _majorTypeId ??= _constructMajorTypeId();
-  GeneratedTextColumn _constructMajorTypeId() {
-    return GeneratedTextColumn('majorType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> majorTypeId = GeneratedColumn<String?>(
+      'majorType_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
-  GeneratedTextColumn? _lecId;
-  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
-  GeneratedTextColumn _constructLecId() {
-    return GeneratedTextColumn('lec_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> lecId = GeneratedColumn<String?>(
+      'lec_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _standardSegmentIdMeta =
       const VerificationMeta('standardSegmentId');
-  GeneratedTextColumn? _standardSegmentId;
-  GeneratedTextColumn get standardSegmentId =>
-      _standardSegmentId ??= _constructStandardSegmentId();
-  GeneratedTextColumn _constructStandardSegmentId() {
-    return GeneratedTextColumn('standardSegment_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> standardSegmentId =
+      GeneratedColumn<String?>('standardSegment_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [pid, id, elementarySegmentId, majorTypeId, lecId, standardSegmentId];
   @override
-  NinElementarySegmentGroup get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_ElementarySegmentGroup';
   @override
-  String get $tableName => _alias ?? 'nin_ElementarySegmentGroup';
-  @override
-  final String actualTableName = 'nin_ElementarySegmentGroup';
+  String get actualTableName => 'nin_ElementarySegmentGroup';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinElementarySegmentGroupData> instance,
@@ -5913,9 +5275,8 @@ class NinElementarySegmentGroup extends Table
   @override
   NinElementarySegmentGroupData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return NinElementarySegmentGroupData.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -5937,7 +5298,7 @@ class NinElementarySegmentGroup extends Table
 
 class NinStandardSegmentElementData extends DataClass
     implements Insertable<NinStandardSegmentElementData> {
-  final int? pid;
+  final int pid;
   final String? standardSegmentId;
   final String? elementarySegmentId;
   NinStandardSegmentElementData(
@@ -5946,22 +5307,19 @@ class NinStandardSegmentElementData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinStandardSegmentElementData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      standardSegmentId: stringType.mapFromDatabaseResponse(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      standardSegmentId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}standardSegment_id']),
-      elementarySegmentId: stringType.mapFromDatabaseResponse(
+      elementarySegmentId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}elementarySegment_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || standardSegmentId != null) {
       map['standardSegment_id'] = Variable<String?>(standardSegmentId);
     }
@@ -5973,7 +5331,7 @@ class NinStandardSegmentElementData extends DataClass
 
   NinStandardSegmentElementCompanion toCompanion(bool nullToAbsent) {
     return NinStandardSegmentElementCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       standardSegmentId: standardSegmentId == null && nullToAbsent
           ? const Value.absent()
           : Value(standardSegmentId),
@@ -5989,16 +5347,16 @@ class NinStandardSegmentElementData extends DataClass
     return NinStandardSegmentElementData(
       pid: serializer.fromJson<int>(json['pid']),
       standardSegmentId:
-          serializer.fromJson<String>(json['standardSegment_id']),
+          serializer.fromJson<String?>(json['standardSegment_id']),
       elementarySegmentId:
-          serializer.fromJson<String>(json['elementarySegment_id']),
+          serializer.fromJson<String?>(json['elementarySegment_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       'standardSegment_id': serializer.toJson<String?>(standardSegmentId),
       'elementarySegment_id': serializer.toJson<String?>(elementarySegmentId),
     };
@@ -6025,7 +5383,7 @@ class NinStandardSegmentElementData extends DataClass
   int get hashCode => $mrjf($mrjc(pid.hashCode,
       $mrjc(standardSegmentId.hashCode, elementarySegmentId.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinStandardSegmentElementData &&
           other.pid == this.pid &&
@@ -6035,7 +5393,7 @@ class NinStandardSegmentElementData extends DataClass
 
 class NinStandardSegmentElementCompanion
     extends UpdateCompanion<NinStandardSegmentElementData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> standardSegmentId;
   final Value<String?> elementarySegmentId;
   const NinStandardSegmentElementCompanion({
@@ -6050,8 +5408,8 @@ class NinStandardSegmentElementCompanion
   });
   static Insertable<NinStandardSegmentElementData> custom({
     Expression<int>? pid,
-    Expression<String>? standardSegmentId,
-    Expression<String>? elementarySegmentId,
+    Expression<String?>? standardSegmentId,
+    Expression<String?>? elementarySegmentId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -6063,8 +5421,8 @@ class NinStandardSegmentElementCompanion
 
   NinStandardSegmentElementCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? standardSegmentId,
-      Value<String>? elementarySegmentId}) {
+      Value<String?>? standardSegmentId,
+      Value<String?>? elementarySegmentId}) {
     return NinStandardSegmentElementCompanion(
       pid: pid ?? this.pid,
       standardSegmentId: standardSegmentId ?? this.standardSegmentId,
@@ -6076,13 +5434,14 @@ class NinStandardSegmentElementCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (standardSegmentId.present) {
       map['standardSegment_id'] = Variable<String?>(standardSegmentId.value);
     }
     if (elementarySegmentId.present) {
-      map['elementarySegment_id'] = Variable<String?>(elementarySegmentId.value);
+      map['elementarySegment_id'] =
+          Variable<String?>(elementarySegmentId.value);
     }
     return map;
   }
@@ -6104,42 +5463,32 @@ class NinStandardSegmentElement extends Table
   final String? _alias;
   NinStandardSegmentElement(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _standardSegmentIdMeta =
       const VerificationMeta('standardSegmentId');
-  GeneratedTextColumn? _standardSegmentId;
-  GeneratedTextColumn get standardSegmentId =>
-      _standardSegmentId ??= _constructStandardSegmentId();
-  GeneratedTextColumn _constructStandardSegmentId() {
-    return GeneratedTextColumn('standardSegment_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> standardSegmentId =
+      GeneratedColumn<String?>('standardSegment_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _elementarySegmentIdMeta =
       const VerificationMeta('elementarySegmentId');
-  GeneratedTextColumn? _elementarySegmentId;
-  GeneratedTextColumn get elementarySegmentId =>
-      _elementarySegmentId ??= _constructElementarySegmentId();
-  GeneratedTextColumn _constructElementarySegmentId() {
-    return GeneratedTextColumn('elementarySegment_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> elementarySegmentId =
+      GeneratedColumn<String?>('elementarySegment_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [pid, standardSegmentId, elementarySegmentId];
   @override
-  NinStandardSegmentElement get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_StandardSegmentElement';
   @override
-  String get $tableName => _alias ?? 'nin_StandardSegmentElement';
-  @override
-  final String actualTableName = 'nin_StandardSegmentElement';
+  String get actualTableName => 'nin_StandardSegmentElement';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinStandardSegmentElementData> instance,
@@ -6170,9 +5519,8 @@ class NinStandardSegmentElement extends Table
   @override
   NinStandardSegmentElementData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return NinStandardSegmentElementData.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6192,7 +5540,7 @@ class NinStandardSegmentElement extends Table
 
 class NinElementarySegmentGroupDetailData extends DataClass
     implements Insertable<NinElementarySegmentGroupDetailData> {
-  final int? pid;
+  final int pid;
   final String? elementarySegmentGroupId;
   final String? lecId;
   final String? value;
@@ -6207,26 +5555,23 @@ class NinElementarySegmentGroupDetailData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinElementarySegmentGroupDetailData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      elementarySegmentGroupId: stringType.mapFromDatabaseResponse(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      elementarySegmentGroupId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}elementarySegmentGroup_id']),
-      lecId:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
-      value:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}value']),
-      detailId: stringType
+      lecId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}lec_id']),
+      value: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}value']),
+      detailId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}detail_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || elementarySegmentGroupId != null) {
       map['elementarySegmentGroup_id'] =
           Variable<String?>(elementarySegmentGroupId);
@@ -6245,7 +5590,7 @@ class NinElementarySegmentGroupDetailData extends DataClass
 
   NinElementarySegmentGroupDetailCompanion toCompanion(bool nullToAbsent) {
     return NinElementarySegmentGroupDetailCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       elementarySegmentGroupId: elementarySegmentGroupId == null && nullToAbsent
           ? const Value.absent()
           : Value(elementarySegmentGroupId),
@@ -6266,17 +5611,17 @@ class NinElementarySegmentGroupDetailData extends DataClass
     return NinElementarySegmentGroupDetailData(
       pid: serializer.fromJson<int>(json['pid']),
       elementarySegmentGroupId:
-          serializer.fromJson<String>(json['elementarySegmentGroup_id']),
-      lecId: serializer.fromJson<String>(json['lec_id']),
-      value: serializer.fromJson<String>(json['value']),
-      detailId: serializer.fromJson<String>(json['detail_id']),
+          serializer.fromJson<String?>(json['elementarySegmentGroup_id']),
+      lecId: serializer.fromJson<String?>(json['lec_id']),
+      value: serializer.fromJson<String?>(json['value']),
+      detailId: serializer.fromJson<String?>(json['detail_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       'elementarySegmentGroup_id':
           serializer.toJson<String?>(elementarySegmentGroupId),
       'lec_id': serializer.toJson<String?>(lecId),
@@ -6317,7 +5662,7 @@ class NinElementarySegmentGroupDetailData extends DataClass
       $mrjc(elementarySegmentGroupId.hashCode,
           $mrjc(lecId.hashCode, $mrjc(value.hashCode, detailId.hashCode)))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinElementarySegmentGroupDetailData &&
           other.pid == this.pid &&
@@ -6329,7 +5674,7 @@ class NinElementarySegmentGroupDetailData extends DataClass
 
 class NinElementarySegmentGroupDetailCompanion
     extends UpdateCompanion<NinElementarySegmentGroupDetailData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> elementarySegmentGroupId;
   final Value<String?> lecId;
   final Value<String?> value;
@@ -6350,10 +5695,10 @@ class NinElementarySegmentGroupDetailCompanion
   });
   static Insertable<NinElementarySegmentGroupDetailData> custom({
     Expression<int>? pid,
-    Expression<String>? elementarySegmentGroupId,
-    Expression<String>? lecId,
-    Expression<String>? value,
-    Expression<String>? detailId,
+    Expression<String?>? elementarySegmentGroupId,
+    Expression<String?>? lecId,
+    Expression<String?>? value,
+    Expression<String?>? detailId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -6367,10 +5712,10 @@ class NinElementarySegmentGroupDetailCompanion
 
   NinElementarySegmentGroupDetailCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? elementarySegmentGroupId,
-      Value<String>? lecId,
-      Value<String>? value,
-      Value<String>? detailId}) {
+      Value<String?>? elementarySegmentGroupId,
+      Value<String?>? lecId,
+      Value<String?>? value,
+      Value<String?>? detailId}) {
     return NinElementarySegmentGroupDetailCompanion(
       pid: pid ?? this.pid,
       elementarySegmentGroupId:
@@ -6385,7 +5730,7 @@ class NinElementarySegmentGroupDetailCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (elementarySegmentGroupId.present) {
       map['elementarySegmentGroup_id'] =
@@ -6424,56 +5769,37 @@ class NinElementarySegmentGroupDetail extends Table
   final String? _alias;
   NinElementarySegmentGroupDetail(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _elementarySegmentGroupIdMeta =
       const VerificationMeta('elementarySegmentGroupId');
-  GeneratedTextColumn? _elementarySegmentGroupId;
-  GeneratedTextColumn get elementarySegmentGroupId =>
-      _elementarySegmentGroupId ??= _constructElementarySegmentGroupId();
-  GeneratedTextColumn _constructElementarySegmentGroupId() {
-    return GeneratedTextColumn('elementarySegmentGroup_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> elementarySegmentGroupId =
+      GeneratedColumn<String?>('elementarySegmentGroup_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _lecIdMeta = const VerificationMeta('lecId');
-  GeneratedTextColumn? _lecId;
-  GeneratedTextColumn get lecId => _lecId ??= _constructLecId();
-  GeneratedTextColumn _constructLecId() {
-    return GeneratedTextColumn('lec_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> lecId = GeneratedColumn<String?>(
+      'lec_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _valueMeta = const VerificationMeta('value');
-  GeneratedTextColumn? _value;
-  GeneratedTextColumn get value => _value ??= _constructValue();
-  GeneratedTextColumn _constructValue() {
-    return GeneratedTextColumn('value', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> value = GeneratedColumn<String?>(
+      'value', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _detailIdMeta = const VerificationMeta('detailId');
-  GeneratedTextColumn? _detailId;
-  GeneratedTextColumn get detailId => _detailId ??= _constructDetailId();
-  GeneratedTextColumn _constructDetailId() {
-    return GeneratedTextColumn('detail_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> detailId = GeneratedColumn<String?>(
+      'detail_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [pid, elementarySegmentGroupId, lecId, value, detailId];
   @override
-  NinElementarySegmentGroupDetail get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_ElementarySegmentGroupDetail';
   @override
-  String get $tableName => _alias ?? 'nin_ElementarySegmentGroupDetail';
-  @override
-  final String actualTableName = 'nin_ElementarySegmentGroupDetail';
+  String get actualTableName => 'nin_ElementarySegmentGroupDetail';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinElementarySegmentGroupDetailData> instance,
@@ -6511,9 +5837,8 @@ class NinElementarySegmentGroupDetail extends Table
   @override
   NinElementarySegmentGroupDetailData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return NinElementarySegmentGroupDetailData.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6524,7 +5849,6 @@ class NinElementarySegmentGroupDetail extends Table
   @override
   List<String> get customConstraints => const [
         'PRIMARY KEY (pid)',
-        'UNIQUE ("elementarySegmentGroup_id")',
         'FOREIGN KEY("elementarySegmentGroup_id") REFERENCES "nin_ElementarySegmentGroup" ("elementarySegment_id")',
         'FOREIGN KEY(lec_id) REFERENCES "nin_LEC" (_id)',
         'FOREIGN KEY(detail_id) REFERENCES "nin_Detail" (_id)'
@@ -6535,7 +5859,7 @@ class NinElementarySegmentGroupDetail extends Table
 
 class NinElementarySegmentCombinationData extends DataClass
     implements Insertable<NinElementarySegmentCombinationData> {
-  final int? pid;
+  final int pid;
   final String? id;
   final String? elementarySegmentGroupId;
   final String? majorTypeLECId;
@@ -6548,23 +5872,21 @@ class NinElementarySegmentCombinationData extends DataClass
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinElementarySegmentCombinationData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      id: stringType.mapFromDatabaseResponse(data['${effectivePrefix}_id']),
-      elementarySegmentGroupId: stringType.mapFromDatabaseResponse(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}_id']),
+      elementarySegmentGroupId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}elementarySegmentGroup_id']),
-      majorTypeLECId: stringType
+      majorTypeLECId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}majorTypeLEC_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || id != null) {
       map['_id'] = Variable<String?>(id);
     }
@@ -6580,7 +5902,7 @@ class NinElementarySegmentCombinationData extends DataClass
 
   NinElementarySegmentCombinationCompanion toCompanion(bool nullToAbsent) {
     return NinElementarySegmentCombinationCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       elementarySegmentGroupId: elementarySegmentGroupId == null && nullToAbsent
           ? const Value.absent()
@@ -6597,17 +5919,17 @@ class NinElementarySegmentCombinationData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return NinElementarySegmentCombinationData(
       pid: serializer.fromJson<int>(json['pid']),
-      id: serializer.fromJson<String>(json['_id']),
+      id: serializer.fromJson<String?>(json['_id']),
       elementarySegmentGroupId:
-          serializer.fromJson<String>(json['elementarySegmentGroup_id']),
-      majorTypeLECId: serializer.fromJson<String>(json['majorTypeLEC_id']),
+          serializer.fromJson<String?>(json['elementarySegmentGroup_id']),
+      majorTypeLECId: serializer.fromJson<String?>(json['majorTypeLEC_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       '_id': serializer.toJson<String?>(id),
       'elementarySegmentGroup_id':
           serializer.toJson<String?>(elementarySegmentGroupId),
@@ -6644,7 +5966,7 @@ class NinElementarySegmentCombinationData extends DataClass
       $mrjc(id.hashCode,
           $mrjc(elementarySegmentGroupId.hashCode, majorTypeLECId.hashCode))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinElementarySegmentCombinationData &&
           other.pid == this.pid &&
@@ -6655,7 +5977,7 @@ class NinElementarySegmentCombinationData extends DataClass
 
 class NinElementarySegmentCombinationCompanion
     extends UpdateCompanion<NinElementarySegmentCombinationData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> id;
   final Value<String?> elementarySegmentGroupId;
   final Value<String?> majorTypeLECId;
@@ -6673,9 +5995,9 @@ class NinElementarySegmentCombinationCompanion
   });
   static Insertable<NinElementarySegmentCombinationData> custom({
     Expression<int>? pid,
-    Expression<String>? id,
-    Expression<String>? elementarySegmentGroupId,
-    Expression<String>? majorTypeLECId,
+    Expression<String?>? id,
+    Expression<String?>? elementarySegmentGroupId,
+    Expression<String?>? majorTypeLECId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -6688,9 +6010,9 @@ class NinElementarySegmentCombinationCompanion
 
   NinElementarySegmentCombinationCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? id,
-      Value<String>? elementarySegmentGroupId,
-      Value<String>? majorTypeLECId}) {
+      Value<String?>? id,
+      Value<String?>? elementarySegmentGroupId,
+      Value<String?>? majorTypeLECId}) {
     return NinElementarySegmentCombinationCompanion(
       pid: pid ?? this.pid,
       id: id ?? this.id,
@@ -6704,7 +6026,7 @@ class NinElementarySegmentCombinationCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (id.present) {
       map['_id'] = Variable<String?>(id.value);
@@ -6739,49 +6061,34 @@ class NinElementarySegmentCombination extends Table
   final String? _alias;
   NinElementarySegmentCombination(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedTextColumn? _id;
-  GeneratedTextColumn get id => _id ??= _constructId();
-  GeneratedTextColumn _constructId() {
-    return GeneratedTextColumn('_id', $tableName, true, $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      '_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _elementarySegmentGroupIdMeta =
       const VerificationMeta('elementarySegmentGroupId');
-  GeneratedTextColumn? _elementarySegmentGroupId;
-  GeneratedTextColumn get elementarySegmentGroupId =>
-      _elementarySegmentGroupId ??= _constructElementarySegmentGroupId();
-  GeneratedTextColumn _constructElementarySegmentGroupId() {
-    return GeneratedTextColumn('elementarySegmentGroup_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> elementarySegmentGroupId =
+      GeneratedColumn<String?>('elementarySegmentGroup_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _majorTypeLECIdMeta =
       const VerificationMeta('majorTypeLECId');
-  GeneratedTextColumn? _majorTypeLECId;
-  GeneratedTextColumn get majorTypeLECId =>
-      _majorTypeLECId ??= _constructMajorTypeLECId();
-  GeneratedTextColumn _constructMajorTypeLECId() {
-    return GeneratedTextColumn('majorTypeLEC_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> majorTypeLECId = GeneratedColumn<String?>(
+      'majorTypeLEC_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns =>
       [pid, id, elementarySegmentGroupId, majorTypeLECId];
   @override
-  NinElementarySegmentCombination get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_ElementarySegmentCombination';
   @override
-  String get $tableName => _alias ?? 'nin_ElementarySegmentCombination';
-  @override
-  final String actualTableName = 'nin_ElementarySegmentCombination';
+  String get actualTableName => 'nin_ElementarySegmentCombination';
   @override
   VerificationContext validateIntegrity(
       Insertable<NinElementarySegmentCombinationData> instance,
@@ -6816,9 +6123,8 @@ class NinElementarySegmentCombination extends Table
   @override
   NinElementarySegmentCombinationData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return NinElementarySegmentCombinationData.fromData(data, _db,
-        prefix: effectivePrefix);
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -6836,8 +6142,260 @@ class NinElementarySegmentCombination extends Table
   bool get dontWriteConstraints => true;
 }
 
+class NinGadScaleData extends DataClass implements Insertable<NinGadScaleData> {
+  final int pid;
+  final int? m7Scale;
+  final int? m3Scale;
+  final String? constancy;
+  NinGadScaleData(
+      {required this.pid, this.m7Scale, this.m3Scale, this.constancy});
+  factory NinGadScaleData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return NinGadScaleData(
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      m7Scale: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}m7Scale']),
+      m3Scale: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}m3Scale']),
+      constancy: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}Constancy']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['pid'] = Variable<int>(pid);
+    if (!nullToAbsent || m7Scale != null) {
+      map['m7Scale'] = Variable<int?>(m7Scale);
+    }
+    if (!nullToAbsent || m3Scale != null) {
+      map['m3Scale'] = Variable<int?>(m3Scale);
+    }
+    if (!nullToAbsent || constancy != null) {
+      map['Constancy'] = Variable<String?>(constancy);
+    }
+    return map;
+  }
+
+  NinGadScaleCompanion toCompanion(bool nullToAbsent) {
+    return NinGadScaleCompanion(
+      pid: Value(pid),
+      m7Scale: m7Scale == null && nullToAbsent
+          ? const Value.absent()
+          : Value(m7Scale),
+      m3Scale: m3Scale == null && nullToAbsent
+          ? const Value.absent()
+          : Value(m3Scale),
+      constancy: constancy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(constancy),
+    );
+  }
+
+  factory NinGadScaleData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return NinGadScaleData(
+      pid: serializer.fromJson<int>(json['pid']),
+      m7Scale: serializer.fromJson<int?>(json['m7Scale']),
+      m3Scale: serializer.fromJson<int?>(json['m3Scale']),
+      constancy: serializer.fromJson<String?>(json['Constancy']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'pid': serializer.toJson<int>(pid),
+      'm7Scale': serializer.toJson<int?>(m7Scale),
+      'm3Scale': serializer.toJson<int?>(m3Scale),
+      'Constancy': serializer.toJson<String?>(constancy),
+    };
+  }
+
+  NinGadScaleData copyWith(
+          {int? pid, int? m7Scale, int? m3Scale, String? constancy}) =>
+      NinGadScaleData(
+        pid: pid ?? this.pid,
+        m7Scale: m7Scale ?? this.m7Scale,
+        m3Scale: m3Scale ?? this.m3Scale,
+        constancy: constancy ?? this.constancy,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NinGadScaleData(')
+          ..write('pid: $pid, ')
+          ..write('m7Scale: $m7Scale, ')
+          ..write('m3Scale: $m3Scale, ')
+          ..write('constancy: $constancy')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(pid.hashCode,
+      $mrjc(m7Scale.hashCode, $mrjc(m3Scale.hashCode, constancy.hashCode))));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NinGadScaleData &&
+          other.pid == this.pid &&
+          other.m7Scale == this.m7Scale &&
+          other.m3Scale == this.m3Scale &&
+          other.constancy == this.constancy);
+}
+
+class NinGadScaleCompanion extends UpdateCompanion<NinGadScaleData> {
+  final Value<int> pid;
+  final Value<int?> m7Scale;
+  final Value<int?> m3Scale;
+  final Value<String?> constancy;
+  const NinGadScaleCompanion({
+    this.pid = const Value.absent(),
+    this.m7Scale = const Value.absent(),
+    this.m3Scale = const Value.absent(),
+    this.constancy = const Value.absent(),
+  });
+  NinGadScaleCompanion.insert({
+    this.pid = const Value.absent(),
+    this.m7Scale = const Value.absent(),
+    this.m3Scale = const Value.absent(),
+    this.constancy = const Value.absent(),
+  });
+  static Insertable<NinGadScaleData> custom({
+    Expression<int>? pid,
+    Expression<int?>? m7Scale,
+    Expression<int?>? m3Scale,
+    Expression<String?>? constancy,
+  }) {
+    return RawValuesInsertable({
+      if (pid != null) 'pid': pid,
+      if (m7Scale != null) 'm7Scale': m7Scale,
+      if (m3Scale != null) 'm3Scale': m3Scale,
+      if (constancy != null) 'Constancy': constancy,
+    });
+  }
+
+  NinGadScaleCompanion copyWith(
+      {Value<int>? pid,
+      Value<int?>? m7Scale,
+      Value<int?>? m3Scale,
+      Value<String?>? constancy}) {
+    return NinGadScaleCompanion(
+      pid: pid ?? this.pid,
+      m7Scale: m7Scale ?? this.m7Scale,
+      m3Scale: m3Scale ?? this.m3Scale,
+      constancy: constancy ?? this.constancy,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (pid.present) {
+      map['pid'] = Variable<int>(pid.value);
+    }
+    if (m7Scale.present) {
+      map['m7Scale'] = Variable<int?>(m7Scale.value);
+    }
+    if (m3Scale.present) {
+      map['m3Scale'] = Variable<int?>(m3Scale.value);
+    }
+    if (constancy.present) {
+      map['Constancy'] = Variable<String?>(constancy.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinGadScaleCompanion(')
+          ..write('pid: $pid, ')
+          ..write('m7Scale: $m7Scale, ')
+          ..write('m3Scale: $m3Scale, ')
+          ..write('constancy: $constancy')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class NinGadScale extends Table with TableInfo<NinGadScale, NinGadScaleData> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  NinGadScale(this._db, [this._alias]);
+  final VerificationMeta _pidMeta = const VerificationMeta('pid');
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
+  final VerificationMeta _m7ScaleMeta = const VerificationMeta('m7Scale');
+  late final GeneratedColumn<int?> m7Scale = GeneratedColumn<int?>(
+      'm7Scale', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _m3ScaleMeta = const VerificationMeta('m3Scale');
+  late final GeneratedColumn<int?> m3Scale = GeneratedColumn<int?>(
+      'm3Scale', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
+  final VerificationMeta _constancyMeta = const VerificationMeta('constancy');
+  late final GeneratedColumn<String?> constancy = GeneratedColumn<String?>(
+      'Constancy', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
+  @override
+  List<GeneratedColumn> get $columns => [pid, m7Scale, m3Scale, constancy];
+  @override
+  String get aliasedName => _alias ?? 'nin_GadScale';
+  @override
+  String get actualTableName => 'nin_GadScale';
+  @override
+  VerificationContext validateIntegrity(Insertable<NinGadScaleData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('pid')) {
+      context.handle(
+          _pidMeta, pid.isAcceptableOrUnknown(data['pid']!, _pidMeta));
+    }
+    if (data.containsKey('m7Scale')) {
+      context.handle(_m7ScaleMeta,
+          m7Scale.isAcceptableOrUnknown(data['m7Scale']!, _m7ScaleMeta));
+    }
+    if (data.containsKey('m3Scale')) {
+      context.handle(_m3ScaleMeta,
+          m3Scale.isAcceptableOrUnknown(data['m3Scale']!, _m3ScaleMeta));
+    }
+    if (data.containsKey('Constancy')) {
+      context.handle(_constancyMeta,
+          constancy.isAcceptableOrUnknown(data['Constancy']!, _constancyMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pid};
+  @override
+  NinGadScaleData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return NinGadScaleData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  NinGadScale createAlias(String alias) {
+    return NinGadScale(_db, alias);
+  }
+
+  @override
+  List<String> get customConstraints =>
+      const ['PRIMARY KEY (pid)', 'UNIQUE ("m7Scale")'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
-  final int? pid;
+  final int pid;
   final String? elementarySegmentCombinationId;
   final int? speciesId;
   final String? majorTypeId;
@@ -6854,28 +6412,26 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return NinGadValueData(
-      pid: intType.mapFromDatabaseResponse(data['${effectivePrefix}pid']),
-      elementarySegmentCombinationId: stringType.mapFromDatabaseResponse(
-          data['${effectivePrefix}elementarySegmentCombination_id']),
-      speciesId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}species_id']),
-      majorTypeId: stringType
+      pid: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pid'])!,
+      elementarySegmentCombinationId: const StringType()
+          .mapFromDatabaseResponse(
+              data['${effectivePrefix}elementarySegmentCombination_id']),
+      speciesId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}species_id']),
+      majorTypeId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}majorType_id']),
-      valueM7ScaleId: intType
+      valueM7ScaleId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}valueM7Scale_id']),
-      valueM3ScaleId: intType
+      valueM3ScaleId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}valueM3Scale_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || pid != null) {
-      map['pid'] = Variable<int?>(pid);
-    }
+    map['pid'] = Variable<int>(pid);
     if (!nullToAbsent || elementarySegmentCombinationId != null) {
       map['elementarySegmentCombination_id'] =
           Variable<String?>(elementarySegmentCombinationId);
@@ -6897,7 +6453,7 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
 
   NinGadValueCompanion toCompanion(bool nullToAbsent) {
     return NinGadValueCompanion(
-      pid: pid == null && nullToAbsent ? const Value.absent() : Value(pid),
+      pid: Value(pid),
       elementarySegmentCombinationId:
           elementarySegmentCombinationId == null && nullToAbsent
               ? const Value.absent()
@@ -6923,18 +6479,18 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
     return NinGadValueData(
       pid: serializer.fromJson<int>(json['pid']),
       elementarySegmentCombinationId:
-          serializer.fromJson<String>(json['elementarySegmentCombination_id']),
-      speciesId: serializer.fromJson<int>(json['species_id']),
-      majorTypeId: serializer.fromJson<String>(json['majorType_id']),
-      valueM7ScaleId: serializer.fromJson<int>(json['valueM7Scale_id']),
-      valueM3ScaleId: serializer.fromJson<int>(json['valueM3Scale_id']),
+          serializer.fromJson<String?>(json['elementarySegmentCombination_id']),
+      speciesId: serializer.fromJson<int?>(json['species_id']),
+      majorTypeId: serializer.fromJson<String?>(json['majorType_id']),
+      valueM7ScaleId: serializer.fromJson<int?>(json['valueM7Scale_id']),
+      valueM3ScaleId: serializer.fromJson<int?>(json['valueM3Scale_id']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'pid': serializer.toJson<int?>(pid),
+      'pid': serializer.toJson<int>(pid),
       'elementarySegmentCombination_id':
           serializer.toJson<String?>(elementarySegmentCombinationId),
       'species_id': serializer.toJson<int?>(speciesId),
@@ -6984,7 +6540,7 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
               $mrjc(majorTypeId.hashCode,
                   $mrjc(valueM7ScaleId.hashCode, valueM3ScaleId.hashCode))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NinGadValueData &&
           other.pid == this.pid &&
@@ -6997,7 +6553,7 @@ class NinGadValueData extends DataClass implements Insertable<NinGadValueData> {
 }
 
 class NinGadValueCompanion extends UpdateCompanion<NinGadValueData> {
-  final Value<int?> pid;
+  final Value<int> pid;
   final Value<String?> elementarySegmentCombinationId;
   final Value<int?> speciesId;
   final Value<String?> majorTypeId;
@@ -7021,11 +6577,11 @@ class NinGadValueCompanion extends UpdateCompanion<NinGadValueData> {
   });
   static Insertable<NinGadValueData> custom({
     Expression<int>? pid,
-    Expression<String>? elementarySegmentCombinationId,
-    Expression<int>? speciesId,
-    Expression<String>? majorTypeId,
-    Expression<int>? valueM7ScaleId,
-    Expression<int>? valueM3ScaleId,
+    Expression<String?>? elementarySegmentCombinationId,
+    Expression<int?>? speciesId,
+    Expression<String?>? majorTypeId,
+    Expression<int?>? valueM7ScaleId,
+    Expression<int?>? valueM3ScaleId,
   }) {
     return RawValuesInsertable({
       if (pid != null) 'pid': pid,
@@ -7040,11 +6596,11 @@ class NinGadValueCompanion extends UpdateCompanion<NinGadValueData> {
 
   NinGadValueCompanion copyWith(
       {Value<int>? pid,
-      Value<String>? elementarySegmentCombinationId,
-      Value<int>? speciesId,
-      Value<String>? majorTypeId,
-      Value<int>? valueM7ScaleId,
-      Value<int>? valueM3ScaleId}) {
+      Value<String?>? elementarySegmentCombinationId,
+      Value<int?>? speciesId,
+      Value<String?>? majorTypeId,
+      Value<int?>? valueM7ScaleId,
+      Value<int?>? valueM3ScaleId}) {
     return NinGadValueCompanion(
       pid: pid ?? this.pid,
       elementarySegmentCombinationId:
@@ -7060,7 +6616,7 @@ class NinGadValueCompanion extends UpdateCompanion<NinGadValueData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (pid.present) {
-      map['pid'] = Variable<int?>(pid.value);
+      map['pid'] = Variable<int>(pid.value);
     }
     if (elementarySegmentCombinationId.present) {
       map['elementarySegmentCombination_id'] =
@@ -7101,63 +6657,38 @@ class NinGadValue extends Table with TableInfo<NinGadValue, NinGadValueData> {
   final String? _alias;
   NinGadValue(this._db, [this._alias]);
   final VerificationMeta _pidMeta = const VerificationMeta('pid');
-  GeneratedIntColumn? _pid;
-  GeneratedIntColumn get pid => _pid ??= _constructPid();
-  GeneratedIntColumn _constructPid() {
-    return GeneratedIntColumn('pid', $tableName, false,
-        $customConstraints: 'NOT NULL');
-  }
-
+  late final GeneratedColumn<int?> pid = GeneratedColumn<int?>(
+      'pid', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _elementarySegmentCombinationIdMeta =
       const VerificationMeta('elementarySegmentCombinationId');
-  GeneratedTextColumn? _elementarySegmentCombinationId;
-  GeneratedTextColumn get elementarySegmentCombinationId =>
-      _elementarySegmentCombinationId ??=
-          _constructElementarySegmentCombinationId();
-  GeneratedTextColumn _constructElementarySegmentCombinationId() {
-    return GeneratedTextColumn(
-        'elementarySegmentCombination_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> elementarySegmentCombinationId =
+      GeneratedColumn<String?>(
+          'elementarySegmentCombination_id', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          $customConstraints: '');
   final VerificationMeta _speciesIdMeta = const VerificationMeta('speciesId');
-  GeneratedIntColumn? _speciesId;
-  GeneratedIntColumn get speciesId => _speciesId ??= _constructSpeciesId();
-  GeneratedIntColumn _constructSpeciesId() {
-    return GeneratedIntColumn('species_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> speciesId = GeneratedColumn<int?>(
+      'species_id', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _majorTypeIdMeta =
       const VerificationMeta('majorTypeId');
-  GeneratedTextColumn? _majorTypeId;
-  GeneratedTextColumn get majorTypeId =>
-      _majorTypeId ??= _constructMajorTypeId();
-  GeneratedTextColumn _constructMajorTypeId() {
-    return GeneratedTextColumn('majorType_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<String?> majorTypeId = GeneratedColumn<String?>(
+      'majorType_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _valueM7ScaleIdMeta =
       const VerificationMeta('valueM7ScaleId');
-  GeneratedIntColumn? _valueM7ScaleId;
-  GeneratedIntColumn get valueM7ScaleId =>
-      _valueM7ScaleId ??= _constructValueM7ScaleId();
-  GeneratedIntColumn _constructValueM7ScaleId() {
-    return GeneratedIntColumn('valueM7Scale_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> valueM7ScaleId = GeneratedColumn<int?>(
+      'valueM7Scale_id', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   final VerificationMeta _valueM3ScaleIdMeta =
       const VerificationMeta('valueM3ScaleId');
-  GeneratedIntColumn? _valueM3ScaleId;
-  GeneratedIntColumn get valueM3ScaleId =>
-      _valueM3ScaleId ??= _constructValueM3ScaleId();
-  GeneratedIntColumn _constructValueM3ScaleId() {
-    return GeneratedIntColumn('valueM3Scale_id', $tableName, true,
-        $customConstraints: '');
-  }
-
+  late final GeneratedColumn<int?> valueM3ScaleId = GeneratedColumn<int?>(
+      'valueM3Scale_id', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false, $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         pid,
@@ -7168,11 +6699,9 @@ class NinGadValue extends Table with TableInfo<NinGadValue, NinGadValueData> {
         valueM3ScaleId
       ];
   @override
-  NinGadValue get asDslTable => this;
+  String get aliasedName => _alias ?? 'nin_GadValue';
   @override
-  String get $tableName => _alias ?? 'nin_GadValue';
-  @override
-  final String actualTableName = 'nin_GadValue';
+  String get actualTableName => 'nin_GadValue';
   @override
   VerificationContext validateIntegrity(Insertable<NinGadValueData> instance,
       {bool isInserting = false}) {
@@ -7218,8 +6747,8 @@ class NinGadValue extends Table with TableInfo<NinGadValue, NinGadValueData> {
   Set<GeneratedColumn> get $primaryKey => {pid};
   @override
   NinGadValueData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NinGadValueData.fromData(data, _db, prefix: effectivePrefix);
+    return NinGadValueData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -7242,93 +6771,170 @@ class NinGadValue extends Table with TableInfo<NinGadValue, NinGadValueData> {
 
 abstract class _$NiNDatabase extends GeneratedDatabase {
   _$NiNDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  NinLanguage? _ninLanguage;
-  NinLanguage get ninLanguage => _ninLanguage ??= NinLanguage(this);
-  NinMappingScale? _ninMappingScale;
-  NinMappingScale get ninMappingScale =>
-      _ninMappingScale ??= NinMappingScale(this);
-  NinGadScale? _ninGadScale;
-  NinGadScale get ninGadScale => _ninGadScale ??= NinGadScale(this);
-  NinSpecies? _ninSpecies;
-  NinSpecies get ninSpecies => _ninSpecies ??= NinSpecies(this);
-  NinDetail? _ninDetail;
-  NinDetail get ninDetail => _ninDetail ??= NinDetail(this);
-  NinMajorTypeGroup? _ninMajorTypeGroup;
-  NinMajorTypeGroup get ninMajorTypeGroup =>
-      _ninMajorTypeGroup ??= NinMajorTypeGroup(this);
-  NinStructuringProcess? _ninStructuringProcess;
-  NinStructuringProcess get ninStructuringProcess =>
-      _ninStructuringProcess ??= NinStructuringProcess(this);
-  NinPatternOfVariation? _ninPatternOfVariation;
-  NinPatternOfVariation get ninPatternOfVariation =>
-      _ninPatternOfVariation ??= NinPatternOfVariation(this);
-  NinLECType? _ninLECType;
-  NinLECType get ninLECType => _ninLECType ??= NinLECType(this);
-  NinMajorType? _ninMajorType;
-  NinMajorType get ninMajorType => _ninMajorType ??= NinMajorType(this);
-  NinLEC? _ninLEC;
-  NinLEC get ninLEC => _ninLEC ??= NinLEC(this);
-  NinMinorType? _ninMinorType;
-  NinMinorType get ninMinorType => _ninMinorType ??= NinMinorType(this);
-  NinMajorTypeLEC? _ninMajorTypeLEC;
-  NinMajorTypeLEC get ninMajorTypeLEC =>
-      _ninMajorTypeLEC ??= NinMajorTypeLEC(this);
-  NinElementarySegment? _ninElementarySegment;
-  NinElementarySegment get ninElementarySegment =>
-      _ninElementarySegment ??= NinElementarySegment(this);
-  NinMinorTypeScaled? _ninMinorTypeScaled;
-  NinMinorTypeScaled get ninMinorTypeScaled =>
-      _ninMinorTypeScaled ??= NinMinorTypeScaled(this);
-  NinStandardSegment? _ninStandardSegment;
-  NinStandardSegment get ninStandardSegment =>
-      _ninStandardSegment ??= NinStandardSegment(this);
-  NinGadModifier? _ninGadModifier;
-  NinGadModifier get ninGadModifier => _ninGadModifier ??= NinGadModifier(this);
-  NinMinorTypeStandardSegment? _ninMinorTypeStandardSegment;
-  NinMinorTypeStandardSegment get ninMinorTypeStandardSegment =>
-      _ninMinorTypeStandardSegment ??= NinMinorTypeStandardSegment(this);
-  NinElementarySegmentGroup? _ninElementarySegmentGroup;
-  NinElementarySegmentGroup get ninElementarySegmentGroup =>
-      _ninElementarySegmentGroup ??= NinElementarySegmentGroup(this);
-  NinStandardSegmentElement? _ninStandardSegmentElement;
-  NinStandardSegmentElement get ninStandardSegmentElement =>
-      _ninStandardSegmentElement ??= NinStandardSegmentElement(this);
-  NinElementarySegmentGroupDetail? _ninElementarySegmentGroupDetail;
-  NinElementarySegmentGroupDetail get ninElementarySegmentGroupDetail =>
-      _ninElementarySegmentGroupDetail ??=
-          NinElementarySegmentGroupDetail(this);
-  NinElementarySegmentCombination? _ninElementarySegmentCombination;
-  NinElementarySegmentCombination get ninElementarySegmentCombination =>
-      _ninElementarySegmentCombination ??=
-          NinElementarySegmentCombination(this);
-  NinGadValue? _ninGadValue;
-  NinGadValue get ninGadValue => _ninGadValue ??= NinGadValue(this);
+  late final NinSpecies ninSpecies = NinSpecies(this);
+  late final Index ixNinSpeciesScientificNameId = Index(
+      'ix_nin_Species_scientificNameId',
+      'CREATE UNIQUE INDEX "ix_nin_Species_scientificNameId" ON "nin_Species" ("scientificNameId");');
+  late final Index ixNinSpeciesScientificName = Index(
+      'ix_nin_Species_scientificName',
+      'CREATE INDEX "ix_nin_Species_scientificName" ON "nin_Species" ("scientificName");');
+  late final Index ixNinSpeciesVernacularName = Index(
+      'ix_nin_Species_vernacularName',
+      'CREATE INDEX "ix_nin_Species_vernacularName" ON "nin_Species" ("vernacularName");');
+  late final NinLanguage ninLanguage = NinLanguage(this);
+  late final NinDetail ninDetail = NinDetail(this);
+  late final Index ixNinDetailKey = Index('ix_nin_Detail_key',
+      'CREATE INDEX "ix_nin_Detail_key" ON "nin_Detail" ("key");');
+  late final Index detailIndex = Index('detail_index',
+      'CREATE INDEX detail_index ON "nin_Detail" (_id, language_id, "key");');
+  late final Index ixNinDetailId = Index('ix_nin_Detail__id',
+      'CREATE INDEX "ix_nin_Detail__id" ON "nin_Detail" (_id);');
+  late final NinStructuringProcess ninStructuringProcess =
+      NinStructuringProcess(this);
+  late final NinPatternOfVariation ninPatternOfVariation =
+      NinPatternOfVariation(this);
+  late final NinLEC ninLEC = NinLEC(this);
+  late final Index ixNinLECId = Index('ix_nin_LEC__id',
+      'CREATE UNIQUE INDEX "ix_nin_LEC__id" ON "nin_LEC" (_id);');
+  late final NinMajorTypeGroup ninMajorTypeGroup = NinMajorTypeGroup(this);
+  late final NinMajorType ninMajorType = NinMajorType(this);
+  late final NinMinorType ninMinorType = NinMinorType(this);
+  late final Index ixNinMinorTypeMajorTypeId = Index(
+      'ix_nin_MinorType_majorType_id',
+      'CREATE INDEX "ix_nin_MinorType_majorType_id" ON "nin_MinorType" ("majorType_id");');
+  late final NinLECType ninLECType = NinLECType(this);
+  late final NinMajorTypeLEC ninMajorTypeLEC = NinMajorTypeLEC(this);
+  late final Index ixNinMajorTypeLECId = Index('ix_nin_MajorTypeLEC__id',
+      'CREATE UNIQUE INDEX "ix_nin_MajorTypeLEC__id" ON "nin_MajorTypeLEC" (_id);');
+  late final Index ixNinMajorTypeLECMajorTypeId = Index(
+      'ix_nin_MajorTypeLEC_majorType_id',
+      'CREATE INDEX "ix_nin_MajorTypeLEC_majorType_id" ON "nin_MajorTypeLEC" ("majorType_id");');
+  late final Index ixNinMajorTypeLECLecId = Index('ix_nin_MajorTypeLEC_lec_id',
+      'CREATE INDEX "ix_nin_MajorTypeLEC_lec_id" ON "nin_MajorTypeLEC" (lec_id);');
+  late final NinElementarySegment ninElementarySegment =
+      NinElementarySegment(this);
+  late final Index ixNinElementarySegmentId = Index(
+      'ix_nin_ElementarySegment__id',
+      'CREATE UNIQUE INDEX "ix_nin_ElementarySegment__id" ON "nin_ElementarySegment" (_id);');
+  late final NinMappingScale ninMappingScale = NinMappingScale(this);
+  late final NinMinorTypeScaled ninMinorTypeScaled = NinMinorTypeScaled(this);
+  late final Index minorTypeScaledIndex = Index('MinorTypeScaled_index',
+      'CREATE INDEX "MinorTypeScaled_index" ON "nin_MinorTypeScaled" ("minorType_id", "mappingScale_id");');
+  late final Index ixNinMinorTypeScaledMinorTypeId = Index(
+      'ix_nin_MinorTypeScaled_minorType_id',
+      'CREATE INDEX "ix_nin_MinorTypeScaled_minorType_id" ON "nin_MinorTypeScaled" ("minorType_id");');
+  late final NinStandardSegment ninStandardSegment = NinStandardSegment(this);
+  late final Index ixNinStandardSegmentId = Index('ix_nin_StandardSegment__id',
+      'CREATE UNIQUE INDEX "ix_nin_StandardSegment__id" ON "nin_StandardSegment" (_id);');
+  late final Index ixNinStandardSegmentMajorTypeId = Index(
+      'ix_nin_StandardSegment_majorType_id',
+      'CREATE INDEX "ix_nin_StandardSegment_majorType_id" ON "nin_StandardSegment" ("majorType_id");');
+  late final Index ixNinStandardSegmentMajorTypeLECId = Index(
+      'ix_nin_StandardSegment_majorTypeLEC_id',
+      'CREATE INDEX "ix_nin_StandardSegment_majorTypeLEC_id" ON "nin_StandardSegment" ("majorTypeLEC_id");');
+  late final NinGadModifier ninGadModifier = NinGadModifier(this);
+  late final Index ixNinGadModifierSpeciesId = Index(
+      'ix_nin_GadModifier_species_id',
+      'CREATE INDEX "ix_nin_GadModifier_species_id" ON "nin_GadModifier" (species_id);');
+  late final NinMinorTypeStandardSegment ninMinorTypeStandardSegment =
+      NinMinorTypeStandardSegment(this);
+  late final Index ixNinMinorTypeStandardSegmentMinorTypeId = Index(
+      'ix_nin_MinorTypeStandardSegment_minorType_id',
+      'CREATE INDEX "ix_nin_MinorTypeStandardSegment_minorType_id" ON "nin_MinorTypeStandardSegment" ("minorType_id");');
+  late final NinElementarySegmentGroup ninElementarySegmentGroup =
+      NinElementarySegmentGroup(this);
+  late final Index ixNinElementarySegmentGroupStandardSegmentId = Index(
+      'ix_nin_ElementarySegmentGroup_standardSegment_id',
+      'CREATE INDEX "ix_nin_ElementarySegmentGroup_standardSegment_id" ON "nin_ElementarySegmentGroup" ("standardSegment_id");');
+  late final Index ixNinElementarySegmentGroupLecId = Index(
+      'ix_nin_ElementarySegmentGroup_lec_id',
+      'CREATE INDEX "ix_nin_ElementarySegmentGroup_lec_id" ON "nin_ElementarySegmentGroup" (lec_id);');
+  late final Index ixNinElementarySegmentGroupMajorTypeId = Index(
+      'ix_nin_ElementarySegmentGroup_majorType_id',
+      'CREATE INDEX "ix_nin_ElementarySegmentGroup_majorType_id" ON "nin_ElementarySegmentGroup" ("majorType_id");');
+  late final Index elementarySegmentGroupIndex = Index(
+      'ElementarySegmentGroup_index',
+      'CREATE INDEX "ElementarySegmentGroup_index" ON "nin_ElementarySegmentGroup" ("standardSegment_id", "majorType_id");');
+  late final Index ixNinElementarySegmentGroupId = Index(
+      'ix_nin_ElementarySegmentGroup__id',
+      'CREATE INDEX "ix_nin_ElementarySegmentGroup__id" ON "nin_ElementarySegmentGroup" (_id);');
+  late final Index ixNinElementarySegmentGroupElementarySegmentId = Index(
+      'ix_nin_ElementarySegmentGroup_elementarySegment_id',
+      'CREATE INDEX "ix_nin_ElementarySegmentGroup_elementarySegment_id" ON "nin_ElementarySegmentGroup" ("elementarySegment_id");');
+  late final NinStandardSegmentElement ninStandardSegmentElement =
+      NinStandardSegmentElement(this);
+  late final Index ixNinStandardSegmentElementStandardSegmentId = Index(
+      'ix_nin_StandardSegmentElement_standardSegment_id',
+      'CREATE INDEX "ix_nin_StandardSegmentElement_standardSegment_id" ON "nin_StandardSegmentElement" ("standardSegment_id");');
+  late final NinElementarySegmentGroupDetail ninElementarySegmentGroupDetail =
+      NinElementarySegmentGroupDetail(this);
+  late final Index ixNinElementarySegmentGroupDetailElementarySegmentGroupId =
+      Index('ix_nin_ElementarySegmentGroupDetail_elementarySegmentGroup_id',
+          'CREATE UNIQUE INDEX "ix_nin_ElementarySegmentGroupDetail_elementarySegmentGroup_id" ON "nin_ElementarySegmentGroupDetail" ("elementarySegmentGroup_id");');
+  late final NinElementarySegmentCombination ninElementarySegmentCombination =
+      NinElementarySegmentCombination(this);
+  late final Index ixNinElementarySegmentCombinationId = Index(
+      'ix_nin_ElementarySegmentCombination__id',
+      'CREATE INDEX "ix_nin_ElementarySegmentCombination__id" ON "nin_ElementarySegmentCombination" (_id);');
+  late final NinGadScale ninGadScale = NinGadScale(this);
+  late final NinGadValue ninGadValue = NinGadValue(this);
+  late final Index ixNinGadValueSpeciesId = Index('ix_nin_GadValue_species_id',
+      'CREATE INDEX "ix_nin_GadValue_species_id" ON "nin_GadValue" (species_id);');
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-        ninLanguage,
-        ninMappingScale,
-        ninGadScale,
         ninSpecies,
+        ixNinSpeciesScientificNameId,
+        ixNinSpeciesScientificName,
+        ixNinSpeciesVernacularName,
+        ninLanguage,
         ninDetail,
-        ninMajorTypeGroup,
+        ixNinDetailKey,
+        detailIndex,
+        ixNinDetailId,
         ninStructuringProcess,
         ninPatternOfVariation,
-        ninLECType,
-        ninMajorType,
         ninLEC,
+        ixNinLECId,
+        ninMajorTypeGroup,
+        ninMajorType,
         ninMinorType,
+        ixNinMinorTypeMajorTypeId,
+        ninLECType,
         ninMajorTypeLEC,
+        ixNinMajorTypeLECId,
+        ixNinMajorTypeLECMajorTypeId,
+        ixNinMajorTypeLECLecId,
         ninElementarySegment,
+        ixNinElementarySegmentId,
+        ninMappingScale,
         ninMinorTypeScaled,
+        minorTypeScaledIndex,
+        ixNinMinorTypeScaledMinorTypeId,
         ninStandardSegment,
+        ixNinStandardSegmentId,
+        ixNinStandardSegmentMajorTypeId,
+        ixNinStandardSegmentMajorTypeLECId,
         ninGadModifier,
+        ixNinGadModifierSpeciesId,
         ninMinorTypeStandardSegment,
+        ixNinMinorTypeStandardSegmentMinorTypeId,
         ninElementarySegmentGroup,
+        ixNinElementarySegmentGroupStandardSegmentId,
+        ixNinElementarySegmentGroupLecId,
+        ixNinElementarySegmentGroupMajorTypeId,
+        elementarySegmentGroupIndex,
+        ixNinElementarySegmentGroupId,
+        ixNinElementarySegmentGroupElementarySegmentId,
         ninStandardSegmentElement,
+        ixNinStandardSegmentElementStandardSegmentId,
         ninElementarySegmentGroupDetail,
+        ixNinElementarySegmentGroupDetailElementarySegmentGroupId,
         ninElementarySegmentCombination,
-        ninGadValue
+        ixNinElementarySegmentCombinationId,
+        ninGadScale,
+        ninGadValue,
+        ixNinGadValueSpeciesId
       ];
 }
