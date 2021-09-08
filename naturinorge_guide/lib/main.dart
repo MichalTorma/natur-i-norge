@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             debugShowCheckedModeBanner: false,
-            title: LocaleKeys.app_name.tr(),
+            title: LocaleKeys.application_name.tr(),
             themeMode: ThemeMode.light,
             theme: lightTheme,
             // darkTheme: darkTheme,
