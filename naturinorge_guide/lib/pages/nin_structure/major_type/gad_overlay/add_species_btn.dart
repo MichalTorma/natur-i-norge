@@ -30,6 +30,7 @@ class AddSpecieButtons extends StatelessWidget {
                   width: 26,
                 ),
                 ToggleSwitch(
+                  totalSwitches: 2,
                   labels: ['', ''],
                   icons: [
                     Icons.visibility,

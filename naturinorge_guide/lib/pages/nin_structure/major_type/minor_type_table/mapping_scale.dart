@@ -16,6 +16,7 @@ class MappingScaleWidget extends StatelessWidget {
         .toList();
     return Material(
       child: ToggleSwitch(
+        totalSwitches: labels.length,
         minWidth: 80,
         labels: labels,
         onToggle: (value) async {
