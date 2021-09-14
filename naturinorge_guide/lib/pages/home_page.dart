@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:naturinorge_guide/generated/codegen_loader.g.dart';
 import 'package:naturinorge_guide/pages/home_page_lib/home_page_button.dart';
+import 'package:naturinorge_guide/pages/inference/inference_page.dart';
 import 'package:naturinorge_guide/pages/lec/lec_list_page.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type/major_type_provider.dart';
 import 'package:naturinorge_guide/pages/nin_structure/major_type_group_page.dart';
@@ -157,8 +158,18 @@ class HomePage extends StatelessWidget {
                     key: ValueKey('species_btn'),
                     image: Image.asset('assets/species_icon.png'),
                     text: 'Arter',
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SpeciesPage())))
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SpeciesPage()))),
+                HomePageButton(
+                    key: ValueKey('inference_btn'),
+                    image: Image.asset('assets/species_icon.png'),
+                    text: 'Inference',
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => InferencePage())))
               ],
             ),
             LoadingOverlay(),
