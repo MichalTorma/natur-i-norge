@@ -76,7 +76,7 @@ def search_gbif_taxon_key(name, gbif_taxon_key=None):
     """
     if gbif_taxon_key != None:
         return gbif_taxon_key
-    resp = pygbif.name_backbone(q=name)
+    resp = pygbif.name_backbone(name=name)
     if 'usageKey' not in resp.keys():
         logging.error(f'Name not found: {name}')
         return None
