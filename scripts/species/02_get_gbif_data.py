@@ -1,3 +1,4 @@
+# %%
 import pygbif
 import pandas as pd
 from tqdm import tqdm
@@ -8,7 +9,7 @@ from glob import glob
 tqdm.pandas()
 
 species_list = pd.read_csv('partial/02-with-all-gbif-ids.csv')
-
+# %%
 def initiate_gbif_download(taxon_id):
     download_path = f'data/{taxon_id}'
     try:
@@ -25,7 +26,7 @@ def initiate_gbif_download(taxon_id):
         )
     job_id = res[0]
     download = None
-    
+
     while download == None:
         try:
             download = pygbif.occurrences.download_get(job_id, path=download_path)
