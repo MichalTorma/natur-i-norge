@@ -7,9 +7,9 @@ name = "pypi"
 requests-cache = "==0.5.2"
 pygbif = "*"
 qwikidata = "*"
-jupyterlab = "*"
 pandas = "*"
 tqdm = "*"
+jupyter = "*"
 
 [dev-packages]
 

@@ -76,33 +76,31 @@ def search_gbif_taxon_key(name, gbif_taxon_key=None):
     """
     if gbif_taxon_key != None:
         return gbif_taxon_key
-    resp = pygbif.name_lookup(q=name)
-    if resp['count'] == 0:
+    resp = pygbif.name_backbone(q=name)
+    if 'usageKey' not in resp.keys():
         logging.error(f'Name not found: {name}')
         return None
-    results = resp['results']
-    # return results
-    for result in results:
-        if 'taxonomicStatus' in result.keys():
-            if result['taxonomicStatus'] == 'ACCEPTED':
-                return result['key']
-        if 'acceptedKey' in result.keys():
-                return result['acceptedKey']
 
-    logging.error(f'Unable to find match: {name}')
-
-    return None;
+    return resp['usageKey'];
 #%% Main
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     tqdm.pandas()
     # Load dataset from `raw` folder
     species_list = pd.read_excel('raw/arter_AR8.xlsx', sheet_name='Artsliste')
-    # Get matching GBIF TaxonKey
-    species_list['gbif_taxon_id'] = species_list.scientificNameID.progress_apply(get_gbif_taxon_key)
-    species_list.to_csv('partial/01-with-most-gbif-ids.csv')
+    # Get matching GBIF TaxonKey if partial/01-with-most-gbif-ids.csv is not
+    # present
+    if os.path.exists('partial/01-with-most-gbif-ids.csv'):
+        species_list['gbif_taxon_id'] = species_list.scientificNameID.\
+            progress_apply(get_gbif_taxon_key)
+        species_list.to_csv('partial/01-with-most-gbif-ids.csv')
+    else:
+        species_list = pd.read_csv('partial/01-with-most-gbif-ids.csv')
     # Search most likely for GBIF TaxonKey
-    species_list['gbif_taxon_id'] = species_list.progress_apply(lambda x: search_gbif_taxon_key(x['scientificName'], x['gbif_taxon_id']), axis=1)
+    species_list['gbif_taxon_id'] = species_list.\
+        progress_apply(lambda x: \
+            search_gbif_taxon_key(x['scientificName'], x['gbif_taxon_id']),\
+                axis=1)
     species_list.to_csv('partial/02-with-all-gbif-ids.csv')
     logging.info('Finished.')
 
