@@ -81,7 +81,7 @@ def search_gbif_taxon_key(name, gbif_taxon_key=None):
         logging.error(f'Name not found: {name}')
         return None
 
-    return resp['usageKey'];
+    return resp['usageKey'];_
 #%% Main
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     species_list = pd.read_excel('raw/arter_AR8.xlsx', sheet_name='Artsliste')
     # Get matching GBIF TaxonKey if partial/01-with-most-gbif-ids.csv is not
     # present
-    if os.path.exists('partial/01-with-most-gbif-ids.csv'):
+    if not os.path.exists('partial/01-with-most-gbif-ids.csv'):
         species_list['gbif_taxon_id'] = species_list.scientificNameID.\
             progress_apply(get_gbif_taxon_key)
         species_list.to_csv('partial/01-with-most-gbif-ids.csv')
