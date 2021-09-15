@@ -7,6 +7,7 @@ from tqdm import tqdm
 import os
 import logging
 import time
+import numpy as np
 
 # %%
 
@@ -76,6 +77,7 @@ def search_gbif_taxon_key(name, gbif_taxon_key=None):
     """
     if gbif_taxon_key != None:
         return gbif_taxon_key
+    logging.debug(f'Getting {name}')
     resp = pygbif.name_backbone(name=name)
     if 'usageKey' not in resp.keys():
         logging.error(f'Name not found: {name}')
@@ -95,12 +97,14 @@ if __name__ == '__main__':
             progress_apply(get_gbif_taxon_key)
         species_list.to_csv('partial/01-with-most-gbif-ids.csv')
     else:
+        logging.warning('Skipping WikiData query because 01 file is already\
+            in the partial directory')
         species_list = pd.read_csv('partial/01-with-most-gbif-ids.csv')
+        species_list = species_list.replace({np.NAN: None})
     # Search most likely for GBIF TaxonKey
-    species_list['gbif_taxon_id'] = species_list.\
-        progress_apply(lambda x: \
-            search_gbif_taxon_key(x['scientificName'], x['gbif_taxon_id']),\
-                axis=1)
+    species_list['gbif_taxon_id'] = species_list.progress_apply(lambda x: search_gbif_taxon_key(x['scientificName'], x['gbif_taxon_id']), axis=1)
     species_list.to_csv('partial/02-with-all-gbif-ids.csv')
     logging.info('Finished.')
 
+
+# %%
