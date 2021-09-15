@@ -11,6 +11,7 @@ tqdm.pandas()
 species_list = pd.read_csv('partial/02-with-all-gbif-ids.csv')
 # %%
 def initiate_gbif_download(taxon_id):
+    taxon_id = int(taxon_id)
     download_path = f'data/{taxon_id}'
     try:
         os.mkdir(download_path)
@@ -35,3 +36,4 @@ def initiate_gbif_download(taxon_id):
 
 if __name__ == '__main__':
     species_list['gbif_taxon_id'].progress_apply(initiate_gbif_download)
+# %%
