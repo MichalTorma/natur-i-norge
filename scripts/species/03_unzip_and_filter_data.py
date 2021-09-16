@@ -17,7 +17,10 @@ def clear_dir(dir):
     files_to_remove = list(all_files_in_dir.difference(zip_files_in_dir))
     # print(files_to_remove)
     for file_to_remove in files_to_remove:
-        os.remove(file_to_remove)
+        if os.path.isdir(file_to_remove):
+            shutil.rmtree(file_to_remove)
+        else:
+            os.remove(file_to_remove)
 
 def unzip(dir):
     files_in_dir = glob(f'{dir}/*.zip')
