@@ -21,7 +21,9 @@ def unzip(dir):
     with ZipFile(files_in_dir[0], 'r') as zip_object:
         zip_object.extractall(dir)
 
-unzip(dirs_in_data[1])
+# unzip(dirs_in_data[1])
 # %%
-# logging.basicConfig(level=logging.DEBUG)
-# for data_dir in dirs_in_data:
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    for data_dir in dirs_in_data:
+        unzip(data_dir)
