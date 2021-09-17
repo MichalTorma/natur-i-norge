@@ -1,4 +1,5 @@
 # %%
+import logging
 from PIL import Image
 import requests
 import pandas as pd
@@ -7,11 +8,13 @@ import os
 from io import BytesIO
 from google.cloud import storage
 import hashlib
+import logging
 
 # %%
 class ImageDigestor():
     def __init__(self) -> None:
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
+        # os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
         self.storage_client = storage.Client()
         self.bucket = self.storage_client.get_bucket('nin_training')
         tqdm.pandas()
@@ -24,11 +27,12 @@ class ImageDigestor():
 
     def is_specie_in_bucket(self, file_path):
         blob = storage.Blob(name=file_path, bucket=self.bucket)
-        return blob.exists(self.storage_client);
+        return blob.exists();
 
     def get_image(self, specie):
         resp = requests.get(specie['identifier'])
         if resp.status_code != 200:
+            logging.warning(f'Unable to download {specie.identifier}')
             return None;
 
         file_jpgdata = BytesIO(resp.content)
@@ -60,7 +64,7 @@ class ImageDigestor():
     def run_on_specie(self, specie):
         self.create_tmp_dir(specie)
         file_path = self._get_file_path(specie)
-        if self.is_specie_in_bucket(file_path):
+        if not self.is_specie_in_bucket(file_path):
             return True
         img = self.get_image(specie)
         if img == None:
@@ -88,3 +92,5 @@ if __name__ == '__main__':
     image_digestor = ImageDigestor()
     image_digestor.run_all()
     exit()
+
+# %%
