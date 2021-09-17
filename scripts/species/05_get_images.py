@@ -66,7 +66,7 @@ class ImageDigestor():
         img_crop_resize = self.resize_img(img_crop)
         print(img_crop_resize)
 
-        tmp_path = f'tmp{os.sep}{file_path}'
+        tmp_path = f'tmp{os.sep}{specie.gbifKey}'
         img_crop_resize.save(tmp_path)
         self.upload(tmp_path, file_path)
         os.remove(f'tmp{os.sep}*')
