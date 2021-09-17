@@ -11,7 +11,7 @@ import hashlib
 # %%
 class ImageDigestor():
     def __init__(self) -> None:
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
         self.storage_client = storage.Client()
         self.bucket = self.storage_client.get_bucket('nin_training')
         tqdm.pandas()
@@ -82,7 +82,7 @@ class ImageDigestor():
         blob.upload_from_filename(source)
 
     def run_all(self):
-        self.species_urls.iloc[:2].progress_apply(self.run_on_specie, axis=1)
+        self.species_urls.progress_apply(self.run_on_specie, axis=1)
 # %%
 if __name__ == '__main__':
     image_digestor = ImageDigestor()
