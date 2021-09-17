@@ -28,6 +28,9 @@ class ImageDigestor():
 
     def get_image(self, specie):
         resp = requests.get(specie['identifier'])
+        if resp.status_code != 200:
+            return None;
+
         file_jpgdata = BytesIO(resp.content)
 
         return Image.open(file_jpgdata)
@@ -58,8 +61,10 @@ class ImageDigestor():
         self.create_tmp_dir(specie)
         file_path = self._get_file_path(specie)
         if self.is_specie_in_bucket(file_path):
-            return
+            return True
         img = self.get_image(specie)
+        if img == None:
+            return False
         print(img)
         img_crop = self.crop_img(img)
         print(img_crop)
@@ -70,6 +75,7 @@ class ImageDigestor():
         img_crop_resize.save(tmp_path)
         self.upload(tmp_path, file_path)
         os.remove(f'tmp{os.sep}{specie.gbifKey}')
+        return True
 
     def upload(self, source, destination):
         blob = self.bucket.blob(destination)
