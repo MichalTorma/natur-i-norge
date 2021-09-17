@@ -66,10 +66,10 @@ class ImageDigestor():
         img_crop_resize = self.resize_img(img_crop)
         print(img_crop_resize)
 
-        tmp_path = f'tmp{os.sep}{specie.gbifKey}'
+        tmp_path = f'tmp{os.sep}{file_path}'
         img_crop_resize.save(tmp_path)
         self.upload(tmp_path, file_path)
-        os.remove(f'tmp{os.sep}*')
+        os.remove(f'tmp{os.sep}{specie.gbifKey}')
 
     def upload(self, source, destination):
         blob = self.bucket.blob(destination)
