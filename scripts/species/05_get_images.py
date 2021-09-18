@@ -66,7 +66,7 @@ class ImageDigestor():
     def run_on_specie(self, specie):
         self.create_tmp_dir(specie)
         file_path = self._get_file_path(specie)
-        if not self.is_specie_in_bucket(file_path):
+        if self.is_specie_in_bucket(file_path):
             return True
         img = self.get_image(specie)
         if img == None:
@@ -77,7 +77,7 @@ class ImageDigestor():
         img_crop_resize.save(tmp_path)
         self.upload(tmp_path, file_path)
         shutil.rmtree(f'tmp{os.sep}{specie.gbifKey}')
-        time.sleep(1)
+        time.sleep(0.5)
         return True
 
     def upload(self, source, destination):
