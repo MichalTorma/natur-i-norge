@@ -23,7 +23,7 @@ class ImageDigestor():
         self.species_urls = pd.read_csv(f'partial{os.sep}04_species_urls.csv')
 
     def _get_file_path(self, specie):
-        hash_object = hashlib.sha224(specie['identifier'])
+        hash_object = hashlib.sha224(specie['identifier'].encode('utf-8'))
         hex_dig = hash_object.hexdigest()
         return f'{specie.gbifKey}/{hex_dig}.jpg'
 
