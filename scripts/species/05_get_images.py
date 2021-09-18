@@ -77,15 +77,21 @@ class ImageDigestor():
         img_crop_resize.save(tmp_path)
         self.upload(tmp_path, file_path)
         shutil.rmtree(f'tmp{os.sep}{specie.gbifKey}')
-        time.sleep(0.5)
+        time.sleep(0.1)
         return True
+
+    def try_run_on_specie(self, specie):
+        try:
+            self.run_on_specie(specie)
+        except:
+            logging.warning(f'Unable to digest : {specie}')
 
     def upload(self, source, destination):
         blob = self.bucket.blob(destination)
         blob.upload_from_filename(source)
 
     def run_all(self):
-        self.species_urls.progress_apply(self.run_on_specie, axis=1)
+        self.species_urls.progress_apply(self.try_run_on_specie, axis=1)
 # %%
 if __name__ == '__main__':
     image_digestor = ImageDigestor()
