@@ -8,20 +8,22 @@ import os
 from io import BytesIO
 from google.cloud import storage
 import hashlib
+import shutil
 import logging
+import time
 
 # %%
 class ImageDigestor():
     def __init__(self) -> None:
-        # os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
+        # os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
         self.storage_client = storage.Client()
         self.bucket = self.storage_client.get_bucket('nin_training')
         tqdm.pandas()
         self.species_urls = pd.read_csv(f'partial{os.sep}04_species_urls.csv')
 
     def _get_file_path(self, specie):
-        hash_object = hashlib.sha224(b'Hello World')
+        hash_object = hashlib.sha224(specie['identifier'])
         hex_dig = hash_object.hexdigest()
         return f'{specie.gbifKey}/{hex_dig}.jpg'
 
@@ -69,16 +71,13 @@ class ImageDigestor():
         img = self.get_image(specie)
         if img == None:
             return False
-        print(img)
         img_crop = self.crop_img(img)
-        print(img_crop)
         img_crop_resize = self.resize_img(img_crop)
-        print(img_crop_resize)
-
         tmp_path = f'tmp{os.sep}{file_path}'
         img_crop_resize.save(tmp_path)
         self.upload(tmp_path, file_path)
-        os.remove(f'tmp{os.sep}{specie.gbifKey}')
+        shutil.rmtree(f'tmp{os.sep}{specie.gbifKey}')
+        time.sleep(1)
         return True
 
     def upload(self, source, destination):
