@@ -11,6 +11,7 @@ import hashlib
 import shutil
 import logging
 import time
+import gc
 
 # %%
 class ImageDigestor():
@@ -18,7 +19,7 @@ class ImageDigestor():
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
         # os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/amarok/src/natur-i-norge/scripts/species/secret/natur-i-norge-training-bfcd40f1165d.json"
         self.storage_client = storage.Client()
-        self.bucket = self.storage_client.get_bucket('nin_training')
+        self.bucket = self.storage_client.get_bucket('nin_species')
         tqdm.pandas()
         self.species_urls = pd.read_csv(f'partial{os.sep}04_species_urls.csv')
 
@@ -85,6 +86,7 @@ class ImageDigestor():
             self.run_on_specie(specie)
         except:
             logging.warning(f'Unable to digest : {specie}')
+            gc.collect()
 
     def upload(self, source, destination):
         blob = self.bucket.blob(destination)
