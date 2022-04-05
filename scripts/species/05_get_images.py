@@ -30,13 +30,13 @@ class ImageDigestor():
 
     def is_specie_in_bucket(self, file_path):
         blob = storage.Blob(name=file_path, bucket=self.bucket)
-        return blob.exists();
+        return blob.exists()
 
     def get_image(self, specie):
         resp = requests.get(specie['identifier'])
         if resp.status_code != 200:
             logging.warning(f'Unable to download {specie.identifier}')
-            return None;
+            return None
 
         file_jpgdata = BytesIO(resp.content)
 
