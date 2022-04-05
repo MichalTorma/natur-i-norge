@@ -8,4 +8,4 @@ COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt && \
     echo 'alias j="jupyter lab --ip 0.0.0.0 --no-browser"' >> ~/.bashrc
 EXPOSE 8888
-WORKDIR /srv/scripts
+WORKDIR /src
