@@ -3,8 +3,8 @@ import pandas as pd
 from sqlalchemy import create_engine
 from model.model import Base
 import model.model as model
-from lib.tools.schema_creator import create_schema
-from lib.tools.moor_exporter import generate_moor
+from src.tools.schema_creator import create_schema
+from src.tools.moor_exporter import generate_moor
 import os
 import glob
 
