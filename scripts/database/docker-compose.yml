@@ -11,3 +11,4 @@ services:
       - "8888:8888"
     volumes:
       - ./src:/src
+      - /Users/amarok/src/UIO/NIN/natur-i-norge/naturinorge_guide/assets:/assets
