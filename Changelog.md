@@ -1,3 +1,5 @@
+# 2.3-beta
+- Initial beta release
 # 1.0.3
 - Add betaversion banner on the home screen (øb)
 - Fix bug with webpage that sometimes wouldn't load in browsers with already stored local db
