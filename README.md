@@ -13,4 +13,5 @@ Underlying database that is used as a backbone of the app can be found [here](na
 
 # References
 Based on the works of [Rune Halvorsen](https://www.nhm.uio.no/om/organisasjon/forskning-samlinger/personer/runeho/) with help of [Artsdatabanken](https://artsdatabanken.no/)
+
 [Towards a systematics of ecodiversity: The EcoSyst framework](https://doi.org/10.1111/geb.13164)
