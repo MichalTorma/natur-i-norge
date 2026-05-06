@@ -13,16 +13,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _isUpdating = false;
   String? _status;
 
-  Future<void> _updateData() async {
+  Future<void> _updateData({bool deep = false}) async {
     setState(() {
       _isUpdating = true;
-      _status = 'Fetching and updating data from NiN API...';
+      _status = deep ? 'Deep syncing (Fetching API + Scraping web)...' : 'Fetching and updating data from NiN API...';
     });
 
     try {
       final api = ref.read(apiServiceProvider);
       final db = ref.read(databaseProvider);
-      await api.updateAllData(db);
+      await api.updateAllData(db, deepSync: deep);
       
       // Invalidate providers to refresh data
       ref.invalidate(typesListProvider);
@@ -71,11 +71,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Column(
                   children: [
                     ElevatedButton.icon(
-                      onPressed: _updateData,
+                      onPressed: () => _updateData(deep: false),
                       icon: const Icon(Icons.download),
-                      label: const Text('Update Local Database'),
+                      label: const Text('Quick Sync (API Only)'),
+                    ),
+                    const SizedBox(height: 12),
+                    ElevatedButton.icon(
+                      onPressed: () => _updateData(deep: true),
+                      icon: const Icon(Icons.auto_awesome),
+                      label: const Text('Deep Sync (Scrape Images & Info)'),
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                        backgroundColor: Colors.amber.withOpacity(0.2),
+                        foregroundColor: Colors.amber,
                       ),
                     ),
                     const SizedBox(height: 24),

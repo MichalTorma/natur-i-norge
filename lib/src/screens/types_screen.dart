@@ -130,58 +130,94 @@ class _TypeCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                _getLevelColor().withOpacity(0.1),
-                Colors.white.withOpacity(0.02),
-              ],
-            ),
-          ),
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
+          children: [
+            if (type.imageUrl != null)
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.3,
+                  child: Image.network(
+                    type.imageUrl!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                  ),
+                ),
+              ),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    _getLevelColor().withOpacity(0.1),
+                    Colors.black.withOpacity(0.4),
+                  ],
+                ),
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(
-                      type.id,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          type.id,
+                          style: TextStyle(
+                            color: _getLevelColor().withOpacity(0.8),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      const Icon(Icons.chevron_right, size: 16, color: Colors.grey),
+                    ],
+                  ),
+                  const Spacer(),
+                  Text(
+                    type.navn,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  if (type.description != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      type.description!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: _getLevelColor().withOpacity(0.8),
+                        fontSize: 11,
+                        color: Colors.white.withOpacity(0.7),
+                        height: 1.2,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: _getLevelColor().withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      type.kategori.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 9,
+                        color: _getLevelColor().withOpacity(0.9),
                         fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
-                  const Icon(Icons.chevron_right, size: 16, color: Colors.grey),
                 ],
               ),
-              const Spacer(),
-              Text(
-                type.navn,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                type.kategori,
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.grey,
-                  letterSpacing: 1,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

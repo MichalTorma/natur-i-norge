@@ -12,6 +12,8 @@ class NinTypes extends Table {
   TextColumn get typekategoriNavn => text().nullable()();
   TextColumn get langkode => text().nullable()();
   TextColumn get definisjon => text().nullable()();
+  TextColumn get imageUrl => text().nullable()();
+  TextColumn get description => text().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};

@@ -92,6 +92,28 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _imageUrlMeta = const VerificationMeta(
+    'imageUrl',
+  );
+  @override
+  late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
+    'image_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -102,6 +124,8 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
     typekategoriNavn,
     langkode,
     definisjon,
+    imageUrl,
+    description,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -172,6 +196,21 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
         definisjon.isAcceptableOrUnknown(data['definisjon']!, _definisjonMeta),
       );
     }
+    if (data.containsKey('image_url')) {
+      context.handle(
+        _imageUrlMeta,
+        imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -213,6 +252,14 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
         DriftSqlType.string,
         data['${effectivePrefix}definisjon'],
       ),
+      imageUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}image_url'],
+      ),
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
     );
   }
 
@@ -231,6 +278,8 @@ class NinType extends DataClass implements Insertable<NinType> {
   final String? typekategoriNavn;
   final String? langkode;
   final String? definisjon;
+  final String? imageUrl;
+  final String? description;
   const NinType({
     required this.id,
     required this.navn,
@@ -240,6 +289,8 @@ class NinType extends DataClass implements Insertable<NinType> {
     this.typekategoriNavn,
     this.langkode,
     this.definisjon,
+    this.imageUrl,
+    this.description,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -261,6 +312,12 @@ class NinType extends DataClass implements Insertable<NinType> {
     }
     if (!nullToAbsent || definisjon != null) {
       map['definisjon'] = Variable<String>(definisjon);
+    }
+    if (!nullToAbsent || imageUrl != null) {
+      map['image_url'] = Variable<String>(imageUrl);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
     }
     return map;
   }
@@ -285,6 +342,12 @@ class NinType extends DataClass implements Insertable<NinType> {
       definisjon: definisjon == null && nullToAbsent
           ? const Value.absent()
           : Value(definisjon),
+      imageUrl: imageUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageUrl),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
     );
   }
 
@@ -302,6 +365,8 @@ class NinType extends DataClass implements Insertable<NinType> {
       typekategoriNavn: serializer.fromJson<String?>(json['typekategoriNavn']),
       langkode: serializer.fromJson<String?>(json['langkode']),
       definisjon: serializer.fromJson<String?>(json['definisjon']),
+      imageUrl: serializer.fromJson<String?>(json['imageUrl']),
+      description: serializer.fromJson<String?>(json['description']),
     );
   }
   @override
@@ -316,6 +381,8 @@ class NinType extends DataClass implements Insertable<NinType> {
       'typekategoriNavn': serializer.toJson<String?>(typekategoriNavn),
       'langkode': serializer.toJson<String?>(langkode),
       'definisjon': serializer.toJson<String?>(definisjon),
+      'imageUrl': serializer.toJson<String?>(imageUrl),
+      'description': serializer.toJson<String?>(description),
     };
   }
 
@@ -328,6 +395,8 @@ class NinType extends DataClass implements Insertable<NinType> {
     Value<String?> typekategoriNavn = const Value.absent(),
     Value<String?> langkode = const Value.absent(),
     Value<String?> definisjon = const Value.absent(),
+    Value<String?> imageUrl = const Value.absent(),
+    Value<String?> description = const Value.absent(),
   }) => NinType(
     id: id ?? this.id,
     navn: navn ?? this.navn,
@@ -341,6 +410,8 @@ class NinType extends DataClass implements Insertable<NinType> {
         : this.typekategoriNavn,
     langkode: langkode.present ? langkode.value : this.langkode,
     definisjon: definisjon.present ? definisjon.value : this.definisjon,
+    imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
+    description: description.present ? description.value : this.description,
   );
   NinType copyWithCompanion(NinTypesCompanion data) {
     return NinType(
@@ -358,6 +429,10 @@ class NinType extends DataClass implements Insertable<NinType> {
       definisjon: data.definisjon.present
           ? data.definisjon.value
           : this.definisjon,
+      imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
     );
   }
 
@@ -371,7 +446,9 @@ class NinType extends DataClass implements Insertable<NinType> {
           ..write('ecosystnivaaNavn: $ecosystnivaaNavn, ')
           ..write('typekategoriNavn: $typekategoriNavn, ')
           ..write('langkode: $langkode, ')
-          ..write('definisjon: $definisjon')
+          ..write('definisjon: $definisjon, ')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('description: $description')
           ..write(')'))
         .toString();
   }
@@ -386,6 +463,8 @@ class NinType extends DataClass implements Insertable<NinType> {
     typekategoriNavn,
     langkode,
     definisjon,
+    imageUrl,
+    description,
   );
   @override
   bool operator ==(Object other) =>
@@ -398,7 +477,9 @@ class NinType extends DataClass implements Insertable<NinType> {
           other.ecosystnivaaNavn == this.ecosystnivaaNavn &&
           other.typekategoriNavn == this.typekategoriNavn &&
           other.langkode == this.langkode &&
-          other.definisjon == this.definisjon);
+          other.definisjon == this.definisjon &&
+          other.imageUrl == this.imageUrl &&
+          other.description == this.description);
 }
 
 class NinTypesCompanion extends UpdateCompanion<NinType> {
@@ -410,6 +491,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
   final Value<String?> typekategoriNavn;
   final Value<String?> langkode;
   final Value<String?> definisjon;
+  final Value<String?> imageUrl;
+  final Value<String?> description;
   final Value<int> rowid;
   const NinTypesCompanion({
     this.id = const Value.absent(),
@@ -420,6 +503,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     this.typekategoriNavn = const Value.absent(),
     this.langkode = const Value.absent(),
     this.definisjon = const Value.absent(),
+    this.imageUrl = const Value.absent(),
+    this.description = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   NinTypesCompanion.insert({
@@ -431,6 +516,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     this.typekategoriNavn = const Value.absent(),
     this.langkode = const Value.absent(),
     this.definisjon = const Value.absent(),
+    this.imageUrl = const Value.absent(),
+    this.description = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        navn = Value(navn),
@@ -444,6 +531,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     Expression<String>? typekategoriNavn,
     Expression<String>? langkode,
     Expression<String>? definisjon,
+    Expression<String>? imageUrl,
+    Expression<String>? description,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -455,6 +544,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
       if (typekategoriNavn != null) 'typekategori_navn': typekategoriNavn,
       if (langkode != null) 'langkode': langkode,
       if (definisjon != null) 'definisjon': definisjon,
+      if (imageUrl != null) 'image_url': imageUrl,
+      if (description != null) 'description': description,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -468,6 +559,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     Value<String?>? typekategoriNavn,
     Value<String?>? langkode,
     Value<String?>? definisjon,
+    Value<String?>? imageUrl,
+    Value<String?>? description,
     Value<int>? rowid,
   }) {
     return NinTypesCompanion(
@@ -479,6 +572,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
       typekategoriNavn: typekategoriNavn ?? this.typekategoriNavn,
       langkode: langkode ?? this.langkode,
       definisjon: definisjon ?? this.definisjon,
+      imageUrl: imageUrl ?? this.imageUrl,
+      description: description ?? this.description,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -510,6 +605,12 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     if (definisjon.present) {
       map['definisjon'] = Variable<String>(definisjon.value);
     }
+    if (imageUrl.present) {
+      map['image_url'] = Variable<String>(imageUrl.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -527,6 +628,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
           ..write('typekategoriNavn: $typekategoriNavn, ')
           ..write('langkode: $langkode, ')
           ..write('definisjon: $definisjon, ')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('description: $description, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1403,6 +1506,8 @@ typedef $$NinTypesTableCreateCompanionBuilder =
       Value<String?> typekategoriNavn,
       Value<String?> langkode,
       Value<String?> definisjon,
+      Value<String?> imageUrl,
+      Value<String?> description,
       Value<int> rowid,
     });
 typedef $$NinTypesTableUpdateCompanionBuilder =
@@ -1415,6 +1520,8 @@ typedef $$NinTypesTableUpdateCompanionBuilder =
       Value<String?> typekategoriNavn,
       Value<String?> langkode,
       Value<String?> definisjon,
+      Value<String?> imageUrl,
+      Value<String?> description,
       Value<int> rowid,
     });
 
@@ -1464,6 +1571,16 @@ class $$NinTypesTableFilterComposer
 
   ColumnFilters<String> get definisjon => $composableBuilder(
     column: $table.definisjon,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get imageUrl => $composableBuilder(
+    column: $table.imageUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1516,6 +1633,16 @@ class $$NinTypesTableOrderingComposer
     column: $table.definisjon,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get imageUrl => $composableBuilder(
+    column: $table.imageUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$NinTypesTableAnnotationComposer
@@ -1556,6 +1683,14 @@ class $$NinTypesTableAnnotationComposer
     column: $table.definisjon,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get imageUrl =>
+      $composableBuilder(column: $table.imageUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
 }
 
 class $$NinTypesTableTableManager
@@ -1594,6 +1729,8 @@ class $$NinTypesTableTableManager
                 Value<String?> typekategoriNavn = const Value.absent(),
                 Value<String?> langkode = const Value.absent(),
                 Value<String?> definisjon = const Value.absent(),
+                Value<String?> imageUrl = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NinTypesCompanion(
                 id: id,
@@ -1604,6 +1741,8 @@ class $$NinTypesTableTableManager
                 typekategoriNavn: typekategoriNavn,
                 langkode: langkode,
                 definisjon: definisjon,
+                imageUrl: imageUrl,
+                description: description,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1616,6 +1755,8 @@ class $$NinTypesTableTableManager
                 Value<String?> typekategoriNavn = const Value.absent(),
                 Value<String?> langkode = const Value.absent(),
                 Value<String?> definisjon = const Value.absent(),
+                Value<String?> imageUrl = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NinTypesCompanion.insert(
                 id: id,
@@ -1626,6 +1767,8 @@ class $$NinTypesTableTableManager
                 typekategoriNavn: typekategoriNavn,
                 langkode: langkode,
                 definisjon: definisjon,
+                imageUrl: imageUrl,
+                description: description,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
