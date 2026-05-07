@@ -13,7 +13,7 @@ from io import BytesIO
 BASE_URL = 'https://nin-kode-api.artsdatabanken.no/v3.0'
 WEB_BASE_URL = 'https://artsdatabanken.no/naturtyper/natur-i-norge'
 DB_PATH = 'assets/nin_database.sqlite'
-FOOTER_KEYWORDS = ['havnegata', 'trondheim', 'postboks', 'organisasjonsnummer', 'redaksjonen@artsdatabanken.no']
+FOOTER_KEYWORDS = ['havnegata', 'trondheim', 'postboks', 'organisasjonsnummer', 'redaksjonen@artsdatabanken.no', 'postmottak', 'torgarden']
 
 # Official icons for top-level categories that lack natural photos
 OFFICIAL_ICONS = {
@@ -82,20 +82,37 @@ def fetch_metadata(langkode, type_id):
             
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, 'html.parser')
+            
+            # 1. Extract Description (Ingress is best, then Body)
+            ingress = soup.find(class_='ingress')
+            body = soup.find(class_='body')
             content = soup.find(class_='main-content') or soup.find(id='main-content') or soup.body
-            paras = [p.get_text().strip() for p in content.find_all('p') if len(p.get_text().strip()) > 40 and not any(kw in p.get_text().lower() for kw in FOOTER_KEYWORDS)]
-            desc = "\n\n".join(paras[:2]) if paras else None
             
-            # Find the best image: look for images that likely represent the type
+            desc_text = ""
+            if ingress:
+                desc_text = ingress.get_text().strip()
+            
+            # If ingress is short, append first bit of body
+            if body and len(desc_text) < 100:
+                paras = [p.get_text().strip() for p in body.find_all('p') if len(p.get_text().strip()) > 30 and not any(kw in p.get_text().lower() for kw in FOOTER_KEYWORDS)]
+                if paras:
+                    desc_text += "\n\n" + paras[0]
+            
+            if not desc_text and content:
+                paras = [p.get_text().strip() for p in content.find_all('p') if len(p.get_text().strip()) > 40 and not any(kw in p.get_text().lower() for kw in FOOTER_KEYWORDS)]
+                desc_text = "\n\n".join(paras[:2])
+                
+            # 2. Find the best image (look in .image class first)
             img_url = None
-            for img in content.find_all('img'):
-                src = img.get('src', '')
-                # Prioritize larger "public" images, avoid icons/logos
-                if '/public/' in src and not any(x in src.lower() for x in ['icon', 'logo', 'social']):
-                    img_url = src if src.startswith('http') else f"https://artsdatabanken.no{src}"
-                    break
+            img_container = soup.find(class_='image') or content
+            if img_container:
+                for img in img_container.find_all('img'):
+                    src = img.get('src', '')
+                    if '/public/' in src and not any(x in src.lower() for x in ['icon', 'logo', 'social']):
+                        img_url = src if src.startswith('http') else f"https://artsdatabanken.no{src}"
+                        break
             
-            return desc, img_url
+            return desc_text if desc_text else None, img_url
     except Exception as e:
         print(f"  Error scraping {langkode}: {e}")
     return None, None
@@ -143,9 +160,8 @@ def main():
     print(f"Step 2: Deep Scraping {len(all_types)} types (Matrix, Descriptions, Images)...")
     os.makedirs('temp_images', exist_ok=True)
     
-    # We scrape descriptions and images for Hovedtype, Grunntype, 
-    # and anything that has an official icon
-    targets = [t for t in all_types if t['kategori'] in ['Hovedtype', 'Grunntype'] or t['id'] in OFFICIAL_ICONS]
+    # Scrape descriptions/images for EVERY type that has a web link
+    targets = [t for t in all_types if t['langkode'] or t['id'] in OFFICIAL_ICONS]
     
     for t in tqdm(targets):
         # Matrix Data (Only for Grunntyper)
@@ -156,13 +172,17 @@ def main():
                 if dr.status_code == 200: t['lkm_data'] = parse_lkm_deep(dr.json())
             except: pass
 
-        # Check for Official Icons first
+        # 1. Start with Official Icons if they exist
         img_url = OFFICIAL_ICONS.get(t['id'])
         desc = None
         
-        if not img_url:
-            # Fallback to web metadata
-            desc, img_url = fetch_metadata(t['langkode'], t['id'])
+        # 2. Fetch/Fallback to Web Metadata
+        if t['langkode']:
+            web_desc, web_img = fetch_metadata(t['langkode'], t['id'])
+            desc = web_desc
+            # Only use web image if we don't have an official icon
+            if not img_url:
+                img_url = web_img
         
         t['description'] = desc
         if img_url:
