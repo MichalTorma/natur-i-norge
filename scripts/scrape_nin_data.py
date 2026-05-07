@@ -42,7 +42,21 @@ def setup_db():
     os.makedirs('assets', exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE nin_types (id TEXT PRIMARY KEY, navn TEXT, kategori TEXT, parent_id TEXT, ecosystnivaa_navn TEXT, typekategori_navn TEXT, langkode TEXT, definisjon TEXT, image_url TEXT, description TEXT, lkm_data TEXT)''')
+    cursor.execute('''CREATE TABLE nin_types (
+        id TEXT PRIMARY KEY, 
+        navn TEXT, 
+        kategori TEXT, 
+        parent_id TEXT, 
+        ecosystnivaa_navn TEXT, 
+        typekategori_navn TEXT, 
+        langkode TEXT, 
+        definisjon TEXT, 
+        image_url TEXT, 
+        description TEXT, 
+        lkm_data TEXT,
+        scale TEXT,
+        contains_types TEXT
+    )''')
     conn.commit()
     return conn
 
@@ -144,14 +158,20 @@ def main():
     all_types = []
     def process_type(item, parent_id=None):
         kode = item['kode']
+        contains = None
+        if item.get('grunntyper') and item['kategori'] == 'Kartleggingsenhet':
+            contains = json.dumps([g['kode']['id'] for g in item['grunntyper']])
+            
         t_data = {
             'id': kode['id'], 'navn': item['navn'], 'kategori': item['kategori'], 'parent_id': parent_id,
             'ecosystnivaa_navn': item.get('ecosystnivaaNavn'), 'typekategori_navn': item.get('typekategoriNavn'),
             'langkode': kode.get('langkode'), 'definisjon': kode.get('definisjon'),
-            'image_url': None, 'description': None, 'lkm_data': None
+            'image_url': None, 'description': None, 'lkm_data': None,
+            'scale': item.get('maalestokkEnum'),
+            'contains_types': contains
         }
         all_types.append(t_data)
-        for key in ['hovedtypegrupper', 'hovedtyper', 'grunntyper']:
+        for key in ['hovedtypegrupper', 'hovedtyper', 'grunntyper', 'kartleggingsenheter']:
             if item.get(key):
                 for sub in item[key]: process_type(sub, kode['id'])
 
@@ -198,7 +218,11 @@ def main():
 
     print("Step 4: Saving to Database...")
     for t in all_types:
-        cursor.execute('INSERT INTO nin_types VALUES (?,?,?,?,?,?,?,?,?,?,?)', (t['id'], t['navn'], t['kategori'], t['parent_id'], t['ecosystnivaa_navn'], t['typekategori_navn'], t['langkode'], t['definisjon'], t['image_url'], t['description'], t['lkm_data']))
+        cursor.execute('''INSERT INTO nin_types VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)''', (
+            t['id'], t['navn'], t['kategori'], t['parent_id'], t['ecosystnivaa_navn'], 
+            t['typekategori_navn'], t['langkode'], t['definisjon'], t['image_url'], 
+            t['description'], t['lkm_data'], t['scale'], t['contains_types']
+        ))
     
     conn.commit()
     
