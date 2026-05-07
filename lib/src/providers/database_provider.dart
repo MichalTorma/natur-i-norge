@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:drift/drift.dart';
 import '../models/nin_database.dart';
 
 final databaseProvider = Provider<NinDatabase>((ref) {

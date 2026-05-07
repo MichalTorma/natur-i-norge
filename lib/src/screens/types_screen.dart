@@ -178,6 +178,9 @@ class _TypeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine if this is an official icon (level 0 or 1 usually)
+    final isIcon = level <= 1;
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -191,9 +194,16 @@ class _TypeCard extends StatelessWidget {
                   future: _getLocalImage(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data != null) {
-                      return Opacity(
-                        opacity: 0.4,
-                        child: Image.file(snapshot.data!, fit: BoxFit.cover),
+                      return Padding(
+                        padding: isIcon ? const EdgeInsets.all(16.0) : EdgeInsets.zero,
+                        child: Opacity(
+                          opacity: isIcon ? 1.0 : 0.4,
+                          child: Image.file(
+                            snapshot.data!,
+                            fit: isIcon ? BoxFit.contain : BoxFit.cover,
+                            alignment: isIcon ? Alignment.centerRight : Alignment.center,
+                          ),
+                        ),
                       );
                     }
                     return Container(color: Colors.black26);
@@ -207,8 +217,8 @@ class _TypeCard extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    _getLevelColor().withOpacity(0.2),
-                    Colors.black.withOpacity(0.6),
+                    _getLevelColor().withOpacity(isIcon ? 0.4 : 0.2),
+                    Colors.black.withOpacity(isIcon ? 0.2 : 0.6),
                   ],
                 ),
               ),
@@ -225,13 +235,16 @@ class _TypeCard extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Text(
-                    type.navn,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  SizedBox(
+                    width: isIcon ? MediaQuery.of(context).size.width * 0.4 : null,
+                    child: Text(
+                      type.navn,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  if (type.description != null) ...[
+                  if (type.description != null && !isIcon) ...[
                     const SizedBox(height: 4),
                     Text(
                       type.description!,
