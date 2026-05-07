@@ -9,6 +9,7 @@ import hashlib
 import zipfile
 from PIL import Image
 from io import BytesIO
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 BASE_URL = 'https://nin-kode-api.artsdatabanken.no/v3.0'
 WEB_BASE_URL = 'https://artsdatabanken.no/naturtyper/natur-i-norge'
@@ -38,7 +39,11 @@ OFFICIAL_ICONS = {
 }
 
 def setup_db():
-    if os.path.exists(DB_PATH): os.remove(DB_PATH)
+    if os.path.exists(DB_PATH): os.remove(DB_PATH) # ALWAYS clean run
+    # Also wipe temp_images for a 100% clean run
+    import shutil
+    if os.path.exists('temp_images'): shutil.rmtree('temp_images')
+    os.makedirs('temp_images', exist_ok=True)
     os.makedirs('assets', exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -60,177 +65,149 @@ def setup_db():
     conn.commit()
     return conn
 
-def parse_lkm_deep(detail_json):
-    lkm_list = []
-    def walk(obj):
-        if isinstance(obj, dict):
-            if obj.get('registert') == True and obj.get('kode'):
-                kode = obj['kode']
-                k_id = kode['id'] if isinstance(kode, dict) else str(kode)
-                # Split 'LM-KA_a' into 'LM-KA' and 'a'
-                var_id = k_id.split('_')[0] if '_' in k_id else k_id
-                trinn_val = obj.get('verdi') or (k_id.split('_')[1] if '_' in k_id else None)
-                
-                if any(prefix in var_id for prefix in ['LM-', 'KM-', 'KA-', 'UF-', 'HI-', 'VM-']):
-                    lkm_list.append({
-                        'v_kode': var_id,
-                        'v_navn': obj.get('navn'),
-                        'v_trinn': trinn_val,
-                        'v_trinn_navn': obj.get('beskrivelse') or obj.get('navn')
-                    })
-            for v in obj.values(): walk(v)
-        elif isinstance(obj, list):
-            for item in obj: walk(item)
-    walk(detail_json)
-    return json.dumps(lkm_list) if lkm_list else None
-
-def fetch_metadata(langkode, type_id):
-    """Scrape description and image from the web portal."""
+def fetch_metadata(langkode):
+    """Scrape description and image directly from the type page."""
+    if not langkode: return None, None
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
+    
     try:
         url = f"{WEB_BASE_URL}/{langkode}"
         r = requests.get(url, headers=headers, timeout=10)
         if r.status_code != 200:
-            url = f"{WEB_BASE_URL}/{langkode.upper()}"
-            r = requests.get(url, headers=headers, timeout=10)
+            r = requests.get(f"{WEB_BASE_URL}/{langkode.upper()}", headers=headers, timeout=10)
             
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, 'html.parser')
-            
-            # 1. Extract Description (Ingress is best, then Body)
             ingress = soup.find(class_='ingress')
             body = soup.find(class_='body')
             content = soup.find(class_='main-content') or soup.find(id='main-content') or soup.body
             
             desc_text = ""
-            if ingress:
-                desc_text = ingress.get_text().strip()
-            
-            # If ingress is short, append first bit of body
+            if ingress: desc_text = ingress.get_text().strip()
             if body and len(desc_text) < 100:
                 paras = [p.get_text().strip() for p in body.find_all('p') if len(p.get_text().strip()) > 30 and not any(kw in p.get_text().lower() for kw in FOOTER_KEYWORDS)]
-                if paras:
-                    desc_text += "\n\n" + paras[0]
-            
+                if paras: desc_text += "\n\n" + paras[0]
             if not desc_text and content:
                 paras = [p.get_text().strip() for p in content.find_all('p') if len(p.get_text().strip()) > 40 and not any(kw in p.get_text().lower() for kw in FOOTER_KEYWORDS)]
                 desc_text = "\n\n".join(paras[:2])
                 
-            # 2. Find the best image (look in .image class first)
             img_url = None
-            img_container = soup.find(class_='image') or content
-            if img_container:
-                for img in img_container.find_all('img'):
+            img_containers = [soup.find(class_='image'), soup.find(class_='image-and-caption__picture'), content, soup.body]
+            for container in img_containers:
+                if not container: continue
+                for img in container.find_all('img'):
                     src = img.get('src', '')
-                    if '/public/' in src and not any(x in src.lower() for x in ['icon', 'logo', 'social']):
+                    if '/public/' in src and not any(x in src.lower() for x in ['icon', 'logo', 'social', 'user', 'theme']):
                         img_url = src if src.startswith('http') else f"https://artsdatabanken.no{src}"
                         break
-            
+                if img_url: break
             return desc_text if desc_text else None, img_url
-    except Exception as e:
-        print(f"  Error scraping {langkode}: {e}")
+    except: pass
     return None, None
 
 def download_and_optimize_image(url, type_id):
     if not url: return None
     try:
-        headers = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=headers, timeout=15)
+        filename = f"{hashlib.md5(type_id.encode()).hexdigest()}.webp"
+        filepath = os.path.join('temp_images', filename)
+        if os.path.exists(filepath): return filename
+        
+        r = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=15)
         if r.status_code == 200:
             img = Image.open(BytesIO(r.content))
             if img.mode in ('RGBA', 'P'): img = img.convert('RGB')
-            filename = f"{hashlib.md5(type_id.encode()).hexdigest()}.webp"
-            filepath = os.path.join('temp_images', filename)
             img.save(filepath, 'WEBP', quality=85)
             return filename
-    except Exception as e:
-        print(f"  Error downloading image for {type_id}: {e}")
+    except: pass
     return None
+
+def process_single_type(t):
+    # 1. Matrix Data (Grunntyper only)
+    if t['kategori'] == 'Grunntype':
+        try:
+            dr = requests.get(f"{BASE_URL}/typer/kodeforGrunntype/{t['id']}", timeout=10)
+            if dr.status_code == 200:
+                import json
+                def parse_lkm(obj):
+                    l_list = []
+                    def w(o):
+                        if isinstance(o, dict):
+                            if o.get('registert') == True and o.get('kode'):
+                                k = o['kode']
+                                ki = k['id'] if isinstance(k, dict) else str(k)
+                                vi = ki.split('_')[0] if '_' in ki else ki
+                                if any(p in vi for p in ['LM-', 'KM-', 'KA-', 'UF-', 'HI-', 'VM-']):
+                                    l_list.append({'v_kode': vi, 'v_navn': o.get('navn'), 'v_trinn': o.get('verdi'), 'v_trinn_navn': o.get('beskrivelse')})
+                            for v in o.values(): w(v)
+                        elif isinstance(o, list):
+                            for i in o: w(i)
+                    w(obj)
+                    return json.dumps(l_list) if l_list else None
+                t['lkm_data'] = parse_lkm(dr.json())
+        except: pass
+
+    # 2. Metadata (Strict match)
+    img_url = OFFICIAL_ICONS.get(t['id'])
+    desc, web_img = fetch_metadata(t['langkode'])
+    if not img_url: img_url = web_img
+    
+    t['description'] = desc
+    if img_url:
+        t['image_url'] = download_and_optimize_image(img_url, t['id'])
+    return t
 
 def main():
     conn = setup_db()
     cursor = conn.cursor()
-    
+    os.makedirs('temp_images', exist_ok=True)
+
     print("Step 1: Building Hierarchy...")
     r = requests.get(f"{BASE_URL}/typer/allekoder")
     data = r.json()
-    
     all_types = []
-    def process_type(item, parent_id=None):
+
+    def walk_types(item, parent_id=None):
         kode = item['kode']
         contains = None
         if item.get('grunntyper') and item['kategori'] == 'Kartleggingsenhet':
             contains = json.dumps([g['kode']['id'] for g in item['grunntyper']])
-            
-        t_data = {
+        all_types.append({
             'id': kode['id'], 'navn': item['navn'], 'kategori': item['kategori'], 'parent_id': parent_id,
             'ecosystnivaa_navn': item.get('ecosystnivaaNavn'), 'typekategori_navn': item.get('typekategoriNavn'),
             'langkode': kode.get('langkode'), 'definisjon': kode.get('definisjon'),
             'image_url': None, 'description': None, 'lkm_data': None,
-            'scale': item.get('maalestokkEnum'),
-            'contains_types': contains
-        }
-        all_types.append(t_data)
+            'scale': item.get('maalestokkEnum'), 'contains_types': contains
+        })
         for key in ['hovedtypegrupper', 'hovedtyper', 'grunntyper', 'kartleggingsenheter']:
             if item.get(key):
-                for sub in item[key]: process_type(sub, kode['id'])
+                for sub in item[key]: walk_types(sub, kode['id'])
 
-    for root in data['typer']: process_type(root)
+    for root in data['typer']: walk_types(root)
     
-    print(f"Step 2: Deep Scraping {len(all_types)} types (Matrix, Descriptions, Images)...")
-    os.makedirs('temp_images', exist_ok=True)
-    
-    # Scrape descriptions/images for EVERY type that has a web link
-    targets = [t for t in all_types if t['langkode'] or t['id'] in OFFICIAL_ICONS]
-    
-    for t in tqdm(targets):
-        # Matrix Data (Only for Grunntyper)
-        if t['kategori'] == 'Grunntype':
-            try:
-                url = f"{BASE_URL}/typer/kodeforGrunntype/{t['id']}"
-                dr = requests.get(url, timeout=10)
-                if dr.status_code == 200: t['lkm_data'] = parse_lkm_deep(dr.json())
-            except: pass
+    print(f"Step 2: Gold Run Deep Scrape ({len(all_types)} types) using 10 threads...")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        future_to_type = {executor.submit(process_single_type, t): t for t in all_types}
+        for i, future in enumerate(tqdm(as_completed(future_to_type), total=len(all_types))):
+            t = future.result()
+            cursor.execute('''INSERT OR REPLACE INTO nin_types VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)''', (
+                t['id'], t['navn'], t['kategori'], t['parent_id'], t['ecosystnivaa_navn'], 
+                t['typekategori_navn'], t['langkode'], t['definisjon'], t['image_url'], 
+                t['description'], t['lkm_data'], t['scale'], t['contains_types']
+            ))
+            if i % 100 == 0: conn.commit()
+    conn.commit()
 
-        # 1. Start with Official Icons if they exist
-        img_url = OFFICIAL_ICONS.get(t['id'])
-        desc = None
-        
-        # 2. Fetch/Fallback to Web Metadata
-        if t['langkode']:
-            web_desc, web_img = fetch_metadata(t['langkode'], t['id'])
-            desc = web_desc
-            # Only use web image if we don't have an official icon
-            if not img_url:
-                img_url = web_img
-        
-        t['description'] = desc
-        if img_url:
-            t['image_url'] = download_and_optimize_image(img_url, t['id'])
-        
-        time.sleep(0.01)
-
-    print("Step 3: Creating images.zip...")
+    print("Step 3: Bundling images.zip...")
     if os.path.exists('assets/images.zip'): os.remove('assets/images.zip')
-    with zipfile.ZipFile('assets/images.zip', 'w') as img_zip:
+    with zipfile.ZipFile('assets/images.zip', 'w', zipfile.ZIP_DEFLATED) as img_zip:
         for img_file in os.listdir('temp_images'):
             img_zip.write(os.path.join('temp_images', img_file), img_file)
 
-    print("Step 4: Saving to Database...")
-    for t in all_types:
-        cursor.execute('''INSERT INTO nin_types VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)''', (
-            t['id'], t['navn'], t['kategori'], t['parent_id'], t['ecosystnivaa_navn'], 
-            t['typekategori_navn'], t['langkode'], t['definisjon'], t['image_url'], 
-            t['description'], t['lkm_data'], t['scale'], t['contains_types']
-        ))
-    
-    conn.commit()
-    
-    cursor.execute("SELECT COUNT(*) FROM nin_types WHERE lkm_data IS NOT NULL")
-    lkm_count = cursor.fetchone()[0]
-    print(f"Success! {len(all_types)} types saved. {lkm_count} have Matrix coordinates.")
-    print("Images bundled in assets/images.zip")
+    print(f"Done! Final Database: {DB_PATH}")
     conn.close()
+
+if __name__ == "__main__":
+    main()
 
 if __name__ == "__main__":
     main()

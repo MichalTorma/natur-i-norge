@@ -40,7 +40,7 @@ def fetch_metadata(langkode):
         return f"Error: Status code {r.status_code}", None
 
 if __name__ == "__main__":
-    test_code = "NIN-3.0-T-C-PE-NA-MB-A-TB01"
+    test_code = "NiN-3.0-T-C-PE-NA-MB-TB01-M005-01"
     desc, img = fetch_metadata(test_code)
     print("\n--- DESCRIPTION ---")
     print(desc)
