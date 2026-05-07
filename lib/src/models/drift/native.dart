@@ -14,18 +14,17 @@ QueryExecutor openConnection() {
     final dbFile = File(p.join(docsDir.path, 'nin_database.sqlite'));
     final imagesDir = Directory(p.join(docsDir.path, 'images'));
 
-    // 1. Copy Database if missing
-    if (!await dbFile.exists()) {
-      try {
-        final data = await rootBundle.load('assets/nin_database.sqlite');
-        await dbFile.writeAsBytes(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-      } catch (e) {
-        print('Error copying DB asset: $e');
-      }
+    // 1. Copy/Update Database from assets
+    // In development, we force overwrite to ensure LKM data is synced
+    try {
+      final data = await rootBundle.load('assets/nin_database.sqlite');
+      await dbFile.writeAsBytes(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+    } catch (e) {
+      print('Error syncing DB asset: $e');
     }
 
-    // 2. Extract Images if missing
-    if (!await imagesDir.exists()) {
+    // 2. Extract Images (Force refresh if images dir is empty or needed)
+    if (!await imagesDir.exists() || (await imagesDir.list().length) < 10) {
       try {
         await imagesDir.create(recursive: true);
         final data = await rootBundle.load('assets/images.zip');

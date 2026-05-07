@@ -5,150 +5,217 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import '../providers/database_provider.dart';
 import '../models/nin_database.dart';
-import 'type_detail_screen.dart';
+import '../models/user_database.dart';
+import '../widgets/ecological_matrix.dart';
 
 class TypesScreen extends ConsumerStatefulWidget {
-  const TypesScreen({super.key});
+  final NinType? type;
+  const TypesScreen({super.key, this.type});
 
   @override
   ConsumerState<TypesScreen> createState() => _TypesScreenState();
 }
 
 class _TypesScreenState extends ConsumerState<TypesScreen> {
-  final List<NinType> _breadcrumb = [];
-  String _searchQuery = '';
-  bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
-
-  void _navigateToChild(NinType type) {
-    setState(() {
-      _breadcrumb.add(type);
-      _isSearching = false;
-      _searchController.clear();
-      _searchQuery = '';
-    });
-  }
-
-  void _pop() {
-    setState(() {
-      if (_breadcrumb.isNotEmpty) {
-        _breadcrumb.removeLast();
-      }
-    });
-  }
+  String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
-    final parentId = _breadcrumb.isEmpty ? null : _breadcrumb.last.id;
-    
-    // Logic for search vs hierarchy
-    final typesAsync = _searchQuery.isEmpty 
-        ? (parentId == null ? ref.watch(typesListProvider) : ref.watch(subTypesProvider(parentId)))
+    final parentId = widget.type?.id;
+    final typesAsync = _searchQuery.isEmpty
+        ? ref.watch(subTypesProvider(parentId ?? ''))
         : ref.watch(searchTypesProvider(_searchQuery));
 
     return Scaffold(
-      appBar: AppBar(
-        title: _isSearching
-            ? TextField(
+      body: CustomScrollView(
+        slivers: [
+          _buildAppBar(context, ref),
+          
+          // Search Bar (Only at root or when browsing)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: TextField(
                 controller: _searchController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  hintText: 'Search NiN codes or names...',
-                  border: InputBorder.none,
+                decoration: InputDecoration(
+                  hintText: 'Search codes or names...',
+                  prefixIcon: const Icon(Icons.search),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.05),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: EdgeInsets.zero,
                 ),
-                onChanged: (val) => setState(() => _searchQuery = val),
-              )
-            : Text(_breadcrumb.isEmpty ? 'Nature Types' : _breadcrumb.last.navn),
-        leading: _isSearching 
-            ? IconButton(icon: const Icon(Icons.close), onPressed: () => setState(() {
-                _isSearching = false;
-                _searchQuery = '';
-                _searchController.clear();
-              }))
-            : (_breadcrumb.isNotEmpty
-                ? IconButton(icon: const Icon(Icons.arrow_back), onPressed: _pop)
-                : null),
-        actions: [
-          if (!_isSearching)
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () => setState(() => _isSearching = true),
-            ),
-          if (_breadcrumb.isNotEmpty && !_isSearching)
-            _CategoryBadge(label: _breadcrumb.last.kategori),
-        ],
-      ),
-      body: typesAsync.when(
-        data: (types) => types.isEmpty && _breadcrumb.isEmpty && _searchQuery.isEmpty
-            ? const _EmptyState()
-            : _HierarchyList(
-                types: types,
-                onTap: (type) {
-                  // If it's a deep level or has no children, go to detail
-                  if (type.kategori == 'Grunntype' || type.kategori == 'Kartleggingsenhet') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => TypeDetailScreen(type: type)),
-                    );
-                  } else {
-                    _navigateToChild(type);
-                  }
-                },
-                level: _breadcrumb.length,
+                onChanged: (value) => setState(() => _searchQuery = value),
               ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+            ),
+          ),
+          
+          // Description Header
+          if (widget.type != null && widget.type!.description != null && _searchQuery.isEmpty)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        _Badge(label: widget.type!.kategori),
+                        if (widget.type!.ecosystnivaaNavn != null) ...[
+                          const SizedBox(width: 8),
+                          _Badge(label: widget.type!.ecosystnivaaNavn!, color: Colors.blue),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Beskrivelse',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      widget.type!.description!,
+                      style: const TextStyle(fontSize: 16, height: 1.6, color: Colors.white70),
+                    ),
+                    const Divider(height: 48),
+                  ],
+                ),
+              ),
+            ),
+
+          // Sub-types Content
+          typesAsync.when(
+            data: (types) {
+              if (types.isEmpty && widget.type != null) {
+                return const SliverFillRemaining(
+                  child: Center(
+                    child: Text('No further sub-types available.', style: TextStyle(color: Colors.white24)),
+                  ),
+                );
+              }
+
+              final isHovedtype = widget.type?.kategori == 'Hovedtype';
+
+              return SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    if (isHovedtype && types.isNotEmpty) ...[
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                        child: Text(
+                          'ECOLOGICAL MATRIX',
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent, letterSpacing: 1.2),
+                        ),
+                      ),
+                      EcologicalMatrix(subTypes: types),
+                      const Divider(height: 48),
+                      const Text(
+                        'SUB-TYPES LIST',
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white38, letterSpacing: 1.2),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: MediaQuery.of(context).size.width > 800 ? 3 : 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 1.3,
+                      ),
+                      itemCount: types.length,
+                      itemBuilder: (context, index) => _TypeCard(
+                        type: types[index],
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => TypesScreen(type: types[index])),
+                        ),
+                        level: widget.type == null ? 0 : 2,
+                      ),
+                    ),
+                  ]),
+                ),
+              );
+            },
+            loading: () => const SliverToBoxAdapter(
+              child: Center(child: Padding(
+                padding: EdgeInsets.all(32.0),
+                child: CircularProgressIndicator(),
+              )),
+            ),
+            error: (err, stack) => SliverToBoxAdapter(child: Center(child: Text('Error: $err'))),
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 100)),
+        ],
       ),
     );
   }
-}
 
-class _CategoryBadge extends StatelessWidget {
-  final String label;
-  const _CategoryBadge({required this.label});
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: Colors.green.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(12),
+  Widget _buildAppBar(BuildContext context, WidgetRef ref) {
+    return SliverAppBar(
+      expandedHeight: widget.type == null ? 120 : 300,
+      pinned: true,
+      actions: [
+        if (widget.type != null)
+          Consumer(
+            builder: (context, ref, child) {
+              final favorites = ref.watch(favoritesProvider).value ?? [];
+              final isFavorite = favorites.contains(widget.type!.id);
+              return IconButton(
+                icon: Icon(isFavorite ? Icons.star : Icons.star_border),
+                color: isFavorite ? Colors.amber : Colors.white,
+                onPressed: () async {
+                  final db = ref.read(userDatabaseProvider);
+                  if (isFavorite) {
+                    await (db.delete(db.favorites)..where((t) => t.typeId.equals(widget.type!.id))).go();
+                  } else {
+                    await db.into(db.favorites).insert(FavoritesCompanion.insert(typeId: widget.type!.id));
+                  }
+                },
+              );
+            },
           ),
-          child: Text(
-            label,
-            style: const TextStyle(fontSize: 10, color: Colors.greenAccent, fontWeight: FontWeight.bold),
+      ],
+      flexibleSpace: FlexibleSpaceBar(
+        title: Text(
+          widget.type?.id ?? 'NiN Explorer',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        background: widget.type == null ? null : Hero(
+          tag: 'image_${widget.type!.id}',
+          child: FutureBuilder<File?>(
+            future: _getLocalImage(widget.type!),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                return Image.file(snapshot.data!, fit: BoxFit.cover);
+              }
+              return Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.green.shade900, Colors.black],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),
     );
   }
-}
 
-class _HierarchyList extends StatelessWidget {
-  final List<NinType> types;
-  final Function(NinType) onTap;
-  final int level;
-
-  const _HierarchyList({required this.types, required this.onTap, required this.level});
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: MediaQuery.of(context).size.width > 1200 ? 4 : (MediaQuery.of(context).size.width > 800 ? 3 : 2),
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 1.3,
-      ),
-      itemCount: types.length,
-      itemBuilder: (context, index) {
-        return _TypeCard(type: types[index], onTap: () => onTap(types[index]), level: level);
-      },
-    );
+  Future<File?> _getLocalImage(NinType type) async {
+    if (type.imageUrl == null) return null;
+    final docsDir = await getApplicationDocumentsDirectory();
+    final file = File(p.join(docsDir.path, 'images', type.imageUrl!));
+    return await file.exists() ? file : null;
   }
 }
 
@@ -159,16 +226,6 @@ class _TypeCard extends StatelessWidget {
 
   const _TypeCard({required this.type, required this.onTap, required this.level});
 
-  Color _getLevelColor() {
-    switch (level) {
-      case 0: return Colors.blue;
-      case 1: return Colors.green;
-      case 2: return Colors.orange;
-      case 3: return Colors.purple;
-      default: return Colors.teal;
-    }
-  }
-
   Future<File?> _getLocalImage() async {
     if (type.imageUrl == null) return null;
     final docsDir = await getApplicationDocumentsDirectory();
@@ -178,8 +235,8 @@ class _TypeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine if this is an official icon (level 0 or 1 usually)
     final isIcon = level <= 1;
+    final color = level == 0 ? Colors.blue : (level == 1 ? Colors.green : Colors.orange);
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -194,15 +251,11 @@ class _TypeCard extends StatelessWidget {
                   future: _getLocalImage(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data != null) {
-                      return Padding(
-                        padding: isIcon ? const EdgeInsets.all(16.0) : EdgeInsets.zero,
-                        child: Opacity(
-                          opacity: isIcon ? 1.0 : 0.4,
-                          child: Image.file(
-                            snapshot.data!,
-                            fit: isIcon ? BoxFit.contain : BoxFit.cover,
-                            alignment: isIcon ? Alignment.centerRight : Alignment.center,
-                          ),
+                      return Opacity(
+                        opacity: isIcon ? 1.0 : 0.4,
+                        child: Padding(
+                          padding: isIcon ? const EdgeInsets.all(16.0) : EdgeInsets.zero,
+                          child: Image.file(snapshot.data!, fit: isIcon ? BoxFit.contain : BoxFit.cover),
                         ),
                       );
                     }
@@ -216,43 +269,16 @@ class _TypeCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    _getLevelColor().withOpacity(isIcon ? 0.4 : 0.2),
-                    Colors.black.withOpacity(isIcon ? 0.2 : 0.6),
-                  ],
+                  colors: [color.withOpacity(0.2), Colors.black.withOpacity(0.6)],
                 ),
               ),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    type.id,
-                    style: TextStyle(
-                      color: _getLevelColor().withOpacity(0.9),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                    ),
-                  ),
+                  Text(type.id, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color.withOpacity(0.8))),
                   const Spacer(),
-                  SizedBox(
-                    width: isIcon ? MediaQuery.of(context).size.width * 0.4 : null,
-                    child: Text(
-                      type.navn,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  if (type.description != null && !isIcon) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      type.description!,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 10, color: Colors.white.withOpacity(0.6)),
-                    ),
-                  ],
+                  Text(type.navn, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -263,19 +289,20 @@ class _TypeCard extends StatelessWidget {
   }
 }
 
-class _EmptyState extends StatelessWidget {
-  const _EmptyState();
+class _Badge extends StatelessWidget {
+  final String label;
+  final Color color;
+  const _Badge({required this.label, this.color = Colors.green});
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.storage_outlined, size: 64, color: Colors.white.withOpacity(0.2)),
-          const SizedBox(height: 16),
-          const Text('Database is empty or missing'),
-        ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.5)),
       ),
+      child: Text(label.toUpperCase(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color)),
     );
   }
 }

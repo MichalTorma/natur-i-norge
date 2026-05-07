@@ -59,7 +59,8 @@ def setup_env():
         langkode TEXT,
         definisjon TEXT,
         image_url TEXT,
-        description TEXT
+        description TEXT,
+        lkm_data TEXT
     )''')
     cursor.execute('''
     CREATE TABLE nin_variables (
@@ -72,6 +73,36 @@ def setup_env():
     )''')
     conn.commit()
     return conn
+
+def fetch_type_detail(langkode):
+    """Fetch the full detail for a type to get variabeltrinn (LKMs)."""
+    if not langkode: return []
+    try:
+        # V3.0 detailed endpoint
+        url = f"{BASE_URL}/typer/hentkode/{langkode}"
+        r = requests.get(url, timeout=10)
+        if r.status_code == 200:
+            item = r.json()
+            lkm_list = []
+            if 'variabeltrinn' in item and item['variabeltrinn']:
+                for v in item['variabeltrinn']:
+                    # Extract trinn from the complex maaleskala structure
+                    trinn_verdi = None
+                    trinn_navn = None
+                    if v.get('trinn'):
+                        trinn_verdi = v['trinn'].get('verdi')
+                        trinn_navn = v['trinn'].get('navn')
+                    
+                    lkm_list.append({
+                        'v_kode': v.get('kode'),
+                        'v_navn': v.get('navn'),
+                        'v_trinn': trinn_verdi,
+                        'v_trinn_navn': trinn_navn
+                    })
+            return lkm_list
+    except Exception as e:
+        print(f"Error fetching detail for {langkode}: {e}")
+    return []
 
 def download_image(url, langkode, force=False):
     if not url: return None
@@ -96,31 +127,19 @@ def scrape_web_metadata(langkode):
         response = requests.get(url, timeout=10)
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
-            
-            # Remove footer and script tags to avoid noise
             if soup.footer: soup.footer.decompose()
             for script in soup(["script", "style"]): script.decompose()
-            
-            # 1. Description
-            # Try specific content blocks first
             content = soup.find(class_='main-content') or soup.find(id='main-content') or soup.body
             paragraphs = content.find_all('p')
-            
             description = None
             if paragraphs:
                 valid_p = []
                 for p in paragraphs:
                     text = p.get_text().strip()
-                    # Skip short texts or things that look like footer/address info
                     if len(text) < 40: continue
                     if any(kw in text.lower() for kw in FOOTER_KEYWORDS): continue
                     valid_p.append(text)
-                
-                if valid_p:
-                    # Take up to 2 meaningful paragraphs
-                    description = "\n\n".join(valid_p[:2])
-            
-            # 2. Image Selection
+                if valid_p: description = "\n\n".join(valid_p[:2])
             image_url = None
             img_tags = soup.find_all('img', src=lambda s: s and '/sites/default/files/' in s)
             for img in img_tags:
@@ -130,7 +149,6 @@ def scrape_web_metadata(langkode):
                 if 'public' in src:
                     image_url = f"https://artsdatabanken.no{img.get('src')}" if img.get('src').startswith('/') else img.get('src')
                     break
-            
             return description, image_url
     except Exception as e:
         pass
@@ -140,7 +158,7 @@ def main():
     conn = setup_env()
     cursor = conn.cursor()
     
-    print("Fetching types from API...")
+    print("Fetching types from API (Summary)...")
     r = requests.get(f"{BASE_URL}/typer/allekoder")
     data = r.json()
     
@@ -157,7 +175,8 @@ def main():
             'langkode': kode.get('langkode'),
             'definisjon': kode.get('definisjon'),
             'image_url': None,
-            'description': None
+            'description': None,
+            'lkm_data': None
         })
         for key in ['hovedtypegrupper', 'hovedtyper', 'grunntyper', 'kartleggingsenheter']:
             if item.get(key):
@@ -167,10 +186,17 @@ def main():
     for root_type in data['typer']:
         process_type(root_type)
     
-    print(f"Scraping {len(all_types)} types (Footer-filter enabled)...")
+    print(f"Deep scraping {len(all_types)} types for LKM Matrix data...")
     
+    # We only need LKM data for Grunntype and Hovedtype levels
     for t in tqdm(all_types):
-        # Official icons first
+        # Fetch LKM coordinates for Matrix
+        if t['kategori'] in ['Hovedtype', 'Grunntype']:
+            lkm = fetch_type_detail(t['langkode'])
+            if lkm:
+                t['lkm_data'] = json.dumps(lkm)
+
+        # Scrape web metadata
         if t['id'] in OFFICIAL_ICONS:
             t['image_url'] = download_image(OFFICIAL_ICONS[t['id']], t['langkode'], force=True)
             desc, _ = scrape_web_metadata(t['langkode'])
@@ -180,7 +206,6 @@ def main():
             t['description'] = desc
             if img_url:
                 t['image_url'] = download_image(img_url, t['langkode'])
-            
             time.sleep(0.01)
 
     print("Second pass: Inheritance fix...")
@@ -201,28 +226,18 @@ def main():
     print("Writing to database...")
     for t in all_types:
         cursor.execute('''
-            INSERT INTO nin_types (id, navn, kategori, parent_id, ecosystnivaa_navn, typekategori_navn, langkode, definisjon, image_url, description)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (t['id'], t['navn'], t['kategori'], t['parent_id'], t['ecosystnivaa_navn'], t['typekategori_navn'], t['langkode'], t['definisjon'], t['image_url'], t['description']))
+            INSERT INTO nin_types (id, navn, kategori, parent_id, ecosystnivaa_navn, typekategori_navn, langkode, definisjon, image_url, description, lkm_data)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (t['id'], t['navn'], t['kategori'], t['parent_id'], t['ecosystnivaa_navn'], t['typekategori_navn'], t['langkode'], t['definisjon'], t['image_url'], t['description'], t['lkm_data']))
 
     print("Zipping images...")
     with zipfile.ZipFile(ZIP_PATH, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(IMAGE_DIR):
             for file in files: zipf.write(os.path.join(root, file), file)
 
-    print("Syncing variables...")
-    rv = requests.get(f"{BASE_URL}/variabler/allekoder")
-    v_data = rv.json()
-    def process_var(item, parent_id=None):
-        v_id = item['kode']['id']
-        cursor.execute('INSERT INTO nin_variables VALUES (?, ?, ?, ?, ?, ?)', (v_id, item['navn'], item.get('kategori', 'Variabel'), parent_id, item.get('ecosystnivaaNavn'), item.get('variabelkategoriNavn')))
-        if item.get('variabelnavn'):
-            for sub in item['variabelnavn']: process_var(sub, v_id)
-    for root_var in v_data['variabler']: process_var(root_var)
-
     conn.commit()
     conn.close()
-    print("Optimization complete.")
+    print("Matrix data sync complete.")
 
 if __name__ == "__main__":
     main()

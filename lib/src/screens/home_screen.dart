@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'types_screen.dart';
 import 'variables_screen.dart';
-import 'settings_screen.dart';
+import 'favorites_screen.dart';
 import 'camera_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -18,6 +19,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final List<Widget> _screens = [
     const TypesScreen(),
     const VariablesScreen(),
+    const FavoritesScreen(),
     const CameraScreen(),
     const SettingsScreen(),
   ];
@@ -54,6 +56,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   label: Text('Variables'),
                 ),
                 NavigationRailDestination(
+                  icon: Icon(Icons.star_outline),
+                  selectedIcon: Icon(Icons.star),
+                  label: Text('Favorites'),
+                ),
+                NavigationRailDestination(
                   icon: Icon(Icons.camera_alt_outlined),
                   selectedIcon: Icon(Icons.camera_alt),
                   label: Text('Camera'),
@@ -88,6 +95,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   icon: Icon(Icons.straighten_outlined),
                   selectedIcon: Icon(Icons.straighten),
                   label: 'Variables',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.star_outline),
+                  selectedIcon: Icon(Icons.star),
+                  label: 'Favorites',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.camera_alt_outlined),

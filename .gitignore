@@ -242,3 +242,6 @@ pyrightconfig.json
 assets/nin_database.sqlite
 assets/images.zip
 temp_images/
+all_variabler.json
+all_koder.json
+all_koder_v3.json

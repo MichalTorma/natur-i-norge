@@ -114,6 +114,17 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _lkmDataMeta = const VerificationMeta(
+    'lkmData',
+  );
+  @override
+  late final GeneratedColumn<String> lkmData = GeneratedColumn<String>(
+    'lkm_data',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -126,6 +137,7 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
     definisjon,
     imageUrl,
     description,
+    lkmData,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -211,6 +223,12 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
         ),
       );
     }
+    if (data.containsKey('lkm_data')) {
+      context.handle(
+        _lkmDataMeta,
+        lkmData.isAcceptableOrUnknown(data['lkm_data']!, _lkmDataMeta),
+      );
+    }
     return context;
   }
 
@@ -260,6 +278,10 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
         DriftSqlType.string,
         data['${effectivePrefix}description'],
       ),
+      lkmData: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lkm_data'],
+      ),
     );
   }
 
@@ -280,6 +302,7 @@ class NinType extends DataClass implements Insertable<NinType> {
   final String? definisjon;
   final String? imageUrl;
   final String? description;
+  final String? lkmData;
   const NinType({
     required this.id,
     required this.navn,
@@ -291,6 +314,7 @@ class NinType extends DataClass implements Insertable<NinType> {
     this.definisjon,
     this.imageUrl,
     this.description,
+    this.lkmData,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -318,6 +342,9 @@ class NinType extends DataClass implements Insertable<NinType> {
     }
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || lkmData != null) {
+      map['lkm_data'] = Variable<String>(lkmData);
     }
     return map;
   }
@@ -348,6 +375,9 @@ class NinType extends DataClass implements Insertable<NinType> {
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
+      lkmData: lkmData == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lkmData),
     );
   }
 
@@ -367,6 +397,7 @@ class NinType extends DataClass implements Insertable<NinType> {
       definisjon: serializer.fromJson<String?>(json['definisjon']),
       imageUrl: serializer.fromJson<String?>(json['imageUrl']),
       description: serializer.fromJson<String?>(json['description']),
+      lkmData: serializer.fromJson<String?>(json['lkmData']),
     );
   }
   @override
@@ -383,6 +414,7 @@ class NinType extends DataClass implements Insertable<NinType> {
       'definisjon': serializer.toJson<String?>(definisjon),
       'imageUrl': serializer.toJson<String?>(imageUrl),
       'description': serializer.toJson<String?>(description),
+      'lkmData': serializer.toJson<String?>(lkmData),
     };
   }
 
@@ -397,6 +429,7 @@ class NinType extends DataClass implements Insertable<NinType> {
     Value<String?> definisjon = const Value.absent(),
     Value<String?> imageUrl = const Value.absent(),
     Value<String?> description = const Value.absent(),
+    Value<String?> lkmData = const Value.absent(),
   }) => NinType(
     id: id ?? this.id,
     navn: navn ?? this.navn,
@@ -412,6 +445,7 @@ class NinType extends DataClass implements Insertable<NinType> {
     definisjon: definisjon.present ? definisjon.value : this.definisjon,
     imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
     description: description.present ? description.value : this.description,
+    lkmData: lkmData.present ? lkmData.value : this.lkmData,
   );
   NinType copyWithCompanion(NinTypesCompanion data) {
     return NinType(
@@ -433,6 +467,7 @@ class NinType extends DataClass implements Insertable<NinType> {
       description: data.description.present
           ? data.description.value
           : this.description,
+      lkmData: data.lkmData.present ? data.lkmData.value : this.lkmData,
     );
   }
 
@@ -448,7 +483,8 @@ class NinType extends DataClass implements Insertable<NinType> {
           ..write('langkode: $langkode, ')
           ..write('definisjon: $definisjon, ')
           ..write('imageUrl: $imageUrl, ')
-          ..write('description: $description')
+          ..write('description: $description, ')
+          ..write('lkmData: $lkmData')
           ..write(')'))
         .toString();
   }
@@ -465,6 +501,7 @@ class NinType extends DataClass implements Insertable<NinType> {
     definisjon,
     imageUrl,
     description,
+    lkmData,
   );
   @override
   bool operator ==(Object other) =>
@@ -479,7 +516,8 @@ class NinType extends DataClass implements Insertable<NinType> {
           other.langkode == this.langkode &&
           other.definisjon == this.definisjon &&
           other.imageUrl == this.imageUrl &&
-          other.description == this.description);
+          other.description == this.description &&
+          other.lkmData == this.lkmData);
 }
 
 class NinTypesCompanion extends UpdateCompanion<NinType> {
@@ -493,6 +531,7 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
   final Value<String?> definisjon;
   final Value<String?> imageUrl;
   final Value<String?> description;
+  final Value<String?> lkmData;
   final Value<int> rowid;
   const NinTypesCompanion({
     this.id = const Value.absent(),
@@ -505,6 +544,7 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     this.definisjon = const Value.absent(),
     this.imageUrl = const Value.absent(),
     this.description = const Value.absent(),
+    this.lkmData = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   NinTypesCompanion.insert({
@@ -518,6 +558,7 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     this.definisjon = const Value.absent(),
     this.imageUrl = const Value.absent(),
     this.description = const Value.absent(),
+    this.lkmData = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        navn = Value(navn),
@@ -533,6 +574,7 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     Expression<String>? definisjon,
     Expression<String>? imageUrl,
     Expression<String>? description,
+    Expression<String>? lkmData,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -546,6 +588,7 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
       if (definisjon != null) 'definisjon': definisjon,
       if (imageUrl != null) 'image_url': imageUrl,
       if (description != null) 'description': description,
+      if (lkmData != null) 'lkm_data': lkmData,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -561,6 +604,7 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     Value<String?>? definisjon,
     Value<String?>? imageUrl,
     Value<String?>? description,
+    Value<String?>? lkmData,
     Value<int>? rowid,
   }) {
     return NinTypesCompanion(
@@ -574,6 +618,7 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
       definisjon: definisjon ?? this.definisjon,
       imageUrl: imageUrl ?? this.imageUrl,
       description: description ?? this.description,
+      lkmData: lkmData ?? this.lkmData,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -611,6 +656,9 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
+    if (lkmData.present) {
+      map['lkm_data'] = Variable<String>(lkmData.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -630,6 +678,7 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
           ..write('definisjon: $definisjon, ')
           ..write('imageUrl: $imageUrl, ')
           ..write('description: $description, ')
+          ..write('lkmData: $lkmData, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1508,6 +1557,7 @@ typedef $$NinTypesTableCreateCompanionBuilder =
       Value<String?> definisjon,
       Value<String?> imageUrl,
       Value<String?> description,
+      Value<String?> lkmData,
       Value<int> rowid,
     });
 typedef $$NinTypesTableUpdateCompanionBuilder =
@@ -1522,6 +1572,7 @@ typedef $$NinTypesTableUpdateCompanionBuilder =
       Value<String?> definisjon,
       Value<String?> imageUrl,
       Value<String?> description,
+      Value<String?> lkmData,
       Value<int> rowid,
     });
 
@@ -1581,6 +1632,11 @@ class $$NinTypesTableFilterComposer
 
   ColumnFilters<String> get description => $composableBuilder(
     column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lkmData => $composableBuilder(
+    column: $table.lkmData,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1643,6 +1699,11 @@ class $$NinTypesTableOrderingComposer
     column: $table.description,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get lkmData => $composableBuilder(
+    column: $table.lkmData,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$NinTypesTableAnnotationComposer
@@ -1691,6 +1752,9 @@ class $$NinTypesTableAnnotationComposer
     column: $table.description,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get lkmData =>
+      $composableBuilder(column: $table.lkmData, builder: (column) => column);
 }
 
 class $$NinTypesTableTableManager
@@ -1731,6 +1795,7 @@ class $$NinTypesTableTableManager
                 Value<String?> definisjon = const Value.absent(),
                 Value<String?> imageUrl = const Value.absent(),
                 Value<String?> description = const Value.absent(),
+                Value<String?> lkmData = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NinTypesCompanion(
                 id: id,
@@ -1743,6 +1808,7 @@ class $$NinTypesTableTableManager
                 definisjon: definisjon,
                 imageUrl: imageUrl,
                 description: description,
+                lkmData: lkmData,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1757,6 +1823,7 @@ class $$NinTypesTableTableManager
                 Value<String?> definisjon = const Value.absent(),
                 Value<String?> imageUrl = const Value.absent(),
                 Value<String?> description = const Value.absent(),
+                Value<String?> lkmData = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NinTypesCompanion.insert(
                 id: id,
@@ -1769,6 +1836,7 @@ class $$NinTypesTableTableManager
                 definisjon: definisjon,
                 imageUrl: imageUrl,
                 description: description,
+                lkmData: lkmData,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
