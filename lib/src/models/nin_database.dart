@@ -27,8 +27,9 @@ class NinVariables extends Table {
   TextColumn get navn => text()();
   TextColumn get kategori => text()();
   TextColumn get parentId => text().nullable()();
-  TextColumn get ecosystnivaaNavn => text().nullable()();
   TextColumn get variabelkategoriNavn => text().nullable()();
+  TextColumn get description => text().nullable()();
+  TextColumn get stepsJson => text().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -48,7 +49,7 @@ class NinDatabase extends _$NinDatabase {
   NinDatabase() : super(openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

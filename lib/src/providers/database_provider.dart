@@ -50,3 +50,8 @@ final typesByIdsProvider = FutureProvider.family<List<NinType>, List<String>>((r
   final db = ref.watch(databaseProvider);
   return (db.select(db.ninTypes)..where((t) => t.id.isIn(ids))).get();
 });
+
+final variableProvider = FutureProvider.family<NinVariable?, String>((ref, id) async {
+  final db = ref.watch(databaseProvider);
+  return (db.select(db.ninVariables)..where((v) => v.id.equals(id))).getSingleOrNull();
+});

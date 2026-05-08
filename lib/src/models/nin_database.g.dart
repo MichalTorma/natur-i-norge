@@ -834,17 +834,6 @@ class $NinVariablesTable extends NinVariables
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _ecosystnivaaNavnMeta = const VerificationMeta(
-    'ecosystnivaaNavn',
-  );
-  @override
-  late final GeneratedColumn<String> ecosystnivaaNavn = GeneratedColumn<String>(
-    'ecosystnivaa_navn',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
   static const VerificationMeta _variabelkategoriNavnMeta =
       const VerificationMeta('variabelkategoriNavn');
   @override
@@ -856,14 +845,37 @@ class $NinVariablesTable extends NinVariables
         type: DriftSqlType.string,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _stepsJsonMeta = const VerificationMeta(
+    'stepsJson',
+  );
+  @override
+  late final GeneratedColumn<String> stepsJson = GeneratedColumn<String>(
+    'steps_json',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
     navn,
     kategori,
     parentId,
-    ecosystnivaaNavn,
     variabelkategoriNavn,
+    description,
+    stepsJson,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -904,15 +916,6 @@ class $NinVariablesTable extends NinVariables
         parentId.isAcceptableOrUnknown(data['parent_id']!, _parentIdMeta),
       );
     }
-    if (data.containsKey('ecosystnivaa_navn')) {
-      context.handle(
-        _ecosystnivaaNavnMeta,
-        ecosystnivaaNavn.isAcceptableOrUnknown(
-          data['ecosystnivaa_navn']!,
-          _ecosystnivaaNavnMeta,
-        ),
-      );
-    }
     if (data.containsKey('variabelkategori_navn')) {
       context.handle(
         _variabelkategoriNavnMeta,
@@ -920,6 +923,21 @@ class $NinVariablesTable extends NinVariables
           data['variabelkategori_navn']!,
           _variabelkategoriNavnMeta,
         ),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('steps_json')) {
+      context.handle(
+        _stepsJsonMeta,
+        stepsJson.isAcceptableOrUnknown(data['steps_json']!, _stepsJsonMeta),
       );
     }
     return context;
@@ -947,13 +965,17 @@ class $NinVariablesTable extends NinVariables
         DriftSqlType.string,
         data['${effectivePrefix}parent_id'],
       ),
-      ecosystnivaaNavn: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}ecosystnivaa_navn'],
-      ),
       variabelkategoriNavn: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}variabelkategori_navn'],
+      ),
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      stepsJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}steps_json'],
       ),
     );
   }
@@ -969,15 +991,17 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
   final String navn;
   final String kategori;
   final String? parentId;
-  final String? ecosystnivaaNavn;
   final String? variabelkategoriNavn;
+  final String? description;
+  final String? stepsJson;
   const NinVariable({
     required this.id,
     required this.navn,
     required this.kategori,
     this.parentId,
-    this.ecosystnivaaNavn,
     this.variabelkategoriNavn,
+    this.description,
+    this.stepsJson,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -988,11 +1012,14 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
     if (!nullToAbsent || parentId != null) {
       map['parent_id'] = Variable<String>(parentId);
     }
-    if (!nullToAbsent || ecosystnivaaNavn != null) {
-      map['ecosystnivaa_navn'] = Variable<String>(ecosystnivaaNavn);
-    }
     if (!nullToAbsent || variabelkategoriNavn != null) {
       map['variabelkategori_navn'] = Variable<String>(variabelkategoriNavn);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || stepsJson != null) {
+      map['steps_json'] = Variable<String>(stepsJson);
     }
     return map;
   }
@@ -1005,12 +1032,15 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
       parentId: parentId == null && nullToAbsent
           ? const Value.absent()
           : Value(parentId),
-      ecosystnivaaNavn: ecosystnivaaNavn == null && nullToAbsent
-          ? const Value.absent()
-          : Value(ecosystnivaaNavn),
       variabelkategoriNavn: variabelkategoriNavn == null && nullToAbsent
           ? const Value.absent()
           : Value(variabelkategoriNavn),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      stepsJson: stepsJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(stepsJson),
     );
   }
 
@@ -1024,10 +1054,11 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
       navn: serializer.fromJson<String>(json['navn']),
       kategori: serializer.fromJson<String>(json['kategori']),
       parentId: serializer.fromJson<String?>(json['parentId']),
-      ecosystnivaaNavn: serializer.fromJson<String?>(json['ecosystnivaaNavn']),
       variabelkategoriNavn: serializer.fromJson<String?>(
         json['variabelkategoriNavn'],
       ),
+      description: serializer.fromJson<String?>(json['description']),
+      stepsJson: serializer.fromJson<String?>(json['stepsJson']),
     );
   }
   @override
@@ -1038,8 +1069,9 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
       'navn': serializer.toJson<String>(navn),
       'kategori': serializer.toJson<String>(kategori),
       'parentId': serializer.toJson<String?>(parentId),
-      'ecosystnivaaNavn': serializer.toJson<String?>(ecosystnivaaNavn),
       'variabelkategoriNavn': serializer.toJson<String?>(variabelkategoriNavn),
+      'description': serializer.toJson<String?>(description),
+      'stepsJson': serializer.toJson<String?>(stepsJson),
     };
   }
 
@@ -1048,19 +1080,19 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
     String? navn,
     String? kategori,
     Value<String?> parentId = const Value.absent(),
-    Value<String?> ecosystnivaaNavn = const Value.absent(),
     Value<String?> variabelkategoriNavn = const Value.absent(),
+    Value<String?> description = const Value.absent(),
+    Value<String?> stepsJson = const Value.absent(),
   }) => NinVariable(
     id: id ?? this.id,
     navn: navn ?? this.navn,
     kategori: kategori ?? this.kategori,
     parentId: parentId.present ? parentId.value : this.parentId,
-    ecosystnivaaNavn: ecosystnivaaNavn.present
-        ? ecosystnivaaNavn.value
-        : this.ecosystnivaaNavn,
     variabelkategoriNavn: variabelkategoriNavn.present
         ? variabelkategoriNavn.value
         : this.variabelkategoriNavn,
+    description: description.present ? description.value : this.description,
+    stepsJson: stepsJson.present ? stepsJson.value : this.stepsJson,
   );
   NinVariable copyWithCompanion(NinVariablesCompanion data) {
     return NinVariable(
@@ -1068,12 +1100,13 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
       navn: data.navn.present ? data.navn.value : this.navn,
       kategori: data.kategori.present ? data.kategori.value : this.kategori,
       parentId: data.parentId.present ? data.parentId.value : this.parentId,
-      ecosystnivaaNavn: data.ecosystnivaaNavn.present
-          ? data.ecosystnivaaNavn.value
-          : this.ecosystnivaaNavn,
       variabelkategoriNavn: data.variabelkategoriNavn.present
           ? data.variabelkategoriNavn.value
           : this.variabelkategoriNavn,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      stepsJson: data.stepsJson.present ? data.stepsJson.value : this.stepsJson,
     );
   }
 
@@ -1084,8 +1117,9 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
           ..write('navn: $navn, ')
           ..write('kategori: $kategori, ')
           ..write('parentId: $parentId, ')
-          ..write('ecosystnivaaNavn: $ecosystnivaaNavn, ')
-          ..write('variabelkategoriNavn: $variabelkategoriNavn')
+          ..write('variabelkategoriNavn: $variabelkategoriNavn, ')
+          ..write('description: $description, ')
+          ..write('stepsJson: $stepsJson')
           ..write(')'))
         .toString();
   }
@@ -1096,8 +1130,9 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
     navn,
     kategori,
     parentId,
-    ecosystnivaaNavn,
     variabelkategoriNavn,
+    description,
+    stepsJson,
   );
   @override
   bool operator ==(Object other) =>
@@ -1107,8 +1142,9 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
           other.navn == this.navn &&
           other.kategori == this.kategori &&
           other.parentId == this.parentId &&
-          other.ecosystnivaaNavn == this.ecosystnivaaNavn &&
-          other.variabelkategoriNavn == this.variabelkategoriNavn);
+          other.variabelkategoriNavn == this.variabelkategoriNavn &&
+          other.description == this.description &&
+          other.stepsJson == this.stepsJson);
 }
 
 class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
@@ -1116,16 +1152,18 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
   final Value<String> navn;
   final Value<String> kategori;
   final Value<String?> parentId;
-  final Value<String?> ecosystnivaaNavn;
   final Value<String?> variabelkategoriNavn;
+  final Value<String?> description;
+  final Value<String?> stepsJson;
   final Value<int> rowid;
   const NinVariablesCompanion({
     this.id = const Value.absent(),
     this.navn = const Value.absent(),
     this.kategori = const Value.absent(),
     this.parentId = const Value.absent(),
-    this.ecosystnivaaNavn = const Value.absent(),
     this.variabelkategoriNavn = const Value.absent(),
+    this.description = const Value.absent(),
+    this.stepsJson = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   NinVariablesCompanion.insert({
@@ -1133,8 +1171,9 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
     required String navn,
     required String kategori,
     this.parentId = const Value.absent(),
-    this.ecosystnivaaNavn = const Value.absent(),
     this.variabelkategoriNavn = const Value.absent(),
+    this.description = const Value.absent(),
+    this.stepsJson = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        navn = Value(navn),
@@ -1144,8 +1183,9 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
     Expression<String>? navn,
     Expression<String>? kategori,
     Expression<String>? parentId,
-    Expression<String>? ecosystnivaaNavn,
     Expression<String>? variabelkategoriNavn,
+    Expression<String>? description,
+    Expression<String>? stepsJson,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1153,9 +1193,10 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
       if (navn != null) 'navn': navn,
       if (kategori != null) 'kategori': kategori,
       if (parentId != null) 'parent_id': parentId,
-      if (ecosystnivaaNavn != null) 'ecosystnivaa_navn': ecosystnivaaNavn,
       if (variabelkategoriNavn != null)
         'variabelkategori_navn': variabelkategoriNavn,
+      if (description != null) 'description': description,
+      if (stepsJson != null) 'steps_json': stepsJson,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1165,8 +1206,9 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
     Value<String>? navn,
     Value<String>? kategori,
     Value<String?>? parentId,
-    Value<String?>? ecosystnivaaNavn,
     Value<String?>? variabelkategoriNavn,
+    Value<String?>? description,
+    Value<String?>? stepsJson,
     Value<int>? rowid,
   }) {
     return NinVariablesCompanion(
@@ -1174,8 +1216,9 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
       navn: navn ?? this.navn,
       kategori: kategori ?? this.kategori,
       parentId: parentId ?? this.parentId,
-      ecosystnivaaNavn: ecosystnivaaNavn ?? this.ecosystnivaaNavn,
       variabelkategoriNavn: variabelkategoriNavn ?? this.variabelkategoriNavn,
+      description: description ?? this.description,
+      stepsJson: stepsJson ?? this.stepsJson,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1195,13 +1238,16 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
     if (parentId.present) {
       map['parent_id'] = Variable<String>(parentId.value);
     }
-    if (ecosystnivaaNavn.present) {
-      map['ecosystnivaa_navn'] = Variable<String>(ecosystnivaaNavn.value);
-    }
     if (variabelkategoriNavn.present) {
       map['variabelkategori_navn'] = Variable<String>(
         variabelkategoriNavn.value,
       );
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (stepsJson.present) {
+      map['steps_json'] = Variable<String>(stepsJson.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -1216,8 +1262,9 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
           ..write('navn: $navn, ')
           ..write('kategori: $kategori, ')
           ..write('parentId: $parentId, ')
-          ..write('ecosystnivaaNavn: $ecosystnivaaNavn, ')
           ..write('variabelkategoriNavn: $variabelkategoriNavn, ')
+          ..write('description: $description, ')
+          ..write('stepsJson: $stepsJson, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2010,8 +2057,9 @@ typedef $$NinVariablesTableCreateCompanionBuilder =
       required String navn,
       required String kategori,
       Value<String?> parentId,
-      Value<String?> ecosystnivaaNavn,
       Value<String?> variabelkategoriNavn,
+      Value<String?> description,
+      Value<String?> stepsJson,
       Value<int> rowid,
     });
 typedef $$NinVariablesTableUpdateCompanionBuilder =
@@ -2020,8 +2068,9 @@ typedef $$NinVariablesTableUpdateCompanionBuilder =
       Value<String> navn,
       Value<String> kategori,
       Value<String?> parentId,
-      Value<String?> ecosystnivaaNavn,
       Value<String?> variabelkategoriNavn,
+      Value<String?> description,
+      Value<String?> stepsJson,
       Value<int> rowid,
     });
 
@@ -2054,13 +2103,18 @@ class $$NinVariablesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get ecosystnivaaNavn => $composableBuilder(
-    column: $table.ecosystnivaaNavn,
+  ColumnFilters<String> get variabelkategoriNavn => $composableBuilder(
+    column: $table.variabelkategoriNavn,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get variabelkategoriNavn => $composableBuilder(
-    column: $table.variabelkategoriNavn,
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stepsJson => $composableBuilder(
+    column: $table.stepsJson,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -2094,13 +2148,18 @@ class $$NinVariablesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get ecosystnivaaNavn => $composableBuilder(
-    column: $table.ecosystnivaaNavn,
+  ColumnOrderings<String> get variabelkategoriNavn => $composableBuilder(
+    column: $table.variabelkategoriNavn,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get variabelkategoriNavn => $composableBuilder(
-    column: $table.variabelkategoriNavn,
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stepsJson => $composableBuilder(
+    column: $table.stepsJson,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -2126,15 +2185,18 @@ class $$NinVariablesTableAnnotationComposer
   GeneratedColumn<String> get parentId =>
       $composableBuilder(column: $table.parentId, builder: (column) => column);
 
-  GeneratedColumn<String> get ecosystnivaaNavn => $composableBuilder(
-    column: $table.ecosystnivaaNavn,
-    builder: (column) => column,
-  );
-
   GeneratedColumn<String> get variabelkategoriNavn => $composableBuilder(
     column: $table.variabelkategoriNavn,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get stepsJson =>
+      $composableBuilder(column: $table.stepsJson, builder: (column) => column);
 }
 
 class $$NinVariablesTableTableManager
@@ -2172,16 +2234,18 @@ class $$NinVariablesTableTableManager
                 Value<String> navn = const Value.absent(),
                 Value<String> kategori = const Value.absent(),
                 Value<String?> parentId = const Value.absent(),
-                Value<String?> ecosystnivaaNavn = const Value.absent(),
                 Value<String?> variabelkategoriNavn = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> stepsJson = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NinVariablesCompanion(
                 id: id,
                 navn: navn,
                 kategori: kategori,
                 parentId: parentId,
-                ecosystnivaaNavn: ecosystnivaaNavn,
                 variabelkategoriNavn: variabelkategoriNavn,
+                description: description,
+                stepsJson: stepsJson,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -2190,16 +2254,18 @@ class $$NinVariablesTableTableManager
                 required String navn,
                 required String kategori,
                 Value<String?> parentId = const Value.absent(),
-                Value<String?> ecosystnivaaNavn = const Value.absent(),
                 Value<String?> variabelkategoriNavn = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> stepsJson = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NinVariablesCompanion.insert(
                 id: id,
                 navn: navn,
                 kategori: kategori,
                 parentId: parentId,
-                ecosystnivaaNavn: ecosystnivaaNavn,
                 variabelkategoriNavn: variabelkategoriNavn,
+                description: description,
+                stepsJson: stepsJson,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

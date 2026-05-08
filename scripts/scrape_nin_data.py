@@ -62,6 +62,15 @@ def setup_db():
         scale TEXT,
         contains_types TEXT
     )''')
+    cursor.execute('''CREATE TABLE nin_variables (
+        id TEXT PRIMARY KEY, 
+        navn TEXT, 
+        kategori TEXT, 
+        parent_id TEXT, 
+        variabelkategori_navn TEXT,
+        description TEXT,
+        steps_json TEXT
+    )''')
     conn.commit()
     return conn
 
@@ -193,12 +202,61 @@ def process_single_type(t):
         t['image_url'] = download_and_optimize_image(img_url, t['id'])
     return t
 
+def process_single_variable(v):
+    # Scrape field notes for the LKM gradient
+    desc, _ = fetch_metadata(v['langkode'])
+    v['description'] = desc
+    return v
+
 def main():
     conn = setup_db()
     cursor = conn.cursor()
     os.makedirs('temp_images', exist_ok=True)
 
-    print("Step 1: Building Hierarchy...")
+    print("Step 1: Fetching NiN 3.0 Variables (LKM)...")
+    rv = requests.get(f"{BASE_URL}/variabler/allekoder")
+    var_data = rv.json()
+    all_vars = []
+    
+    def walk_vars(item, parent_id=None):
+        kode = item['kode']
+        steps = []
+        if item.get('basistrinn'):
+            for bt in item['basistrinn']:
+                steps.append({
+                    'verdi': bt.get('verdi'),
+                    'navn': bt.get('beskrivelse'),
+                    'kode': bt.get('kode', {}).get('id') if isinstance(bt.get('kode'), dict) else bt.get('kode')
+                })
+        
+        all_vars.append({
+            'id': kode['id'],
+            'navn': item['navn'],
+            'kategori': item['kategori'],
+            'parent_id': parent_id,
+            'variabelkategori_navn': item.get('variabelkategoriNavn'),
+            'langkode': kode.get('langkode'),
+            'steps_json': json.dumps(steps) if steps else None
+        })
+        
+        for key in ['underordneteVariabler', 'variabeltrinn']:
+            if item.get(key):
+                for sub in item[key]: walk_vars(sub, kode['id'])
+
+    for root in var_data['variabler']: walk_vars(root)
+
+    print(f"Step 2: Deep Scrape Variables ({len(all_vars)} items)...")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        future_to_var = {executor.submit(process_single_variable, v): v for v in all_vars}
+        for future in tqdm(as_completed(future_to_var), total=len(all_vars)):
+            v = future.result()
+            cursor.execute('''INSERT OR REPLACE INTO nin_variables VALUES (?,?,?,?,?,?,?)''', (
+                v['id'], v['navn'], v['kategori'], v['parent_id'], 
+                v['variabelkategori_navn'], v['description'], v['steps_json']
+            ))
+    conn.commit()
+
+    print("Step 3: Building Type Hierarchy...")
     r = requests.get(f"{BASE_URL}/typer/allekoder")
     data = r.json()
     all_types = []
@@ -221,7 +279,7 @@ def main():
 
     for root in data['typer']: walk_types(root)
     
-    print(f"Step 2: Gold Run Deep Scrape ({len(all_types)} types) using 10 threads...")
+    print(f"Step 4: Gold Run Deep Scrape Types ({len(all_types)} items)...")
     with ThreadPoolExecutor(max_workers=10) as executor:
         future_to_type = {executor.submit(process_single_type, t): t for t in all_types}
         for i, future in enumerate(tqdm(as_completed(future_to_type), total=len(all_types))):
@@ -234,7 +292,7 @@ def main():
             if i % 100 == 0: conn.commit()
     conn.commit()
 
-    print("Step 3: Bundling images.zip...")
+    print("Step 5: Bundling images.zip...")
     if os.path.exists('assets/images.zip'): os.remove('assets/images.zip')
     with zipfile.ZipFile('assets/images.zip', 'w', zipfile.ZIP_DEFLATED) as img_zip:
         for img_file in os.listdir('temp_images'):
@@ -242,9 +300,6 @@ def main():
 
     print(f"Done! Final Database: {DB_PATH}")
     conn.close()
-
-if __name__ == "__main__":
-    main()
 
 if __name__ == "__main__":
     main()
