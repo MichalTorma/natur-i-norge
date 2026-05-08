@@ -249,3 +249,4 @@ assets/nin_database.sqlite-journal
 assets/nin_database.sqlite
 nin_web_cache.sqlite
 web_cache/
+scratch/find_mismatch.py
