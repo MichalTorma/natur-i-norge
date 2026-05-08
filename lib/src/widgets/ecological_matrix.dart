@@ -193,31 +193,42 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // X-Axis Header
+              // X-Axis Header (Dual Layer)
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const SizedBox(width: 80), // Corner space
                   ...xSteps.map((xId) {
                     final group = matrixData.xMergeMap[xId]!;
                     final startLabel = allVarSteps[_xAxisVar]?[group.first] ?? group.first;
                     final endLabel = allVarSteps[_xAxisVar]?[group.last] ?? group.last;
-                    final rangeLabel = group.length > 1 ? "$startLabel\n$endLabel" : startLabel;
+                    final rangeLabel = group.length > 1 ? "$startLabel - $endLabel" : startLabel;
+                    final width = group.length * 100.0;
 
                     return Container(
-                      width: 100,
-                      height: 50,
-                      alignment: Alignment.center,
+                      width: width,
                       decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white10))),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            rangeLabel,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
-                            textAlign: TextAlign.center,
+                          // Range Label (Centered)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 4.0),
+                            child: Text(
+                              rangeLabel,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          if (group.length > 1)
-                            Text("(${group.join(', ')})", style: const TextStyle(fontSize: 7, color: Colors.white24)),
+                          // Individual Step Codes
+                          Row(
+                            children: group.map((code) => Container(
+                              width: 100,
+                              height: 15,
+                              alignment: Alignment.center,
+                              child: Text(code, style: const TextStyle(fontSize: 7, color: Colors.white38)),
+                            )).toList(),
+                          ),
                         ],
                       ),
                     );
@@ -227,57 +238,71 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Y-Axis Header
-                  Column(
-                    children: ySteps.map((yId) {
-                      final group = matrixData.yMergeMap[yId]!;
-                      final startLabel = allVarSteps[_yAxisVar]?[group.first] ?? group.first;
-                      final endLabel = allVarSteps[_yAxisVar]?[group.last] ?? group.last;
-                      final rangeLabel = group.length > 1 ? "${startLabel == '' ? '-' : startLabel}\n${endLabel}" : (startLabel == '' ? '-' : startLabel);
+                  // Y-Axis Header (Dual Layer)
+                  ...[
+                    Column(
+                      children: ySteps.map((yId) {
+                        final group = matrixData.yMergeMap[yId]!;
+                        final startLabel = allVarSteps[_yAxisVar]?[group.first] ?? group.first;
+                        final endLabel = allVarSteps[_yAxisVar]?[group.last] ?? group.last;
+                        final rangeLabel = group.length > 1 ? "${startLabel == '' ? '-' : startLabel} - ${endLabel}" : (startLabel == '' ? '-' : startLabel);
+                        final height = group.length * 80.0;
 
-                      return Container(
-                        width: 80,
-                        height: 80,
-                        alignment: Alignment.center,
-                        decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.white10))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              rangeLabel,
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
-                              textAlign: TextAlign.center,
-                            ),
-                            if (group.length > 1)
-                              Text("(${group.join(', ')})", style: const TextStyle(fontSize: 7, color: Colors.white24)),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  // The Data Area (Stack)
-                  SizedBox(
-                    width: xSteps.length * 100.0,
-                    height: ySteps.length * 80.0,
-                    child: Stack(
-                      children: [
-                        // Subtle Background Grid
-                        for (int i = 0; i < xSteps.length; i++)
-                          Positioned(
-                            left: i * 100.0, top: 0, bottom: 0,
-                            child: Container(width: 1, color: Colors.white.withOpacity(0.03)),
+                        return Container(
+                          width: 80,
+                          height: height,
+                          decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.white10))),
+                          child: Row(
+                            children: [
+                              // Range Label (Vertical Centered)
+                              Expanded(
+                                child: RotatedBox(
+                                  quarterTurns: 3,
+                                  child: Text(
+                                    rangeLabel,
+                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              // Individual Step Codes
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: group.map((code) => Container(
+                                  width: 20,
+                                  height: 80,
+                                  alignment: Alignment.center,
+                                  child: Text(code, style: const TextStyle(fontSize: 7, color: Colors.white38)),
+                                )).toList(),
+                              ),
+                            ],
                           ),
-                        for (int j = 0; j < ySteps.length; j++)
-                          Positioned(
-                            top: j * 80.0, left: 0, right: 0,
-                            child: Container(height: 1, color: Colors.white.withOpacity(0.03)),
-                          ),
-                        
-                        // The Islands
-                        ..._buildIslands(matrixData, xSteps, ySteps),
-                      ],
+                        );
+                      }).toList(),
                     ),
-                  ),
+                  ],
+                  // The Data Area (Stack)
+                  Builder(builder: (context) {
+                    // Calculate total width/height from groups
+                    double totalW = 0;
+                    for (var xId in xSteps) totalW += (matrixData.xMergeMap[xId]?.length ?? 1) * 100.0;
+                    double totalH = 0;
+                    for (var yId in ySteps) totalH += (matrixData.yMergeMap[yId]?.length ?? 1) * 80.0;
+
+                    return SizedBox(
+                      width: totalW,
+                      height: totalH,
+                      child: Stack(
+                        children: [
+                          // Subtle Background Grid (Individual steps)
+                          _buildBackgroundGrid(matrixData, xSteps, ySteps),
+                          
+                          // The Islands
+                          ..._buildIslands(matrixData, xSteps, ySteps),
+                        ],
+                      ),
+                    );
+                  }),
                 ],
               ),
             ],
@@ -440,9 +465,50 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     return items.join("|");
   }
 
+  Widget _buildBackgroundGrid(_MatrixData data, List<String> xSteps, List<String> ySteps) {
+    final List<Widget> lines = [];
+    double currentX = 0;
+    for (var xId in xSteps) {
+      final group = data.xMergeMap[xId]!;
+      for (int i = 0; i < group.length; i++) {
+        lines.add(Positioned(
+          left: currentX, top: 0, bottom: 0,
+          child: Container(width: 1, color: Colors.white.withOpacity(0.05)),
+        ));
+        currentX += 100.0;
+      }
+    }
+    double currentY = 0;
+    for (var yId in ySteps) {
+      final group = data.yMergeMap[yId]!;
+      for (int i = 0; i < group.length; i++) {
+        lines.add(Positioned(
+          top: currentY, left: 0, right: 0,
+          child: Container(height: 1, color: Colors.white.withOpacity(0.05)),
+        ));
+        currentY += 80.0;
+      }
+    }
+    return Stack(children: lines);
+  }
+
   List<Widget> _buildIslands(_MatrixData data, List<String> xSteps, List<String> ySteps) {
     final List<Widget> islands = [];
     final Set<String> processedCells = {}; // Format: "yIndex-xIndex"
+
+    // Map of cumulative positions
+    final Map<int, double> xPosMap = {};
+    double cumX = 0;
+    for (int i = 0; i < xSteps.length; i++) {
+      xPosMap[i] = cumX;
+      cumX += data.xMergeMap[xSteps[i]]!.length * 100.0;
+    }
+    final Map<int, double> yPosMap = {};
+    double cumY = 0;
+    for (int j = 0; j < ySteps.length; j++) {
+      yPosMap[j] = cumY;
+      cumY += data.yMergeMap[ySteps[j]]!.length * 80.0;
+    }
 
     for (int j = 0; j < ySteps.length; j++) {
       for (int i = 0; i < xSteps.length; i++) {
@@ -452,15 +518,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
         final type = data.grid[ySteps[j]]?[xSteps[i]];
         if (type == null) continue;
 
-        // Find the maximal rectangle of this type starting from (i, j)
         int maxX = i;
         int maxY = j;
 
-        // Expand X
         while (maxX + 1 < xSteps.length && data.grid[ySteps[j]]?[xSteps[maxX + 1]]?.id == type.id) {
           maxX++;
         }
-        // Expand Y (uniformly for the whole X width)
         bool canExpandY = true;
         while (canExpandY && maxY + 1 < ySteps.length) {
           for (int k = i; k <= maxX; k++) {
@@ -472,20 +535,21 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           if (canExpandY) maxY++;
         }
 
-        // Mark all cells in this rectangle as processed
         for (int row = j; row <= maxY; row++) {
           for (int col = i; col <= maxX; col++) {
             processedCells.add("$row-$col");
           }
         }
 
-        // Create the island
-        final width = (maxX - i + 1) * 100.0;
-        final height = (maxY - j + 1) * 80.0;
+        // Calculate size based on merged group lengths
+        double width = 0;
+        for (int k = i; k <= maxX; k++) width += data.xMergeMap[xSteps[k]]!.length * 100.0;
+        double height = 0;
+        for (int k = j; k <= maxY; k++) height += data.yMergeMap[ySteps[k]]!.length * 80.0;
 
         islands.add(Positioned(
-          left: i * 100.0,
-          top: j * 80.0,
+          left: xPosMap[i]!,
+          top: yPosMap[j]!,
           width: width,
           height: height,
           child: Padding(
