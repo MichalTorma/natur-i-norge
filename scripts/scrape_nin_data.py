@@ -102,10 +102,32 @@ def fetch_metadata(langkode):
         r = requests.get(desc_url, headers=headers, timeout=10)
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, 'html.parser')
-            content = soup.find(class_='main-content') or soup.find(id='main-content') or soup.body
-            paras = [p.get_text().strip() for p in content.find_all('p') 
-                     if len(p.get_text().strip()) > 30 and not any(kw in p.get_text().lower() for kw in FOOTER_KEYWORDS)]
-            if paras: long_desc = "\n\n".join(paras)
+            content = soup.find('main', id='main-content') or soup.find('article') or soup.body
+            if content:
+                # Filter out obvious UI elements
+                for nav in content.find_all(['nav', 'button', 'script', 'style']): nav.decompose()
+                
+                text = content.get_text(separator='\n', strip=True)
+                lines = text.split('\n')
+                captured = []
+                found_start = False
+                
+                for line in lines:
+                    line = line.strip()
+                    if not line: continue
+                    # Start capturing after the hierarchy/title info
+                    if any(x in line for x in ['Plassering i NiN', 'Identifisering', 'Innhold']):
+                        found_start = True
+                        continue
+                    if found_start:
+                        # Stop at footer or sitering info
+                        if any(kw in line.lower() for kw in FOOTER_KEYWORDS) or 'Siden siteres som' in line:
+                            break
+                        if len(line) > 30:
+                            captured.append(line)
+                
+                if captured:
+                    long_desc = "\n\n".join(captured)
     except: pass
 
     # Merge them intelligently

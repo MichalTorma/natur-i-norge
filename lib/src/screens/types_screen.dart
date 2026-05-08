@@ -79,11 +79,11 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.greenAccent),
                     ),
                     const SizedBox(height: 12),
-                    Text(
+                    SelectableText(
                       widget.type!.description!,
-                      style: const TextStyle(fontSize: 16, height: 1.6, color: Colors.white70),
+                      style: const TextStyle(fontSize: 16, height: 1.6, color: Colors.white, letterSpacing: 0.2),
                     ),
-                    const Divider(height: 48),
+                    const Divider(height: 64),
                   ],
                 ),
               ),
