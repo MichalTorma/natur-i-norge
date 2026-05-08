@@ -64,6 +64,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text('DEBUG: Parent ID: ${widget.type?.id ?? "ROOT"}', style: const TextStyle(color: Colors.red, fontSize: 10)),
                     Row(
                       children: [
                         _Badge(label: widget.type!.kategori),
@@ -85,6 +86,18 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                     ),
                     const Divider(height: 48),
                   ],
+                ),
+              ),
+            ),
+          
+          if (widget.type == null)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: typesAsync.when(
+                  data: (t) => Text('DEBUG: ROOT Found ${t.length} types', style: const TextStyle(color: Colors.red)),
+                  loading: () => const Text('DEBUG: Loading...', style: TextStyle(color: Colors.red)),
+                  error: (e, s) => Text('DEBUG ERROR: $e', style: const TextStyle(color: Colors.red)),
                 ),
               ),
             ),
@@ -206,6 +219,27 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                         const SizedBox(height: 24),
                       ],
                     ],
+                    
+                    if (types.isNotEmpty)
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: MediaQuery.of(context).size.width > 800 ? 3 : 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 1.3,
+                        ),
+                        itemCount: types.length,
+                        itemBuilder: (context, index) => _TypeCard(
+                          type: types[index],
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => TypesScreen(type: types[index])),
+                          ),
+                          level: widget.type == null ? 0 : 2,
+                        ),
+                      ),
                   ]),
                 ),
               );

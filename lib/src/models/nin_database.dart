@@ -52,10 +52,13 @@ class NinDatabase extends _$NinDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) async {
+      // For pre-populated DBs, we don't necessarily want to create all
+      // but Drift needs the internal metadata.
+    },
     onUpgrade: (m, from, to) async {
-      if (from < 3) {
-        await m.createAll();
-      }
+      // DO NOT use createAll() here as it wipes pre-populated data.
+      // In development, if we need a fresh start, we delete the file manually.
     },
   );
 }

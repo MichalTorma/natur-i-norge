@@ -14,16 +14,17 @@ QueryExecutor openConnection() {
     final dbFile = File(p.join(docsDir.path, 'nin_database.sqlite'));
     final imagesDir = Directory(p.join(docsDir.path, 'images'));
 
-    // 1. Copy/Update Database from assets
-    // In development, we force overwrite to ensure LKM data is synced
+    print('DEBUG: Syncing database from assets...');
     try {
       final data = await rootBundle.load('assets/nin_database.sqlite');
+      print('DEBUG: Loaded asset size: ${data.lengthInBytes} bytes');
       await dbFile.writeAsBytes(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+      print('DEBUG: Written to: ${dbFile.path}');
     } catch (e) {
-      print('Error syncing DB asset: $e');
+      print('DEBUG ERROR: Database sync failed: $e');
     }
 
-    // 2. Extract Images (Force refresh if images dir is empty or needed)
+    print('DEBUG: Syncing images...');
     if (!await imagesDir.exists() || (await imagesDir.list().length) < 10) {
       try {
         await imagesDir.create(recursive: true);
@@ -31,6 +32,7 @@ QueryExecutor openConnection() {
         final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
         
         final archive = ZipDecoder().decodeBytes(bytes);
+        print('DEBUG: Extracting ${archive.length} files...');
         for (final file in archive) {
           final filename = file.name;
           if (file.isFile) {
@@ -40,9 +42,12 @@ QueryExecutor openConnection() {
               ..writeAsBytesSync(data);
           }
         }
+        print('DEBUG: Images extracted.');
       } catch (e) {
-        print('Error extracting images: $e');
+        print('DEBUG ERROR: Image extraction failed: $e');
       }
+    } else {
+      print('DEBUG: Using cached images.');
     }
 
     return NativeDatabase.createInBackground(dbFile);

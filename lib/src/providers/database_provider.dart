@@ -22,13 +22,13 @@ final favoritesProvider = StreamProvider<List<String>>((ref) {
 
 final typesListProvider = FutureProvider<List<NinType>>((ref) async {
   final db = ref.watch(databaseProvider);
-  return (db.select(db.ninTypes)..where((t) => t.parentId.isNull())).get();
+  return (db.select(db.ninTypes)..where((t) => t.parentId.isNull() | t.parentId.equals(''))).get();
 });
 
 final subTypesProvider = FutureProvider.family<List<NinType>, String>((ref, parentId) async {
   final db = ref.watch(databaseProvider);
   if (parentId.isEmpty) {
-    return (db.select(db.ninTypes)..where((t) => t.parentId.isNull())).get();
+    return (db.select(db.ninTypes)..where((t) => t.parentId.isNull() | t.parentId.equals(''))).get();
   }
   return (db.select(db.ninTypes)..where((t) => t.parentId.equals(parentId))).get();
 });
