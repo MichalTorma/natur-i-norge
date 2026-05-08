@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/nin_database.dart';
 import '../screens/types_screen.dart';
+import '../screens/variable_detail_screen.dart';
 
 class EcologicalMatrix extends StatefulWidget {
   final List<NinType> subTypes;
@@ -97,7 +98,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
 
     // Responsive sizing logic
     final screenSize = MediaQuery.of(context).size;
-    const double yHeaderWidth = 60.0;
+    const double yHeaderWidth = 100.0; // Increased to accommodate dual buttons
+    const double yLkmNameWidth = 40.0;
     
     double totalXUnits = 0;
     for (var xId in xSteps) {
@@ -150,7 +152,27 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: [
-                      SizedBox(width: yHeaderWidth, child: Text(displayName, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.greenAccent))),
+                      SizedBox(
+                        width: yHeaderWidth, 
+                        child: InkWell(
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: filterVar))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                displayName, 
+                                style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                "($filterVar)",
+                                style: const TextStyle(fontSize: 7, color: Colors.white38),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       Expanded(
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -214,7 +236,34 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // X-Axis Header (Dual Layer)
+                  // X-Axis LKM Header (Full Width Name)
+                  Padding(
+                    padding: const EdgeInsets.only(left: yHeaderWidth),
+                    child: InkWell(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _xAxisVar!))),
+                      child: Container(
+                        width: totalXUnits * unitWidth,
+                        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.greenAccent.withValues(alpha: 0.1),
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+                          border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.2)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.info_outline, size: 12, color: Colors.greenAccent),
+                            const SizedBox(width: 6),
+                            Text(
+                              "${varNames[_xAxisVar] ?? _xAxisVar} ($_xAxisVar)",
+                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  // X-Axis Range Headers (The codes/steps)
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -254,10 +303,40 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                       }),
                     ],
                   ),
+                  // The Data Row (Y-Header + Grid)
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Y-Axis Header (Dual Layer)
+                      // Y-Axis LKM Name Button (Pinned to left)
+                      if (_yAxisVar != null)
+                        InkWell(
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _yAxisVar!))),
+                          child: Container(
+                            width: yLkmNameWidth,
+                            height: totalYUnits * unitHeight,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.greenAccent.withValues(alpha: 0.1),
+                              borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
+                              border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.2)),
+                            ),
+                            child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.info_outline, size: 12, color: Colors.greenAccent),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    "${varNames[_yAxisVar] ?? _yAxisVar} ($_yAxisVar)",
+                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      // Y-Axis Range Labels
                       Column(
                         children: ySteps.map((yId) {
                           final group = matrixData.yMergeMap[yId]!;
@@ -267,7 +346,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                           final height = group.length * unitHeight;
 
                           return Container(
-                            width: yHeaderWidth,
+                            width: yHeaderWidth - yLkmNameWidth,
                             height: height,
                             decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.white10))),
                             child: Row(
