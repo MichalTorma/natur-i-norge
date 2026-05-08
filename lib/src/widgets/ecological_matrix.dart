@@ -197,7 +197,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const SizedBox(width: 80), // Corner space
+                  const SizedBox(width: 60), // Corner space (Matched to Y-axis width)
                   ...xSteps.map((xId) {
                     final group = matrixData.xMergeMap[xId]!;
                     final startLabel = allVarSteps[_xAxisVar]?[group.first] ?? group.first;
@@ -239,48 +239,46 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Y-Axis Header (Dual Layer)
-                  ...[
-                    Column(
-                      children: ySteps.map((yId) {
-                        final group = matrixData.yMergeMap[yId]!;
-                        final startLabel = allVarSteps[_yAxisVar]?[group.first] ?? group.first;
-                        final endLabel = allVarSteps[_yAxisVar]?[group.last] ?? group.last;
-                        final rangeLabel = group.length > 1 ? "${startLabel == '' ? '-' : startLabel} - ${endLabel}" : (startLabel == '' ? '-' : startLabel);
-                        final height = group.length * 80.0;
+                  Column(
+                    children: ySteps.map((yId) {
+                      final group = matrixData.yMergeMap[yId]!;
+                      final startLabel = allVarSteps[_yAxisVar]?[group.first] ?? group.first;
+                      final endLabel = allVarSteps[_yAxisVar]?[group.last] ?? group.last;
+                      final rangeLabel = group.length > 1 ? "${startLabel == '' ? '-' : startLabel} - ${endLabel}" : (startLabel == '' ? '-' : startLabel);
+                      final height = group.length * 80.0;
 
-                        return Container(
-                          width: 80,
-                          height: height,
-                          decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.white10))),
-                          child: Row(
-                            children: [
-                              // Range Label (Vertical Centered)
-                              Expanded(
-                                child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(
-                                    rangeLabel,
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
-                                    textAlign: TextAlign.center,
-                                  ),
+                      return Container(
+                        width: 60, // Tightened from 80
+                        height: height,
+                        decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.white10))),
+                        child: Row(
+                          children: [
+                            // Range Label (Vertical Centered)
+                            Expanded(
+                              child: RotatedBox(
+                                quarterTurns: 3,
+                                child: Text(
+                                  rangeLabel,
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                              // Individual Step Codes
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: group.map((code) => Container(
-                                  width: 20,
-                                  height: 80,
-                                  alignment: Alignment.center,
-                                  child: Text(code, style: const TextStyle(fontSize: 7, color: Colors.white38)),
-                                )).toList(),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
+                            ),
+                            // Individual Step Codes
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: group.map((code) => Container(
+                                width: 25,
+                                height: 80,
+                                alignment: Alignment.center,
+                                child: Text(code, style: const TextStyle(fontSize: 7, color: Colors.white38)),
+                              )).toList(),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
                   // The Data Area (Stack)
                   Builder(builder: (context) {
                     // Calculate total width/height from groups
