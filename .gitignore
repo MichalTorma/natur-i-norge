@@ -248,3 +248,4 @@ all_koder_v3.json
 assets/nin_database.sqlite-journal
 assets/nin_database.sqlite
 nin_web_cache.sqlite
+web_cache/

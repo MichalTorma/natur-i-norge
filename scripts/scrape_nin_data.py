@@ -9,8 +9,8 @@ import hashlib
 import zipfile
 from PIL import Image
 from io import BytesIO
-from concurrent.futures import ThreadPoolExecutor, as_completed
-import requests_cache
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from requests_cache import CachedSession
 
 # --- CONFIGURATION ---
 BASE_URL = 'https://nin-kode-api.artsdatabanken.no/v3.0'
@@ -20,11 +20,18 @@ FOOTER_KEYWORDS = ['havnegata', 'trondheim', 'postboks', 'organisasjonsnummer', 
 
 # Set to False to bypass cache and get fresh data from the server
 USE_CACHE = True
-if USE_CACHE:
-    print("Caching ENABLED (using nin_web_cache.sqlite)")
-    requests_cache.install_cache('nin_web_cache', expire_after=3600*24*7) # 7-day cache
-else:
-    print("Caching DISABLED (fetching live data)")
+_session = None
+
+def get_session():
+    global _session
+    if _session is None:
+        if USE_CACHE:
+            _session = CachedSession('web_cache', backend='filesystem', expire_after=3600*24*7)
+        else:
+            _session = requests.Session()
+    return _session
+
+MAX_WORKERS = 4
 
 # Official icons for top-level categories that lack natural photos
 OFFICIAL_ICONS = {
@@ -77,6 +84,7 @@ def setup_db():
         navn TEXT, 
         kategori TEXT, 
         parent_id TEXT, 
+        ecosystnivaa_navn TEXT,
         variabelkategori_navn TEXT,
         description TEXT,
         steps_json TEXT
@@ -96,7 +104,7 @@ def fetch_metadata(langkode):
     # 1. Main Page (Short Ingress + Image)
     try:
         url = f"{WEB_BASE_URL}/{langkode}"
-        r = requests.get(url, headers=headers, timeout=10)
+        r = get_session().get(url, headers=headers, timeout=10)
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, 'html.parser')
             ingress = soup.find(class_='ingress')
@@ -109,7 +117,12 @@ def fetch_metadata(langkode):
                 if not container: continue
                 for img in container.find_all('img'):
                     src = img.get('src', '')
-                    if '/public/' in src and not any(x in src.lower() for x in ['icon', 'logo', 'social', 'user', 'theme']):
+                    if not src: continue
+                    src_lower = src.lower()
+                    # Capture images from both old 'public' and new 'sites/default/files' paths
+                    # and ensure we're not grabbing UI icons, logos, or avatars
+                    if ('/public/' in src or '/sites/default/files/' in src) and \
+                       not any(x in src_lower for x in ['icon', 'logo', 'social', 'user', 'theme', 'avatar', 'favicons']):
                         img_url = src if src.startswith('http') else f"https://artsdatabanken.no{src}"
                         break
                 if img_url: break
@@ -118,7 +131,7 @@ def fetch_metadata(langkode):
     # 2. Description Page (Deep Biological Detail)
     try:
         desc_url = f"{WEB_BASE_URL}/{langkode}/beskrivelse"
-        r = requests.get(desc_url, headers=headers, timeout=10)
+        r = get_session().get(desc_url, headers=headers, timeout=10)
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, 'html.parser')
             content = soup.find('main', id='main-content') or soup.find('article') or soup.body
@@ -168,7 +181,7 @@ def download_and_optimize_image(url, type_id):
         filepath = os.path.join('temp_images', filename)
         if os.path.exists(filepath): return filename
         
-        r = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=15)
+        r = get_session().get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=15)
         if r.status_code == 200:
             img = Image.open(BytesIO(r.content))
             if img.mode in ('RGBA', 'P'): img = img.convert('RGB')
@@ -178,38 +191,52 @@ def download_and_optimize_image(url, type_id):
     return None
 
 def process_single_type(t):
-    # 1. Matrix Data (Grunntyper only)
-    if t['kategori'] == 'Grunntype':
-        try:
-            dr = requests.get(f"{BASE_URL}/typer/kodeforGrunntype/{t['id']}", timeout=10)
-            if dr.status_code == 200:
-                import json
-                def parse_lkm(obj):
-                    l_list = []
-                    def w(o):
-                        if isinstance(o, dict):
-                            if o.get('registert') == True and o.get('kode'):
-                                k = o['kode']
-                                ki = k['id'] if isinstance(k, dict) else str(k)
-                                vi = ki.split('_')[0] if '_' in ki else ki
-                                if any(p in vi for p in ['LM-', 'KM-', 'KA-', 'UF-', 'HI-', 'VM-']):
-                                    l_list.append({'v_kode': vi, 'v_navn': o.get('navn'), 'v_trinn': o.get('verdi'), 'v_trinn_navn': o.get('beskrivelse')})
-                            for v in o.values(): w(v)
-                        elif isinstance(o, list):
-                            for i in o: w(i)
-                    w(obj)
-                    return json.dumps(l_list) if l_list else None
-                t['lkm_data'] = parse_lkm(dr.json())
-        except: pass
-
-    # 2. Metadata (Strict match)
-    img_url = OFFICIAL_ICONS.get(t['id'])
-    desc, web_img = fetch_metadata(t['langkode'])
-    if not img_url: img_url = web_img
+    # Heartbeat
+    print(f"Processing {t['id']}...") 
     
-    t['description'] = desc
-    if img_url:
-        t['image_url'] = download_and_optimize_image(img_url, t['id'])
+    try:
+        # 1. Matrix Data (Grunntyper only)
+        if t['kategori'] == 'Grunntype':
+            try:
+                dr = get_session().get(f"{BASE_URL}/typer/kodeforGrunntype/{t['id']}", timeout=10)
+                if dr.status_code == 200:
+                    import json
+                    def parse_lkm(obj):
+                        l_list = []
+                        def w(o):
+                            if isinstance(o, dict):
+                                if o.get('registert') == True and o.get('kode'):
+                                    k = o['kode']
+                                    ki = k['id'] if isinstance(k, dict) else str(k)
+                                    vi = ki.split('_')[0] if '_' in ki else ki
+                                    if any(p in vi for p in ['LM-', 'KM-', 'KA-', 'UF-', 'HI-', 'VM-']):
+                                        l_list.append({
+                                            'v_kode': vi, 
+                                            'v_navn': o.get('navn'), 
+                                            'v_trinn': o.get('verdi'), 
+                                            'v_trinn_navn': o.get('beskrivelse')
+                                        })
+                                for v in o.values(): w(v)
+                            elif isinstance(o, list):
+                                for i in o: w(i)
+                        w(obj)
+                        return json.dumps(l_list) if l_list else None
+                    t['lkm_data'] = parse_lkm(dr.json())
+            except Exception as e:
+                pass
+
+        # 2. Metadata (Strict match)
+        img_url = OFFICIAL_ICONS.get(t['id'])
+        desc, web_img = fetch_metadata(t['langkode'])
+        if not img_url: img_url = web_img
+        
+        t['description'] = desc
+        if img_url:
+            t['image_url'] = download_and_optimize_image(img_url, t['id'])
+            
+    except Exception as e:
+        print(f"\nError processing {t['id']}: {e}")
+        
     return t
 
 def process_single_variable(v):
@@ -224,8 +251,8 @@ def main():
     os.makedirs('temp_images', exist_ok=True)
 
     print("Step 1: Fetching NiN 3.0 Variables (LKM)...")
-    rv = requests.get(f"{BASE_URL}/variabler/allekoder")
-    var_data = rv.json()
+    v_r = get_session().get(f"{BASE_URL}/variabler/allekoder", timeout=15)
+    var_data = v_r.json()
     all_vars = []
     
     def walk_vars(item, parent_id=None):
@@ -244,6 +271,7 @@ def main():
             'navn': item['navn'],
             'kategori': item['kategori'],
             'parent_id': parent_id,
+            'ecosystnivaa_navn': item.get('ecosystnivaaNavn'),
             'variabelkategori_navn': item.get('variabelkategoriNavn'),
             'langkode': kode.get('langkode'),
             'steps_json': json.dumps(steps) if steps else None
@@ -256,18 +284,18 @@ def main():
     for root in var_data['variabler']: walk_vars(root)
 
     print(f"Step 2: Deep Scrape Variables ({len(all_vars)} items)...")
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ProcessPoolExecutor(max_workers=MAX_WORKERS) as executor:
         future_to_var = {executor.submit(process_single_variable, v): v for v in all_vars}
         for future in tqdm(as_completed(future_to_var), total=len(all_vars)):
             v = future.result()
-            cursor.execute('''INSERT OR REPLACE INTO nin_variables VALUES (?,?,?,?,?,?,?)''', (
+            cursor.execute('''INSERT OR REPLACE INTO nin_variables VALUES (?,?,?,?,?,?,?,?)''', (
                 v['id'], v['navn'], v['kategori'], v['parent_id'], 
-                v['variabelkategori_navn'], v['description'], v['steps_json']
+                v['ecosystnivaa_navn'], v['variabelkategori_navn'], v['description'], v['steps_json']
             ))
     conn.commit()
 
     print("Step 3: Building Type Hierarchy...")
-    r = requests.get(f"{BASE_URL}/typer/allekoder")
+    r = get_session().get(f"{BASE_URL}/typer/allekoder")
     data = r.json()
     all_types = []
 
@@ -290,7 +318,7 @@ def main():
     for root in data['typer']: walk_types(root)
     
     print(f"Step 4: Gold Run Deep Scrape Types ({len(all_types)} items)...")
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ProcessPoolExecutor(max_workers=MAX_WORKERS) as executor:
         future_to_type = {executor.submit(process_single_type, t): t for t in all_types}
         for i, future in enumerate(tqdm(as_completed(future_to_type), total=len(all_types))):
             t = future.result()
