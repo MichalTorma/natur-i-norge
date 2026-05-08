@@ -66,33 +66,26 @@ def setup_db():
     return conn
 
 def fetch_metadata(langkode):
-    """Scrape description and image directly from the type page."""
+    """Scrape ALL available descriptions and merge them."""
     if not langkode: return None, None
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
     
+    short_desc = ""
+    long_desc = ""
+    img_url = None
+    
+    # 1. Main Page (Short Ingress + Image)
     try:
         url = f"{WEB_BASE_URL}/{langkode}"
         r = requests.get(url, headers=headers, timeout=10)
-        if r.status_code != 200:
-            r = requests.get(f"{WEB_BASE_URL}/{langkode.upper()}", headers=headers, timeout=10)
-            
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, 'html.parser')
             ingress = soup.find(class_='ingress')
-            body = soup.find(class_='body')
-            content = soup.find(class_='main-content') or soup.find(id='main-content') or soup.body
+            if ingress: short_desc = ingress.get_text().strip()
             
-            desc_text = ""
-            if ingress: desc_text = ingress.get_text().strip()
-            if body and len(desc_text) < 100:
-                paras = [p.get_text().strip() for p in body.find_all('p') if len(p.get_text().strip()) > 30 and not any(kw in p.get_text().lower() for kw in FOOTER_KEYWORDS)]
-                if paras: desc_text += "\n\n" + paras[0]
-            if not desc_text and content:
-                paras = [p.get_text().strip() for p in content.find_all('p') if len(p.get_text().strip()) > 40 and not any(kw in p.get_text().lower() for kw in FOOTER_KEYWORDS)]
-                desc_text = "\n\n".join(paras[:2])
-                
-            img_url = None
-            img_containers = [soup.find(class_='image'), soup.find(class_='image-and-caption__picture'), content, soup.body]
+            # Harvesting Image
+            content = soup.find(class_='main-content') or soup.find(id='main-content') or soup.body
+            img_containers = [soup.find(class_='image'), soup.find(class_='image-and-caption__picture'), content]
             for container in img_containers:
                 if not container: continue
                 for img in container.find_all('img'):
@@ -101,9 +94,31 @@ def fetch_metadata(langkode):
                         img_url = src if src.startswith('http') else f"https://artsdatabanken.no{src}"
                         break
                 if img_url: break
-            return desc_text if desc_text else None, img_url
     except: pass
-    return None, None
+
+    # 2. Description Page (Deep Biological Detail)
+    try:
+        desc_url = f"{WEB_BASE_URL}/{langkode}/beskrivelse"
+        r = requests.get(desc_url, headers=headers, timeout=10)
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, 'html.parser')
+            content = soup.find(class_='main-content') or soup.find(id='main-content') or soup.body
+            paras = [p.get_text().strip() for p in content.find_all('p') 
+                     if len(p.get_text().strip()) > 30 and not any(kw in p.get_text().lower() for kw in FOOTER_KEYWORDS)]
+            if paras: long_desc = "\n\n".join(paras)
+    except: pass
+
+    # Merge them intelligently
+    full_text = ""
+    if short_desc: full_text = short_desc
+    if long_desc:
+        # Avoid duplicate starting text if long_desc repeats short_desc
+        if full_text and long_desc.startswith(full_text[:50]):
+            full_text = long_desc
+        else:
+            full_text = f"{full_text}\n\n{long_desc}".strip()
+            
+    return full_text if full_text else None, img_url
 
 def download_and_optimize_image(url, type_id):
     if not url: return None

@@ -64,7 +64,6 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('DEBUG: Parent ID: ${widget.type?.id ?? "ROOT"}', style: const TextStyle(color: Colors.red, fontSize: 10)),
                     Row(
                       children: [
                         _Badge(label: widget.type!.kategori),
@@ -86,18 +85,6 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                     ),
                     const Divider(height: 48),
                   ],
-                ),
-              ),
-            ),
-          
-          if (widget.type == null)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: typesAsync.when(
-                  data: (t) => Text('DEBUG: ROOT Found ${t.length} types', style: const TextStyle(color: Colors.red)),
-                  loading: () => const Text('DEBUG: Loading...', style: TextStyle(color: Colors.red)),
-                  error: (e, s) => Text('DEBUG ERROR: $e', style: const TextStyle(color: Colors.red)),
                 ),
               ),
             ),
