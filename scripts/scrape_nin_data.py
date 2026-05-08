@@ -10,11 +10,21 @@ import zipfile
 from PIL import Image
 from io import BytesIO
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import requests_cache
 
+# --- CONFIGURATION ---
 BASE_URL = 'https://nin-kode-api.artsdatabanken.no/v3.0'
 WEB_BASE_URL = 'https://artsdatabanken.no/naturtyper/natur-i-norge'
 DB_PATH = 'assets/nin_database.sqlite'
 FOOTER_KEYWORDS = ['havnegata', 'trondheim', 'postboks', 'organisasjonsnummer', 'redaksjonen@artsdatabanken.no', 'postmottak', 'torgarden']
+
+# Set to False to bypass cache and get fresh data from the server
+USE_CACHE = True
+if USE_CACHE:
+    print("Caching ENABLED (using nin_web_cache.sqlite)")
+    requests_cache.install_cache('nin_web_cache', expire_after=3600*24*7) # 7-day cache
+else:
+    print("Caching DISABLED (fetching live data)")
 
 # Official icons for top-level categories that lack natural photos
 OFFICIAL_ICONS = {

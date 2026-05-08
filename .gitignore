@@ -247,3 +247,4 @@ all_koder_v3.json
 **/.DS_Store
 assets/nin_database.sqlite-journal
 assets/nin_database.sqlite
+nin_web_cache.sqlite
