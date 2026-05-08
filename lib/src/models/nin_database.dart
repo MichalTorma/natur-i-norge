@@ -15,6 +15,8 @@ class NinTypes extends Table {
   TextColumn get imageUrl => text().nullable()();
   TextColumn get description => text().nullable()();
   TextColumn get lkmData => text().nullable()();
+  TextColumn get scale => text().nullable()();
+  TextColumn get containsTypes => text().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -46,13 +48,12 @@ class NinDatabase extends _$NinDatabase {
   NinDatabase() : super(openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onUpgrade: (m, from, to) async {
-      if (from < 2) {
-        // Simple way to handle the dev bump: recreate all
+      if (from < 3) {
         await m.createAll();
       }
     },

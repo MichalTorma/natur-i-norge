@@ -125,6 +125,26 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _scaleMeta = const VerificationMeta('scale');
+  @override
+  late final GeneratedColumn<String> scale = GeneratedColumn<String>(
+    'scale',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _containsTypesMeta = const VerificationMeta(
+    'containsTypes',
+  );
+  @override
+  late final GeneratedColumn<String> containsTypes = GeneratedColumn<String>(
+    'contains_types',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -138,6 +158,8 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
     imageUrl,
     description,
     lkmData,
+    scale,
+    containsTypes,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -229,6 +251,21 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
         lkmData.isAcceptableOrUnknown(data['lkm_data']!, _lkmDataMeta),
       );
     }
+    if (data.containsKey('scale')) {
+      context.handle(
+        _scaleMeta,
+        scale.isAcceptableOrUnknown(data['scale']!, _scaleMeta),
+      );
+    }
+    if (data.containsKey('contains_types')) {
+      context.handle(
+        _containsTypesMeta,
+        containsTypes.isAcceptableOrUnknown(
+          data['contains_types']!,
+          _containsTypesMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -282,6 +319,14 @@ class $NinTypesTable extends NinTypes with TableInfo<$NinTypesTable, NinType> {
         DriftSqlType.string,
         data['${effectivePrefix}lkm_data'],
       ),
+      scale: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}scale'],
+      ),
+      containsTypes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}contains_types'],
+      ),
     );
   }
 
@@ -303,6 +348,8 @@ class NinType extends DataClass implements Insertable<NinType> {
   final String? imageUrl;
   final String? description;
   final String? lkmData;
+  final String? scale;
+  final String? containsTypes;
   const NinType({
     required this.id,
     required this.navn,
@@ -315,6 +362,8 @@ class NinType extends DataClass implements Insertable<NinType> {
     this.imageUrl,
     this.description,
     this.lkmData,
+    this.scale,
+    this.containsTypes,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -345,6 +394,12 @@ class NinType extends DataClass implements Insertable<NinType> {
     }
     if (!nullToAbsent || lkmData != null) {
       map['lkm_data'] = Variable<String>(lkmData);
+    }
+    if (!nullToAbsent || scale != null) {
+      map['scale'] = Variable<String>(scale);
+    }
+    if (!nullToAbsent || containsTypes != null) {
+      map['contains_types'] = Variable<String>(containsTypes);
     }
     return map;
   }
@@ -378,6 +433,12 @@ class NinType extends DataClass implements Insertable<NinType> {
       lkmData: lkmData == null && nullToAbsent
           ? const Value.absent()
           : Value(lkmData),
+      scale: scale == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scale),
+      containsTypes: containsTypes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(containsTypes),
     );
   }
 
@@ -398,6 +459,8 @@ class NinType extends DataClass implements Insertable<NinType> {
       imageUrl: serializer.fromJson<String?>(json['imageUrl']),
       description: serializer.fromJson<String?>(json['description']),
       lkmData: serializer.fromJson<String?>(json['lkmData']),
+      scale: serializer.fromJson<String?>(json['scale']),
+      containsTypes: serializer.fromJson<String?>(json['containsTypes']),
     );
   }
   @override
@@ -415,6 +478,8 @@ class NinType extends DataClass implements Insertable<NinType> {
       'imageUrl': serializer.toJson<String?>(imageUrl),
       'description': serializer.toJson<String?>(description),
       'lkmData': serializer.toJson<String?>(lkmData),
+      'scale': serializer.toJson<String?>(scale),
+      'containsTypes': serializer.toJson<String?>(containsTypes),
     };
   }
 
@@ -430,6 +495,8 @@ class NinType extends DataClass implements Insertable<NinType> {
     Value<String?> imageUrl = const Value.absent(),
     Value<String?> description = const Value.absent(),
     Value<String?> lkmData = const Value.absent(),
+    Value<String?> scale = const Value.absent(),
+    Value<String?> containsTypes = const Value.absent(),
   }) => NinType(
     id: id ?? this.id,
     navn: navn ?? this.navn,
@@ -446,6 +513,10 @@ class NinType extends DataClass implements Insertable<NinType> {
     imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
     description: description.present ? description.value : this.description,
     lkmData: lkmData.present ? lkmData.value : this.lkmData,
+    scale: scale.present ? scale.value : this.scale,
+    containsTypes: containsTypes.present
+        ? containsTypes.value
+        : this.containsTypes,
   );
   NinType copyWithCompanion(NinTypesCompanion data) {
     return NinType(
@@ -468,6 +539,10 @@ class NinType extends DataClass implements Insertable<NinType> {
           ? data.description.value
           : this.description,
       lkmData: data.lkmData.present ? data.lkmData.value : this.lkmData,
+      scale: data.scale.present ? data.scale.value : this.scale,
+      containsTypes: data.containsTypes.present
+          ? data.containsTypes.value
+          : this.containsTypes,
     );
   }
 
@@ -484,7 +559,9 @@ class NinType extends DataClass implements Insertable<NinType> {
           ..write('definisjon: $definisjon, ')
           ..write('imageUrl: $imageUrl, ')
           ..write('description: $description, ')
-          ..write('lkmData: $lkmData')
+          ..write('lkmData: $lkmData, ')
+          ..write('scale: $scale, ')
+          ..write('containsTypes: $containsTypes')
           ..write(')'))
         .toString();
   }
@@ -502,6 +579,8 @@ class NinType extends DataClass implements Insertable<NinType> {
     imageUrl,
     description,
     lkmData,
+    scale,
+    containsTypes,
   );
   @override
   bool operator ==(Object other) =>
@@ -517,7 +596,9 @@ class NinType extends DataClass implements Insertable<NinType> {
           other.definisjon == this.definisjon &&
           other.imageUrl == this.imageUrl &&
           other.description == this.description &&
-          other.lkmData == this.lkmData);
+          other.lkmData == this.lkmData &&
+          other.scale == this.scale &&
+          other.containsTypes == this.containsTypes);
 }
 
 class NinTypesCompanion extends UpdateCompanion<NinType> {
@@ -532,6 +613,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
   final Value<String?> imageUrl;
   final Value<String?> description;
   final Value<String?> lkmData;
+  final Value<String?> scale;
+  final Value<String?> containsTypes;
   final Value<int> rowid;
   const NinTypesCompanion({
     this.id = const Value.absent(),
@@ -545,6 +628,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     this.imageUrl = const Value.absent(),
     this.description = const Value.absent(),
     this.lkmData = const Value.absent(),
+    this.scale = const Value.absent(),
+    this.containsTypes = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   NinTypesCompanion.insert({
@@ -559,6 +644,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     this.imageUrl = const Value.absent(),
     this.description = const Value.absent(),
     this.lkmData = const Value.absent(),
+    this.scale = const Value.absent(),
+    this.containsTypes = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        navn = Value(navn),
@@ -575,6 +662,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     Expression<String>? imageUrl,
     Expression<String>? description,
     Expression<String>? lkmData,
+    Expression<String>? scale,
+    Expression<String>? containsTypes,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -589,6 +678,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
       if (imageUrl != null) 'image_url': imageUrl,
       if (description != null) 'description': description,
       if (lkmData != null) 'lkm_data': lkmData,
+      if (scale != null) 'scale': scale,
+      if (containsTypes != null) 'contains_types': containsTypes,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -605,6 +696,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     Value<String?>? imageUrl,
     Value<String?>? description,
     Value<String?>? lkmData,
+    Value<String?>? scale,
+    Value<String?>? containsTypes,
     Value<int>? rowid,
   }) {
     return NinTypesCompanion(
@@ -619,6 +712,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
       imageUrl: imageUrl ?? this.imageUrl,
       description: description ?? this.description,
       lkmData: lkmData ?? this.lkmData,
+      scale: scale ?? this.scale,
+      containsTypes: containsTypes ?? this.containsTypes,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -659,6 +754,12 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
     if (lkmData.present) {
       map['lkm_data'] = Variable<String>(lkmData.value);
     }
+    if (scale.present) {
+      map['scale'] = Variable<String>(scale.value);
+    }
+    if (containsTypes.present) {
+      map['contains_types'] = Variable<String>(containsTypes.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -679,6 +780,8 @@ class NinTypesCompanion extends UpdateCompanion<NinType> {
           ..write('imageUrl: $imageUrl, ')
           ..write('description: $description, ')
           ..write('lkmData: $lkmData, ')
+          ..write('scale: $scale, ')
+          ..write('containsTypes: $containsTypes, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1558,6 +1661,8 @@ typedef $$NinTypesTableCreateCompanionBuilder =
       Value<String?> imageUrl,
       Value<String?> description,
       Value<String?> lkmData,
+      Value<String?> scale,
+      Value<String?> containsTypes,
       Value<int> rowid,
     });
 typedef $$NinTypesTableUpdateCompanionBuilder =
@@ -1573,6 +1678,8 @@ typedef $$NinTypesTableUpdateCompanionBuilder =
       Value<String?> imageUrl,
       Value<String?> description,
       Value<String?> lkmData,
+      Value<String?> scale,
+      Value<String?> containsTypes,
       Value<int> rowid,
     });
 
@@ -1637,6 +1744,16 @@ class $$NinTypesTableFilterComposer
 
   ColumnFilters<String> get lkmData => $composableBuilder(
     column: $table.lkmData,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get scale => $composableBuilder(
+    column: $table.scale,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get containsTypes => $composableBuilder(
+    column: $table.containsTypes,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1704,6 +1821,16 @@ class $$NinTypesTableOrderingComposer
     column: $table.lkmData,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get scale => $composableBuilder(
+    column: $table.scale,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get containsTypes => $composableBuilder(
+    column: $table.containsTypes,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$NinTypesTableAnnotationComposer
@@ -1755,6 +1882,14 @@ class $$NinTypesTableAnnotationComposer
 
   GeneratedColumn<String> get lkmData =>
       $composableBuilder(column: $table.lkmData, builder: (column) => column);
+
+  GeneratedColumn<String> get scale =>
+      $composableBuilder(column: $table.scale, builder: (column) => column);
+
+  GeneratedColumn<String> get containsTypes => $composableBuilder(
+    column: $table.containsTypes,
+    builder: (column) => column,
+  );
 }
 
 class $$NinTypesTableTableManager
@@ -1796,6 +1931,8 @@ class $$NinTypesTableTableManager
                 Value<String?> imageUrl = const Value.absent(),
                 Value<String?> description = const Value.absent(),
                 Value<String?> lkmData = const Value.absent(),
+                Value<String?> scale = const Value.absent(),
+                Value<String?> containsTypes = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NinTypesCompanion(
                 id: id,
@@ -1809,6 +1946,8 @@ class $$NinTypesTableTableManager
                 imageUrl: imageUrl,
                 description: description,
                 lkmData: lkmData,
+                scale: scale,
+                containsTypes: containsTypes,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -1824,6 +1963,8 @@ class $$NinTypesTableTableManager
                 Value<String?> imageUrl = const Value.absent(),
                 Value<String?> description = const Value.absent(),
                 Value<String?> lkmData = const Value.absent(),
+                Value<String?> scale = const Value.absent(),
+                Value<String?> containsTypes = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => NinTypesCompanion.insert(
                 id: id,
@@ -1837,6 +1978,8 @@ class $$NinTypesTableTableManager
                 imageUrl: imageUrl,
                 description: description,
                 lkmData: lkmData,
+                scale: scale,
+                containsTypes: containsTypes,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

@@ -45,3 +45,8 @@ final searchTypesProvider = FutureProvider.family<List<NinType>, String>((ref, q
         ..limit(50))
       .get();
 });
+
+final typesByIdsProvider = FutureProvider.family<List<NinType>, List<String>>((ref, ids) async {
+  final db = ref.watch(databaseProvider);
+  return (db.select(db.ninTypes)..where((t) => t.id.isIn(ids))).get();
+});
