@@ -277,7 +277,7 @@ def main():
             'steps_json': json.dumps(steps) if steps else None
         })
         
-        for key in ['underordneteVariabler', 'variabeltrinn']:
+        for key in ['underordneteVariabler', 'variabeltrinn', 'variabelnavn', 'underordneteKoder']:
             if item.get(key):
                 for sub in item[key]: walk_vars(sub, kode['id'])
 
