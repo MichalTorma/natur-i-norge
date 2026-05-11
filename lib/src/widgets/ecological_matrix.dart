@@ -85,10 +85,13 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
   @override
   Widget build(BuildContext context) {
     if (widget.subTypes.isEmpty || _xAxisVar == null) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(32.0),
-          child: Text("No ecological gradients available for this view", style: TextStyle(color: Colors.white24)),
+          padding: const EdgeInsets.all(32.0),
+          child: Text(
+            "No ecological gradients available for this view",
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2)),
+          ),
         ),
       );
     }
@@ -135,6 +138,10 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
 
     final double availableW = screenSize.width - 32; // Standard padding
     final double availableH = screenSize.height * 0.7; // Target 70% of screen
+
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
     final double unitWidth = ((availableW - effectiveYHeaderWidth) / (totalXUnits > 0 ? totalXUnits : 1)).clamp(100.0, 300.0);
     final double unitHeight = ((availableH - 100) / (totalYUnits > 0 ? totalYUnits : 1)).clamp(80.0, 200.0);
@@ -184,13 +191,13 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                             children: [
                               Text(
                                 displayName, 
-                                style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+                                style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: colorScheme.primary),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
                                 "($filterVar)",
-                                style: const TextStyle(fontSize: 7, color: Colors.white38),
+                                style: TextStyle(fontSize: 7, color: colorScheme.onSurface.withOpacity(0.4)),
                               ),
                             ],
                           ),
@@ -215,7 +222,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                                     children: [
                                       Text(rangeLabel, style: const TextStyle(fontSize: 9)),
                                       if (codesLabel.isNotEmpty)
-                                        Text(codesLabel, style: const TextStyle(fontSize: 7, color: Colors.white38)),
+                                        Text(codesLabel, style: TextStyle(fontSize: 7, color: colorScheme.onSurface.withOpacity(0.4))),
                                     ],
                                   ),
                                   selected: isSelected,
@@ -239,13 +246,13 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           padding: const EdgeInsets.only(bottom: 8.0),
           child: Row(
             children: [
-              const Icon(Icons.grid_on, size: 14, color: Colors.greenAccent),
+              Icon(Icons.grid_on, size: 14, color: colorScheme.primary),
               const SizedBox(width: 8),
               Text(
                 hasYAxis 
                   ? '${varNames[_xAxisVar] ?? _xAxisVar} \u00d7 ${varNames[_yAxisVar] ?? _yAxisVar}'
                   : '${varNames[_xAxisVar] ?? _xAxisVar}',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: colorScheme.primary),
               ),
             ],
           ),
@@ -270,18 +277,18 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                         width: totalXUnits * unitWidth,
                         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
                         decoration: BoxDecoration(
-                          color: Colors.greenAccent.withValues(alpha: 0.1),
+                          color: colorScheme.primary.withOpacity(0.1),
                           borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-                          border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.2)),
+                          border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.info_outline, size: 12, color: Colors.greenAccent),
+                            Icon(Icons.info_outline, size: 12, color: colorScheme.primary),
                             const SizedBox(width: 6),
                             Text(
                               "$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})",
-                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: colorScheme.primary),
                             ),
                           ],
                         ),
@@ -302,7 +309,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
 
                         return Container(
                           width: width,
-                          decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Colors.white10))),
+                          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -310,7 +317,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                                 padding: const EdgeInsets.only(bottom: 4.0),
                                 child: Text(
                                   rangeLabel,
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: colorScheme.primary),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -319,7 +326,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                                   width: unitWidth,
                                   height: 15,
                                   alignment: Alignment.center,
-                                  child: Text(code, style: const TextStyle(fontSize: 7, color: Colors.white38)),
+                                  child: Text(code, style: TextStyle(fontSize: 7, color: colorScheme.onSurface.withOpacity(0.4))),
                                 )).toList(),
                               ),
                             ],
@@ -341,20 +348,20 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                             height: totalYUnits * unitHeight,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Colors.greenAccent.withValues(alpha: 0.1),
+                              color: colorScheme.primary.withOpacity(0.1),
                               borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
-                              border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.2)),
+                              border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
                             ),
                             child: RotatedBox(
                               quarterTurns: 3,
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(Icons.info_outline, size: 12, color: Colors.greenAccent),
+                                  Icon(Icons.info_outline, size: 12, color: colorScheme.primary),
                                   const SizedBox(width: 6),
                                   Text(
                                     "$_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'})",
-                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+                                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: colorScheme.primary),
                                   ),
                                 ],
                               ),
@@ -374,16 +381,19 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                             return Container(
                               width: yHeaderWidth - yLkmNameWidth,
                               height: height,
-                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.white10))),
+                              decoration: BoxDecoration(border: Border(right: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
                               child: Row(
                                 children: [
                                   Expanded(
                                     child: RotatedBox(
                                       quarterTurns: 3,
-                                      child: Text(
-                                        rangeLabel,
-                                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
-                                        textAlign: TextAlign.center,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(bottom: 4.0),
+                                        child: Text(
+                                          rangeLabel,
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: colorScheme.primary),
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -393,7 +403,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                                       width: 25,
                                       height: unitHeight,
                                       alignment: Alignment.center,
-                                      child: Text(code, style: const TextStyle(fontSize: 7, color: Colors.white38)),
+                                      child: Text(code, style: TextStyle(fontSize: 7, color: colorScheme.onSurface.withOpacity(0.4))),
                                     )).toList(),
                                   ),
                                 ],
@@ -408,10 +418,10 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                         child: Stack(
                           children: [
                             // Subtle Background Grid
-                            _buildBackgroundGrid(matrixData, xSteps, ySteps, unitWidth, unitHeight),
+                            _buildBackgroundGrid(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
                             
                             // The Islands
-                            ..._buildIslands(matrixData, xSteps, ySteps, unitWidth, unitHeight),
+                            ..._buildIslands(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
                           ],
                         ),
                       ),
@@ -426,7 +436,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
             'Matrix Axes: X=$_xAxisVar, Y=${_yAxisVar ?? "None"}',
-            style: const TextStyle(fontSize: 10, color: Colors.white24),
+            style: TextStyle(fontSize: 10, color: colorScheme.onSurface.withOpacity(0.2)),
           ),
         ),
       ],
@@ -579,7 +589,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     return items.join("|");
   }
 
-  Widget _buildBackgroundGrid(_MatrixData data, List<String> xSteps, List<String> ySteps, double unitWidth, double unitHeight) {
+  Widget _buildBackgroundGrid(_MatrixData data, List<String> xSteps, List<String> ySteps, double unitWidth, double unitHeight, ColorScheme colorScheme) {
     final List<Widget> lines = [];
     double currentX = 0;
     for (var xId in xSteps) {
@@ -587,7 +597,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       for (int i = 0; i < group.length; i++) {
         lines.add(Positioned(
           left: currentX, top: 0, bottom: 0,
-          child: Container(width: 1, color: Colors.white.withValues(alpha: 0.05)),
+          child: Container(width: 1, color: colorScheme.onSurface.withOpacity(0.05)),
         ));
         currentX += unitWidth;
       }
@@ -598,7 +608,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       for (int i = 0; i < group.length; i++) {
         lines.add(Positioned(
           top: currentY, left: 0, right: 0,
-          child: Container(height: 1, color: Colors.white.withValues(alpha: 0.05)),
+          child: Container(height: 1, color: colorScheme.onSurface.withOpacity(0.05)),
         ));
         currentY += unitHeight;
       }
@@ -606,7 +616,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     return Stack(children: lines);
   }
 
-  List<Widget> _buildIslands(_MatrixData data, List<String> xSteps, List<String> ySteps, double unitWidth, double unitHeight) {
+  List<Widget> _buildIslands(_MatrixData data, List<String> xSteps, List<String> ySteps, double unitWidth, double unitHeight, ColorScheme colorScheme) {
     final List<Widget> islands = [];
     final Set<String> processedCells = {}; // Format: "yIndex-xIndex"
 
@@ -679,6 +689,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                 valueListenable: _hoveredTypeId,
                 builder: (context, hoveredId, _) {
                   final isHighlighted = hoveredId == type.id;
+                  final primaryColor = colorScheme.primary;
+                  
                   return InkWell(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TypesScreen(type: type))),
                     child: Container(
@@ -687,13 +699,13 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: isHighlighted 
-                            ? [Colors.green.withValues(alpha: 0.4), Colors.green.withValues(alpha: 0.2)]
-                            : [Colors.green.withValues(alpha: 0.15), Colors.green.withValues(alpha: 0.05)],
+                            ? [primaryColor.withOpacity(0.4), primaryColor.withOpacity(0.2)]
+                            : [primaryColor.withOpacity(0.15), primaryColor.withOpacity(0.05)],
                         ),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: isHighlighted ? Colors.greenAccent : Colors.white10),
+                        border: Border.all(color: isHighlighted ? primaryColor : colorScheme.onSurface.withOpacity(0.1)),
                         boxShadow: isHighlighted ? [
-                          BoxShadow(color: Colors.green.withValues(alpha: 0.2), blurRadius: 8, spreadRadius: 1)
+                          BoxShadow(color: primaryColor.withOpacity(0.2), blurRadius: 8, spreadRadius: 1)
                         ] : [],
                       ),
                       alignment: Alignment.center,
@@ -703,7 +715,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                         children: [
                           Text(
                             type.id.split('-').last,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.greenAccent),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: colorScheme.primary),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 4),
@@ -712,7 +724,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 10, color: Colors.white70),
+                            style: TextStyle(fontSize: 10, color: colorScheme.onSurface.withOpacity(0.7)),
                           ),
                         ],
                       ),

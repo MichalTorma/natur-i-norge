@@ -37,17 +37,18 @@ class _ExpandableMarkdownState extends State<ExpandableMarkdown> {
 
   @override
   Widget build(BuildContext context) {
-    // We render the markdown twice: once in an Offstage widget to measure its natural height,
-    // and once in the visible AnimatedContainer. This ensures we know if it overflows.
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     final markdownContent = MarkdownBody(
       data: widget.data,
       selectable: true,
       styleSheet: MarkdownStyleSheet(
-        p: const TextStyle(fontSize: 16, height: 1.6, color: Colors.white, letterSpacing: 0.2),
-        h1: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.greenAccent),
-        h2: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.greenAccent),
-        h3: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.greenAccent),
-        listBullet: const TextStyle(color: Colors.greenAccent),
+        p: theme.textTheme.bodyMedium?.copyWith(fontSize: 16, height: 1.6, letterSpacing: 0.2),
+        h1: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
+        h2: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
+        h3: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
+        listBullet: TextStyle(color: colorScheme.primary),
       ),
     );
 
@@ -87,8 +88,8 @@ class _ExpandableMarkdownState extends State<ExpandableMarkdown> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.9),
+                          colorScheme.surface.withOpacity(0),
+                          colorScheme.surface,
                         ],
                       ),
                     ),
@@ -103,11 +104,11 @@ class _ExpandableMarkdownState extends State<ExpandableMarkdown> {
             onPressed: () => setState(() => _isExpanded = !_isExpanded),
             icon: Icon(
               _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              color: Colors.greenAccent,
+              color: colorScheme.primary,
             ),
             label: Text(
               _isExpanded ? 'VIS MINDRE' : 'LES MER',
-              style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold, fontSize: 12),
+              style: TextStyle(color: colorScheme.primary, fontWeight: FontWeight.bold, fontSize: 12),
             ),
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,

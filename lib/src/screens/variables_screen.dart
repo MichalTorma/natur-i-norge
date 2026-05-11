@@ -25,7 +25,7 @@ class VariablesScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: DataTable(
                       headingRowColor: WidgetStateProperty.all(
-                        Colors.blue.withOpacity(0.1),
+                        Theme.of(context).colorScheme.primary.withOpacity(0.1),
                       ),
                       columns: const [
                         DataColumn(label: Text('ID')),

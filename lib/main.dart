@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'src/screens/home_screen.dart';
 import 'src/providers/settings_provider.dart';
 
+import 'src/theme/app_theme.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
@@ -19,36 +21,17 @@ void main() async {
   );
 }
 
-class NinGuideApp extends StatelessWidget {
+class NinGuideApp extends ConsumerWidget {
   const NinGuideApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentTheme = ref.watch(appThemeProvider);
+    
     return MaterialApp(
       title: 'NiN Guide 3.0',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2E7D32),
-          brightness: Brightness.dark,
-          surface: const Color(0xFF121212),
-        ),
-        textTheme: GoogleFonts.outfitTextTheme(
-          ThemeData.dark().textTheme,
-        ),
-        cardTheme: CardThemeData(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: BorderSide(
-              color: Colors.white.withOpacity(0.1),
-              width: 1,
-            ),
-          ),
-          color: Colors.white.withOpacity(0.05),
-        ),
-      ),
+      theme: AppThemes.getTheme(currentTheme),
       home: const HomeScreen(),
     );
   }

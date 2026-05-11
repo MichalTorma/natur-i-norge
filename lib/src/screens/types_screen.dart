@@ -47,7 +47,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                   hintText: 'Search codes or names...',
                   prefixIcon: const Icon(Icons.search),
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.05),
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
@@ -79,7 +79,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                     const SizedBox(height: 16),
                     const Text(
                       'Beskrivelse',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.greenAccent),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 12),
                     ExpandableMarkdown(data: widget.type!.description!),
@@ -93,9 +93,9 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           typesAsync.when(
             data: (allTypes) {
               if (allTypes.isEmpty && widget.type != null) {
-                return const SliverFillRemaining(
+                return SliverFillRemaining(
                   child: Center(
-                    child: Text('No further sub-types available.', style: TextStyle(color: Colors.white24)),
+                    child: Text('No further sub-types available.', style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3))),
                   ),
                 );
               }
@@ -119,11 +119,11 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
                     if (isHovedtype && _searchQuery.isEmpty) ...[
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.symmetric(vertical: 16.0),
                         child: Text(
                           'VISNINGSMODUS',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white38, letterSpacing: 1.2),
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4), letterSpacing: 1.2),
                         ),
                       ),
                       Center(
@@ -137,9 +137,9 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                           selected: {selectedScale},
                           onSelectionChanged: (set) => ref.read(selectedScaleProvider.notifier).setScale(set.first),
                           style: SegmentedButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.05),
-                            selectedBackgroundColor: Colors.greenAccent.withOpacity(0.2),
-                            selectedForegroundColor: Colors.greenAccent,
+                            backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+                            selectedBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                            selectedForegroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
                           ),
                         ),
                       ),
@@ -181,7 +181,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                           children: [
                             Text(
                               'ECOLOGICAL MATRIX (${selectedScale == 'Biologisk' ? 'BIO' : selectedScale})',
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent, letterSpacing: 1.2),
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2),
                             ),
                             const SizedBox(height: 16),
                             EcologicalMatrix(subTypes: matrixTypes),
@@ -192,7 +192,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       
                       Text(
                         selectedScale == 'Biologisk' ? 'GRUNNTYPER' : 'KARTLEGGINGSENHETER ($selectedScale)',
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white38, letterSpacing: 1.2),
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4), letterSpacing: 1.2),
                       ),
                       const SizedBox(height: 16),
                     ],
@@ -200,11 +200,11 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                     if (types.isEmpty && selectedScale == 'Biologisk' && !isHovedtype) ...[
                       // If we are at a Kartleggingsenhet, show what it contains
                       if (widget.type?.kategori == 'Kartleggingsenhet' && widget.type?.containsTypes != null) ...[
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: 16.0),
                           child: Text(
                             'CONSTITUENT NATURE TYPES',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent, letterSpacing: 1.2),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2),
                           ),
                         ),
                         Consumer(
@@ -322,7 +322,10 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.green.shade900, Colors.black],
+                    colors: [
+                      Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                      Theme.of(context).colorScheme.surface,
+                    ],
                   ),
                 ),
               );
@@ -381,7 +384,7 @@ class _TypeCard extends StatelessWidget {
                         ),
                       );
                     }
-                    return Container(color: Colors.black26);
+                    return Container(color: Theme.of(context).colorScheme.surfaceContainerHighest);
                   },
                 ),
               ),
@@ -391,14 +394,17 @@ class _TypeCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [color.withOpacity(0.2), Colors.black.withOpacity(0.6)],
+                  colors: [
+                    color.withOpacity(0.3),
+                    Theme.of(context).colorScheme.surface.withOpacity(0.8),
+                  ],
                 ),
               ),
               padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(type.id, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color.withOpacity(0.8))),
+                  Text(type.id, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color)),
                   const Spacer(),
                   Text(type.navn, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                 ],

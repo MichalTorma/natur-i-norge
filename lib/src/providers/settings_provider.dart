@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../theme/app_theme.dart';
 
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError();
@@ -23,4 +24,30 @@ class SelectedScaleNotifier extends Notifier<String> {
 
 final selectedScaleProvider = NotifierProvider<SelectedScaleNotifier, String>(() {
   return SelectedScaleNotifier();
+});
+
+class AppThemeNotifier extends Notifier<AppTheme> {
+  static const _key = 'app_theme';
+
+  @override
+  AppTheme build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    final themeName = prefs.getString(_key);
+    if (themeName == null) return AppTheme.dark;
+    
+    return AppTheme.values.firstWhere(
+      (e) => e.name == themeName,
+      orElse: () => AppTheme.dark,
+    );
+  }
+
+  void setTheme(AppTheme theme) {
+    if (state == theme) return;
+    state = theme;
+    ref.read(sharedPreferencesProvider).setString(_key, theme.name);
+  }
+}
+
+final appThemeProvider = NotifierProvider<AppThemeNotifier, AppTheme>(() {
+  return AppThemeNotifier();
 });
