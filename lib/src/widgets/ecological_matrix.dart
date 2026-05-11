@@ -98,9 +98,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
 
     // Responsive sizing logic
     final screenSize = MediaQuery.of(context).size;
-    const double yHeaderWidth = 100.0; // Increased to accommodate dual buttons
+    const double yHeaderWidth = 100.0; // Standard width for Y headers
     const double yLkmNameWidth = 40.0;
     
+    final bool hasYAxis = _yAxisVar != null;
+    final double effectiveYHeaderWidth = hasYAxis ? yHeaderWidth : 0;
+
     double totalXUnits = 0;
     for (var xId in xSteps) {
       totalXUnits += (matrixData.xMergeMap[xId]?.length ?? 1);
@@ -113,7 +116,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     final double availableW = screenSize.width - 32; // Standard padding
     final double availableH = screenSize.height * 0.7; // Target 70% of screen
 
-    final double unitWidth = ((availableW - yHeaderWidth) / (totalXUnits > 0 ? totalXUnits : 1)).clamp(100.0, 300.0);
+    final double unitWidth = ((availableW - effectiveYHeaderWidth) / (totalXUnits > 0 ? totalXUnits : 1)).clamp(100.0, 300.0);
     final double unitHeight = ((availableH - 100) / (totalYUnits > 0 ? totalYUnits : 1)).clamp(80.0, 200.0);
 
     return Column(
@@ -219,7 +222,9 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               const Icon(Icons.grid_on, size: 14, color: Colors.greenAccent),
               const SizedBox(width: 8),
               Text(
-                '${varNames[_xAxisVar] ?? _xAxisVar} × ${varNames[_yAxisVar] ?? _yAxisVar ?? "None"}',
+                hasYAxis 
+                  ? '${varNames[_xAxisVar] ?? _xAxisVar} \u00d7 ${varNames[_yAxisVar] ?? _yAxisVar}'
+                  : '${varNames[_xAxisVar] ?? _xAxisVar}',
                 style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent),
               ),
             ],
@@ -227,8 +232,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
         ),
 
         // The Archipelago (Outside the box!)
-        SizedBox(
-          height: availableH,
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: availableH),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SingleChildScrollView(
@@ -238,7 +243,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                 children: [
                   // X-Axis LKM Header (Full Width Name)
                   Padding(
-                    padding: const EdgeInsets.only(left: yHeaderWidth),
+                    padding: EdgeInsets.only(left: effectiveYHeaderWidth),
                     child: InkWell(
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _xAxisVar!))),
                       child: Container(
@@ -267,7 +272,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const SizedBox(width: yHeaderWidth), 
+                      SizedBox(width: effectiveYHeaderWidth), 
                       ...xSteps.map((xId) {
                         final group = matrixData.xMergeMap[xId]!;
                         final startLabel = allVarSteps[_xAxisVar]?[group.first] ?? group.first;
@@ -308,7 +313,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Y-Axis LKM Name Button (Pinned to left)
-                      if (_yAxisVar != null)
+                      if (hasYAxis)
                         InkWell(
                           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _yAxisVar!))),
                           child: Container(
@@ -337,44 +342,45 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                           ),
                         ),
                       // Y-Axis Range Labels
-                      Column(
-                        children: ySteps.map((yId) {
-                          final group = matrixData.yMergeMap[yId]!;
-                          final startLabel = allVarSteps[_yAxisVar]?[group.first] ?? group.first;
-                          final endLabel = allVarSteps[_yAxisVar]?[group.last] ?? group.last;
-                          final rangeLabel = group.length > 1 ? "${startLabel == '' ? '-' : startLabel} - $endLabel" : (startLabel == '' ? '-' : startLabel);
-                          final height = group.length * unitHeight;
+                      if (hasYAxis)
+                        Column(
+                          children: ySteps.map((yId) {
+                            final group = matrixData.yMergeMap[yId]!;
+                            final startLabel = allVarSteps[_yAxisVar]?[group.first] ?? group.first;
+                            final endLabel = allVarSteps[_yAxisVar]?[group.last] ?? group.last;
+                            final rangeLabel = group.length > 1 ? "${startLabel == '' ? '-' : startLabel} - $endLabel" : (startLabel == '' ? '-' : startLabel);
+                            final height = group.length * unitHeight;
 
-                          return Container(
-                            width: yHeaderWidth - yLkmNameWidth,
-                            height: height,
-                            decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.white10))),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: RotatedBox(
-                                    quarterTurns: 3,
-                                    child: Text(
-                                      rangeLabel,
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
-                                      textAlign: TextAlign.center,
+                            return Container(
+                              width: yHeaderWidth - yLkmNameWidth,
+                              height: height,
+                              decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.white10))),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Text(
+                                        rangeLabel,
+                                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.greenAccent),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: group.map((code) => Container(
-                                    width: 25,
-                                    height: unitHeight,
-                                    alignment: Alignment.center,
-                                    child: Text(code, style: const TextStyle(fontSize: 7, color: Colors.white38)),
-                                  )).toList(),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: group.map((code) => Container(
+                                      width: 25,
+                                      height: unitHeight,
+                                      alignment: Alignment.center,
+                                      child: Text(code, style: const TextStyle(fontSize: 7, color: Colors.white38)),
+                                    )).toList(),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       // The Data Area (Stack)
                       SizedBox(
                         width: totalXUnits * unitWidth,
