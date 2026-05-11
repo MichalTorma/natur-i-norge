@@ -6,6 +6,7 @@ import '../providers/database_provider.dart';
 import '../models/user_database.dart';
 import 'camera_screen.dart';
 import 'gallery_map_screen.dart';
+import 'observation_detail_screen.dart';
 
 class GalleryScreen extends ConsumerWidget {
   const GalleryScreen({super.key});
@@ -184,18 +185,30 @@ class _ObservationCard extends StatelessWidget {
     final observation = observationWithType.observation;
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.file(
-                  File(observation.imagePath),
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.broken_image)),
-                ),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ObservationDetailScreen(observationWithType: observationWithType),
+            ),
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Hero(
+                    tag: 'obs_image_${observation.id}',
+                    child: Image.file(
+                      File(observation.imagePath),
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.broken_image)),
+                    ),
+                  ),
                 Positioned(
                   top: 8,
                   right: 8,
@@ -251,6 +264,7 @@ class _ObservationCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

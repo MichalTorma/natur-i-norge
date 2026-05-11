@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
+import 'observation_detail_screen.dart';
 import 'dart:io';
 
 class GalleryMapScreen extends ConsumerWidget {
@@ -77,7 +78,15 @@ class GalleryMapScreen extends ConsumerWidget {
                     width: 40,
                     height: 40,
                     child: GestureDetector(
-                      onTap: () => _showObservationPreview(context, obs),
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            settings: const RouteSettings(name: 'observation_detail'),
+                            builder: (_) => ObservationDetailScreen(observationWithType: obsWithType),
+                          ),
+                        );
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,
