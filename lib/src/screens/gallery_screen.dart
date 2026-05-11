@@ -82,6 +82,67 @@ class GalleryScreen extends ConsumerWidget {
             );
           }
 
+          final sortMode = ref.watch(observationSortProvider);
+          
+          if (sortMode == ObservationSortMode.typeAlpha) {
+            // Grouping logic
+            final groups = <String, List<ObservationWithType>>{};
+            for (var obs in observations) {
+              groups.putIfAbsent(obs.observation.typeId, () => []).add(obs);
+            }
+            
+            final sortedKeys = groups.keys.toList()..sort();
+            
+            return CustomScrollView(
+              slivers: [
+                for (var key in sortedKeys) ...[
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            key,
+                            style: TextStyle(
+                              fontSize: 18, 
+                              fontWeight: FontWeight.bold, 
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          Text(
+                            groups[key]!.first.type?.navn ?? 'Unknown Type',
+                            style: TextStyle(
+                              fontSize: 14, 
+                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            ),
+                          ),
+                          const Divider(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    sliver: SliverGrid(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        childAspectRatio: 0.8,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => _ObservationCard(observationWithType: groups[key]![index]),
+                        childCount: groups[key]!.length,
+                      ),
+                    ),
+                  ),
+                ],
+                const SliverToBoxAdapter(child: SizedBox(height: 100)),
+              ],
+            );
+          }
+
           return GridView.builder(
             padding: const EdgeInsets.all(8),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -93,7 +154,7 @@ class GalleryScreen extends ConsumerWidget {
             itemCount: observations.length,
             itemBuilder: (context, index) {
               final obs = observations[index];
-              return _ObservationCard(observation: obs);
+              return _ObservationCard(observationWithType: obs);
             },
           );
         },
@@ -115,11 +176,12 @@ class GalleryScreen extends ConsumerWidget {
 }
 
 class _ObservationCard extends StatelessWidget {
-  final Observation observation;
-  const _ObservationCard({required this.observation});
+  final ObservationWithType observationWithType;
+  const _ObservationCard({required this.observationWithType});
 
   @override
   Widget build(BuildContext context) {
+    final observation = observationWithType.observation;
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(

@@ -63,4 +63,6 @@ class NinDatabase extends _$NinDatabase {
       // In development, if we need a fresh start, we delete the file manually.
     },
   );
+
+  Future<NinType?> getType(String id) => (select(ninTypes)..where((t) => t.id.equals(id))).getSingleOrNull();
 }

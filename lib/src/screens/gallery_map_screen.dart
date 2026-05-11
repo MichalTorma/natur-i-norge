@@ -26,7 +26,8 @@ class GalleryMapScreen extends ConsumerWidget {
           // Calculate initial center (average of all points)
           double avgLat = 0;
           double avgLng = 0;
-          for (var obs in observations) {
+          for (var obsWithType in observations) {
+            final obs = obsWithType.observation;
             avgLat += obs.latitude;
             avgLng += obs.longitude;
           }
@@ -43,7 +44,8 @@ class GalleryMapScreen extends ConsumerWidget {
                 userAgentPackageName: 'com.michaltorma.nin_guide',
               ),
               MarkerLayer(
-                markers: observations.map((obs) {
+                markers: observations.map((obsWithType) {
+                  final obs = obsWithType.observation;
                   return Marker(
                     point: LatLng(obs.latitude, obs.longitude),
                     width: 40,

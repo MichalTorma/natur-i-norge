@@ -76,23 +76,45 @@ class ObservationSortNotifier extends Notifier<ObservationSortMode> {
 
 final observationSortProvider = NotifierProvider<ObservationSortNotifier, ObservationSortMode>(ObservationSortNotifier.new);
 
-final observationsProvider = StreamProvider<List<Observation>>((ref) {
+class ObservationWithType {
+  final Observation observation;
+  final NinType? type;
+
+  ObservationWithType({required this.observation, this.type});
+}
+
+final observationsProvider = StreamProvider<List<ObservationWithType>>((ref) {
   final db = ref.watch(userDatabaseProvider);
+  final ninDb = ref.watch(databaseProvider);
   final sortMode = ref.watch(observationSortProvider);
   
-  final query = db.select(db.observations);
+  final query = db.select(db.observations).join([
+    // We can't easily join across different databases in Drift/SQLite without ATCHING
+    // Since these are two different database files, we'll do a client-side join for now
+    // or we can just fetch the names on demand.
+  ]);
   
-  switch (sortMode) {
-    case ObservationSortMode.dateDesc:
-      query.orderBy([(t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)]);
-      break;
-    case ObservationSortMode.dateAsc:
-      query.orderBy([(t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc)]);
-      break;
-    case ObservationSortMode.typeAlpha:
-      query.orderBy([(t) => OrderingTerm(expression: t.typeId, mode: OrderingMode.asc)]);
-      break;
-  }
-  
-  return query.watch();
+  // Actually, let's do a simple stream and then map it.
+  return db.select(db.observations).watch().asyncMap((obsList) async {
+    final result = <ObservationWithType>[];
+    for (var obs in obsList) {
+      final type = await ninDb.getType(obs.typeId);
+      result.add(ObservationWithType(observation: obs, type: type));
+    }
+    
+    // Sort client-side now that we have all data
+    switch (sortMode) {
+      case ObservationSortMode.dateDesc:
+        result.sort((a, b) => b.observation.createdAt.compareTo(a.observation.createdAt));
+        break;
+      case ObservationSortMode.dateAsc:
+        result.sort((a, b) => a.observation.createdAt.compareTo(b.observation.createdAt));
+        break;
+      case ObservationSortMode.typeAlpha:
+        result.sort((a, b) => a.observation.typeId.compareTo(b.observation.typeId));
+        break;
+    }
+    
+    return result;
+  });
 });
