@@ -229,10 +229,13 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
     Navigator.push(
       context,
       MaterialPageRoute(
+        settings: const RouteSettings(name: 'type_picker'),
         builder: (context) => TypesScreen(
           onPick: (type) {
             setState(() => _selectedType = type);
-            Navigator.pop(context); // Go back to review screen
+            // Pop back to the start of the picker flow
+            Navigator.of(context).popUntil((route) => route.settings.name == 'type_picker');
+            Navigator.of(context).pop(); // Finally pop the picker itself
           },
         ),
       ),
