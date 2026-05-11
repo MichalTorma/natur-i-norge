@@ -6,6 +6,10 @@
 	<string>This app needs camera access to identify nature types.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app needs microphone access for video recording if required.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location to record precise nature observations.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to photo library to save observations.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

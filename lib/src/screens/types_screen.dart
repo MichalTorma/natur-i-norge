@@ -14,7 +14,8 @@ import '../widgets/expandable_markdown.dart';
 
 class TypesScreen extends ConsumerStatefulWidget {
   final NinType? type;
-  const TypesScreen({super.key, this.type});
+  final ValueChanged<NinType>? onPick;
+  const TypesScreen({super.key, this.type, this.onPick});
 
   @override
   ConsumerState<TypesScreen> createState() => _TypesScreenState();
@@ -36,6 +37,66 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
       body: CustomScrollView(
         slivers: [
           _buildAppBar(context, ref),
+          
+          // Favorites Quick Access
+          if (widget.type == null)
+            Consumer(
+              builder: (context, ref, child) {
+                final favoritesAsync = ref.watch(favoritesProvider);
+                return favoritesAsync.when(
+                  data: (favIds) {
+                    if (favIds.isEmpty) return const SliverToBoxAdapter(child: SizedBox.shrink());
+                    final favTypesAsync = ref.watch(typesByIdsProvider(favIds));
+                    return favTypesAsync.when(
+                      data: (types) => SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.star, size: 16, color: Colors.amber[700]),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'FAVORITES',
+                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.amber[700], letterSpacing: 1.2),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 100,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                itemCount: types.length,
+                                itemBuilder: (context, index) => SizedBox(
+                                  width: 160,
+                                  child: _TypeCard(
+                                    type: types[index],
+                                    onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => TypesScreen(type: types[index], onPick: widget.onPick)),
+                                    ),
+                                    level: 2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const Divider(indent: 16, endIndent: 16, height: 32),
+                          ],
+                        ),
+                      ),
+                      loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+                      error: (_, __) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+                    );
+                  },
+                  loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+                  error: (_, __) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+                );
+              },
+            ),
           
           // Search Bar
           SliverToBoxAdapter(
@@ -227,7 +288,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                                   type: cTypes[index],
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => TypesScreen(type: cTypes[index])),
+                                    MaterialPageRoute(builder: (_) => TypesScreen(type: cTypes[index], onPick: widget.onPick)),
                                   ),
                                   level: 2,
                                 ),
@@ -256,7 +317,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                           type: types[index],
                           onTap: () => Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => TypesScreen(type: types[index])),
+                            MaterialPageRoute(builder: (_) => TypesScreen(type: types[index], onPick: widget.onPick)),
                           ),
                           level: widget.type == null ? 0 : 2,
                         ),
@@ -276,6 +337,30 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
+      floatingActionButton: () {
+        if (widget.onPick == null || widget.type == null) return null;
+        
+        final isMappingUnit = widget.type!.kategori == 'Kartleggingsenhet';
+        final isGrunntype = widget.type!.kategori == 'Grunntype';
+
+        if (isMappingUnit) {
+          return FloatingActionButton.extended(
+            onPressed: () => widget.onPick!(widget.type!),
+            icon: const Icon(Icons.check_circle),
+            label: const Text('Select this Mapping Unit'),
+            backgroundColor: Colors.green[700],
+            foregroundColor: Colors.white,
+          );
+        } else if (isGrunntype) {
+          return FloatingActionButton.extended(
+            onPressed: null, // Disabled
+            icon: const Icon(Icons.warning_amber_rounded, color: Colors.white70),
+            label: const Text('Please select a Mapping Unit level'),
+            backgroundColor: Colors.orange[800]?.withOpacity(0.8),
+          );
+        }
+        return null;
+      }(),
     );
   }
 

@@ -6,6 +6,7 @@ import 'package:drift/drift.dart' as drift;
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
 import '../models/nin_database.dart';
+import 'types_screen.dart';
 
 class ObservationReviewScreen extends ConsumerStatefulWidget {
   final String imagePath;
@@ -225,16 +226,17 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
   }
 
   Future<void> _pickType() async {
-    final type = await showModalBottomSheet<NinType>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (context) => const TypePickerSheet(),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TypesScreen(
+          onPick: (type) {
+            setState(() => _selectedType = type);
+            Navigator.pop(context); // Go back to review screen
+          },
+        ),
+      ),
     );
-
-    if (type != null) {
-      setState(() => _selectedType = type);
-    }
   }
 
   Future<void> _saveObservation() async {
@@ -258,52 +260,4 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
   }
 }
 
-class TypePickerSheet extends ConsumerStatefulWidget {
-  const TypePickerSheet({super.key});
 
-  @override
-  ConsumerState<TypePickerSheet> createState() => _TypePickerSheetState();
-}
-
-class _TypePickerSheetState extends ConsumerState<TypePickerSheet> {
-  String _searchQuery = '';
-
-  @override
-  Widget build(BuildContext context) {
-    final typesAsync = ref.watch(searchTypesProvider(_searchQuery));
-
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            autofocus: true,
-            decoration: InputDecoration(
-              hintText: 'Search nature type...',
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-            ),
-            onChanged: (val) => setState(() => _searchQuery = val),
-          ),
-        ),
-        Expanded(
-          child: typesAsync.when(
-            data: (types) => ListView.builder(
-              itemCount: types.length,
-              itemBuilder: (context, index) {
-                final type = types[index];
-                return ListTile(
-                  title: Text(type.id, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(type.navn),
-                  onTap: () => Navigator.pop(context, type),
-                );
-              },
-            ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (e, s) => Center(child: Text('Error: $e')),
-          ),
-        ),
-      ],
-    );
-  }
-}
