@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/database_provider.dart';
@@ -12,10 +13,22 @@ class GalleryMapScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final observationsAsync = ref.watch(observationsProvider);
+    final selectedLayer = ref.watch(mapLayerProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Observation Map'),
+        actions: [
+          PopupMenuButton<MapLayer>(
+            icon: const Icon(Icons.layers),
+            onSelected: (layer) => ref.read(mapLayerProvider.notifier).setLayer(layer),
+            itemBuilder: (context) => [
+              const PopupMenuItem(value: MapLayer.norgeskart, child: Text('Norgeskart (Topo)')),
+              const PopupMenuItem(value: MapLayer.osm, child: Text('OpenStreetMap')),
+              const PopupMenuItem(value: MapLayer.openTopo, child: Text('OpenTopoMap')),
+            ],
+          ),
+        ],
       ),
       body: observationsAsync.when(
         data: (observations) {
@@ -39,10 +52,23 @@ class GalleryMapScreen extends ConsumerWidget {
               initialZoom: 10.0,
             ),
             children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.michaltorma.nin_guide',
-              ),
+              if (selectedLayer == MapLayer.norgeskart)
+                TileLayer(
+                  urlTemplate: 'https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png',
+                  userAgentPackageName: 'com.michaltorma.nin_guide',
+                  tileProvider: CancellableNetworkTileProvider(),
+                )
+              else if (selectedLayer == MapLayer.osm)
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.michaltorma.nin_guide',
+                )
+              else if (selectedLayer == MapLayer.openTopo)
+                TileLayer(
+                  urlTemplate: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                  subdomains: const ['a', 'b', 'c'],
+                  userAgentPackageName: 'com.michaltorma.nin_guide',
+                ),
               MarkerLayer(
                 markers: observations.map((obsWithType) {
                   final obs = obsWithType.observation;

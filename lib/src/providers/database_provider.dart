@@ -67,6 +67,21 @@ enum ObservationSortMode {
   typeAlpha,
 }
 
+enum MapLayer {
+  osm,
+  norgeskart,
+  openTopo,
+}
+
+class MapLayerNotifier extends Notifier<MapLayer> {
+  @override
+  MapLayer build() => MapLayer.norgeskart; // Default to Norgeskart as it's more relevant for NiN
+  
+  void setLayer(MapLayer layer) => state = layer;
+}
+
+final mapLayerProvider = NotifierProvider<MapLayerNotifier, MapLayer>(MapLayerNotifier.new);
+
 class ObservationSortNotifier extends Notifier<ObservationSortMode> {
   @override
   ObservationSortMode build() => ObservationSortMode.dateDesc;
