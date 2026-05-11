@@ -1,0 +1,119 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/database_provider.dart';
+import '../models/user_database.dart';
+import 'dart:io';
+
+class GalleryMapScreen extends ConsumerWidget {
+  const GalleryMapScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final observationsAsync = ref.watch(observationsProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Observation Map'),
+      ),
+      body: observationsAsync.when(
+        data: (observations) {
+          if (observations.isEmpty) {
+            return const Center(child: Text('No observations to show on map'));
+          }
+
+          // Calculate initial center (average of all points)
+          double avgLat = 0;
+          double avgLng = 0;
+          for (var obs in observations) {
+            avgLat += obs.latitude;
+            avgLng += obs.longitude;
+          }
+          final center = LatLng(avgLat / observations.length, avgLng / observations.length);
+
+          return FlutterMap(
+            options: MapOptions(
+              initialCenter: center,
+              initialZoom: 10.0,
+            ),
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.michaltorma.nin_guide',
+              ),
+              MarkerLayer(
+                markers: observations.map((obs) {
+                  return Marker(
+                    point: LatLng(obs.latitude, obs.longitude),
+                    width: 40,
+                    height: 40,
+                    child: GestureDetector(
+                      onTap: () => _showObservationPreview(context, obs),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                          boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4)],
+                        ),
+                        child: const Icon(Icons.location_on, color: Colors.white, size: 20),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, s) => Center(child: Text('Error: $e')),
+      ),
+    );
+  }
+
+  void _showObservationPreview(BuildContext context, Observation obs) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        margin: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.file(
+                  File(obs.imagePath),
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => const SizedBox(height: 200, child: Center(child: Icon(Icons.broken_image))),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(obs.typeId, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              const SizedBox(height: 4),
+              Text('${obs.latitude.toStringAsFixed(4)}, ${obs.longitude.toStringAsFixed(4)}'),
+              if (obs.notes != null && obs.notes!.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(obs.notes!, style: const TextStyle(fontStyle: FontStyle.italic)),
+              ],
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
 import 'camera_screen.dart';
+import 'gallery_map_screen.dart';
 
 class GalleryScreen extends ConsumerWidget {
   const GalleryScreen({super.key});
@@ -17,6 +18,33 @@ class GalleryScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('My Observations'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.map),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const GalleryMapScreen()),
+              );
+            },
+          ),
+          PopupMenuButton<ObservationSortMode>(
+            icon: const Icon(Icons.sort),
+            onSelected: (mode) => ref.read(observationSortProvider.notifier).setMode(mode),
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: ObservationSortMode.dateDesc,
+                child: Text('Newest First'),
+              ),
+              const PopupMenuItem(
+                value: ObservationSortMode.dateAsc,
+                child: Text('Oldest First'),
+              ),
+              const PopupMenuItem(
+                value: ObservationSortMode.typeAlpha,
+                child: Text('By Type Code'),
+              ),
+            ],
+          ),
           IconButton(
             icon: const Icon(Icons.add_a_photo),
             onPressed: () {

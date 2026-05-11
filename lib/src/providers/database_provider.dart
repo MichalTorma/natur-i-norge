@@ -61,9 +61,38 @@ final variableProvider = FutureProvider.family<NinVariable?, String>((ref, id) a
   return (db.select(db.ninVariables)..where((v) => v.id.equals(id))).getSingleOrNull();
 });
 
+enum ObservationSortMode {
+  dateDesc,
+  dateAsc,
+  typeAlpha,
+}
+
+class ObservationSortNotifier extends Notifier<ObservationSortMode> {
+  @override
+  ObservationSortMode build() => ObservationSortMode.dateDesc;
+  
+  void setMode(ObservationSortMode mode) => state = mode;
+}
+
+final observationSortProvider = NotifierProvider<ObservationSortNotifier, ObservationSortMode>(ObservationSortNotifier.new);
+
 final observationsProvider = StreamProvider<List<Observation>>((ref) {
   final db = ref.watch(userDatabaseProvider);
-  return (db.select(db.observations)
-        ..orderBy([(t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)]))
-      .watch();
+  final sortMode = ref.watch(observationSortProvider);
+  
+  final query = db.select(db.observations);
+  
+  switch (sortMode) {
+    case ObservationSortMode.dateDesc:
+      query.orderBy([(t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)]);
+      break;
+    case ObservationSortMode.dateAsc:
+      query.orderBy([(t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc)]);
+      break;
+    case ObservationSortMode.typeAlpha:
+      query.orderBy([(t) => OrderingTerm(expression: t.typeId, mode: OrderingMode.asc)]);
+      break;
+  }
+  
+  return query.watch();
 });
