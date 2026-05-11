@@ -24,6 +24,9 @@ class VariableDetailScreen extends ConsumerWidget {
             body: const Center(child: Text('Variable not found.')),
           );
         }
+
+        final subVariablesAsync = ref.watch(subVariablesProvider(varData.id));
+
         return Scaffold(
           appBar: AppBar(
             title: Text(varData.navn),
@@ -34,11 +37,30 @@ class VariableDetailScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(context, varData),
+                if (varData.parentId != null && varData.parentId!.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  _buildParentLink(context, ref, varData.parentId!),
+                ],
                 const SizedBox(height: 24),
                 _buildSectionTitle(context, "Beskrivelse"),
                 const SizedBox(height: 8),
                 ExpandableMarkdown(
                   data: varData.description ?? "Ingen beskrivelse tilgjengelig.",
+                ),
+                subVariablesAsync.when(
+                  data: (subs) => subs.isEmpty
+                      ? const SizedBox.shrink()
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 24),
+                            _buildSectionTitle(context, "Underordnete variabler"),
+                            const SizedBox(height: 8),
+                            ...subs.map((s) => _buildSubVariableTile(context, s)),
+                          ],
+                        ),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (e, s) => Text("Feil ved lasting av undervariabler: $e"),
                 ),
                 if (varData.stepsJson != null) ...[
                   const SizedBox(height: 24),
@@ -53,6 +75,49 @@ class VariableDetailScreen extends ConsumerWidget {
       },
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, s) => Scaffold(body: Center(child: Text("Feil: $e", style: TextStyle(color: colorScheme.error)))),
+    );
+  }
+
+  Widget _buildParentLink(BuildContext context, WidgetRef ref, String parentId) {
+    final parentAsync = ref.watch(variableProvider(parentId));
+    return parentAsync.when(
+      data: (parent) => parent == null 
+        ? const SizedBox.shrink() 
+        : InkWell(
+            onTap: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => VariableDetailScreen(variableId: parent.id)),
+            ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.arrow_upward, size: 16, color: Theme.of(context).colorScheme.secondary),
+                  const SizedBox(width: 8),
+                  Text("Overordnet: ", style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.secondary)),
+                  Text(parent.navn, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.secondary)),
+                ],
+              ),
+            ),
+          ),
+      loading: () => const SizedBox.shrink(),
+      error: (e, s) => const SizedBox.shrink(),
+    );
+  }
+
+  Widget _buildSubVariableTile(BuildContext context, NinVariable variable) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: Text(variable.navn, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+      subtitle: Text(variable.id, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.outline)),
+      trailing: const Icon(Icons.chevron_right, size: 20),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => VariableDetailScreen(variableId: variable.id)),
+      ),
     );
   }
 

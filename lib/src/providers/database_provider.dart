@@ -35,7 +35,12 @@ final subTypesProvider = FutureProvider.family<List<NinType>, String>((ref, pare
 
 final variablesListProvider = FutureProvider<List<NinVariable>>((ref) async {
   final db = ref.watch(databaseProvider);
-  return (db.select(db.ninVariables)..where((v) => v.parentId.isNull())).get();
+  return (db.select(db.ninVariables)..orderBy([(t) => OrderingTerm(expression: t.id)])).get();
+});
+
+final subVariablesProvider = FutureProvider.family<List<NinVariable>, String>((ref, parentId) async {
+  final db = ref.watch(databaseProvider);
+  return (db.select(db.ninVariables)..where((v) => v.parentId.equals(parentId))).get();
 });
 
 final searchTypesProvider = FutureProvider.family<List<NinType>, String>((ref, query) async {
