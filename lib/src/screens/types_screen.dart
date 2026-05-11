@@ -174,7 +174,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                 } else {
                   return t.kategori == 'Kartleggingsenhet' && t.scale == selectedScale;
                 }
-              }).toList();
+              }).toList()..sort((a, b) => a.id.compareTo(b.id));
 
               return SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -211,7 +211,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       () {
                         final List<NinType> matrixTypes;
                         if (selectedScale == 'Biologisk') {
-                          matrixTypes = allTypes.where((t) => t.kategori == 'Grunntype').toList();
+                          matrixTypes = allTypes.where((t) => t.kategori == 'Grunntype').toList()..sort((a, b) => a.id.compareTo(b.id));
                         } else {
                           // For Kartleggingsenhet, synthesize LKM data from constituent Grunntyper
                           final gtMap = {for (var gt in allTypes.where((t) => t.kategori == 'Grunntype')) gt.id: gt};
@@ -233,7 +233,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                             } catch (e) {
                               return ke;
                             }
-                          }).toList();
+                          }).toList()..sort((a, b) => a.id.compareTo(b.id));
                         }
 
                         if (matrixTypes.isEmpty) return const SizedBox.shrink();
@@ -385,24 +385,29 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
   }
 
   Widget _buildAppBar(BuildContext context, WidgetRef ref) {
+    final type = widget.type;
+    final level = type == null ? 0 : (type.kategori == 'Type' ? 0 : (type.kategori == 'Hovedtype' ? 1 : 2));
+    final color = level == 0 ? Colors.blue : (level == 1 ? Colors.green : Colors.orange);
+    
     return SliverAppBar(
-      expandedHeight: widget.type == null ? 120 : 300,
+      expandedHeight: type == null ? 120 : 350,
       pinned: true,
+      iconTheme: const IconThemeData(color: Colors.white, shadows: [Shadow(color: Colors.black45, blurRadius: 8)]),
       actions: [
-        if (widget.type != null)
+        if (type != null)
           Consumer(
             builder: (context, ref, child) {
               final favorites = ref.watch(favoritesProvider).value ?? [];
-              final isFavorite = favorites.contains(widget.type!.id);
+              final isFavorite = favorites.contains(type.id);
               return IconButton(
                 icon: Icon(isFavorite ? Icons.star : Icons.star_border),
                 color: isFavorite ? Colors.amber : Colors.white,
                 onPressed: () async {
                   final db = ref.read(userDatabaseProvider);
                   if (isFavorite) {
-                    await (db.delete(db.favorites)..where((t) => t.typeId.equals(widget.type!.id))).go();
+                    await (db.delete(db.favorites)..where((t) => t.typeId.equals(type.id))).go();
                   } else {
-                    await db.into(db.favorites).insert(FavoritesCompanion.insert(typeId: widget.type!.id));
+                    await db.into(db.favorites).insert(FavoritesCompanion.insert(typeId: type.id));
                   }
                 },
               );
@@ -410,32 +415,87 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           ),
       ],
       flexibleSpace: FlexibleSpaceBar(
+        titlePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         title: Text(
-          widget.type?.id ?? 'NiN Explorer',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          type?.navn ?? 'NiN Explorer',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold, 
+            fontSize: 16,
+            color: Colors.white,
+            shadows: [Shadow(color: Colors.black45, blurRadius: 12)],
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
-        background: widget.type == null ? null : Hero(
-          tag: 'image_${widget.type!.id}',
-          child: FutureBuilder<File?>(
-            future: _getLocalImage(widget.type!),
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data != null) {
-                return Image.file(snapshot.data!, fit: BoxFit.cover);
-              }
-              return Container(
+        background: type == null ? null : Stack(
+          fit: StackFit.expand,
+          children: [
+            // Hero Image
+            Hero(
+              tag: 'image_${type.id}',
+              child: FutureBuilder<File?>(
+                future: _getLocalImage(type),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    return Image.file(snapshot.data!, fit: BoxFit.cover);
+                  }
+                  return Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          color.withOpacity(0.8),
+                          Theme.of(context).colorScheme.surface,
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            // Legibility Gradient
+            Positioned.fill(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    stops: const [0.0, 0.4, 0.8],
                     colors: [
-                      Theme.of(context).colorScheme.primary.withOpacity(0.8),
-                      Theme.of(context).colorScheme.surface,
+                      Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(0.2),
+                      Colors.transparent,
                     ],
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            ),
+            // ID Badge in Card Style
+            Positioned(
+              left: 16,
+              bottom: 48, // Above the title
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
+                  ],
+                ),
+                child: Text(
+                  type.id,
+                  style: TextStyle(
+                    fontSize: 14, 
+                    fontWeight: FontWeight.w900, 
+                    color: color,
+                    letterSpacing: 0.8,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -482,7 +542,7 @@ class _TypeCard extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data != null) {
                       return Opacity(
-                        opacity: isIcon ? 1.0 : 0.4,
+                        opacity: isIcon ? 1.0 : 0.8,
                         child: Padding(
                           padding: isIcon ? const EdgeInsets.all(16.0) : EdgeInsets.zero,
                           child: Image.file(snapshot.data!, fit: isIcon ? BoxFit.contain : BoxFit.cover),
@@ -494,25 +554,55 @@ class _TypeCard extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    color.withOpacity(0.3),
-                    Theme.of(context).colorScheme.surface.withOpacity(0.8),
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    stops: const [0.0, 0.3, 0.6],
+                    colors: [
+                      color.withOpacity(0.9),
+                      color.withOpacity(0.4),
+                      color.withOpacity(0.0),
+                    ],
+                  ),
+                ),
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                        boxShadow: [
+                          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4, offset: const Offset(0, 2)),
+                        ],
+                      ),
+                      child: Text(
+                        type.id,
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: color, letterSpacing: 0.5),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      type.navn,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14, 
+                        fontWeight: FontWeight.bold, 
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(color: Colors.black45, blurRadius: 8),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(type.id, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color)),
-                  const Spacer(),
-                  Text(type.navn, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                ],
               ),
             ),
           ],

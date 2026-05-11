@@ -22,15 +22,24 @@ final favoritesProvider = StreamProvider<List<String>>((ref) {
 
 final typesListProvider = FutureProvider<List<NinType>>((ref) async {
   final db = ref.watch(databaseProvider);
-  return (db.select(db.ninTypes)..where((t) => t.parentId.isNull() | t.parentId.equals(''))).get();
+  return (db.select(db.ninTypes)
+        ..where((t) => t.parentId.isNull() | t.parentId.equals(''))
+        ..orderBy([(t) => OrderingTerm(expression: t.id)]))
+      .get();
 });
 
 final subTypesProvider = FutureProvider.family<List<NinType>, String>((ref, parentId) async {
   final db = ref.watch(databaseProvider);
   if (parentId.isEmpty) {
-    return (db.select(db.ninTypes)..where((t) => t.parentId.isNull() | t.parentId.equals(''))).get();
+    return (db.select(db.ninTypes)
+          ..where((t) => t.parentId.isNull() | t.parentId.equals(''))
+          ..orderBy([(t) => OrderingTerm(expression: t.id)]))
+        .get();
   }
-  return (db.select(db.ninTypes)..where((t) => t.parentId.equals(parentId))).get();
+  return (db.select(db.ninTypes)
+        ..where((t) => t.parentId.equals(parentId))
+        ..orderBy([(t) => OrderingTerm(expression: t.id)]))
+      .get();
 });
 
 final variablesListProvider = FutureProvider<List<NinVariable>>((ref) async {
@@ -40,20 +49,27 @@ final variablesListProvider = FutureProvider<List<NinVariable>>((ref) async {
 
 final subVariablesProvider = FutureProvider.family<List<NinVariable>, String>((ref, parentId) async {
   final db = ref.watch(databaseProvider);
-  return (db.select(db.ninVariables)..where((v) => v.parentId.equals(parentId))).get();
+  return (db.select(db.ninVariables)
+        ..where((v) => v.parentId.equals(parentId))
+        ..orderBy([(t) => OrderingTerm(expression: t.id)]))
+      .get();
 });
 
 final searchTypesProvider = FutureProvider.family<List<NinType>, String>((ref, query) async {
   final db = ref.watch(databaseProvider);
   return (db.select(db.ninTypes)
         ..where((t) => t.id.like('%$query%') | t.navn.like('%$query%'))
+        ..orderBy([(t) => OrderingTerm(expression: t.id)])
         ..limit(50))
       .get();
 });
 
 final typesByIdsProvider = FutureProvider.family<List<NinType>, List<String>>((ref, ids) async {
   final db = ref.watch(databaseProvider);
-  return (db.select(db.ninTypes)..where((t) => t.id.isIn(ids))).get();
+  return (db.select(db.ninTypes)
+        ..where((t) => t.id.isIn(ids))
+        ..orderBy([(t) => OrderingTerm(expression: t.id)]))
+      .get();
 });
 
 final variableProvider = FutureProvider.family<NinVariable?, String>((ref, id) async {
