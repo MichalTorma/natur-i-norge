@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'types_screen.dart';
 import 'variables_screen.dart';
 import 'favorites_screen.dart';
+import 'gallery_screen.dart';
 import 'camera_screen.dart';
 import 'settings_screen.dart';
 
@@ -20,7 +21,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     const TypesScreen(),
     const VariablesScreen(),
     const FavoritesScreen(),
-    const CameraScreen(),
+    const GalleryScreen(),
     const SettingsScreen(),
   ];
 
@@ -61,9 +62,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   label: Text('Favorites'),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.camera_alt_outlined),
-                  selectedIcon: Icon(Icons.camera_alt),
-                  label: Text('Camera'),
+                  icon: Icon(Icons.photo_library_outlined),
+                  selectedIcon: Icon(Icons.photo_library),
+                  label: Text('Gallery'),
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.settings_outlined),
@@ -102,9 +103,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   label: 'Favorites',
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.camera_alt_outlined),
-                  selectedIcon: Icon(Icons.camera_alt),
-                  label: 'Camera',
+                  icon: Icon(Icons.photo_library_outlined),
+                  selectedIcon: Icon(Icons.photo_library),
+                  label: 'Gallery',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.settings_outlined),

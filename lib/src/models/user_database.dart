@@ -14,7 +14,20 @@ class Favorites extends Table {
   Set<Column> get primaryKey => {typeId};
 }
 
-@DriftDatabase(tables: [Favorites])
+class Observations extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get typeId => text()(); // The NiN type code
+  TextColumn get imagePath => text()();
+  RealColumn get latitude => real()();
+  RealColumn get longitude => real()();
+  RealColumn get altitude => real().nullable()();
+  RealColumn get accuracy => real()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+  TextColumn get observerName => text().nullable()();
+  TextColumn get notes => text().nullable()();
+}
+
+@DriftDatabase(tables: [Favorites, Observations])
 class UserDatabase extends _$UserDatabase {
   UserDatabase() : super(_openConnection());
 

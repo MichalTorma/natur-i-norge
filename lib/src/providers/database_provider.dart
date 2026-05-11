@@ -60,3 +60,10 @@ final variableProvider = FutureProvider.family<NinVariable?, String>((ref, id) a
   final db = ref.watch(databaseProvider);
   return (db.select(db.ninVariables)..where((v) => v.id.equals(id))).getSingleOrNull();
 });
+
+final observationsProvider = StreamProvider<List<Observation>>((ref) {
+  final db = ref.watch(userDatabaseProvider);
+  return (db.select(db.observations)
+        ..orderBy([(t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)]))
+      .watch();
+});
