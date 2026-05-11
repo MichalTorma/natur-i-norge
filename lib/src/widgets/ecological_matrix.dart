@@ -122,315 +122,301 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
 
     // Responsive sizing logic
     final screenSize = MediaQuery.of(context).size;
-    const double yHeaderWidth = 100.0; // Standard width for Y headers
-    const double yLkmNameWidth = 40.0;
+    const double yHeaderWidth = 55.0; // More compact for Y axis
+    const double yLkmNameWidth = 20.0; 
     
     final bool hasYAxis = _yAxisVar != null;
     final double effectiveYHeaderWidth = hasYAxis ? yHeaderWidth : 0;
 
-    double totalXUnits = 0;
-    for (var xId in xSteps) {
-      totalXUnits += (matrixData.xMergeMap[xId]?.length ?? 1);
-    }
-    double totalYUnits = 0;
-    for (var yId in ySteps) {
-      totalYUnits += (matrixData.yMergeMap[yId]?.length ?? 1);
-    }
-
-    final double availableW = screenSize.width - 32; // Standard padding
-    final double availableH = screenSize.height * 0.7; // Target 70% of screen
-
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
 
-    final double unitWidth = ((availableW - effectiveYHeaderWidth) / (totalXUnits > 0 ? totalXUnits : 1)).clamp(100.0, 300.0);
-    final double unitHeight = ((availableH - 100) / (totalYUnits > 0 ? totalYUnits : 1)).clamp(80.0, 200.0);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Variable Toggles (Slices) - Merged by Effect
-        if (_activeFilters.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _activeFilters.keys.map((filterVar) {
-                final allSteps = allVarSteps[filterVar]!.keys.toList()..sort();
-                final displayName = varNames[filterVar] ?? filterVar;
-                
-                // Group steps that produce the SAME matrix
-                final List<List<String>> mergedGroups = [];
-                if (allSteps.isNotEmpty) {
-                  List<String> currentGroup = [allSteps[0]];
-                  String? currentGridHash = _calculateGridHash(filterVar, allSteps[0]);
-                  
-                  for (int i = 1; i < allSteps.length; i++) {
-                    final nextHash = _calculateGridHash(filterVar, allSteps[i]);
-                    if (nextHash == currentGridHash) {
-                      currentGroup.add(allSteps[i]);
-                    } else {
-                      mergedGroups.add(currentGroup);
-                      currentGroup = [allSteps[i]];
-                      currentGridHash = nextHash;
-                    }
-                  }
-                  mergedGroups.add(currentGroup);
-                }
-
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: yHeaderWidth, 
-                        child: InkWell(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: filterVar))),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                displayName, 
-                                style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                "($filterVar)",
-                                style: TextStyle(fontSize: 7, color: colorScheme.onSurface.withOpacity(0.4)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: mergedGroups.map((group) {
-                              final isSelected = group.contains(_activeFilters[filterVar]);
-                              final startLabel = allVarSteps[filterVar]![group.first] ?? group.first;
-                              final endLabel = allVarSteps[filterVar]![group.last] ?? group.last;
-                              final rangeLabel = group.length > 1 ? "$startLabel - $endLabel" : startLabel;
-                              final codesLabel = group.length > 1 ? "(${group.join(', ')})" : "";
-
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 4.0),
-                                child: ChoiceChip(
-                                  label: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(rangeLabel, style: const TextStyle(fontSize: 9)),
-                                      if (codesLabel.isNotEmpty)
-                                        Text(codesLabel, style: TextStyle(fontSize: 7, color: colorScheme.onSurface.withOpacity(0.4))),
-                                    ],
-                                  ),
-                                  selected: isSelected,
-                                  onSelected: (val) {
-                                    if (val) setState(() => _activeFilters[filterVar] = group.first);
-                                  },
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableW = constraints.maxWidth;
         
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Row(
-            children: [
-              Icon(Icons.grid_on, size: 14, color: colorScheme.primary),
-              const SizedBox(width: 8),
-              Text(
-                hasYAxis 
-                  ? '${varNames[_xAxisVar] ?? _xAxisVar} \u00d7 ${varNames[_yAxisVar] ?? _yAxisVar}'
-                  : '${varNames[_xAxisVar] ?? _xAxisVar}',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: colorScheme.primary),
+        double totalXUnits = 0;
+        for (var xId in xSteps) {
+          totalXUnits += (matrixData.xMergeMap[xId]?.length ?? 1);
+        }
+        double totalYUnits = 0;
+        for (var yId in ySteps) {
+          totalYUnits += (matrixData.yMergeMap[yId]?.length ?? 1);
+        }
+
+        // NO CLAMP on width - force it to fit the screen dimension
+        final double unitWidth = (availableW - effectiveYHeaderWidth) / (totalXUnits > 0 ? totalXUnits : 1);
+        // Height follows width to stay relatively square, but with a reasonable minimum for the text
+        final double unitHeight = unitWidth.clamp(50.0, 100.0); 
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Variable Toggles (Slices) - Merged by Effect
+            if (_activeFilters.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _activeFilters.keys.map((filterVar) {
+                    final allSteps = allVarSteps[filterVar]!.keys.toList()..sort();
+                    final displayName = varNames[filterVar] ?? filterVar;
+                    
+                    // Group steps that produce the SAME matrix
+                    final List<List<String>> mergedGroups = [];
+                    if (allSteps.isNotEmpty) {
+                      List<String> currentGroup = [allSteps[0]];
+                      String? currentGridHash = _calculateGridHash(filterVar, allSteps[0]);
+                      
+                      for (int i = 1; i < allSteps.length; i++) {
+                        final nextHash = _calculateGridHash(filterVar, allSteps[i]);
+                        if (nextHash == currentGridHash) {
+                          currentGroup.add(allSteps[i]);
+                        } else {
+                          mergedGroups.add(currentGroup);
+                          currentGroup = [allSteps[i]];
+                          currentGridHash = nextHash;
+                        }
+                      }
+                      mergedGroups.add(currentGroup);
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: yHeaderWidth, 
+                            child: InkWell(
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: filterVar))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    displayName, 
+                                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    filterVar,
+                                    style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: mergedGroups.map((group) {
+                                  final isSelected = group.contains(_activeFilters[filterVar]);
+                                  final startLabel = allVarSteps[filterVar]![group.first] ?? group.first;
+                                  final endLabel = allVarSteps[filterVar]![group.last] ?? group.last;
+                                  final rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : startLabel;
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 2.0),
+                                    child: ChoiceChip(
+                                      visualDensity: VisualDensity.compact,
+                                      padding: EdgeInsets.zero,
+                                      label: Text(rangeLabel, style: const TextStyle(fontSize: 8)),
+                                      selected: isSelected,
+                                      onSelected: (val) {
+                                        if (val) setState(() => _activeFilters[filterVar] = group.first);
+                                      },
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-            ],
-          ),
-        ),
+            
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                children: [
+                  Icon(Icons.grid_on, size: 14, color: colorScheme.primary),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      hasYAxis 
+                        ? '${varNames[_xAxisVar] ?? _xAxisVar} \u00d7 ${varNames[_yAxisVar] ?? _yAxisVar}'
+                        : '${varNames[_xAxisVar] ?? _xAxisVar}',
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
         // The Archipelago (Outside the box!)
-        ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: availableH),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
+        // The Archipelago (Outside the box!)
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // X-Axis LKM Header (Full Width Name)
+              Padding(
+                padding: EdgeInsets.only(left: effectiveYHeaderWidth),
+                child: InkWell(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _xAxisVar!))),
+                  child: Container(
+                    width: totalXUnits * unitWidth,
+                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary.withOpacity(0.1),
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                      border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})",
+                          style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              // X-Axis Range Headers (The codes/steps)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(width: effectiveYHeaderWidth), 
+                  ...xSteps.map((xId) {
+                    final group = matrixData.xMergeMap[xId]!;
+                    final startLabel = allVarSteps[_xAxisVar]?[group.first] ?? group.first;
+                    final endLabel = allVarSteps[_xAxisVar]?[group.last] ?? group.last;
+                    final rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : startLabel;
+                    final width = group.length * unitWidth;
+
+                    return Container(
+                      width: width,
+                      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 2.0),
+                            child: Text(
+                              rangeLabel,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: colorScheme.primary),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Row(
+                            children: group.map((code) => Container(
+                              width: unitWidth,
+                              height: 10,
+                              alignment: Alignment.center,
+                              child: Text(code, style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4))),
+                            )).toList(),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ],
+              ),
+              // The Data Row (Y-Header + Grid)
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // X-Axis LKM Header (Full Width Name)
-                  Padding(
-                    padding: EdgeInsets.only(left: effectiveYHeaderWidth),
-                    child: InkWell(
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _xAxisVar!))),
+                  // Y-Axis LKM Name Button (Pinned to left)
+                  if (hasYAxis)
+                    InkWell(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _yAxisVar!))),
                       child: Container(
-                        width: totalXUnits * unitWidth,
-                        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                        width: yLkmNameWidth,
+                        height: totalYUnits * unitHeight,
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: colorScheme.primary.withOpacity(0.1),
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+                          borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
                           border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.info_outline, size: 12, color: colorScheme.primary),
-                            const SizedBox(width: 6),
-                            Text(
-                              "$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})",
-                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                            ),
-                          ],
+                        child: RotatedBox(
+                          quarterTurns: 3,
+                          child: Text(
+                            "$_yAxisVar",
+                            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  // X-Axis Range Headers (The codes/steps)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SizedBox(width: effectiveYHeaderWidth), 
-                      ...xSteps.map((xId) {
-                        final group = matrixData.xMergeMap[xId]!;
-                        final startLabel = allVarSteps[_xAxisVar]?[group.first] ?? group.first;
-                        final endLabel = allVarSteps[_xAxisVar]?[group.last] ?? group.last;
-                        final rangeLabel = group.length > 1 ? "$startLabel - $endLabel" : startLabel;
-                        final width = group.length * unitWidth;
+                  // Y-Axis Range Labels
+                  if (hasYAxis)
+                    Column(
+                      children: ySteps.map((yId) {
+                        final group = matrixData.yMergeMap[yId]!;
+                        final startLabel = allVarSteps[_yAxisVar]?[group.first] ?? group.first;
+                        final endLabel = allVarSteps[_yAxisVar]?[group.last] ?? group.last;
+                        final rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : (startLabel == '' ? '-' : startLabel);
+                        final height = group.length * unitHeight;
 
                         return Container(
-                          width: width,
-                          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                          width: yHeaderWidth - yLkmNameWidth,
+                          height: height,
+                          decoration: BoxDecoration(border: Border(right: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
+                          child: Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 4.0),
-                                child: Text(
-                                  rangeLabel,
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: colorScheme.primary),
-                                  textAlign: TextAlign.center,
+                              Expanded(
+                                child: RotatedBox(
+                                  quarterTurns: 3,
+                                  child: Text(
+                                    rangeLabel,
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: colorScheme.primary),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
-                              Row(
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: group.map((code) => Container(
-                                  width: unitWidth,
-                                  height: 15,
+                                  width: 15,
+                                  height: unitHeight,
                                   alignment: Alignment.center,
-                                  child: Text(code, style: TextStyle(fontSize: 7, color: colorScheme.onSurface.withOpacity(0.4))),
+                                  child: Text(code, style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4))),
                                 )).toList(),
                               ),
                             ],
                           ),
                         );
-                      }),
-                    ],
-                  ),
-                  // The Data Row (Y-Header + Grid)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Y-Axis LKM Name Button (Pinned to left)
-                      if (hasYAxis)
-                        InkWell(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _yAxisVar!))),
-                          child: Container(
-                            width: yLkmNameWidth,
-                            height: totalYUnits * unitHeight,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: colorScheme.primary.withOpacity(0.1),
-                              borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
-                              border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
-                            ),
-                            child: RotatedBox(
-                              quarterTurns: 3,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.info_outline, size: 12, color: colorScheme.primary),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    "$_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'})",
-                                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      // Y-Axis Range Labels
-                      if (hasYAxis)
-                        Column(
-                          children: ySteps.map((yId) {
-                            final group = matrixData.yMergeMap[yId]!;
-                            final startLabel = allVarSteps[_yAxisVar]?[group.first] ?? group.first;
-                            final endLabel = allVarSteps[_yAxisVar]?[group.last] ?? group.last;
-                            final rangeLabel = group.length > 1 ? "${startLabel == '' ? '-' : startLabel} - $endLabel" : (startLabel == '' ? '-' : startLabel);
-                            final height = group.length * unitHeight;
-
-                            return Container(
-                              width: yHeaderWidth - yLkmNameWidth,
-                              height: height,
-                              decoration: BoxDecoration(border: Border(right: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: RotatedBox(
-                                      quarterTurns: 3,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(bottom: 4.0),
-                                        child: Text(
-                                          rangeLabel,
-                                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: colorScheme.primary),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: group.map((code) => Container(
-                                      width: 25,
-                                      height: unitHeight,
-                                      alignment: Alignment.center,
-                                      child: Text(code, style: TextStyle(fontSize: 7, color: colorScheme.onSurface.withOpacity(0.4))),
-                                    )).toList(),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      // The Data Area (Stack)
-                      SizedBox(
-                        width: totalXUnits * unitWidth,
-                        height: totalYUnits * unitHeight,
-                        child: Stack(
-                          children: [
-                            // Subtle Background Grid
-                            _buildBackgroundGrid(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
-                            
-                            // The Islands
-                            ..._buildIslands(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
-                          ],
-                        ),
-                      ),
-                    ],
+                      }).toList(),
+                    ),
+                  // The Data Area (Stack)
+                  SizedBox(
+                    width: totalXUnits * unitWidth,
+                    height: totalYUnits * unitHeight,
+                    child: Stack(
+                      children: [
+                        // Subtle Background Grid
+                        _buildBackgroundGrid(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
+                        
+                        // The Islands
+                        ..._buildIslands(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
         ),
         Padding(
@@ -440,7 +426,9 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
             style: TextStyle(fontSize: 10, color: colorScheme.onSurface.withOpacity(0.2)),
           ),
         ),
-      ],
+          ],
+        );
+      },
     );
   }
 
@@ -682,7 +670,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           width: width,
           height: height,
           child: Padding(
-            padding: const EdgeInsets.all(3.0),
+            padding: const EdgeInsets.all(1.0),
             child: MouseRegion(
               onEnter: (_) => _hoveredTypeId.value = type.id,
               onExit: (_) => _hoveredTypeId.value = null,
@@ -703,30 +691,36 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                             ? [primaryColor.withOpacity(0.4), primaryColor.withOpacity(0.2)]
                             : [primaryColor.withOpacity(0.15), primaryColor.withOpacity(0.05)],
                         ),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(4),
                         border: Border.all(color: isHighlighted ? primaryColor : colorScheme.onSurface.withOpacity(0.1)),
                         boxShadow: isHighlighted ? [
-                          BoxShadow(color: primaryColor.withOpacity(0.2), blurRadius: 8, spreadRadius: 1)
+                          BoxShadow(color: primaryColor.withOpacity(0.2), blurRadius: 4, spreadRadius: 0)
                         ] : [],
                       ),
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             type.id.split('-').last,
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: colorScheme.primary),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold, 
+                              fontSize: unitWidth < 40 ? 10 : (unitWidth < 60 ? 11 : 13), 
+                              color: colorScheme.primary
+                            ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            type.navn,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 10, color: colorScheme.onSurface.withOpacity(0.7)),
-                          ),
+                          if (unitHeight > 55 && unitWidth > 40) ...[
+                            const SizedBox(height: 1),
+                            Text(
+                              type.navn,
+                              maxLines: unitHeight > 85 ? 2 : 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 8, color: colorScheme.onSurface.withOpacity(0.7)),
+                            ),
+                          ],
                         ],
                       ),
                     ),
