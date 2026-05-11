@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:drift/drift.dart' show Value;
+import '../providers/settings_provider.dart';
 import '../providers/database_provider.dart';
 import '../models/nin_database.dart';
 import '../models/user_database.dart';
@@ -22,10 +23,10 @@ class TypesScreen extends ConsumerStatefulWidget {
 class _TypesScreenState extends ConsumerState<TypesScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
-  String _selectedScale = 'Biologisk'; // Default to Biological view
 
   @override
   Widget build(BuildContext context) {
+    final selectedScale = ref.watch(selectedScaleProvider);
     final parentId = widget.type?.id;
     final typesAsync = _searchQuery.isEmpty
         ? ref.watch(subTypesProvider(parentId ?? ''))
@@ -106,10 +107,10 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                 if (_searchQuery.isNotEmpty) return true;
                 if (!isHovedtype) return true;
                 
-                if (_selectedScale == 'Biologisk') {
+                if (selectedScale == 'Biologisk') {
                   return t.kategori == 'Grunntype';
                 } else {
-                  return t.kategori == 'Kartleggingsenhet' && t.scale == _selectedScale;
+                  return t.kategori == 'Kartleggingsenhet' && t.scale == selectedScale;
                 }
               }).toList();
 
@@ -128,13 +129,13 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       Center(
                         child: SegmentedButton<String>(
                           segments: const [
-                            ButtonSegment(value: 'Biologisk', label: Text('Biologisk'), icon: Icon(Icons.biotech)),
-                            ButtonSegment(value: 'M005', label: Text('M005')),
-                            ButtonSegment(value: 'M020', label: Text('M020')),
-                            ButtonSegment(value: 'M050', label: Text('M050')),
+                            ButtonSegment(value: 'Biologisk', label: Text('Grunntyper'), icon: Icon(Icons.biotech)),
+                            ButtonSegment(value: 'M005', label: Text('1:5 000')),
+                            ButtonSegment(value: 'M020', label: Text('1:20 000')),
+                            ButtonSegment(value: 'M050', label: Text('1:50 000')),
                           ],
-                          selected: {_selectedScale},
-                          onSelectionChanged: (set) => setState(() => _selectedScale = set.first),
+                          selected: {selectedScale},
+                          onSelectionChanged: (set) => ref.read(selectedScaleProvider.notifier).setScale(set.first),
                           style: SegmentedButton.styleFrom(
                             backgroundColor: Colors.white.withOpacity(0.05),
                             selectedBackgroundColor: Colors.greenAccent.withOpacity(0.2),
@@ -147,13 +148,13 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       // Show matrix for both biological and mapping scales
                       () {
                         final List<NinType> matrixTypes;
-                        if (_selectedScale == 'Biologisk') {
+                        if (selectedScale == 'Biologisk') {
                           matrixTypes = allTypes.where((t) => t.kategori == 'Grunntype').toList();
                         } else {
                           // For Kartleggingsenhet, synthesize LKM data from constituent Grunntyper
                           final gtMap = {for (var gt in allTypes.where((t) => t.kategori == 'Grunntype')) gt.id: gt};
                           matrixTypes = allTypes
-                              .where((t) => t.kategori == 'Kartleggingsenhet' && t.scale == _selectedScale)
+                              .where((t) => t.kategori == 'Kartleggingsenhet' && t.scale == selectedScale)
                               .map((ke) {
                             if (ke.containsTypes == null) return ke;
                             try {
@@ -179,7 +180,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'ECOLOGICAL MATRIX (${_selectedScale == 'Biologisk' ? 'BIO' : _selectedScale})',
+                              'ECOLOGICAL MATRIX (${selectedScale == 'Biologisk' ? 'BIO' : selectedScale})',
                               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent, letterSpacing: 1.2),
                             ),
                             const SizedBox(height: 16),
@@ -190,13 +191,13 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       }(),
                       
                       Text(
-                        _selectedScale == 'Biologisk' ? 'GRUNNTYPER' : 'KARTLEGGINGSENHETER ($_selectedScale)',
+                        selectedScale == 'Biologisk' ? 'GRUNNTYPER' : 'KARTLEGGINGSENHETER ($selectedScale)',
                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white38, letterSpacing: 1.2),
                       ),
                       const SizedBox(height: 16),
                     ],
                     
-                    if (types.isEmpty && _selectedScale == 'Biologisk' && !isHovedtype) ...[
+                    if (types.isEmpty && selectedScale == 'Biologisk' && !isHovedtype) ...[
                       // If we are at a Kartleggingsenhet, show what it contains
                       if (widget.type?.kategori == 'Kartleggingsenhet' && widget.type?.containsTypes != null) ...[
                         const Padding(
