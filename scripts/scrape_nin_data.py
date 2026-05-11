@@ -227,8 +227,17 @@ def process_single_type(t):
                     # Parse LKM data
                     def parse_lkm(obj):
                         l_list = []
-                        def w(o):
+                        def w(o, current_var_name=None):
                             if isinstance(o, dict):
+                                # Capture variable name if present at this level
+                                # In NiN 3.0, variabelnavn is an object containing a 'navn' field
+                                var_obj = o.get('variabelnavn')
+                                var_name = current_var_name
+                                if isinstance(var_obj, dict):
+                                    var_name = var_obj.get('navn') or current_var_name
+                                elif isinstance(var_obj, str):
+                                    var_name = var_obj
+                                
                                 if o.get('registert') == True and o.get('kode'):
                                     k = o['kode']
                                     ki = k['id'] if isinstance(k, dict) else str(k)
@@ -236,13 +245,15 @@ def process_single_type(t):
                                     if any(p in vi for p in ['LM-', 'KM-', 'KA-', 'UF-', 'HI-', 'VM-']):
                                         l_list.append({
                                             'v_kode': vi, 
-                                            'v_navn': o.get('navn'), 
+                                            'v_navn': var_name, 
                                             'v_trinn': o.get('verdi'), 
                                             'v_trinn_navn': o.get('beskrivelse')
                                         })
-                                for v in o.values(): w(v)
+                                
+                                # Recursively process children
+                                for v in o.values(): w(v, var_name)
                             elif isinstance(o, list):
-                                for i in o: w(i)
+                                for i in o: w(i, current_var_name)
                         w(obj)
                         return json.dumps(l_list) if l_list else None
                     

@@ -105,7 +105,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       final List<dynamic> lkm = jsonDecode(type.lkmData!);
       for (var entry in lkm) {
         final code = entry['v_kode'] as String;
-        final name = entry['v_navn'] as String?;
+        final name = entry['v_navn']?.toString();
         final trinn = entry['v_trinn']?.toString();
         final trinnNavn = entry['v_trinn_navn'] as String?;
         if (trinn == null) continue;
@@ -280,7 +280,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                             const Icon(Icons.info_outline, size: 12, color: Colors.greenAccent),
                             const SizedBox(width: 6),
                             Text(
-                              "${varNames[_xAxisVar] ?? _xAxisVar} ($_xAxisVar)",
+                              "$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})",
                               style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.greenAccent),
                             ),
                           ],
@@ -353,7 +353,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                                   const Icon(Icons.info_outline, size: 12, color: Colors.greenAccent),
                                   const SizedBox(width: 6),
                                   Text(
-                                    "${varNames[_yAxisVar] ?? _yAxisVar} ($_yAxisVar)",
+                                    "$_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'})",
                                     style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.greenAccent),
                                   ),
                                 ],
