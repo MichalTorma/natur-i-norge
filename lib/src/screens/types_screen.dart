@@ -8,6 +8,7 @@ import '../providers/database_provider.dart';
 import '../models/nin_database.dart';
 import '../models/user_database.dart';
 import '../widgets/ecological_matrix.dart';
+import '../widgets/expandable_markdown.dart';
 
 class TypesScreen extends ConsumerStatefulWidget {
   final NinType? type;
@@ -79,10 +80,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.greenAccent),
                     ),
                     const SizedBox(height: 12),
-                    SelectableText(
-                      widget.type!.description!,
-                      style: const TextStyle(fontSize: 16, height: 1.6, color: Colors.white, letterSpacing: 0.2),
-                    ),
+                    ExpandableMarkdown(data: widget.type!.description!),
                     const Divider(height: 64),
                   ],
                 ),

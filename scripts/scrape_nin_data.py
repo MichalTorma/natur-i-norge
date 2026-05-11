@@ -92,6 +92,50 @@ def setup_db():
     conn.commit()
     return conn
 
+def extract_text_from_soup(soup):
+    content = soup.find('main', id='main-content') or soup.find('article') or soup.body
+    if not content: return ""
+    
+    # Filter out obvious UI elements
+    for nav in content.find_all(['nav', 'button', 'script', 'style', 'header', 'footer']): 
+        nav.decompose()
+    
+    captured = []
+    found_start = False
+    
+    # Common start markers
+    start_markers = ['Inndeling', 'Beskrivelse', 'Bruk av variabelen', 'Definisjon', 'Identifisering', 'Innhold']
+    
+    for el in content.find_all(['h2', 'h3', 'h4', 'p', 'ul', 'ol']):
+        text = el.get_text(separator=' ', strip=True)
+        if not text: continue
+        
+        # Skip breadcrumbs/nav
+        if not found_start:
+            if el.name == 'p' and len(text) > 100 and 'Forside' not in text:
+                found_start = True
+            elif el.name.startswith('h') and any(m in text for m in start_markers):
+                found_start = True
+            
+            if not found_start: continue
+
+        # Stop markers
+        if any(kw in text.lower() for kw in FOOTER_KEYWORDS) or 'Siden siteres som' in text:
+            break
+        
+        if el.name.startswith('h'):
+            captured.append(f"### {text}")
+        elif el.name == 'ul' or el.name == 'ol':
+            items = [li.get_text(strip=True) for li in el.find_all('li')]
+            for item in items:
+                if len(item) > 5:
+                    captured.append(f"- {item}")
+        else:
+            if len(text) > 20:
+                captured.append(text)
+    
+    return "\n\n".join(captured)
+
 def fetch_metadata(langkode):
     """Scrape ALL available descriptions and merge them."""
     if not langkode: return None, None
@@ -101,7 +145,7 @@ def fetch_metadata(langkode):
     long_desc = ""
     img_url = None
     
-    # 1. Main Page (Short Ingress + Image)
+    # 1. Main Page (Short Ingress + Image + Potential Long Desc)
     try:
         url = f"{WEB_BASE_URL}/{langkode}"
         r = get_session().get(url, headers=headers, timeout=10)
@@ -109,6 +153,9 @@ def fetch_metadata(langkode):
             soup = BeautifulSoup(r.text, 'html.parser')
             ingress = soup.find(class_='ingress')
             if ingress: short_desc = ingress.get_text().strip()
+            
+            # For variables, everything is usually on the main page
+            long_desc = extract_text_from_soup(soup)
             
             # Harvesting Image
             content = soup.find(class_='main-content') or soup.find(id='main-content') or soup.body
@@ -119,8 +166,6 @@ def fetch_metadata(langkode):
                     src = img.get('src', '')
                     if not src: continue
                     src_lower = src.lower()
-                    # Capture images from both old 'public' and new 'sites/default/files' paths
-                    # and ensure we're not grabbing UI icons, logos, or avatars
                     if ('/public/' in src or '/sites/default/files/' in src) and \
                        not any(x in src_lower for x in ['icon', 'logo', 'social', 'user', 'theme', 'avatar', 'favicons']):
                         img_url = src if src.startswith('http') else f"https://artsdatabanken.no{src}"
@@ -128,43 +173,19 @@ def fetch_metadata(langkode):
                 if img_url: break
     except: pass
 
-    # 2. Description Page (Deep Biological Detail)
+    # 2. Description Page (Deep Biological Detail - often for Types)
     try:
         desc_url = f"{WEB_BASE_URL}/{langkode}/beskrivelse"
         r = get_session().get(desc_url, headers=headers, timeout=10)
         if r.status_code == 200:
-            soup = BeautifulSoup(r.text, 'html.parser')
-            content = soup.find('main', id='main-content') or soup.find('article') or soup.body
-            if content:
-                # Filter out obvious UI elements
-                for nav in content.find_all(['nav', 'button', 'script', 'style']): nav.decompose()
-                
-                text = content.get_text(separator='\n', strip=True)
-                lines = text.split('\n')
-                captured = []
-                found_start = False
-                
-                for line in lines:
-                    line = line.strip()
-                    if not line: continue
-                    # Start capturing after the hierarchy/title info
-                    if any(x in line for x in ['Plassering i NiN', 'Identifisering', 'Innhold']):
-                        found_start = True
-                        continue
-                    if found_start:
-                        # Stop at footer or sitering info
-                        if any(kw in line.lower() for kw in FOOTER_KEYWORDS) or 'Siden siteres som' in line:
-                            break
-                        if len(line) > 30:
-                            captured.append(line)
-                
-                if captured:
-                    long_desc = "\n\n".join(captured)
+            soup_desc = BeautifulSoup(r.text, 'html.parser')
+            desc_long = extract_text_from_soup(soup_desc)
+            if desc_long and len(desc_long) > len(long_desc):
+                long_desc = desc_long
     except: pass
 
     # Merge them intelligently
-    full_text = ""
-    if short_desc: full_text = short_desc
+    full_text = short_desc
     if long_desc:
         # Avoid duplicate starting text if long_desc repeats short_desc
         if full_text and long_desc.startswith(full_text[:50]):
@@ -240,9 +261,28 @@ def process_single_type(t):
     return t
 
 def process_single_variable(v):
-    # Scrape field notes for the LKM gradient
+    # Try to fetch long description from web
     desc, _ = fetch_metadata(v['langkode'])
-    v['description'] = desc
+    
+    parts = []
+    if desc:
+        parts.append(desc)
+        parts.append("\n---\n") # Visual separator
+    
+    # Always add synthesized metadata/trinn for consistency
+    if v.get('kategori'): parts.append(f"Kategori: {v['kategori']}")
+    if v.get('ecosystnivaa_navn'): parts.append(f"Økosystemnivå: {v['ecosystnivaa_navn']}")
+    
+    if v.get('steps_json'):
+        try:
+            steps = json.loads(v['steps_json'])
+            if steps:
+                parts.append("\nTrinn:")
+                for s in steps:
+                    parts.append(f"- {s['verdi']}: {s['navn']}")
+        except: pass
+            
+    v['description'] = "\n".join(parts)
     return v
 
 def main():
@@ -256,20 +296,27 @@ def main():
     all_vars = []
     
     def walk_vars(item, parent_id=None):
-        kode = item['kode']
+        kode = item.get('kode')
+        if not kode: return
+        
+        k_id = kode['id']
+        
+        # Collect steps from variabeltrinn -> trinn
         steps = []
-        if item.get('basistrinn'):
-            for bt in item['basistrinn']:
-                steps.append({
-                    'verdi': bt.get('verdi'),
-                    'navn': bt.get('beskrivelse'),
-                    'kode': bt.get('kode', {}).get('id') if isinstance(bt.get('kode'), dict) else bt.get('kode')
-                })
+        if item.get('variabeltrinn'):
+            for vt in item['variabeltrinn']:
+                if vt.get('trinn'):
+                    for tr in vt['trinn']:
+                        steps.append({
+                            'verdi': tr.get('verdi'),
+                            'navn': tr.get('beskrivelse'),
+                            'kode': tr.get('kode')
+                        })
         
         all_vars.append({
-            'id': kode['id'],
-            'navn': item['navn'],
-            'kategori': item['kategori'],
+            'id': k_id,
+            'navn': item.get('navn', k_id),
+            'kategori': item.get('kategori') or item.get('variabelkategori2Navn') or item.get('variabelkategoriNavn') or 'Lokal kompleks miljøvariabel (LKM)',
             'parent_id': parent_id,
             'ecosystnivaa_navn': item.get('ecosystnivaaNavn'),
             'variabelkategori_navn': item.get('variabelkategoriNavn'),
@@ -277,9 +324,11 @@ def main():
             'steps_json': json.dumps(steps) if steps else None
         })
         
-        for key in ['underordneteVariabler', 'variabeltrinn', 'variabelnavn', 'underordneteKoder']:
+        # Recursive keys in NiN 3.0 structure
+        for key in ['variabelnavn', 'underordneteVariabler', 'underordneteKoder', 'variabler']:
             if item.get(key):
-                for sub in item[key]: walk_vars(sub, kode['id'])
+                for sub in item[key]: 
+                    walk_vars(sub, k_id)
 
     for root in var_data['variabler']: walk_vars(root)
 
