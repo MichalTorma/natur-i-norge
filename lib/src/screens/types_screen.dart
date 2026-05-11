@@ -245,7 +245,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                               style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2),
                             ),
                             const SizedBox(height: 16),
-                            EcologicalMatrix(subTypes: matrixTypes),
+                            EcologicalMatrix(subTypes: matrixTypes, onPick: widget.onPick),
                             const Divider(height: 48),
                           ],
                         );

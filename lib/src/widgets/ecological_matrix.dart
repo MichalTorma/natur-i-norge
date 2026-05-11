@@ -6,7 +6,8 @@ import '../screens/variable_detail_screen.dart';
 
 class EcologicalMatrix extends StatefulWidget {
   final List<NinType> subTypes;
-  const EcologicalMatrix({super.key, required this.subTypes});
+  final ValueChanged<NinType>? onPick;
+  const EcologicalMatrix({super.key, required this.subTypes, this.onPick});
 
   @override
   State<EcologicalMatrix> createState() => _EcologicalMatrixState();
@@ -692,7 +693,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   final primaryColor = colorScheme.primary;
                   
                   return InkWell(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TypesScreen(type: type))),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TypesScreen(type: type, onPick: widget.onPick))),
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
