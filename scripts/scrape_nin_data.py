@@ -211,6 +211,18 @@ def download_and_optimize_image(url, type_id):
     except: pass
     return None
 
+def fix_broken_encoding(s):
+    """Fix common encoding issues from the NiN API where some fields use mixed encodings."""
+    if not s: return s
+    mapping = {
+        'milj\ufffdvariabel': 'miljøvariabel',
+        'milj\ufffddynamikk': 'miljødynamikk',
+        'artsfordelingsm\ufffdnster': 'artsfordelingsmønster',
+    }
+    for broken, fixed in mapping.items():
+        s = s.replace(broken, fixed)
+    return s.replace('\ufffd', 'ø') # Fallback: most remaining broken chars in categories are 'ø'
+
 def process_single_type(t):
     # Heartbeat
     print(f"Processing {t['id']}...") 
@@ -335,10 +347,10 @@ def main():
         all_vars.append({
             'id': k_id,
             'navn': item.get('navn', k_id),
-            'kategori': item.get('kategori') or item.get('variabelkategori2Navn') or item.get('variabelkategoriNavn') or 'Lokal kompleks miljøvariabel (LKM)',
+            'kategori': fix_broken_encoding(item.get('kategori') or item.get('variabelkategori2Navn') or item.get('variabelkategoriNavn') or 'Lokal kompleks miljøvariabel (LKM)'),
             'parent_id': parent_id,
-            'ecosystnivaa_navn': item.get('ecosystnivaaNavn'),
-            'variabelkategori_navn': item.get('variabelkategoriNavn'),
+            'ecosystnivaa_navn': fix_broken_encoding(item.get('ecosystnivaaNavn')),
+            'variabelkategori_navn': fix_broken_encoding(item.get('variabelkategoriNavn')),
             'langkode': kode.get('langkode'),
             'steps_json': json.dumps(steps) if steps else None
         })
