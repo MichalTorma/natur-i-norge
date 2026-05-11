@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to camera to take photos of nature observations.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location to record precise nature observations.</string>
 </dict>
 </plist>
