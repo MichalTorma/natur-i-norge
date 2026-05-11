@@ -10,7 +10,8 @@ import 'types_screen.dart';
 
 class ObservationReviewScreen extends ConsumerStatefulWidget {
   final String imagePath;
-  const ObservationReviewScreen({super.key, required this.imagePath});
+  final NinType? initialType;
+  const ObservationReviewScreen({super.key, required this.imagePath, this.initialType});
 
   @override
   ConsumerState<ObservationReviewScreen> createState() => _ObservationReviewScreenState();
@@ -26,6 +27,7 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
   @override
   void initState() {
     super.initState();
+    _selectedType = widget.initialType;
     _getLocation();
   }
 

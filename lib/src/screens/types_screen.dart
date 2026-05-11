@@ -11,6 +11,7 @@ import '../models/nin_database.dart';
 import '../models/user_database.dart';
 import '../widgets/ecological_matrix.dart';
 import '../widgets/expandable_markdown.dart';
+import 'camera_screen.dart';
 
 class TypesScreen extends ConsumerStatefulWidget {
   final NinType? type;
@@ -338,26 +339,45 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
         ],
       ),
       floatingActionButton: () {
-        if (widget.onPick == null || widget.type == null) return null;
+        if (widget.type == null) return null;
         
         final isMappingUnit = widget.type!.kategori == 'Kartleggingsenhet';
         final isGrunntype = widget.type!.kategori == 'Grunntype';
 
-        if (isMappingUnit) {
-          return FloatingActionButton.extended(
-            onPressed: () => widget.onPick!(widget.type!),
-            icon: const Icon(Icons.check_circle),
-            label: const Text('Select this Mapping Unit'),
-            backgroundColor: Colors.green[700],
-            foregroundColor: Colors.white,
-          );
-        } else if (isGrunntype) {
-          return FloatingActionButton.extended(
-            onPressed: null, // Disabled
-            icon: const Icon(Icons.warning_amber_rounded, color: Colors.white70),
-            label: const Text('Please select a Mapping Unit level'),
-            backgroundColor: Colors.orange[800]?.withOpacity(0.8),
-          );
+        if (widget.onPick != null) {
+          // Picker mode logic
+          if (isMappingUnit) {
+            return FloatingActionButton.extended(
+              onPressed: () => widget.onPick!(widget.type!),
+              icon: const Icon(Icons.check_circle),
+              label: const Text('Select this Mapping Unit'),
+              backgroundColor: Colors.green[700],
+              foregroundColor: Colors.white,
+            );
+          } else if (isGrunntype) {
+            return FloatingActionButton.extended(
+              onPressed: null, // Disabled
+              icon: const Icon(Icons.warning_amber_rounded, color: Colors.white70),
+              label: const Text('Please select a Mapping Unit level'),
+              backgroundColor: Colors.orange[800]?.withOpacity(0.8),
+            );
+          }
+        } else {
+          // Browsing mode logic
+          if (isMappingUnit || isGrunntype) {
+             return FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => CameraScreen(initialType: widget.type)),
+                );
+              },
+              icon: const Icon(Icons.add_a_photo),
+              label: const Text('Capture Observation'),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            );
+          }
         }
         return null;
       }(),

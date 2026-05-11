@@ -4,10 +4,12 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import '../models/nin_database.dart';
 import 'observation_review_screen.dart';
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+  final NinType? initialType;
+  const CameraScreen({super.key, this.initialType});
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -70,7 +72,10 @@ class _CameraScreenState extends State<CameraScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ObservationReviewScreen(imagePath: savedFile.path),
+            builder: (_) => ObservationReviewScreen(
+              imagePath: savedFile.path,
+              initialType: widget.initialType,
+            ),
           ),
         );
       }
