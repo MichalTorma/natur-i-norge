@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:drift/drift.dart' show Value;
 import '../providers/database_provider.dart';
 import '../models/nin_database.dart';
 import '../models/user_database.dart';
@@ -143,16 +144,50 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       ),
                       const SizedBox(height: 24),
                       
-                      // Show matrix ONLY in biological mode
-                      if (_selectedScale == 'Biologisk' && allTypes.any((t) => t.kategori == 'Grunntype')) ...[
-                        const Text(
-                          'ECOLOGICAL MATRIX',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent, letterSpacing: 1.2),
-                        ),
-                        const SizedBox(height: 16),
-                        EcologicalMatrix(subTypes: allTypes.where((t) => t.kategori == 'Grunntype').toList()),
-                        const Divider(height: 48),
-                      ],
+                      // Show matrix for both biological and mapping scales
+                      () {
+                        final List<NinType> matrixTypes;
+                        if (_selectedScale == 'Biologisk') {
+                          matrixTypes = allTypes.where((t) => t.kategori == 'Grunntype').toList();
+                        } else {
+                          // For Kartleggingsenhet, synthesize LKM data from constituent Grunntyper
+                          final gtMap = {for (var gt in allTypes.where((t) => t.kategori == 'Grunntype')) gt.id: gt};
+                          matrixTypes = allTypes
+                              .where((t) => t.kategori == 'Kartleggingsenhet' && t.scale == _selectedScale)
+                              .map((ke) {
+                            if (ke.containsTypes == null) return ke;
+                            try {
+                              final List<dynamic> ids = json.decode(ke.containsTypes!);
+                              final List<dynamic> mergedLkm = [];
+                              for (var id in ids) {
+                                final gt = gtMap[id.toString()];
+                                if (gt?.lkmData != null) {
+                                  mergedLkm.addAll(json.decode(gt!.lkmData!));
+                                }
+                              }
+                              if (mergedLkm.isEmpty) return ke;
+                              return ke.copyWith(lkmData: Value(json.encode(mergedLkm)));
+                            } catch (e) {
+                              return ke;
+                            }
+                          }).toList();
+                        }
+
+                        if (matrixTypes.isEmpty) return const SizedBox.shrink();
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'ECOLOGICAL MATRIX (${_selectedScale == 'Biologisk' ? 'BIO' : _selectedScale})',
+                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.greenAccent, letterSpacing: 1.2),
+                            ),
+                            const SizedBox(height: 16),
+                            EcologicalMatrix(subTypes: matrixTypes),
+                            const Divider(height: 48),
+                          ],
+                        );
+                      }(),
                       
                       Text(
                         _selectedScale == 'Biologisk' ? 'GRUNNTYPER' : 'KARTLEGGINGSENHETER ($_selectedScale)',

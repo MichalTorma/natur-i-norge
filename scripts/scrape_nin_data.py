@@ -216,12 +216,15 @@ def process_single_type(t):
     print(f"Processing {t['id']}...") 
     
     try:
-        # 1. Matrix Data (Grunntyper only)
-        if t['kategori'] == 'Grunntype':
+        # 1. Matrix Data & Relationships
+        if t['kategori'] in ['Grunntype', 'Kartleggingsenhet']:
             try:
-                dr = get_session().get(f"{BASE_URL}/typer/kodeforGrunntype/{t['id']}", timeout=10)
+                endpoint = "kodeforGrunntype" if t['kategori'] == 'Grunntype' else "kodeforKartleggingsenhet"
+                dr = get_session().get(f"{BASE_URL}/typer/{endpoint}/{t['id']}", timeout=10)
                 if dr.status_code == 200:
-                    import json
+                    data = dr.json()
+                    
+                    # Parse LKM data
                     def parse_lkm(obj):
                         l_list = []
                         def w(o):
@@ -242,7 +245,12 @@ def process_single_type(t):
                                 for i in o: w(i)
                         w(obj)
                         return json.dumps(l_list) if l_list else None
-                    t['lkm_data'] = parse_lkm(dr.json())
+                    
+                    t['lkm_data'] = parse_lkm(data)
+                    
+                    # For Kartleggingsenhet, also capture constituent Grunntyper if not already present
+                    if t['kategori'] == 'Kartleggingsenhet' and data.get('grunntyper'):
+                        t['contains_types'] = json.dumps([g['kode']['id'] for g in data['grunntyper']])
             except Exception as e:
                 pass
 

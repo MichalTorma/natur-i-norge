@@ -23,6 +23,14 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     _identifyAxes();
   }
 
+  @override
+  void didUpdateWidget(EcologicalMatrix oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.subTypes != oldWidget.subTypes) {
+      _identifyAxes();
+    }
+  }
+
   void _identifyAxes() {
     final Map<String, Set<String>> varSteps = {};
     for (var type in widget.subTypes) {
@@ -36,7 +44,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       }
     }
 
-    if (varSteps.isEmpty) return;
+    if (varSteps.isEmpty) {
+      _xAxisVar = null;
+      _yAxisVar = null;
+      _activeFilters.clear();
+      return;
+    }
 
     // Sort variables by diversity of steps
     final sortedVars = varSteps.entries.toList()
@@ -71,7 +84,14 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.subTypes.isEmpty) return const Center(child: Text("No ecological data available"));
+    if (widget.subTypes.isEmpty || _xAxisVar == null) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(32.0),
+          child: Text("No ecological gradients available for this view", style: TextStyle(color: Colors.white24)),
+        ),
+      );
+    }
 
     final matrixData = _generateMatrix();
     final xSteps = matrixData.compressedX;
