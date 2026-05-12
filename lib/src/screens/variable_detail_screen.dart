@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:convert';
 import '../models/nin_database.dart';
@@ -30,6 +31,17 @@ class VariableDetailScreen extends ConsumerWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(varData.navn),
+            actions: [
+              if (varData.langkode != null)
+                IconButton(
+                  icon: const Icon(Icons.open_in_browser),
+                  tooltip: 'View on Artsdatabanken',
+                  onPressed: () => launchUrl(
+                    Uri.parse('https://artsdatabanken.no/naturtyper/natur-i-norge/${varData.langkode}'),
+                    mode: LaunchMode.externalApplication,
+                  ),
+                ),
+            ],
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),

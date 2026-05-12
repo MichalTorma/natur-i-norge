@@ -86,6 +86,7 @@ def setup_db():
         parent_id TEXT, 
         ecosystnivaa_navn TEXT,
         variabelkategori_navn TEXT,
+        langkode TEXT,
         description TEXT,
         steps_json TEXT
     )''')
@@ -368,9 +369,9 @@ def main():
         future_to_var = {executor.submit(process_single_variable, v): v for v in all_vars}
         for future in tqdm(as_completed(future_to_var), total=len(all_vars)):
             v = future.result()
-            cursor.execute('''INSERT OR REPLACE INTO nin_variables VALUES (?,?,?,?,?,?,?,?)''', (
+            cursor.execute('''INSERT OR REPLACE INTO nin_variables VALUES (?,?,?,?,?,?,?,?,?)''', (
                 v['id'], v['navn'], v['kategori'], v['parent_id'], 
-                v['ecosystnivaa_navn'], v['variabelkategori_navn'], v['description'], v['steps_json']
+                v['ecosystnivaa_navn'], v['variabelkategori_navn'], v['langkode'], v['description'], v['steps_json']
             ))
     conn.commit()
 

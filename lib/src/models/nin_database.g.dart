@@ -856,6 +856,17 @@ class $NinVariablesTable extends NinVariables
         type: DriftSqlType.string,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _langkodeMeta = const VerificationMeta(
+    'langkode',
+  );
+  @override
+  late final GeneratedColumn<String> langkode = GeneratedColumn<String>(
+    'langkode',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _descriptionMeta = const VerificationMeta(
     'description',
   );
@@ -886,6 +897,7 @@ class $NinVariablesTable extends NinVariables
     parentId,
     ecosystnivaaNavn,
     variabelkategoriNavn,
+    langkode,
     description,
     stepsJson,
   ];
@@ -946,6 +958,12 @@ class $NinVariablesTable extends NinVariables
         ),
       );
     }
+    if (data.containsKey('langkode')) {
+      context.handle(
+        _langkodeMeta,
+        langkode.isAcceptableOrUnknown(data['langkode']!, _langkodeMeta),
+      );
+    }
     if (data.containsKey('description')) {
       context.handle(
         _descriptionMeta,
@@ -994,6 +1012,10 @@ class $NinVariablesTable extends NinVariables
         DriftSqlType.string,
         data['${effectivePrefix}variabelkategori_navn'],
       ),
+      langkode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}langkode'],
+      ),
       description: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}description'],
@@ -1018,6 +1040,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
   final String? parentId;
   final String? ecosystnivaaNavn;
   final String? variabelkategoriNavn;
+  final String? langkode;
   final String? description;
   final String? stepsJson;
   const NinVariable({
@@ -1027,6 +1050,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
     this.parentId,
     this.ecosystnivaaNavn,
     this.variabelkategoriNavn,
+    this.langkode,
     this.description,
     this.stepsJson,
   });
@@ -1044,6 +1068,9 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
     }
     if (!nullToAbsent || variabelkategoriNavn != null) {
       map['variabelkategori_navn'] = Variable<String>(variabelkategoriNavn);
+    }
+    if (!nullToAbsent || langkode != null) {
+      map['langkode'] = Variable<String>(langkode);
     }
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
@@ -1068,6 +1095,9 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
       variabelkategoriNavn: variabelkategoriNavn == null && nullToAbsent
           ? const Value.absent()
           : Value(variabelkategoriNavn),
+      langkode: langkode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(langkode),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
@@ -1091,6 +1121,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
       variabelkategoriNavn: serializer.fromJson<String?>(
         json['variabelkategoriNavn'],
       ),
+      langkode: serializer.fromJson<String?>(json['langkode']),
       description: serializer.fromJson<String?>(json['description']),
       stepsJson: serializer.fromJson<String?>(json['stepsJson']),
     );
@@ -1105,6 +1136,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
       'parentId': serializer.toJson<String?>(parentId),
       'ecosystnivaaNavn': serializer.toJson<String?>(ecosystnivaaNavn),
       'variabelkategoriNavn': serializer.toJson<String?>(variabelkategoriNavn),
+      'langkode': serializer.toJson<String?>(langkode),
       'description': serializer.toJson<String?>(description),
       'stepsJson': serializer.toJson<String?>(stepsJson),
     };
@@ -1117,6 +1149,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
     Value<String?> parentId = const Value.absent(),
     Value<String?> ecosystnivaaNavn = const Value.absent(),
     Value<String?> variabelkategoriNavn = const Value.absent(),
+    Value<String?> langkode = const Value.absent(),
     Value<String?> description = const Value.absent(),
     Value<String?> stepsJson = const Value.absent(),
   }) => NinVariable(
@@ -1130,6 +1163,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
     variabelkategoriNavn: variabelkategoriNavn.present
         ? variabelkategoriNavn.value
         : this.variabelkategoriNavn,
+    langkode: langkode.present ? langkode.value : this.langkode,
     description: description.present ? description.value : this.description,
     stepsJson: stepsJson.present ? stepsJson.value : this.stepsJson,
   );
@@ -1145,6 +1179,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
       variabelkategoriNavn: data.variabelkategoriNavn.present
           ? data.variabelkategoriNavn.value
           : this.variabelkategoriNavn,
+      langkode: data.langkode.present ? data.langkode.value : this.langkode,
       description: data.description.present
           ? data.description.value
           : this.description,
@@ -1161,6 +1196,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
           ..write('parentId: $parentId, ')
           ..write('ecosystnivaaNavn: $ecosystnivaaNavn, ')
           ..write('variabelkategoriNavn: $variabelkategoriNavn, ')
+          ..write('langkode: $langkode, ')
           ..write('description: $description, ')
           ..write('stepsJson: $stepsJson')
           ..write(')'))
@@ -1175,6 +1211,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
     parentId,
     ecosystnivaaNavn,
     variabelkategoriNavn,
+    langkode,
     description,
     stepsJson,
   );
@@ -1188,6 +1225,7 @@ class NinVariable extends DataClass implements Insertable<NinVariable> {
           other.parentId == this.parentId &&
           other.ecosystnivaaNavn == this.ecosystnivaaNavn &&
           other.variabelkategoriNavn == this.variabelkategoriNavn &&
+          other.langkode == this.langkode &&
           other.description == this.description &&
           other.stepsJson == this.stepsJson);
 }
@@ -1199,6 +1237,7 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
   final Value<String?> parentId;
   final Value<String?> ecosystnivaaNavn;
   final Value<String?> variabelkategoriNavn;
+  final Value<String?> langkode;
   final Value<String?> description;
   final Value<String?> stepsJson;
   final Value<int> rowid;
@@ -1209,6 +1248,7 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
     this.parentId = const Value.absent(),
     this.ecosystnivaaNavn = const Value.absent(),
     this.variabelkategoriNavn = const Value.absent(),
+    this.langkode = const Value.absent(),
     this.description = const Value.absent(),
     this.stepsJson = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -1220,6 +1260,7 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
     this.parentId = const Value.absent(),
     this.ecosystnivaaNavn = const Value.absent(),
     this.variabelkategoriNavn = const Value.absent(),
+    this.langkode = const Value.absent(),
     this.description = const Value.absent(),
     this.stepsJson = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -1233,6 +1274,7 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
     Expression<String>? parentId,
     Expression<String>? ecosystnivaaNavn,
     Expression<String>? variabelkategoriNavn,
+    Expression<String>? langkode,
     Expression<String>? description,
     Expression<String>? stepsJson,
     Expression<int>? rowid,
@@ -1245,6 +1287,7 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
       if (ecosystnivaaNavn != null) 'ecosystnivaa_navn': ecosystnivaaNavn,
       if (variabelkategoriNavn != null)
         'variabelkategori_navn': variabelkategoriNavn,
+      if (langkode != null) 'langkode': langkode,
       if (description != null) 'description': description,
       if (stepsJson != null) 'steps_json': stepsJson,
       if (rowid != null) 'rowid': rowid,
@@ -1258,6 +1301,7 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
     Value<String?>? parentId,
     Value<String?>? ecosystnivaaNavn,
     Value<String?>? variabelkategoriNavn,
+    Value<String?>? langkode,
     Value<String?>? description,
     Value<String?>? stepsJson,
     Value<int>? rowid,
@@ -1269,6 +1313,7 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
       parentId: parentId ?? this.parentId,
       ecosystnivaaNavn: ecosystnivaaNavn ?? this.ecosystnivaaNavn,
       variabelkategoriNavn: variabelkategoriNavn ?? this.variabelkategoriNavn,
+      langkode: langkode ?? this.langkode,
       description: description ?? this.description,
       stepsJson: stepsJson ?? this.stepsJson,
       rowid: rowid ?? this.rowid,
@@ -1298,6 +1343,9 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
         variabelkategoriNavn.value,
       );
     }
+    if (langkode.present) {
+      map['langkode'] = Variable<String>(langkode.value);
+    }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
@@ -1319,6 +1367,7 @@ class NinVariablesCompanion extends UpdateCompanion<NinVariable> {
           ..write('parentId: $parentId, ')
           ..write('ecosystnivaaNavn: $ecosystnivaaNavn, ')
           ..write('variabelkategoriNavn: $variabelkategoriNavn, ')
+          ..write('langkode: $langkode, ')
           ..write('description: $description, ')
           ..write('stepsJson: $stepsJson, ')
           ..write('rowid: $rowid')
@@ -2115,6 +2164,7 @@ typedef $$NinVariablesTableCreateCompanionBuilder =
       Value<String?> parentId,
       Value<String?> ecosystnivaaNavn,
       Value<String?> variabelkategoriNavn,
+      Value<String?> langkode,
       Value<String?> description,
       Value<String?> stepsJson,
       Value<int> rowid,
@@ -2127,6 +2177,7 @@ typedef $$NinVariablesTableUpdateCompanionBuilder =
       Value<String?> parentId,
       Value<String?> ecosystnivaaNavn,
       Value<String?> variabelkategoriNavn,
+      Value<String?> langkode,
       Value<String?> description,
       Value<String?> stepsJson,
       Value<int> rowid,
@@ -2168,6 +2219,11 @@ class $$NinVariablesTableFilterComposer
 
   ColumnFilters<String> get variabelkategoriNavn => $composableBuilder(
     column: $table.variabelkategoriNavn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get langkode => $composableBuilder(
+    column: $table.langkode,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2221,6 +2277,11 @@ class $$NinVariablesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get langkode => $composableBuilder(
+    column: $table.langkode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get description => $composableBuilder(
     column: $table.description,
     builder: (column) => ColumnOrderings(column),
@@ -2262,6 +2323,9 @@ class $$NinVariablesTableAnnotationComposer
     column: $table.variabelkategoriNavn,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get langkode =>
+      $composableBuilder(column: $table.langkode, builder: (column) => column);
 
   GeneratedColumn<String> get description => $composableBuilder(
     column: $table.description,
@@ -2309,6 +2373,7 @@ class $$NinVariablesTableTableManager
                 Value<String?> parentId = const Value.absent(),
                 Value<String?> ecosystnivaaNavn = const Value.absent(),
                 Value<String?> variabelkategoriNavn = const Value.absent(),
+                Value<String?> langkode = const Value.absent(),
                 Value<String?> description = const Value.absent(),
                 Value<String?> stepsJson = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -2319,6 +2384,7 @@ class $$NinVariablesTableTableManager
                 parentId: parentId,
                 ecosystnivaaNavn: ecosystnivaaNavn,
                 variabelkategoriNavn: variabelkategoriNavn,
+                langkode: langkode,
                 description: description,
                 stepsJson: stepsJson,
                 rowid: rowid,
@@ -2331,6 +2397,7 @@ class $$NinVariablesTableTableManager
                 Value<String?> parentId = const Value.absent(),
                 Value<String?> ecosystnivaaNavn = const Value.absent(),
                 Value<String?> variabelkategoriNavn = const Value.absent(),
+                Value<String?> langkode = const Value.absent(),
                 Value<String?> description = const Value.absent(),
                 Value<String?> stepsJson = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -2341,6 +2408,7 @@ class $$NinVariablesTableTableManager
                 parentId: parentId,
                 ecosystnivaaNavn: ecosystnivaaNavn,
                 variabelkategoriNavn: variabelkategoriNavn,
+                langkode: langkode,
                 description: description,
                 stepsJson: stepsJson,
                 rowid: rowid,

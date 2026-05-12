@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -396,6 +397,15 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
       pinned: true,
       iconTheme: const IconThemeData(color: Colors.white, shadows: [Shadow(color: Colors.black45, blurRadius: 8)]),
       actions: [
+        if (type != null && type.langkode != null)
+          IconButton(
+            icon: const Icon(Icons.open_in_browser, color: Colors.white),
+            tooltip: 'View on Artsdatabanken',
+            onPressed: () => launchUrl(
+              Uri.parse('https://artsdatabanken.no/naturtyper/natur-i-norge/${type.langkode}'),
+              mode: LaunchMode.externalApplication,
+            ),
+          ),
         if (type != null)
           Consumer(
             builder: (context, ref, child) {
@@ -418,16 +428,41 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
       ],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        title: Text(
-          type?.navn ?? 'NiN Explorer',
-          style: TextStyle(
-            fontWeight: FontWeight.bold, 
-            fontSize: 16,
-            color: Theme.of(context).colorScheme.onSurface,
-            shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              type?.navn ?? 'NiN Explorer',
+              style: TextStyle(
+                fontWeight: FontWeight.bold, 
+                fontSize: 16,
+                color: Theme.of(context).colorScheme.onSurface,
+                shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            if (type == null)
+              GestureDetector(
+                onTap: () => launchUrl(
+                  Uri.parse('https://artsdatabanken.no'),
+                  mode: LaunchMode.externalApplication,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 2.0),
+                  child: Text(
+                    'Data provided by Artsdatabanken.no',
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                      decoration: TextDecoration.underline,
+                      decorationColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
         background: type == null ? null : Stack(
           fit: StackFit.expand,

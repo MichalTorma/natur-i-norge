@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/database_provider.dart';
 import '../providers/settings_provider.dart';
@@ -20,8 +21,45 @@ class SettingsScreen extends ConsumerWidget {
           _buildThemeSection(context, ref, currentTheme),
           const Divider(),
           _buildStatsSection(context, ref),
+          const Divider(),
+          _buildLegalSection(context),
         ],
       ),
+    );
+  }
+
+  Widget _buildLegalSection(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Text(
+            'Legal',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: primaryColor),
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.description_outlined),
+          title: const Text('Open Source Licenses'),
+          subtitle: const Text('View licenses for the libraries used in this app'),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () {
+            showLicensePage(
+              context: context,
+              applicationName: 'NiN Guide 3.0',
+              applicationVersion: '1.0.0',
+              applicationIcon: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Icon(Icons.eco, size: 48, color: Theme.of(context).colorScheme.primary),
+              ),
+              applicationLegalese: '© 2026 Natur i Norge Guide Contributors',
+            );
+          },
+        ),
+        const SizedBox(height: 32),
+      ],
     );
   }
 
@@ -41,6 +79,20 @@ class SettingsScreen extends ConsumerWidget {
             'A comprehensive field guide for the Natur i Norge (NiN) 3.0 classification system.\nData is pre-packaged for full offline use.',
             textAlign: TextAlign.center,
             style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+          ),
+          const SizedBox(height: 16),
+          TextButton.icon(
+            onPressed: () => launchUrl(
+              Uri.parse('https://artsdatabanken.no'),
+              mode: LaunchMode.externalApplication,
+            ),
+            icon: const Icon(Icons.open_in_new, size: 14),
+            label: const Text('Data provided by Artsdatabanken.no'),
+            style: TextButton.styleFrom(
+              visualDensity: VisualDensity.compact,
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
           ),
         ],
       ),
