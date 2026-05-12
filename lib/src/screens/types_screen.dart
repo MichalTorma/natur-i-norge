@@ -102,7 +102,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           // Search Bar
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
@@ -145,7 +145,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                     ),
                     const SizedBox(height: 12),
                     ExpandableMarkdown(data: widget.type!.description!),
-                    const Divider(height: 64),
+                    const Divider(height: 32),
                   ],
                 ),
               ),
