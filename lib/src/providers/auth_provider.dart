@@ -5,15 +5,22 @@ import 'settings_provider.dart';
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
-class AuthNotifier extends StateNotifier<User?> {
-  final FirebaseAuth _auth;
+// The actual user stream
+final authStateProvider = StreamProvider<User?>((ref) {
+  return ref.watch(firebaseAuthProvider).authStateChanges();
+});
+
+// A legacy-style provider for easy reading of current state
+final authProvider = Provider<User?>((ref) {
+  return ref.watch(authStateProvider).value;
+});
+
+// The actions notifier
+class AuthActionsNotifier extends Notifier<void> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  AuthNotifier(this._auth) : super(_auth.currentUser) {
-    _auth.authStateChanges().listen((user) {
-      state = user;
-    });
-  }
+  @override
+  void build() {}
 
   Future<void> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -25,16 +32,16 @@ class AuthNotifier extends StateNotifier<User?> {
       idToken: googleAuth.idToken,
     );
 
-    await _auth.signInWithCredential(credential);
+    await ref.read(firebaseAuthProvider).signInWithCredential(credential);
   }
 
   Future<void> signOut() async {
     await _googleSignIn.signOut();
-    await _auth.signOut();
+    await ref.read(firebaseAuthProvider).signOut();
   }
 
   Future<void> deleteAccount() async {
-    final user = _auth.currentUser;
+    final user = ref.read(firebaseAuthProvider).currentUser;
     if (user != null) {
       await user.delete();
       await _googleSignIn.signOut();
@@ -42,8 +49,8 @@ class AuthNotifier extends StateNotifier<User?> {
   }
 }
 
-final authProvider = StateNotifierProvider<AuthNotifier, User?>((ref) {
-  return AuthNotifier(ref.watch(firebaseAuthProvider));
+final authActionsProvider = NotifierProvider<AuthActionsNotifier, void>(() {
+  return AuthActionsNotifier();
 });
 
 class BackupSettingsNotifier extends Notifier<bool> {

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'src/screens/home_screen.dart';
 import 'src/providers/settings_provider.dart';
+import 'src/services/sync_service.dart';
 
 import 'src/theme/app_theme.dart';
 
@@ -16,11 +17,18 @@ void main() async {
   );
   final prefs = await SharedPreferences.getInstance();
   
+  final container = ProviderContainer(
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+    ],
+  );
+
+  // Initialize SyncService
+  container.read(syncServiceProvider);
+
   runApp(
-    ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
-      ],
+    UncontrolledProviderScope(
+      container: container,
       child: const NinGuideApp(),
     ),
   );

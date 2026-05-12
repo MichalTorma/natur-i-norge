@@ -9,6 +9,15 @@ class BackupConsentDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     
+    // REACTIVE: Close dialog and enable backup automatically on login
+    ref.listen(authProvider, (previous, next) {
+      if (next != null) {
+        ref.read(backupEnabledProvider.notifier).setEnabled(true);
+        ref.read(consentShownProvider.notifier).setShown();
+        Navigator.pop(context);
+      }
+    });
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
@@ -65,11 +74,14 @@ class BackupConsentDialog extends ConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () async {
-                      ref.read(consentShownProvider.notifier).setShown();
-                      await ref.read(authProvider.notifier).signInWithGoogle();
-                      if (ref.read(authProvider) != null) {
-                        ref.read(backupEnabledProvider.notifier).setEnabled(true);
-                        if (context.mounted) Navigator.pop(context);
+                      try {
+                        await ref.read(authActionsProvider.notifier).signInWithGoogle();
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Login failed: $e')),
+                          );
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

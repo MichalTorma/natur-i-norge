@@ -331,6 +331,32 @@ class $ObservationsTable extends Observations
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _isSyncedMeta = const VerificationMeta(
+    'isSynced',
+  );
+  @override
+  late final GeneratedColumn<bool> isSynced = GeneratedColumn<bool>(
+    'is_synced',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_synced" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _cloudUrlMeta = const VerificationMeta(
+    'cloudUrl',
+  );
+  @override
+  late final GeneratedColumn<String> cloudUrl = GeneratedColumn<String>(
+    'cloud_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -343,6 +369,8 @@ class $ObservationsTable extends Observations
     createdAt,
     observerName,
     notes,
+    isSynced,
+    cloudUrl,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -426,6 +454,18 @@ class $ObservationsTable extends Observations
         notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
       );
     }
+    if (data.containsKey('is_synced')) {
+      context.handle(
+        _isSyncedMeta,
+        isSynced.isAcceptableOrUnknown(data['is_synced']!, _isSyncedMeta),
+      );
+    }
+    if (data.containsKey('cloud_url')) {
+      context.handle(
+        _cloudUrlMeta,
+        cloudUrl.isAcceptableOrUnknown(data['cloud_url']!, _cloudUrlMeta),
+      );
+    }
     return context;
   }
 
@@ -475,6 +515,14 @@ class $ObservationsTable extends Observations
         DriftSqlType.string,
         data['${effectivePrefix}notes'],
       ),
+      isSynced: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_synced'],
+      )!,
+      cloudUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cloud_url'],
+      ),
     );
   }
 
@@ -495,6 +543,8 @@ class Observation extends DataClass implements Insertable<Observation> {
   final DateTime createdAt;
   final String? observerName;
   final String? notes;
+  final bool isSynced;
+  final String? cloudUrl;
   const Observation({
     required this.id,
     required this.typeId,
@@ -506,6 +556,8 @@ class Observation extends DataClass implements Insertable<Observation> {
     required this.createdAt,
     this.observerName,
     this.notes,
+    required this.isSynced,
+    this.cloudUrl,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -525,6 +577,10 @@ class Observation extends DataClass implements Insertable<Observation> {
     }
     if (!nullToAbsent || notes != null) {
       map['notes'] = Variable<String>(notes);
+    }
+    map['is_synced'] = Variable<bool>(isSynced);
+    if (!nullToAbsent || cloudUrl != null) {
+      map['cloud_url'] = Variable<String>(cloudUrl);
     }
     return map;
   }
@@ -547,6 +603,10 @@ class Observation extends DataClass implements Insertable<Observation> {
       notes: notes == null && nullToAbsent
           ? const Value.absent()
           : Value(notes),
+      isSynced: Value(isSynced),
+      cloudUrl: cloudUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cloudUrl),
     );
   }
 
@@ -566,6 +626,8 @@ class Observation extends DataClass implements Insertable<Observation> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       observerName: serializer.fromJson<String?>(json['observerName']),
       notes: serializer.fromJson<String?>(json['notes']),
+      isSynced: serializer.fromJson<bool>(json['isSynced']),
+      cloudUrl: serializer.fromJson<String?>(json['cloudUrl']),
     );
   }
   @override
@@ -582,6 +644,8 @@ class Observation extends DataClass implements Insertable<Observation> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'observerName': serializer.toJson<String?>(observerName),
       'notes': serializer.toJson<String?>(notes),
+      'isSynced': serializer.toJson<bool>(isSynced),
+      'cloudUrl': serializer.toJson<String?>(cloudUrl),
     };
   }
 
@@ -596,6 +660,8 @@ class Observation extends DataClass implements Insertable<Observation> {
     DateTime? createdAt,
     Value<String?> observerName = const Value.absent(),
     Value<String?> notes = const Value.absent(),
+    bool? isSynced,
+    Value<String?> cloudUrl = const Value.absent(),
   }) => Observation(
     id: id ?? this.id,
     typeId: typeId ?? this.typeId,
@@ -607,6 +673,8 @@ class Observation extends DataClass implements Insertable<Observation> {
     createdAt: createdAt ?? this.createdAt,
     observerName: observerName.present ? observerName.value : this.observerName,
     notes: notes.present ? notes.value : this.notes,
+    isSynced: isSynced ?? this.isSynced,
+    cloudUrl: cloudUrl.present ? cloudUrl.value : this.cloudUrl,
   );
   Observation copyWithCompanion(ObservationsCompanion data) {
     return Observation(
@@ -622,6 +690,8 @@ class Observation extends DataClass implements Insertable<Observation> {
           ? data.observerName.value
           : this.observerName,
       notes: data.notes.present ? data.notes.value : this.notes,
+      isSynced: data.isSynced.present ? data.isSynced.value : this.isSynced,
+      cloudUrl: data.cloudUrl.present ? data.cloudUrl.value : this.cloudUrl,
     );
   }
 
@@ -637,7 +707,9 @@ class Observation extends DataClass implements Insertable<Observation> {
           ..write('accuracy: $accuracy, ')
           ..write('createdAt: $createdAt, ')
           ..write('observerName: $observerName, ')
-          ..write('notes: $notes')
+          ..write('notes: $notes, ')
+          ..write('isSynced: $isSynced, ')
+          ..write('cloudUrl: $cloudUrl')
           ..write(')'))
         .toString();
   }
@@ -654,6 +726,8 @@ class Observation extends DataClass implements Insertable<Observation> {
     createdAt,
     observerName,
     notes,
+    isSynced,
+    cloudUrl,
   );
   @override
   bool operator ==(Object other) =>
@@ -668,7 +742,9 @@ class Observation extends DataClass implements Insertable<Observation> {
           other.accuracy == this.accuracy &&
           other.createdAt == this.createdAt &&
           other.observerName == this.observerName &&
-          other.notes == this.notes);
+          other.notes == this.notes &&
+          other.isSynced == this.isSynced &&
+          other.cloudUrl == this.cloudUrl);
 }
 
 class ObservationsCompanion extends UpdateCompanion<Observation> {
@@ -682,6 +758,8 @@ class ObservationsCompanion extends UpdateCompanion<Observation> {
   final Value<DateTime> createdAt;
   final Value<String?> observerName;
   final Value<String?> notes;
+  final Value<bool> isSynced;
+  final Value<String?> cloudUrl;
   const ObservationsCompanion({
     this.id = const Value.absent(),
     this.typeId = const Value.absent(),
@@ -693,6 +771,8 @@ class ObservationsCompanion extends UpdateCompanion<Observation> {
     this.createdAt = const Value.absent(),
     this.observerName = const Value.absent(),
     this.notes = const Value.absent(),
+    this.isSynced = const Value.absent(),
+    this.cloudUrl = const Value.absent(),
   });
   ObservationsCompanion.insert({
     this.id = const Value.absent(),
@@ -705,6 +785,8 @@ class ObservationsCompanion extends UpdateCompanion<Observation> {
     this.createdAt = const Value.absent(),
     this.observerName = const Value.absent(),
     this.notes = const Value.absent(),
+    this.isSynced = const Value.absent(),
+    this.cloudUrl = const Value.absent(),
   }) : typeId = Value(typeId),
        imagePath = Value(imagePath),
        latitude = Value(latitude),
@@ -721,6 +803,8 @@ class ObservationsCompanion extends UpdateCompanion<Observation> {
     Expression<DateTime>? createdAt,
     Expression<String>? observerName,
     Expression<String>? notes,
+    Expression<bool>? isSynced,
+    Expression<String>? cloudUrl,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -733,6 +817,8 @@ class ObservationsCompanion extends UpdateCompanion<Observation> {
       if (createdAt != null) 'created_at': createdAt,
       if (observerName != null) 'observer_name': observerName,
       if (notes != null) 'notes': notes,
+      if (isSynced != null) 'is_synced': isSynced,
+      if (cloudUrl != null) 'cloud_url': cloudUrl,
     });
   }
 
@@ -747,6 +833,8 @@ class ObservationsCompanion extends UpdateCompanion<Observation> {
     Value<DateTime>? createdAt,
     Value<String?>? observerName,
     Value<String?>? notes,
+    Value<bool>? isSynced,
+    Value<String?>? cloudUrl,
   }) {
     return ObservationsCompanion(
       id: id ?? this.id,
@@ -759,6 +847,8 @@ class ObservationsCompanion extends UpdateCompanion<Observation> {
       createdAt: createdAt ?? this.createdAt,
       observerName: observerName ?? this.observerName,
       notes: notes ?? this.notes,
+      isSynced: isSynced ?? this.isSynced,
+      cloudUrl: cloudUrl ?? this.cloudUrl,
     );
   }
 
@@ -795,6 +885,12 @@ class ObservationsCompanion extends UpdateCompanion<Observation> {
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
+    if (isSynced.present) {
+      map['is_synced'] = Variable<bool>(isSynced.value);
+    }
+    if (cloudUrl.present) {
+      map['cloud_url'] = Variable<String>(cloudUrl.value);
+    }
     return map;
   }
 
@@ -810,7 +906,9 @@ class ObservationsCompanion extends UpdateCompanion<Observation> {
           ..write('accuracy: $accuracy, ')
           ..write('createdAt: $createdAt, ')
           ..write('observerName: $observerName, ')
-          ..write('notes: $notes')
+          ..write('notes: $notes, ')
+          ..write('isSynced: $isSynced, ')
+          ..write('cloudUrl: $cloudUrl')
           ..write(')'))
         .toString();
   }
@@ -977,6 +1075,8 @@ typedef $$ObservationsTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<String?> observerName,
       Value<String?> notes,
+      Value<bool> isSynced,
+      Value<String?> cloudUrl,
     });
 typedef $$ObservationsTableUpdateCompanionBuilder =
     ObservationsCompanion Function({
@@ -990,6 +1090,8 @@ typedef $$ObservationsTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<String?> observerName,
       Value<String?> notes,
+      Value<bool> isSynced,
+      Value<String?> cloudUrl,
     });
 
 class $$ObservationsTableFilterComposer
@@ -1048,6 +1150,16 @@ class $$ObservationsTableFilterComposer
 
   ColumnFilters<String> get notes => $composableBuilder(
     column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isSynced => $composableBuilder(
+    column: $table.isSynced,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get cloudUrl => $composableBuilder(
+    column: $table.cloudUrl,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1110,6 +1222,16 @@ class $$ObservationsTableOrderingComposer
     column: $table.notes,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get isSynced => $composableBuilder(
+    column: $table.isSynced,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get cloudUrl => $composableBuilder(
+    column: $table.cloudUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ObservationsTableAnnotationComposer
@@ -1152,6 +1274,12 @@ class $$ObservationsTableAnnotationComposer
 
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<bool> get isSynced =>
+      $composableBuilder(column: $table.isSynced, builder: (column) => column);
+
+  GeneratedColumn<String> get cloudUrl =>
+      $composableBuilder(column: $table.cloudUrl, builder: (column) => column);
 }
 
 class $$ObservationsTableTableManager
@@ -1195,6 +1323,8 @@ class $$ObservationsTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<String?> observerName = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
+                Value<bool> isSynced = const Value.absent(),
+                Value<String?> cloudUrl = const Value.absent(),
               }) => ObservationsCompanion(
                 id: id,
                 typeId: typeId,
@@ -1206,6 +1336,8 @@ class $$ObservationsTableTableManager
                 createdAt: createdAt,
                 observerName: observerName,
                 notes: notes,
+                isSynced: isSynced,
+                cloudUrl: cloudUrl,
               ),
           createCompanionCallback:
               ({
@@ -1219,6 +1351,8 @@ class $$ObservationsTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<String?> observerName = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
+                Value<bool> isSynced = const Value.absent(),
+                Value<String?> cloudUrl = const Value.absent(),
               }) => ObservationsCompanion.insert(
                 id: id,
                 typeId: typeId,
@@ -1230,6 +1364,8 @@ class $$ObservationsTableTableManager
                 createdAt: createdAt,
                 observerName: observerName,
                 notes: notes,
+                isSynced: isSynced,
+                cloudUrl: cloudUrl,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

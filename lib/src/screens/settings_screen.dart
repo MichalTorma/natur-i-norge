@@ -52,7 +52,7 @@ class SettingsScreen extends ConsumerWidget {
             title: const Text('Sign in to Backup'),
             subtitle: const Text('Required for automated cloud storage'),
             trailing: ElevatedButton(
-              onPressed: () => ref.read(authProvider.notifier).signInWithGoogle(),
+              onPressed: () => ref.read(authActionsProvider.notifier).signInWithGoogle(),
               child: const Text('Google Sign-In'),
             ),
           )
@@ -67,7 +67,7 @@ class SettingsScreen extends ConsumerWidget {
                 title: Text(user.displayName ?? 'Researcher'),
                 subtitle: Text(user.email ?? ''),
                 trailing: TextButton(
-                  onPressed: () => ref.read(authProvider.notifier).signOut(),
+                  onPressed: () => ref.read(authActionsProvider.notifier).signOut(),
                   child: const Text('Sign Out'),
                 ),
               ),
@@ -101,7 +101,7 @@ class SettingsScreen extends ConsumerWidget {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           TextButton(
             onPressed: () async {
-              await ref.read(authProvider.notifier).deleteAccount();
+              await ref.read(authActionsProvider.notifier).deleteAccount();
               if (context.mounted) Navigator.pop(context);
             },
             child: const Text('Delete Everything', style: TextStyle(color: Colors.red)),
