@@ -1,1 +1,1 @@
-AI species inference and libraries update
+Lansering av NiN 3.0 med data fra Artsdatabanken.no. Bidra til åpen forskning med dine observasjoner.

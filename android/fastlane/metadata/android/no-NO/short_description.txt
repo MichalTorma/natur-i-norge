@@ -1,1 +1,1 @@
-Natur i Norge kartleggingsverktøy.
+NiN 3.0: Kartlegg natur med data fra Artsdatabanken. Fungerer offline.
