@@ -25,12 +25,10 @@ class AppThemes {
   static final _lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+    fontFamily: 'Outfit',
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color(0xFF2E7D32),
       brightness: Brightness.light,
-    ),
-    textTheme: GoogleFonts.outfitTextTheme(
-      ThemeData.light().textTheme,
     ),
     cardTheme: CardThemeData(
       elevation: 2,
@@ -44,13 +42,11 @@ class AppThemes {
   static final _darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
+    fontFamily: 'Outfit',
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color(0xFF2E7D32),
       brightness: Brightness.dark,
       surface: const Color(0xFF121212),
-    ),
-    textTheme: GoogleFonts.outfitTextTheme(
-      ThemeData.dark().textTheme,
     ),
     cardTheme: CardThemeData(
       elevation: 0,
@@ -68,6 +64,7 @@ class AppThemes {
   static final _highContrastLightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+    fontFamily: 'Outfit',
     colorScheme: const ColorScheme.light(
       primary: Color(0xFF000000),
       onPrimary: Color(0xFFFFFFFF),
@@ -82,12 +79,6 @@ class AppThemes {
       outline: Color(0xFF000000),
       error: Color(0xFFB00020),
       onError: Color(0xFFFFFFFF),
-    ),
-    textTheme: GoogleFonts.outfitTextTheme(
-      ThemeData.light().textTheme,
-    ).apply(
-      bodyColor: Colors.black,
-      displayColor: Colors.black,
     ),
     cardTheme: CardThemeData(
       elevation: 0,
@@ -106,6 +97,7 @@ class AppThemes {
   static final _highContrastDarkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
+    fontFamily: 'Outfit',
     colorScheme: const ColorScheme.dark(
       primary: Color(0xFFFFFFFF),
       onPrimary: Color(0xFF000000),
@@ -120,12 +112,6 @@ class AppThemes {
       outline: Color(0xFFFFFFFF),
       error: Color(0xFFCF6679),
       onError: Color(0xFF000000),
-    ),
-    textTheme: GoogleFonts.outfitTextTheme(
-      ThemeData.dark().textTheme,
-    ).apply(
-      bodyColor: Colors.white,
-      displayColor: Colors.white,
     ),
     cardTheme: CardThemeData(
       elevation: 0,

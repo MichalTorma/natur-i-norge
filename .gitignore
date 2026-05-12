@@ -250,3 +250,23 @@ assets/nin_database.sqlite
 nin_web_cache.sqlite
 web_cache/
 scratch/find_mismatch.py
+
+.secrets
+android/key.properties
+vendor/bundle/
+# Certificates
+*.p12
+*.cer
+*.certSigningRequest
+
+# Ruby / Fastlane
+Gemfile.lock
+**/Gemfile.lock
+.bundle/
+
+# Screenshots (ignore the images, keep the metadata)
+**/fastlane/metadata/android/no-NO/images/
+**/fastlane/screenshots/
+**/screenshots/
+*.png
+!assets/fonts/*.ttf
