@@ -569,39 +569,50 @@ class _TypeCard extends StatelessWidget {
                   ),
                 ),
                 padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4),
-                        boxShadow: [
-                          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4, offset: const Offset(0, 2)),
-                        ],
-                      ),
-                      child: Text(
-                        type.id,
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: color, letterSpacing: 0.5),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      type.navn,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 14, 
-                        fontWeight: FontWeight.bold, 
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(color: Colors.black45, blurRadius: 8),
-                        ],
-                      ),
-                    ),
-                  ],
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final bool isTight = constraints.maxHeight < 80;
+                    
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 6, vertical: isTight ? 1 : 2),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(4),
+                            boxShadow: [
+                              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4, offset: const Offset(0, 2)),
+                            ],
+                          ),
+                          child: Text(
+                            type.id,
+                            style: TextStyle(
+                              fontSize: isTight ? 10 : 12, 
+                              fontWeight: FontWeight.w900, 
+                              color: color, 
+                              letterSpacing: 0.5
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: isTight ? 4 : 8),
+                        Text(
+                          type.navn,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: isTight ? 12 : 14, 
+                            fontWeight: FontWeight.bold, 
+                            color: Colors.white,
+                            shadows: const [
+                              Shadow(color: Colors.black45, blurRadius: 8),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  }
                 ),
               ),
             ),
