@@ -12,7 +12,6 @@ class BackupConsentDialog extends ConsumerWidget {
     // REACTIVE: Close dialog and enable backup automatically on login
     ref.listen(authProvider, (previous, next) {
       if (next != null) {
-        ref.read(backupEnabledProvider.notifier).setEnabled(true);
         ref.read(consentShownProvider.notifier).setShown();
         Navigator.pop(context);
       }
@@ -38,6 +37,13 @@ class BackupConsentDialog extends ConsumerWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
+            _buildFeatureRow(
+              context,
+              Icons.sync,
+              'Retroactive Sync',
+              'All your existing observations will be safely backed up to the cloud immediately.',
+            ),
+            const SizedBox(height: 12),
             _buildFeatureRow(
               context,
               Icons.science,

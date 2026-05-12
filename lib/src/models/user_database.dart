@@ -27,6 +27,7 @@ class Observations extends Table {
   TextColumn get notes => text().nullable()();
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
   TextColumn get cloudUrl => text().nullable()();
+  TextColumn get ownerUid => text().nullable()();
 }
 
 @DriftDatabase(tables: [Favorites, Observations])
@@ -34,7 +35,7 @@ class UserDatabase extends _$UserDatabase {
   UserDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration {
@@ -49,6 +50,9 @@ class UserDatabase extends _$UserDatabase {
         if (from < 3) {
           await m.addColumn(observations, observations.isSynced);
           await m.addColumn(observations, observations.cloudUrl);
+        }
+        if (from < 4) {
+          await m.addColumn(observations, observations.ownerUid);
         }
       },
     );

@@ -5,8 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
+import '../providers/auth_provider.dart';
 import 'gallery_map_screen.dart';
 
 class ObservationDetailScreen extends ConsumerStatefulWidget {
@@ -37,6 +40,7 @@ class _ObservationDetailScreenState extends ConsumerState<ObservationDetailScree
     final db = ref.read(userDatabaseProvider);
     final updatedObs = widget.observationWithType.observation.copyWith(
       notes: Value(_notesController.text),
+      isSynced: false,
     );
     
     await db.update(db.observations).replace(updatedObs);
@@ -45,6 +49,63 @@ class _ObservationDetailScreenState extends ConsumerState<ObservationDetailScree
       setState(() => _isEditing = false);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Changes saved')));
     }
+  }
+
+  Future<void> _deleteObservation() async {
+    final obs = widget.observationWithType.observation;
+    final db = ref.read(userDatabaseProvider);
+    final user = ref.read(authProvider);
+
+    try {
+      // 1. Cloud Deletion (if applicable)
+      if (obs.isSynced && user != null) {
+        // Delete Firestore doc
+        await FirebaseFirestore.instance.collection('observations').doc(obs.id.toString()).delete();
+        
+        // Note: Full image cleanup from storage usually requires the path.
+        // For MVP, deleting the Firestore record hides it from the science collection.
+      }
+
+      // 2. Local File Deletion
+      final file = File(obs.imagePath);
+      if (await file.exists()) {
+        await file.delete();
+      }
+
+      // 3. Local DB Deletion
+      await (db.delete(db.observations)..where((t) => t.id.equals(obs.id))).go();
+
+      if (mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Observation deleted')));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Delete failed: $e')));
+      }
+    }
+  }
+
+  void _showDeleteConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Observation?'),
+        content: const Text(
+          'This will remove the record from your phone and your private backup.\n\nNote: For scientific integrity, data already archived in Open Science repositories (like Zenodo) will remain in those archives.',
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _deleteObservation();
+            },
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -67,6 +128,10 @@ class _ObservationDetailScreenState extends ConsumerState<ObservationDetailScree
               ),
             ),
             actions: [
+              IconButton(
+                icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                onPressed: () => _showDeleteConfirmation(context),
+              ),
               IconButton(
                 icon: Icon(_isEditing ? Icons.save : Icons.edit),
                 onPressed: () {
@@ -100,6 +165,53 @@ class _ObservationDetailScreenState extends ConsumerState<ObservationDetailScree
                 Text(
                   'Recorded on ${obs.createdAt.toString().split('.')[0]}',
                   style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: obs.isSynced 
+                      ? Colors.green.withOpacity(0.1) 
+                      : Colors.orange.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: obs.isSynced ? Colors.green.withOpacity(0.3) : Colors.orange.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        obs.isSynced ? Icons.cloud_done : Icons.cloud_off,
+                        color: obs.isSynced ? Colors.green : Colors.orange,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              obs.isSynced ? 'Cloud Backup Active' : 'Local Only',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: obs.isSynced ? Colors.green : Colors.orange,
+                                fontSize: 13,
+                              ),
+                            ),
+                            Text(
+                              obs.isSynced 
+                                ? 'Observation published for science (CC-BY-4.0).'
+                                : 'Sign in and enable backup to share this record.',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const Divider(height: 32),
 

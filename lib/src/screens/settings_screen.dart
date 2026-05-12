@@ -5,6 +5,7 @@ import '../providers/database_provider.dart';
 import '../providers/settings_provider.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/backup_consent_dialog.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -33,7 +34,6 @@ class SettingsScreen extends ConsumerWidget {
 
   Widget _buildBackupSection(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authProvider);
-    final backupEnabled = ref.watch(backupEnabledProvider);
     final primaryColor = Theme.of(context).colorScheme.primary;
 
     return Column(
@@ -52,7 +52,13 @@ class SettingsScreen extends ConsumerWidget {
             title: const Text('Sign in to Backup'),
             subtitle: const Text('Required for automated cloud storage'),
             trailing: ElevatedButton(
-              onPressed: () => ref.read(authActionsProvider.notifier).signInWithGoogle(),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) => const BackupConsentDialog(),
+                );
+              },
               child: const Text('Google Sign-In'),
             ),
           )
@@ -71,11 +77,10 @@ class SettingsScreen extends ConsumerWidget {
                   child: const Text('Sign Out'),
                 ),
               ),
-              SwitchListTile(
-                title: const Text('Enable Automated Backup'),
-                subtitle: const Text('Photos will be shared under CC-BY-4.0'),
-                value: backupEnabled,
-                onChanged: (val) => ref.read(backupEnabledProvider.notifier).setEnabled(val),
+              ListTile(
+                leading: const Icon(Icons.sync, color: Colors.blue),
+                title: const Text('Cloud Backup Active'),
+                subtitle: const Text('Photos are being shared under CC-BY-4.0'),
               ),
               ListTile(
                 leading: const Icon(Icons.delete_forever, color: Colors.red),

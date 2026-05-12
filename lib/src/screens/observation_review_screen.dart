@@ -7,6 +7,7 @@ import 'package:drift/drift.dart' as drift;
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
 import '../models/nin_database.dart';
+import '../providers/auth_provider.dart';
 import 'types_screen.dart';
 
 class ObservationReviewScreen extends ConsumerStatefulWidget {
@@ -396,6 +397,7 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
         altitude: drift.Value(_bestPosition!.altitude),
         accuracy: _bestPosition!.accuracy,
         notes: drift.Value(_notesController.text),
+        ownerUid: drift.Value(ref.read(authProvider)?.uid),
       ),
     );
 

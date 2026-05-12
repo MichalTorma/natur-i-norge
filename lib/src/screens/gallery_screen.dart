@@ -9,6 +9,8 @@ import 'gallery_map_screen.dart';
 import 'observation_detail_screen.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/backup_consent_dialog.dart';
+import '../services/sync_service.dart';
+import 'dart:math' as math;
 
 class GalleryScreen extends ConsumerWidget {
   const GalleryScreen({super.key});
@@ -17,9 +19,18 @@ class GalleryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final observationsAsync = ref.watch(observationsProvider);
     final consentShown = ref.watch(consentShownProvider);
+    final user = ref.watch(authProvider);
+    final collision = ref.watch(collisionProvider);
 
-    // Show consent dialog on first gallery visit
-    if (!consentShown) {
+    // REACTIVE: Handle Account Collisions
+    if (collision.type != CollisionType.none) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showCollisionDialog(context, ref, collision);
+      });
+    }
+
+    // Show consent dialog on first gallery visit ONLY if not already logged in
+    if (!consentShown && user == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
@@ -60,15 +71,7 @@ class GalleryScreen extends ConsumerWidget {
               ),
             ],
           ),
-          IconButton(
-            icon: const Icon(Icons.add_a_photo),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const CameraScreen()),
-              );
-            },
-          ),
+          const _SyncIconButton(),
         ],
       ),
       body: observationsAsync.when(
@@ -100,7 +103,6 @@ class GalleryScreen extends ConsumerWidget {
           final sortMode = ref.watch(observationSortProvider);
           
           if (sortMode == ObservationSortMode.typeAlpha) {
-            // Grouping logic
             final groups = <String, List<ObservationWithType>>{};
             for (var obs in observations) {
               groups.putIfAbsent(obs.observation.typeId, () => []).add(obs);
@@ -188,6 +190,49 @@ class GalleryScreen extends ConsumerWidget {
       ),
     );
   }
+
+  void _showCollisionDialog(BuildContext context, WidgetRef ref, CollisionState collision) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.warning_amber_rounded, color: Colors.orange[700]),
+            const SizedBox(width: 12),
+            const Text('Local Data Conflict'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              collision.type == CollisionType.anonymous
+                  ? 'We found ${collision.count} observations taken while you were logged out.'
+                  : 'This device still contains ${collision.count} records from a previous user.',
+            ),
+            const SizedBox(height: 16),
+            const Text('What would you like to do?'),
+          ],
+        ),
+        actions: [
+          if (collision.type == CollisionType.anonymous)
+            TextButton(
+              onPressed: () => ref.read(authActionsProvider.notifier).resolveCollision(true),
+              child: const Text('Merge into my account'),
+            ),
+          TextButton(
+            onPressed: () => ref.read(authActionsProvider.notifier).resolveCollision(false),
+            child: Text(
+              collision.type == CollisionType.anonymous ? 'Delete them' : 'Clear previous session data',
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _ObservationCard extends StatelessWidget {
@@ -223,62 +268,143 @@ class _ObservationCard extends StatelessWidget {
                       errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.broken_image)),
                     ),
                   ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      observation.typeId,
-                      style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  DateFormat('yyyy-MM-dd HH:mm').format(observation.createdAt),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.location_on, size: 12, color: Colors.red),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        '${observation.latitude.toStringAsFixed(4)}, ${observation.longitude.toStringAsFixed(4)}',
-                        style: const TextStyle(fontSize: 10),
-                        overflow: TextOverflow.ellipsis,
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (observation.isSynced)
+                            const Icon(Icons.cloud_done, color: Colors.greenAccent, size: 12)
+                          else
+                            const Icon(Icons.cloud_off, color: Colors.white70, size: 12),
+                          const SizedBox(width: 4),
+                          Text(
+                            observation.typeId,
+                            style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                if (observation.notes != null && observation.notes!.isNotEmpty) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    observation.notes!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic),
                   ),
                 ],
-              ],
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    DateFormat('yyyy-MM-dd HH:mm').format(observation.createdAt),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.location_on, size: 12, color: Colors.red),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          '${observation.latitude.toStringAsFixed(4)}, ${observation.longitude.toStringAsFixed(4)}',
+                          style: const TextStyle(fontSize: 10),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (observation.notes != null && observation.notes!.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      observation.notes!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
+
+class _SyncIconButton extends ConsumerStatefulWidget {
+  const _SyncIconButton();
+
+  @override
+  ConsumerState<_SyncIconButton> createState() => _SyncIconButtonState();
+}
+
+class _SyncIconButtonState extends ConsumerState<_SyncIconButton> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = ref.watch(authProvider);
+    final syncStatus = ref.watch(syncServiceProvider);
+
+    if (syncStatus == SyncStatus.syncing) {
+      _controller.repeat();
+    } else {
+      _controller.reset();
+    }
+
+    if (user == null) {
+      return IconButton(
+        icon: const Icon(Icons.cloud_off, color: Colors.grey),
+        tooltip: 'Backup not configured',
+        onPressed: () {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const BackupConsentDialog(),
+          );
+        },
+      );
+    }
+
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Transform.rotate(
+          angle: _controller.value * 2 * math.pi,
+          child: child,
+        );
+      },
+      child: IconButton(
+        key: ValueKey(syncStatus),
+        icon: Icon(
+          syncStatus == SyncStatus.syncing ? Icons.sync : Icons.cloud_done,
+          color: syncStatus == SyncStatus.syncing ? Colors.blue : Colors.green,
+        ),
+        tooltip: syncStatus == SyncStatus.syncing ? 'Syncing observations...' : 'All synced',
+        onPressed: syncStatus == SyncStatus.syncing ? null : () {},
+      ),
+    );
+  }
 }
