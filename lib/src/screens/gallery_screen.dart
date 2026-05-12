@@ -7,6 +7,8 @@ import '../models/user_database.dart';
 import 'camera_screen.dart';
 import 'gallery_map_screen.dart';
 import 'observation_detail_screen.dart';
+import '../providers/auth_provider.dart';
+import '../widgets/backup_consent_dialog.dart';
 
 class GalleryScreen extends ConsumerWidget {
   const GalleryScreen({super.key});
@@ -14,6 +16,18 @@ class GalleryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final observationsAsync = ref.watch(observationsProvider);
+    final consentShown = ref.watch(consentShownProvider);
+
+    // Show consent dialog on first gallery visit
+    if (!consentShown) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const BackupConsentDialog(),
+        );
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(

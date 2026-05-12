@@ -270,3 +270,9 @@ Gemfile.lock
 **/screenshots/
 *.png
 !assets/fonts/*.ttf
+
+# Python venv
+scripts/venv/
+
+# macOS ephemeral files
+macos/Flutter/ephemeral/

@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/database_provider.dart';
 import '../providers/settings_provider.dart';
+import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -22,7 +23,89 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
           _buildStatsSection(context, ref),
           const Divider(),
+          _buildBackupSection(context, ref),
+          const Divider(),
           _buildLegalSection(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBackupSection(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authProvider);
+    final backupEnabled = ref.watch(backupEnabledProvider);
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Text(
+            'Cloud Backup & Open Science',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: primaryColor),
+          ),
+        ),
+        if (user == null)
+          ListTile(
+            leading: const Icon(Icons.cloud_off),
+            title: const Text('Sign in to Backup'),
+            subtitle: const Text('Required for automated cloud storage'),
+            trailing: ElevatedButton(
+              onPressed: () => ref.read(authProvider.notifier).signInWithGoogle(),
+              child: const Text('Google Sign-In'),
+            ),
+          )
+        else
+          Column(
+            children: [
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: user.photoURL != null ? NetworkImage(user.photoURL!) : null,
+                  child: user.photoURL == null ? const Icon(Icons.person) : null,
+                ),
+                title: Text(user.displayName ?? 'Researcher'),
+                subtitle: Text(user.email ?? ''),
+                trailing: TextButton(
+                  onPressed: () => ref.read(authProvider.notifier).signOut(),
+                  child: const Text('Sign Out'),
+                ),
+              ),
+              SwitchListTile(
+                title: const Text('Enable Automated Backup'),
+                subtitle: const Text('Photos will be shared under CC-BY-4.0'),
+                value: backupEnabled,
+                onChanged: (val) => ref.read(backupEnabledProvider.notifier).setEnabled(val),
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete_forever, color: Colors.red),
+                title: const Text('Delete Cloud Account', style: TextStyle(color: Colors.red)),
+                subtitle: const Text('Removes your profile and personal links'),
+                onTap: () => _showDeleteConfirmation(context, ref),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  void _showDeleteConfirmation(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Account?'),
+        content: const Text(
+          'This will delete your personal profile from our cloud servers. \n\nNote: Observations already published to Open Science archives (Zenodo) will remain archived for research reproducibility, but your personal identity will be unlinked.',
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () async {
+              await ref.read(authProvider.notifier).deleteAccount();
+              if (context.mounted) Navigator.pop(context);
+            },
+            child: const Text('Delete Everything', style: TextStyle(color: Colors.red)),
+          ),
         ],
       ),
     );

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "47102161738",
+    "project_id": "natur-i-norge-guide",
+    "storage_bucket": "natur-i-norge-guide.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47102161738:android:3d1ff49c80f6fd922547b3",
+        "android_client_info": {
+          "package_name": "no.naturinorge.naturinorge_guide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47102161738-q0g0ssheku8r86uivd2g5e2366mqefcg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDncGW0FOzZY22pmVMyhxxse9ZlRHorHW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47102161738-q0g0ssheku8r86uivd2g5e2366mqefcg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "47102161738-6jc5ecc3qgdj9e62csmrm1e14d3s8o3i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "no.naturinorge.naturinorgeGuide"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
