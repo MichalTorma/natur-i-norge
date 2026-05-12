@@ -102,7 +102,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           // Search Bar
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
@@ -125,7 +125,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           if (widget.type != null && widget.type!.description != null && _searchQuery.isEmpty)
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: const EdgeInsets.fromLTRB(24, 4, 24, 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -182,7 +182,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                   delegate: SliverChildListDelegate([
                     if (isHovedtype && _searchQuery.isEmpty) ...[
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                         child: Text(
                           'VISNINGSMODUS',
                           style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4), letterSpacing: 1.2),
@@ -205,7 +205,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 12),
                       
                       // Show matrix for both biological and mapping scales
                       () {
@@ -245,7 +245,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                               'ECOLOGICAL MATRIX (${selectedScale == 'Biologisk' ? 'BIO' : selectedScale})',
                               style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 8),
                             EcologicalMatrix(subTypes: matrixTypes, onPick: widget.onPick),
                             const Divider(height: 48),
                           ],
@@ -256,7 +256,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                         selectedScale == 'Biologisk' ? 'GRUNNTYPER' : 'KARTLEGGINGSENHETER ($selectedScale)',
                         style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4), letterSpacing: 1.2),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),
                     ],
                     
                     if (types.isEmpty && selectedScale == 'Biologisk' && !isHovedtype) ...[
@@ -284,6 +284,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                                   mainAxisSpacing: 12,
                                   childAspectRatio: 2.0,
                                 ),
+                                padding: const EdgeInsets.only(top: 12, bottom: 16),
                                 itemCount: cTypes.length,
                                 itemBuilder: (context, index) => _TypeCard(
                                   type: cTypes[index],
@@ -313,6 +314,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                           mainAxisSpacing: 12,
                           childAspectRatio: 1.3,
                         ),
+                        padding: const EdgeInsets.only(top: 12, bottom: 24),
                         itemCount: types.length,
                         itemBuilder: (context, index) => _TypeCard(
                           type: types[index],
@@ -418,11 +420,11 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
         titlePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         title: Text(
           type?.navn ?? 'NiN Explorer',
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold, 
             fontSize: 16,
-            color: Colors.white,
-            shadows: [Shadow(color: Colors.black45, blurRadius: 12)],
+            color: Theme.of(context).colorScheme.onSurface,
+            shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -463,8 +465,8 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                     end: Alignment.topCenter,
                     stops: const [0.0, 0.4, 0.8],
                     colors: [
-                      Colors.black.withOpacity(0.7),
-                      Colors.black.withOpacity(0.2),
+                      Theme.of(context).colorScheme.surface.withOpacity(0.7),
+                      Theme.of(context).colorScheme.surface.withOpacity(0.2),
                       Colors.transparent,
                     ],
                   ),
@@ -604,9 +606,9 @@ class _TypeCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: isTight ? 12 : 14, 
                             fontWeight: FontWeight.bold, 
-                            color: Colors.white,
-                            shadows: const [
-                              Shadow(color: Colors.black45, blurRadius: 8),
+                            color: Theme.of(context).colorScheme.onSurface,
+                            shadows: [
+                              Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 4),
                             ],
                           ),
                         ),
