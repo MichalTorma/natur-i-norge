@@ -71,3 +71,23 @@ class DisableImagesNotifier extends Notifier<bool> {
 final disableImagesProvider = NotifierProvider<DisableImagesNotifier, bool>(() {
   return DisableImagesNotifier();
 });
+
+class ShowLkmNamesNotifier extends Notifier<bool> {
+  static const _key = 'show_lkm_names';
+
+  @override
+  bool build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    return prefs.getBool(_key) ?? true;
+  }
+
+  void setShowLkmNames(bool value) {
+    if (state == value) return;
+    state = value;
+    ref.read(sharedPreferencesProvider).setBool(_key, value);
+  }
+}
+
+final showLkmNamesProvider = NotifierProvider<ShowLkmNamesNotifier, bool>(() {
+  return ShowLkmNamesNotifier();
+});
