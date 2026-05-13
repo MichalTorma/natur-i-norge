@@ -70,6 +70,9 @@ capture_for() {
     echo "📂 Moving screenshots to $target_dir..."
     mkdir -p "$target_dir"
     mv screenshots/*.png "$target_dir/"
+
+    echo "🧹 Removing alpha channels for compatibility..."
+    python3 -c "import os; from PIL import Image; directory = '$target_dir'; [ (img := Image.open(os.path.join(directory, f)), img.convert('RGB').save(os.path.join(directory, f), 'PNG')) for f in os.listdir(directory) if f.endswith('.png') ]"
     
     echo "🛑 Shutting down $avd_name ($SERIAL)..."
     adb -s "$SERIAL" emu kill

@@ -38,6 +38,9 @@ capture_for_ios() {
         filename=$(basename "$file")
         mv "$file" "$target_dir/${name}-${filename}"
     done
+
+    echo "🧹 Removing alpha channels for App Store compatibility..."
+    python3 -c "import os; from PIL import Image; directory = '$target_dir'; [ (img := Image.open(os.path.join(directory, f)), img.convert('RGB').save(os.path.join(directory, f), 'PNG')) for f in os.listdir(directory) if f.startswith('$name') and f.endswith('.png') ]"
     
     echo "🛑 Shutting down $name..."
     xcrun simctl shutdown "$device_id"

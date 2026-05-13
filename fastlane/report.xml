@@ -5,39 +5,42 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000752">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000275">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to ios check_remote_version lane" time="9.5e-05">
+      <testcase classname="fastlane.lanes" name="1: Switch to ios check_remote_version lane" time="7.7e-05">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: app_store_build_number" time="2.386486">
+      <testcase classname="fastlane.lanes" name="2: app_store_build_number" time="2.72941">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos;+&apos; -f 2" time="0.023473">
+      <testcase classname="fastlane.lanes" name="3: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos;+&apos; -f 2" time="0.029453">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build ipa --release" time="336.354186">
+      <testcase classname="fastlane.lanes" name="4: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build ipa --release" time="366.51954">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: upload_to_testflight" time="188.977404">
+      <testcase classname="fastlane.lanes" name="5: upload_to_testflight" time="121.130144">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: deliver" time="1205.362667">
+      <testcase classname="fastlane.lanes" name="6: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos; &apos; -f 2 | cut -d &apos;+&apos; -f 1" time="0.021326">
         
-          <failure message="/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/actions/actions_helper.rb:67:in `execute_action&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:255:in `block in execute_action&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:229:in `chdir&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:229:in `execute_action&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:157:in `trigger_action_by_name&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing&apos;&#10;Fastfile:40:in `block (2 levels) in parsing_binding&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/lane.rb:41:in `call&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:49:in `block in execute&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:45:in `chdir&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/runner.rb:45:in `execute&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/lane_manager.rb:46:in `cruise_lane&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/command_line_handler.rb:34:in `handle&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:187:in `call&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:157:in `run&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/commands_generator.rb:363:in `run&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/commands_generator.rb:43:in `start&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/fastlane/lib/fastlane/cli_tools_distributor.rb:132:in `take_off&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/fastlane-2.234.0/bin/fastlane:23:in `&lt;top (required)&gt;&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/bin/fastlane:25:in `load&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/bin/fastlane:25:in `&lt;top (required)&gt;&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/cli/exec.rb:61:in `load&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/cli/exec.rb:61:in `kernel_load&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/cli/exec.rb:24:in `run&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/cli.rb:504:in `exec&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/vendor/thor/lib/thor/command.rb:28:in `run&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/vendor/thor/lib/thor.rb:538:in `dispatch&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/cli.rb:35:in `dispatch&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/vendor/thor/lib/thor/base.rb:584:in `start&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/cli.rb:29:in `start&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/exe/bundle:28:in `block in &lt;top (required)&gt;&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/lib/bundler/friendly_errors.rb:118:in `with_friendly_errors&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bundler-4.0.11/exe/bundle:20:in `&lt;top (required)&gt;&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/bin/bundle:25:in `load&apos;&#10;/Users/amarok/.rbenv/versions/3.3.1/bin/bundle:25:in `&lt;main&gt;&apos;&#10;&#10;Cannot update languages - could not find an editable version for &apos;IOS&apos;" />
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: deliver" time="42.264659">
         
       </testcase>
     
