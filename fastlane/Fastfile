@@ -36,11 +36,15 @@ platform :ios do
       skip_waiting_for_build_processing: true
     )
 
+    # Extract local version name (e.g. 3.0.0) from pubspec.yaml
+    local_version_name = sh("grep 'version:' #{PROJECT_ROOT}/pubspec.yaml | cut -d ' ' -f 2 | cut -d '+' -f 1").strip
+
     # Synchronize screenshots and metadata to App Store Connect
     deliver(
+      app_version: local_version_name,
       metadata_path: "#{FASTLANE_DIR}/metadata/ios",
       screenshots_path: "#{FASTLANE_DIR}/screenshots/ios",
-      skip_binary_upload: true,
+      skip_binary_upload: true, # We already uploaded it via upload_to_testflight
       force: true,
       skip_screenshots: false
     )
