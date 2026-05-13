@@ -1,6 +1,9 @@
 # fastlane/Appfile
 
-json_key_file("../.secrets/AndroidKeys/api-7365211286744298322-1762-e99cbc1803f2.json")
+# Use absolute paths relative to this file's directory to avoid path resolution issues
+base_path = File.expand_path("..", __dir__)
+
+json_key_file(File.join(base_path, ".secrets/AndroidKeys/api-7365211286744298322-1762-e99cbc1803f2.json"))
 package_name("no.naturinorge.naturinorge_guide")
 app_identifier("no.naturinorge.naturinorgeGuide")
 apple_id(ENV["FASTLANE_USER"] || "miso.torma@icloud.com")

@@ -71,6 +71,8 @@ fi
 case $PLATFORM in
   ios)
     echo "🍏 Starting iOS Publication..."
+    echo "📦 Ensuring CocoaPods are up to date..."
+    (cd ios && pod install)
     bundle exec fastlane ios deploy
     ;;
   android)
@@ -79,6 +81,8 @@ case $PLATFORM in
     ;;
   both)
     echo "🚀 Starting Full Publication (iOS + Android)..."
+    echo "📦 Ensuring iOS CocoaPods are up to date..."
+    (cd ios && pod install)
     bundle exec fastlane ios deploy
     bundle exec fastlane android deploy
     ;;

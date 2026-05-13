@@ -2,13 +2,17 @@
 
 default_platform(:ios)
 
+# Resolve the project root directory absolute path
+PROJECT_ROOT = File.expand_path("..", __dir__)
+FASTLANE_DIR = File.expand_path(".", __dir__)
+
 platform :ios do
   desc "Check if local build number is higher than TestFlight"
   lane :check_remote_version do
     UI.message("Checking latest build number on TestFlight...")
     begin
       latest_build = app_store_build_number(initial_build_number: 0)
-      local_version = sh("grep 'version:' ../pubspec.yaml | cut -d '+' -f 2").strip.to_i
+      local_version = sh("grep 'version:' #{PROJECT_ROOT}/pubspec.yaml | cut -d '+' -f 2").strip.to_i
       
       if local_version <= latest_build
         UI.user_error!("Local build number #{local_version} is already on TestFlight (Latest: #{latest_build}). Increment version in pubspec.yaml!")
@@ -22,20 +26,31 @@ platform :ios do
   desc "Push a new release build to TestFlight"
   lane :deploy do
     check_remote_version
-    # Run flutter build from project root
-    sh "cd .. && flutter build ipa --release"
     
+    # Run flutter build from project root
+    sh "cd #{PROJECT_ROOT} && flutter build ipa --release"
+    
+    # Upload the binary to TestFlight
     upload_to_testflight(
-      ipa: "../build/ios/ipa/naturinorge_guide.ipa",
+      ipa: "#{PROJECT_ROOT}/build/ios/ipa/naturinorge_guide.ipa",
       skip_waiting_for_build_processing: true
+    )
+
+    # Synchronize screenshots and metadata to App Store Connect
+    deliver(
+      metadata_path: "#{FASTLANE_DIR}/metadata/ios",
+      screenshots_path: "#{FASTLANE_DIR}/screenshots/ios",
+      skip_binary_upload: true,
+      force: true,
+      skip_screenshots: false
     )
   end
   
   desc "Update iOS metadata and screenshots"
   lane :metadata do
     deliver(
-      metadata_path: "./metadata/ios",
-      screenshots_path: "./screenshots/ios",
+      metadata_path: "#{FASTLANE_DIR}/metadata/ios",
+      screenshots_path: "#{FASTLANE_DIR}/screenshots/ios",
       skip_binary_upload: true,
       force: true
     )
@@ -49,7 +64,7 @@ platform :android do
     begin
       version_codes = google_play_track_version_codes(track: 'internal')
       latest_remote = version_codes.max || 0
-      local_version = sh("grep 'version:' ../pubspec.yaml | cut -d '+' -f 2").strip.to_i
+      local_version = sh("grep 'version:' #{PROJECT_ROOT}/pubspec.yaml | cut -d '+' -f 2").strip.to_i
       
       if local_version <= latest_remote
         UI.user_error!("Local build number #{local_version} is already on Google Play (Internal: #{latest_remote}). Increment version in pubspec.yaml!")
@@ -64,20 +79,21 @@ platform :android do
   lane :test do
     gradle(
       task: "test",
-      project_dir: "../android"
+      project_dir: "#{PROJECT_ROOT}/android"
     )
   end
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
     check_remote_version
+    
     # Run flutter build from project root
-    sh "cd .. && flutter build appbundle --release"
+    sh "cd #{PROJECT_ROOT} && flutter build appbundle --release"
     
     upload_to_play_store(
       track: 'internal',
-      aab: '../build/app/outputs/bundle/release/app-release.aab',
-      metadata_path: './metadata/android'
+      aab: "#{PROJECT_ROOT}/build/app/outputs/bundle/release/app-release.aab",
+      metadata_path: "#{FASTLANE_DIR}/metadata/android"
     )
   end
 end
