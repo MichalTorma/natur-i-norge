@@ -118,7 +118,7 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
             // Image Preview
             AspectRatio(
               aspectRatio: 1,
-              child: Image.file(File(widget.imagePath), fit: BoxFit.cover),
+              child: Image.file(File(widget.imagePath), fit: BoxFit.cover, semanticLabel: 'Photo of the nature type observation'),
             ),
             
             Padding(
@@ -181,6 +181,7 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.close, size: 18),
+                          tooltip: 'Clear notes',
                           onPressed: () {
                             setState(() {
                               _showNotes = false;
@@ -254,7 +255,11 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
             const Icon(Icons.location_off, color: Colors.red),
             const SizedBox(width: 12),
             Expanded(child: Text(_locationError!, style: const TextStyle(color: Colors.red, fontSize: 13))),
-            IconButton(icon: const Icon(Icons.refresh), onPressed: _startLocationUpdates),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              tooltip: 'Refresh location',
+              onPressed: _startLocationUpdates,
+            ),
           ],
         ),
       );

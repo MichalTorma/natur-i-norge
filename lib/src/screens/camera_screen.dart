@@ -126,6 +126,7 @@ class _CameraScreenState extends State<CameraScreen> {
                             ? const CircularProgressIndicator(color: Colors.white)
                             : FloatingActionButton.large(
                                 onPressed: _captureImage,
+                                tooltip: 'Capture photo of nature type',
                                 backgroundColor: Colors.white,
                                 foregroundColor: Colors.black,
                                 child: const Icon(Icons.camera, size: 40),

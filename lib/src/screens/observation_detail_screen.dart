@@ -124,16 +124,22 @@ class _ObservationDetailScreenState extends ConsumerState<ObservationDetailScree
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: 'obs_image_${obs.id}',
-                child: Image.file(File(obs.imagePath), fit: BoxFit.cover),
+                child: Image.file(
+                  File(obs.imagePath),
+                  fit: BoxFit.cover,
+                  semanticLabel: 'Full size photo of the observation',
+                ),
               ),
             ),
             actions: [
               IconButton(
                 icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                tooltip: 'Delete this observation',
                 onPressed: () => _showDeleteConfirmation(context),
               ),
               IconButton(
                 icon: Icon(_isEditing ? Icons.save : Icons.edit),
+                tooltip: _isEditing ? 'Save changes' : 'Edit observation notes',
                 onPressed: () {
                   if (_isEditing) {
                     _saveChanges();

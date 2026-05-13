@@ -189,22 +189,26 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                         children: [
                           SizedBox(
                             width: yHeaderWidth, 
-                            child: InkWell(
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: filterVar))),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    displayName, 
-                                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    filterVar,
-                                    style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4)),
-                                  ),
-                                ],
+                            child: Semantics(
+                              label: 'View details for variable $displayName',
+                              button: true,
+                              child: InkWell(
+                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: filterVar))),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      displayName, 
+                                      style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      filterVar,
+                                      style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4)),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -278,22 +282,26 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                 children: [
                   // Y-Axis LKM Name Button (Pinned to left)
                   if (hasYAxis)
-                    InkWell(
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _yAxisVar!))),
-                      child: Container(
-                        width: yLkmNameWidth,
-                        height: totalYUnits * unitHeight,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: colorScheme.primary.withOpacity(0.1),
-                          borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
-                          border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
-                        ),
-                        child: RotatedBox(
-                          quarterTurns: 3,
-                          child: Text(
-                            "$_yAxisVar",
-                            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                    Semantics(
+                      label: 'Y-axis variable: $_yAxisVar. Tap to view details.',
+                      button: true,
+                      child: InkWell(
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _yAxisVar!))),
+                        child: Container(
+                          width: yLkmNameWidth,
+                          height: totalYUnits * unitHeight,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: colorScheme.primary.withOpacity(0.1),
+                            borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
+                            border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+                          ),
+                          child: RotatedBox(
+                            quarterTurns: 3,
+                            child: Text(
+                              "$_yAxisVar",
+                              style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                            ),
                           ),
                         ),
                       ),
@@ -401,24 +409,28 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               // X-Axis LKM Header (Full Width Name)
               Padding(
                 padding: EdgeInsets.only(left: effectiveYHeaderWidth),
-                child: InkWell(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _xAxisVar!))),
-                  child: Container(
-                    width: totalXUnits * unitWidth,
-                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                    decoration: BoxDecoration(
-                      color: colorScheme.primary.withOpacity(0.1),
-                      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(4)),
-                      border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})",
-                          style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                        ),
-                      ],
+                child: Semantics(
+                  label: 'X-axis variable: $_xAxisVar. Tap to view details.',
+                  button: true,
+                  child: InkWell(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _xAxisVar!))),
+                    child: Container(
+                      width: totalXUnits * unitWidth,
+                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary.withOpacity(0.1),
+                        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(4)),
+                        border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})",
+                            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -690,46 +702,50 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   
                   return InkWell(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TypesScreen(type: type, onPick: widget.onPick))),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: isHighlighted 
-                            ? [primaryColor.withOpacity(0.4), primaryColor.withOpacity(0.2)]
-                            : [primaryColor.withOpacity(0.15), primaryColor.withOpacity(0.05)],
-                        ),
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(color: isHighlighted ? primaryColor : colorScheme.onSurface.withOpacity(0.1)),
-                        boxShadow: isHighlighted ? [
-                          BoxShadow(color: primaryColor.withOpacity(0.2), blurRadius: 4, spreadRadius: 0)
-                        ] : [],
-                      ),
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            type.id.split('-').last,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold, 
-                              fontSize: unitWidth < 40 ? 10 : (unitWidth < 60 ? 11 : 13), 
-                              color: colorScheme.primary
-                            ),
-                            textAlign: TextAlign.center,
+                    child: Semantics(
+                      label: 'Nature type ${type.id}: ${type.navn}. Tap to select or view details.',
+                      button: true,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: isHighlighted 
+                              ? [primaryColor.withOpacity(0.4), primaryColor.withOpacity(0.2)]
+                              : [primaryColor.withOpacity(0.15), primaryColor.withOpacity(0.05)],
                           ),
-                          if (unitHeight > 55 && unitWidth > 40) ...[
-                            const SizedBox(height: 1),
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: isHighlighted ? primaryColor : colorScheme.onSurface.withOpacity(0.1)),
+                          boxShadow: isHighlighted ? [
+                            BoxShadow(color: primaryColor.withOpacity(0.2), blurRadius: 4, spreadRadius: 0)
+                          ] : [],
+                        ),
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                             Text(
-                              type.navn,
-                              maxLines: unitHeight > 85 ? 2 : 1,
-                              overflow: TextOverflow.ellipsis,
+                              type.id.split('-').last,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold, 
+                                fontSize: unitWidth < 40 ? 10 : (unitWidth < 60 ? 11 : 13), 
+                                color: colorScheme.primary
+                              ),
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 8, color: colorScheme.onSurface.withOpacity(0.7)),
                             ),
+                            if (unitHeight > 55 && unitWidth > 40) ...[
+                              const SizedBox(height: 1),
+                              Text(
+                                type.navn,
+                                maxLines: unitHeight > 85 ? 2 : 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 8, color: colorScheme.onSurface.withOpacity(0.7)),
+                              ),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
                     ),
                   );

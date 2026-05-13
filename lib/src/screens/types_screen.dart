@@ -254,6 +254,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   icon: Icon(Icons.settings, size: 14, color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                  tooltip: 'Matrix settings',
                                   onSelected: (val) => ref.read(showLkmNamesProvider.notifier).setShowLkmNames(val),
                                   itemBuilder: (context) => [
                                     const PopupMenuItem(value: true, child: Text('Show step names')),
@@ -420,7 +421,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
         if (type != null && type.langkode != null)
           IconButton(
             icon: const Icon(Icons.open_in_browser, color: Colors.white),
-            tooltip: 'View on Artsdatabanken',
+            tooltip: 'View details on Artsdatabanken website',
             onPressed: () => launchUrl(
               Uri.parse('https://artsdatabanken.no/naturtyper/natur-i-norge/${type.langkode}'),
               mode: LaunchMode.externalApplication,
@@ -434,6 +435,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
               return IconButton(
                 icon: Icon(isFavorite ? Icons.star : Icons.star_border),
                 color: isFavorite ? Colors.amber : Colors.white,
+                tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
                 onPressed: () async {
                   final db = ref.read(userDatabaseProvider);
                   if (isFavorite) {
@@ -514,7 +516,11 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                 future: ref.watch(disableImagesProvider) ? Future.value(null) : _getLocalImage(type),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data != null) {
-                    return Image.file(snapshot.data!, fit: BoxFit.cover);
+                    return Image.file(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                      semanticLabel: 'Representative photo of ${type.navn}',
+                    );
                   }
                   return Container(
                     decoration: BoxDecoration(
@@ -599,7 +605,11 @@ class _TypeCard extends ConsumerWidget {
                         opacity: isIcon ? 1.0 : 0.8,
                         child: Padding(
                           padding: isIcon ? const EdgeInsets.all(16.0) : EdgeInsets.zero,
-                          child: Image.file(snapshot.data!, fit: isIcon ? BoxFit.contain : BoxFit.cover),
+                          child: Image.file(
+                            snapshot.data!,
+                            fit: isIcon ? BoxFit.contain : BoxFit.cover,
+                            semanticLabel: 'Representative photo of ${type.navn}',
+                          ),
                         ),
                       );
                     }

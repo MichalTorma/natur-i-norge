@@ -46,6 +46,7 @@ class GalleryScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.map),
+            tooltip: 'View observations on map',
             onPressed: () {
               Navigator.push(
                 context,
@@ -55,6 +56,7 @@ class GalleryScreen extends ConsumerWidget {
           ),
           PopupMenuButton<ObservationSortMode>(
             icon: const Icon(Icons.sort),
+            tooltip: 'Sort observations',
             onSelected: (mode) => ref.read(observationSortProvider.notifier).setMode(mode),
             itemBuilder: (context) => [
               const PopupMenuItem(
@@ -265,6 +267,7 @@ class _ObservationCard extends StatelessWidget {
                     child: Image.file(
                       File(observation.imagePath),
                       fit: BoxFit.cover,
+                      semanticLabel: 'Observation of ${observation.typeId}',
                       errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.broken_image)),
                     ),
                   ),
