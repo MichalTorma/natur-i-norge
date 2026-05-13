@@ -26,6 +26,7 @@ class TypesScreen extends ConsumerStatefulWidget {
 class _TypesScreenState extends ConsumerState<TypesScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  bool _showLkmNames = true;
 
   @override
   Widget build(BuildContext context) {
@@ -242,12 +243,31 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'ECOLOGICAL MATRIX (${selectedScale == 'Biologisk' ? 'BIO' : selectedScale})',
-                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2),
+                            Row(
+                              children: [
+                                Text(
+                                  'ECOLOGICAL MATRIX (${selectedScale == 'Biologisk' ? 'BIO' : selectedScale})',
+                                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2),
+                                ),
+                                const SizedBox(width: 4),
+                                PopupMenuButton<bool>(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  icon: Icon(Icons.settings, size: 14, color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                  onSelected: (val) => setState(() => _showLkmNames = val),
+                                  itemBuilder: (context) => [
+                                    const PopupMenuItem(value: true, child: Text('Show step names')),
+                                    const PopupMenuItem(value: false, child: Text('Show step codes')),
+                                  ],
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 8),
-                            EcologicalMatrix(subTypes: matrixTypes, onPick: widget.onPick),
+                            EcologicalMatrix(
+                              subTypes: matrixTypes, 
+                              onPick: widget.onPick,
+                              showStepNames: _showLkmNames,
+                            ),
                             const Divider(height: 48),
                           ],
                         );

@@ -7,7 +7,8 @@ import '../screens/variable_detail_screen.dart';
 class EcologicalMatrix extends StatefulWidget {
   final List<NinType> subTypes;
   final ValueChanged<NinType>? onPick;
-  const EcologicalMatrix({super.key, required this.subTypes, this.onPick});
+  final bool showStepNames;
+  const EcologicalMatrix({super.key, required this.subTypes, this.onPick, this.showStepNames = true});
 
   @override
   State<EcologicalMatrix> createState() => _EcologicalMatrixState();
@@ -17,10 +18,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
   String? _xAxisVar;
   String? _yAxisVar;
   final Map<String, String> _activeFilters = {};
+  late bool _showStepNames;
 
   @override
   void initState() {
     super.initState();
+    _showStepNames = widget.showStepNames;
     _identifyAxes();
   }
 
@@ -29,6 +32,9 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     super.didUpdateWidget(oldWidget);
     if (widget.subTypes != oldWidget.subTypes) {
       _identifyAxes();
+    }
+    if (widget.showStepNames != oldWidget.showStepNames) {
+      setState(() => _showStepNames = widget.showStepNames);
     }
   }
 
@@ -208,9 +214,14 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                               child: Row(
                                 children: mergedGroups.map((group) {
                                   final isSelected = group.contains(_activeFilters[filterVar]);
-                                  final startLabel = allVarSteps[filterVar]![group.first] ?? group.first;
-                                  final endLabel = allVarSteps[filterVar]![group.last] ?? group.last;
-                                  final rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : startLabel;
+                                  final String rangeLabel;
+                                  if (_showStepNames) {
+                                    final startLabel = allVarSteps[filterVar]?[group.first] ?? group.first;
+                                    final endLabel = allVarSteps[filterVar]?[group.last] ?? group.last;
+                                    rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : startLabel;
+                                  } else {
+                                    rangeLabel = group.join(', ');
+                                  }
 
                                   return Padding(
                                     padding: const EdgeInsets.only(right: 2.0),
