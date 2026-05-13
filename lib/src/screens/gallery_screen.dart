@@ -370,6 +370,13 @@ class _SyncIconButtonState extends ConsumerState<_SyncIconButton> with SingleTic
   Widget build(BuildContext context) {
     final user = ref.watch(authProvider);
     final syncStatus = ref.watch(syncServiceProvider);
+    final observationsAsync = ref.watch(observationsProvider);
+
+    // Determine if there are any unsynced observations in the gallery
+    final hasUnsynced = observationsAsync.maybeWhen(
+      data: (obs) => obs.any((o) => !o.observation.isSynced),
+      orElse: () => false,
+    );
 
     if (syncStatus == SyncStatus.syncing) {
       _controller.repeat();
@@ -391,6 +398,8 @@ class _SyncIconButtonState extends ConsumerState<_SyncIconButton> with SingleTic
       );
     }
 
+    final bool isSyncing = syncStatus == SyncStatus.syncing;
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
@@ -400,13 +409,17 @@ class _SyncIconButtonState extends ConsumerState<_SyncIconButton> with SingleTic
         );
       },
       child: IconButton(
-        key: ValueKey(syncStatus),
+        key: ValueKey('$syncStatus-$hasUnsynced'),
         icon: Icon(
-          syncStatus == SyncStatus.syncing ? Icons.sync : Icons.cloud_done,
-          color: syncStatus == SyncStatus.syncing ? Colors.blue : Colors.green,
+          isSyncing ? Icons.sync : (hasUnsynced ? Icons.cloud_upload : Icons.cloud_done),
+          color: isSyncing ? Colors.blue : (hasUnsynced ? Colors.orange : Colors.green),
         ),
-        tooltip: syncStatus == SyncStatus.syncing ? 'Syncing observations...' : 'All synced',
-        onPressed: syncStatus == SyncStatus.syncing ? null : () {},
+        tooltip: isSyncing 
+            ? 'Syncing observations...' 
+            : (hasUnsynced ? 'Unsynced records found. Click to upload.' : 'All synced'),
+        onPressed: isSyncing ? null : () {
+          ref.read(syncServiceProvider.notifier).syncNow();
+        },
       ),
     );
   }

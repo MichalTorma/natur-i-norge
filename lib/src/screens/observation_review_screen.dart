@@ -8,6 +8,7 @@ import '../providers/database_provider.dart';
 import '../models/user_database.dart';
 import '../models/nin_database.dart';
 import '../providers/auth_provider.dart';
+import '../services/sync_service.dart';
 import 'types_screen.dart';
 
 class ObservationReviewScreen extends ConsumerStatefulWidget {
@@ -405,6 +406,9 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
         ownerUid: drift.Value(ref.read(authProvider)?.uid),
       ),
     );
+
+    // Trigger sync immediately
+    ref.read(syncServiceProvider.notifier).syncNow();
 
     if (mounted) {
       Navigator.popUntil(context, (route) => route.isFirst);

@@ -24,14 +24,14 @@ class SyncService extends Notifier<SyncStatus> {
   void _init() {
     ref.listen(authProvider, (previous, next) {
       if (next != null) {
-        _syncNow();
+        syncNow();
         _restoreFromCloud();
       }
     });
 
     ref.listen(observationsProvider, (previous, next) {
       if (ref.read(authProvider) != null) {
-        _syncNow();
+        syncNow();
       }
     });
   }
@@ -104,7 +104,7 @@ class SyncService extends Notifier<SyncStatus> {
     }
   }
 
-  Future<void> _syncNow() async {
+  Future<void> syncNow() async {
     if (state == SyncStatus.syncing) {
       _needsAnotherPass = true;
       return;
@@ -125,7 +125,7 @@ class SyncService extends Notifier<SyncStatus> {
         _needsAnotherPass = false;
         
         final unsynced = await (db.select(db.observations)
-              ..where((t) => t.isSynced.equals(false) & t.ownerUid.equals(user.uid)))
+              ..where((t) => t.isSynced.equals(false) & (t.ownerUid.equals(user.uid) | t.ownerUid.isNull())))
             .get();
 
         if (unsynced.isEmpty) break;
@@ -196,6 +196,7 @@ class SyncService extends Notifier<SyncStatus> {
         ObservationsCompanion(
           isSynced: const Value(true),
           cloudUrl: Value(downloadUrl),
+          ownerUid: Value(userId),
         ),
       );
     } catch (e) {
