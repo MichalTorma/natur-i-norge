@@ -261,73 +261,6 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // X-Axis LKM Header (Full Width Name)
-              Padding(
-                padding: EdgeInsets.only(left: effectiveYHeaderWidth),
-                child: InkWell(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _xAxisVar!))),
-                  child: Container(
-                    width: totalXUnits * unitWidth,
-                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                    decoration: BoxDecoration(
-                      color: colorScheme.primary.withOpacity(0.1),
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-                      border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})",
-                          style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              // X-Axis Range Headers (The codes/steps)
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(width: effectiveYHeaderWidth), 
-                  ...xSteps.map((xId) {
-                    final group = matrixData.xMergeMap[xId]!;
-                    final startLabel = allVarSteps[_xAxisVar]?[group.first] ?? group.first;
-                    final endLabel = allVarSteps[_xAxisVar]?[group.last] ?? group.last;
-                    final rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : startLabel;
-                    final width = group.length * unitWidth;
-
-                    return Container(
-                      width: width,
-                      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 2.0),
-                            child: Text(
-                              rangeLabel,
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: colorScheme.primary),
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Row(
-                            children: group.map((code) => Container(
-                              width: unitWidth,
-                              height: 10,
-                              alignment: Alignment.center,
-                              child: Text(code, style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4))),
-                            )).toList(),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                ],
-              ),
               // The Data Row (Y-Header + Grid)
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,6 +345,73 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   ),
                 ],
               ),
+              // X-Axis Range Headers (The codes/steps)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(width: effectiveYHeaderWidth), 
+                  ...xSteps.map((xId) {
+                    final group = matrixData.xMergeMap[xId]!;
+                    final startLabel = allVarSteps[_xAxisVar]?[group.first] ?? group.first;
+                    final endLabel = allVarSteps[_xAxisVar]?[group.last] ?? group.last;
+                    final rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : startLabel;
+                    final width = group.length * unitWidth;
+
+                    return Container(
+                      width: width,
+                      decoration: BoxDecoration(border: Border(top: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: group.map((code) => Container(
+                              width: unitWidth,
+                              height: 10,
+                              alignment: Alignment.center,
+                              child: Text(code, style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4))),
+                            )).toList(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2.0),
+                            child: Text(
+                              rangeLabel,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: colorScheme.primary),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ],
+              ),
+              // X-Axis LKM Header (Full Width Name)
+              Padding(
+                padding: EdgeInsets.only(left: effectiveYHeaderWidth),
+                child: InkWell(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _xAxisVar!))),
+                  child: Container(
+                    width: totalXUnits * unitWidth,
+                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary.withOpacity(0.1),
+                      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(4)),
+                      border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})",
+                          style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -475,7 +475,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     }
 
     final List<String> sortedX = xSteps.toList()..sort();
-    final List<String> sortedY = ySteps.toList()..sort();
+    // Sort Y in descending order so that the lowest values (origin) end up at the bottom
+    final List<String> sortedY = ySteps.toList()..sort((a, b) => b.compareTo(a));
 
     // Compression: Merge adjacent identical X columns
     final List<List<String>> mergedX = [];
