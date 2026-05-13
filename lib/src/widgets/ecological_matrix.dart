@@ -56,13 +56,9 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     final sortedVars = varSteps.entries.toList()
       ..sort((a, b) => b.value.length.compareTo(a.value.length));
 
-    // Prefer KA for X if it exists
-    _xAxisVar = varSteps.containsKey('LM-KA') ? 'LM-KA' : sortedVars[0].key;
-    
-    // Prefer VM or UF for Y
-    _yAxisVar = varSteps.containsKey('LM-VM') ? 'LM-VM' : 
-                (varSteps.containsKey('LM-UF') ? 'LM-UF' : 
-                (sortedVars.length > 1 ? (sortedVars[0].key == _xAxisVar ? sortedVars[1].key : sortedVars[0].key) : null));
+    // Use the variables with the most steps as X and Y axes
+    _xAxisVar = sortedVars[0].key;
+    _yAxisVar = sortedVars.length > 1 ? sortedVars[1].key : null;
 
     // All other variables become 'Sliders' (active filters)
     _activeFilters.clear();
