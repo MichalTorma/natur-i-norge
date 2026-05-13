@@ -452,6 +452,27 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (type != null)
+              Container(
+                margin: const EdgeInsets.only(bottom: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(4),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
+                  ],
+                ),
+                child: Text(
+                  type.id,
+                  style: TextStyle(
+                    fontSize: 10, 
+                    fontWeight: FontWeight.w900, 
+                    color: color,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
             Text(
               type?.navn ?? 'NiN Explorer',
               style: TextStyle(
@@ -460,8 +481,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                 color: Theme.of(context).colorScheme.onSurface,
                 shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              maxLines: null,
             ),
             if (type == null)
               GestureDetector(
@@ -524,30 +544,6 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       Theme.of(context).colorScheme.surface.withOpacity(0.2),
                       Colors.transparent,
                     ],
-                  ),
-                ),
-              ),
-            ),
-            // ID Badge in Card Style
-            Positioned(
-              left: 16,
-              bottom: 48, // Above the title
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6),
-                  boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
-                  ],
-                ),
-                child: Text(
-                  type.id,
-                  style: TextStyle(
-                    fontSize: 14, 
-                    fontWeight: FontWeight.w900, 
-                    color: color,
-                    letterSpacing: 0.8,
                   ),
                 ),
               ),

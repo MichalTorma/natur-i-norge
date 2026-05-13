@@ -30,7 +30,7 @@ class VariableDetailScreen extends ConsumerWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(varData.navn),
+            title: Text(varData.navn, maxLines: null),
             actions: [
               if (varData.langkode != null)
                 IconButton(
