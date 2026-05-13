@@ -35,7 +35,7 @@ create_avd "fastlane-tablet-10" "10.1in WXGA (Tablet)"
 # 4. Capture Function
 capture_for() {
     local avd_name=$1
-    local target_dir="android/fastlane/metadata/android/no-NO/images/$2"
+    local target_dir="fastlane/metadata/android/no-NO/images/$2"
     
     # 1. Ensure no other emulators are running
     echo "🧹 Cleaning up old emulators..."

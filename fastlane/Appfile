@@ -1,0 +1,6 @@
+# fastlane/Appfile
+
+json_key_file("../.secrets/AndroidKeys/api-7365211286744298322-1762-e99cbc1803f2.json")
+package_name("no.naturinorge.naturinorge_guide")
+app_identifier("no.naturinorge.naturinorgeGuide")
+apple_id(ENV["FASTLANE_USER"] || "miso.torma@icloud.com")

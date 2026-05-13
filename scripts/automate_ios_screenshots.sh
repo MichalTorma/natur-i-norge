@@ -11,7 +11,7 @@ echo "🍏 Starting iOS Screenshot Automation..."
 capture_for_ios() {
     local device_id=$1
     local name=$2
-    local target_dir="ios/fastlane/screenshots/no-NO"
+    local target_dir="fastlane/screenshots/ios/no-NO"
     
     echo "🎬 Launching Simulator: $name ($device_id)..."
     xcrun simctl boot "$device_id" || true

@@ -10,6 +10,10 @@
 	<string>This app needs microphone access for video recording if required.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to location to record precise nature observations.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location to record precise nature observations even when in the background.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location to record precise nature observations.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs access to photo library to save observations.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
