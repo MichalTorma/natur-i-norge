@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import '../providers/database_provider.dart';
+import '../providers/settings_provider.dart';
 import '../models/nin_database.dart';
 import 'types_screen.dart';
 
@@ -99,7 +100,7 @@ class FavoritesScreen extends ConsumerWidget {
   }
 }
 
-class _FavoriteTile extends StatelessWidget {
+class _FavoriteTile extends ConsumerWidget {
   final NinType type;
 
   const _FavoriteTile({required this.type});
@@ -112,7 +113,8 @@ class _FavoriteTile extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final disableImages = ref.watch(disableImagesProvider);
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
@@ -123,7 +125,7 @@ class _FavoriteTile extends StatelessWidget {
             width: 60,
             height: 60,
             child: FutureBuilder<File?>(
-              future: _getLocalImage(),
+              future: disableImages ? Future.value(null) : _getLocalImage(),
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data != null) {
                   return Image.file(snapshot.data!, fit: BoxFit.cover);

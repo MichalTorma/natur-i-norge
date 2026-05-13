@@ -491,7 +491,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
             Hero(
               tag: 'image_${type.id}',
               child: FutureBuilder<File?>(
-                future: _getLocalImage(type),
+                future: ref.watch(disableImagesProvider) ? Future.value(null) : _getLocalImage(type),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data != null) {
                     return Image.file(snapshot.data!, fit: BoxFit.cover);
@@ -566,7 +566,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
   }
 }
 
-class _TypeCard extends StatelessWidget {
+class _TypeCard extends ConsumerWidget {
   final NinType type;
   final VoidCallback onTap;
   final int level;
@@ -581,7 +581,8 @@ class _TypeCard extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final disableImages = ref.watch(disableImagesProvider);
     final isIcon = level <= 1;
     final color = level == 0 ? Colors.blue : (level == 1 ? Colors.green : Colors.orange);
 
@@ -595,7 +596,7 @@ class _TypeCard extends StatelessWidget {
               child: Hero(
                 tag: 'image_${type.id}',
                 child: FutureBuilder<File?>(
-                  future: _getLocalImage(),
+                  future: disableImages ? Future.value(null) : _getLocalImage(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data != null) {
                       return Opacity(

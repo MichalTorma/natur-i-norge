@@ -22,6 +22,8 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
           _buildThemeSection(context, ref, currentTheme),
           const Divider(),
+          _buildPerformanceSection(context, ref),
+          const Divider(),
           _buildStatsSection(context, ref),
           const Divider(),
           _buildBackupSection(context, ref),
@@ -222,6 +224,31 @@ class SettingsScreen extends ConsumerWidget {
           isSelected: currentTheme == AppTheme.highContrastDark,
           onTap: () => ref.read(appThemeProvider.notifier).setTheme(AppTheme.highContrastDark),
           icon: Icons.brightness_low_outlined,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPerformanceSection(BuildContext context, WidgetRef ref) {
+    final disableImages = ref.watch(disableImagesProvider);
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Text(
+            'Performance',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: primaryColor),
+          ),
+        ),
+        SwitchListTile(
+          title: const Text('Disable Image Loading'),
+          subtitle: const Text('Reduces resource usage on slower devices by hiding nature type photos.'),
+          secondary: const Icon(Icons.image_not_supported_outlined),
+          value: disableImages,
+          onChanged: (val) => ref.read(disableImagesProvider.notifier).setDisableImages(val),
         ),
       ],
     );

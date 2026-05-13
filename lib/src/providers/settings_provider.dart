@@ -51,3 +51,23 @@ class AppThemeNotifier extends Notifier<AppTheme> {
 final appThemeProvider = NotifierProvider<AppThemeNotifier, AppTheme>(() {
   return AppThemeNotifier();
 });
+
+class DisableImagesNotifier extends Notifier<bool> {
+  static const _key = 'disable_images';
+
+  @override
+  bool build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    return prefs.getBool(_key) ?? false;
+  }
+
+  void setDisableImages(bool value) {
+    if (state == value) return;
+    state = value;
+    ref.read(sharedPreferencesProvider).setBool(_key, value);
+  }
+}
+
+final disableImagesProvider = NotifierProvider<DisableImagesNotifier, bool>(() {
+  return DisableImagesNotifier();
+});
