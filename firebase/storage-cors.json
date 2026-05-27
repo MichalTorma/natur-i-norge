@@ -1,0 +1,19 @@
+[
+  {
+    "origin": [
+      "https://geco-nhm.github.io",
+      "http://localhost:8080",
+      "http://127.0.0.1:8080"
+    ],
+    "method": ["GET", "HEAD", "PUT", "POST", "DELETE"],
+    "responseHeader": [
+      "Content-Type",
+      "Authorization",
+      "Content-Length",
+      "User-Agent",
+      "x-goog-resumable",
+      "x-goog-meta-*"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]

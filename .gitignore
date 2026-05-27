@@ -278,3 +278,5 @@ scripts/venv/
 
 # macOS ephemeral files
 macos/Flutter/ephemeral/
+google-cloud-sdk/
+firebase/
