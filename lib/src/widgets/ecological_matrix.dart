@@ -374,9 +374,19 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                             unitWidth,
                             unitHeight,
                           ),
-                        
+
                         // The Islands
                         ..._buildIslands(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
+
+                        if (widget.gadConstancy != null &&
+                            widget.gadConstancy!.isNotEmpty)
+                          ..._buildGadLabels(
+                            matrixData,
+                            xSteps,
+                            ySteps,
+                            unitWidth,
+                            unitHeight,
+                          ),
                       ],
                     ),
                   ),
@@ -683,6 +693,13 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     return const Color(0xFF2E7D32).withOpacity(0.82);
   }
 
+  String _formatGadValue(double value) {
+    if (value == value.roundToDouble()) {
+      return value.toInt().toString();
+    }
+    return value.toStringAsFixed(1);
+  }
+
   List<Widget> _buildGadHeatmap(
     _MatrixData data,
     List<String> xSteps,
@@ -690,6 +707,44 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     double unitWidth,
     double unitHeight,
   ) {
+    return _buildGadCells(
+      data,
+      xSteps,
+      ySteps,
+      unitWidth,
+      unitHeight,
+      includeColor: true,
+      includeLabel: false,
+    );
+  }
+
+  List<Widget> _buildGadLabels(
+    _MatrixData data,
+    List<String> xSteps,
+    List<String> ySteps,
+    double unitWidth,
+    double unitHeight,
+  ) {
+    return _buildGadCells(
+      data,
+      xSteps,
+      ySteps,
+      unitWidth,
+      unitHeight,
+      includeColor: false,
+      includeLabel: true,
+    );
+  }
+
+  List<Widget> _buildGadCells(
+    _MatrixData data,
+    List<String> xSteps,
+    List<String> ySteps,
+    double unitWidth,
+    double unitHeight, {
+    required bool includeColor,
+    required bool includeLabel,
+  }) {
     final cells = <Widget>[];
     double cumX = 0;
 
@@ -708,21 +763,19 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   top: cumY,
                   width: unitWidth,
                   height: unitHeight,
-                  child: Container(
-                    color: _gadColor(value),
-                    alignment: Alignment.center,
-                    child: value >= 4
-                        ? Text(
-                            value.toStringAsFixed(0),
-                            style: TextStyle(
-                              fontSize: 8,
-                              fontWeight: FontWeight.bold,
-                              color: value >= 5
-                                  ? Colors.white.withOpacity(0.9)
-                                  : Colors.black.withOpacity(0.55),
-                            ),
-                          )
-                        : null,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      if (includeColor)
+                        Container(color: _gadColor(value)),
+                      if (includeLabel)
+                        Center(
+                          child: _GadValueBadge(
+                            label: _formatGadValue(value),
+                            compact: unitWidth < 44 || unitHeight < 44,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               );
@@ -881,4 +934,44 @@ class _MatrixData {
   final Map<String, List<String>> yMergeMap;
 
   _MatrixData(this.grid, this.compressedX, this.compressedY, this.xMergeMap, this.yMergeMap);
+}
+
+/// Distinct badge for GAD konstans — centered in cell, amber border, separate from type labels.
+class _GadValueBadge extends StatelessWidget {
+  final String label;
+  final bool compact;
+
+  const _GadValueBadge({required this.label, required this.compact});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: compact ? 3 : 5,
+        vertical: compact ? 1 : 2,
+      ),
+      decoration: BoxDecoration(
+        color: const Color(0xDD1A1A1A),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: const Color(0xFFFFB300), width: 1.5),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x44000000),
+            blurRadius: 2,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: compact ? 10 : 13,
+          fontWeight: FontWeight.w800,
+          color: Colors.white,
+          height: 1,
+          fontFeatures: const [FontFeature.tabularFigures()],
+        ),
+      ),
+    );
+  }
 }

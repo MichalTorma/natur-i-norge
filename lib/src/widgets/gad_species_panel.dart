@@ -25,7 +25,10 @@ class _GadSpeciesPanelState extends ConsumerState<GadSpeciesPanel> {
   @override
   Widget build(BuildContext context) {
     final selectedAsync = ref.watch(gadSelectedSpeciesDetailsProvider);
+    final selectedIds = ref.watch(gadSelectedSpeciesProvider);
+    final overlayVisible = ref.watch(gadOverlayVisibleProvider);
     final colorScheme = Theme.of(context).colorScheme;
+    final hasSpecies = selectedIds.isNotEmpty;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,6 +47,19 @@ class _GadSpeciesPanelState extends ConsumerState<GadSpeciesPanel> {
               ),
             ),
             const Spacer(),
+            if (hasSpecies)
+              FilterChip(
+                label: const Text('Konstans'),
+                selected: overlayVisible,
+                showCheckmark: false,
+                avatar: Icon(
+                  overlayVisible ? Icons.grid_on : Icons.grid_off,
+                  size: 16,
+                ),
+                onSelected: (_) => ref
+                    .read(gadOverlayVisibleProvider.notifier)
+                    .setVisible(!overlayVisible),
+              ),
             TextButton.icon(
               onPressed: _openSpeciesPicker,
               icon: const Icon(Icons.add, size: 16),
@@ -53,7 +69,7 @@ class _GadSpeciesPanelState extends ConsumerState<GadSpeciesPanel> {
         ),
         const SizedBox(height: 4),
         Text(
-          'Velg én eller flere arter for å vise konstans (0–6) i matrisen.',
+          'Konstans (0–6) vises som gule merker midt i hver celle.',
           style: TextStyle(
             fontSize: 11,
             color: colorScheme.onSurface.withOpacity(0.5),

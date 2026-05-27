@@ -28,6 +28,18 @@ final gadSelectedSpeciesProvider =
   GadSelectedSpeciesNotifier.new,
 );
 
+class GadOverlayVisibleNotifier extends Notifier<bool> {
+  @override
+  bool build() => true;
+
+  void setVisible(bool visible) => state = visible;
+}
+
+final gadOverlayVisibleProvider =
+    NotifierProvider<GadOverlayVisibleNotifier, bool>(
+  GadOverlayVisibleNotifier.new,
+);
+
 final gadSpeciesSearchProvider =
     FutureProvider.family<List<NinSpecy>, String>((ref, query) async {
   final db = ref.watch(databaseProvider);
