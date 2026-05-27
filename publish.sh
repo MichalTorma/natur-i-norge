@@ -7,6 +7,7 @@ set -e
 PLATFORM=""
 RUN_SCREENSHOTS=false
 DEPLOY_WEB=false
+PREVIEW_WEB=false
 
 for arg in "$@"; do
   case $arg in
@@ -18,6 +19,9 @@ for arg in "$@"; do
       ;;
     --deploy|-d)
       DEPLOY_WEB=true
+      ;;
+    --preview|-p)
+      PREVIEW_WEB=true
       ;;
     *)
       # Ignore unknown arguments for now
@@ -33,6 +37,12 @@ if [ -z "$PLATFORM" ]; then
   echo "  all               Publish iOS + Android, then build web"
   echo ""
   echo "  --deploy|-d       With 'web': commit docs/app/ and push to origin"
+  echo "  --preview|-p      With 'web': serve local preview (GitHub Pages layout)"
+  exit 1
+fi
+
+if [ "$PREVIEW_WEB" = true ] && [ "$PLATFORM" != "web" ]; then
+  echo "❌ --preview can only be used with 'web'"
   exit 1
 fi
 
@@ -103,11 +113,15 @@ case $PLATFORM in
     publish_mobile "$PLATFORM"
     ;;
   web)
-    DEPLOY_ARGS=()
-    if [ "$DEPLOY_WEB" = true ]; then
-      DEPLOY_ARGS+=(--deploy)
+    if [ "$PREVIEW_WEB" = true ]; then
+      ./scripts/preview_web.sh
+    else
+      DEPLOY_ARGS=()
+      if [ "$DEPLOY_WEB" = true ]; then
+        DEPLOY_ARGS+=(--deploy)
+      fi
+      ./scripts/deploy_web.sh "${DEPLOY_ARGS[@]}"
     fi
-    ./scripts/deploy_web.sh "${DEPLOY_ARGS[@]}"
     ;;
   all)
     publish_mobile both

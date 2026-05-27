@@ -1,14 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
+import '../utils/auth_errors.dart';
 
-class BackupConsentDialog extends ConsumerWidget {
+class BackupConsentDialog extends ConsumerStatefulWidget {
   const BackupConsentDialog({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<BackupConsentDialog> createState() => _BackupConsentDialogState();
+}
+
+class _BackupConsentDialogState extends ConsumerState<BackupConsentDialog> {
+  bool _isSigningIn = false;
+
+  Future<void> _signIn() async {
+    if (_isSigningIn) return;
+
+    setState(() => _isSigningIn = true);
+
+    try {
+      await ref.read(authActionsProvider.notifier).signInWithGoogle();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(friendlyAuthErrorMessage(e)),
+            duration: const Duration(seconds: 5),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSigningIn = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     // REACTIVE: Close dialog and enable backup automatically on login
     ref.listen(authProvider, (previous, next) {
       if (next != null) {
@@ -70,32 +102,30 @@ class BackupConsentDialog extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: TextButton(
-                      onPressed: () {
-                        ref.read(consentShownProvider.notifier).setShown();
-                        Navigator.pop(context);
-                      },
+                      onPressed: _isSigningIn
+                          ? null
+                          : () {
+                              ref.read(consentShownProvider.notifier).setShown();
+                              Navigator.pop(context);
+                            },
                       child: const Text('Maybe Later'),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          await ref.read(authActionsProvider.notifier).signInWithGoogle();
-                        } catch (e) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Login failed: $e')),
-                            );
-                          }
-                        }
-                      },
+                      onPressed: _isSigningIn ? null : _signIn,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.primary,
                         foregroundColor: theme.colorScheme.onPrimary,
                       ),
-                      child: const Text('Enable Backup'),
+                      child: _isSigningIn
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text('Enable Backup'),
                     ),
                   ),
                 ],

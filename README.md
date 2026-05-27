@@ -27,9 +27,9 @@ The web app is at:
 # Build, commit, and push to GitHub Pages
 ./publish.sh web --deploy
 
-# Preview locally before deploying
-python3 -m http.server 8080 --directory docs
-# open http://localhost:8080/app/
+# Preview locally before deploying (mirrors GitHub Pages URL paths)
+./scripts/preview_web.sh
+# open http://localhost:8080/natur-i-norge/app/
 ```
 
 To publish mobile stores and build web in one go:

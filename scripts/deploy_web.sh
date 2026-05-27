@@ -34,8 +34,8 @@ touch docs/.nojekyll
 
 BUILD_SIZE=$(du -sh "${WEB_OUTPUT_DIR}" | cut -f1)
 echo "✅ Web build ready in ${WEB_OUTPUT_DIR}/ (${BUILD_SIZE})"
-echo "   Preview locally:  python3 -m http.server 8080 --directory docs"
-echo "   Then open:        http://localhost:8080/app/"
+echo "   Preview locally:  ./scripts/preview_web.sh"
+echo "   Then open:        http://localhost:8080/${REPO_NAME}/app/"
 
 if [ "$DEPLOY" = false ]; then
   echo ""

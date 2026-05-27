@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'settings_provider.dart';
@@ -41,22 +42,39 @@ final authProvider = Provider<User?>((ref) {
 
 // The actions notifier
 class AuthActionsNotifier extends Notifier<void> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    // Required on web when using the google_sign_in plugin directly.
+    clientId: kIsWeb
+        ? '47102161738-q0g0ssheku8r86uivd2g5e2366mqefcg.apps.googleusercontent.com'
+        : null,
+  );
 
   @override
   void build() {}
 
   Future<void> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    if (googleUser == null) return;
+    final UserCredential userCredential;
 
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+    if (kIsWeb) {
+      // Firebase Auth popup flow is the supported path on web.
+      userCredential = await ref
+          .read(firebaseAuthProvider)
+          .signInWithPopup(GoogleAuthProvider());
+    } else {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return;
 
-    final userCredential = await ref.read(firebaseAuthProvider).signInWithCredential(credential);
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      userCredential =
+          await ref.read(firebaseAuthProvider).signInWithCredential(credential);
+    }
+
     final user = userCredential.user;
     if (user == null) return;
 
@@ -109,7 +127,9 @@ class AuthActionsNotifier extends Notifier<void> {
   }
 
   Future<void> signOut() async {
-    await _googleSignIn.signOut();
+    if (!kIsWeb) {
+      await _googleSignIn.signOut();
+    }
     await ref.read(firebaseAuthProvider).signOut();
   }
 
@@ -117,7 +137,9 @@ class AuthActionsNotifier extends Notifier<void> {
     final user = ref.read(firebaseAuthProvider).currentUser;
     if (user != null) {
       await user.delete();
-      await _googleSignIn.signOut();
+      if (!kIsWeb) {
+        await _googleSignIn.signOut();
+      }
     }
   }
 }
