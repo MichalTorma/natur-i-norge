@@ -130,21 +130,14 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       }
     }
 
-    // Responsive sizing logic
-    final screenSize = MediaQuery.of(context).size;
-    const double yHeaderWidth = 55.0; // More compact for Y axis
-    const double yLkmNameWidth = 20.0; 
-    
+    // Responsive sizing — prefer readable cells; scroll horizontally if needed.
+    final colorScheme = Theme.of(context).colorScheme;
     final bool hasYAxis = _yAxisVar != null;
-    final double effectiveYHeaderWidth = hasYAxis ? yHeaderWidth : 0;
-
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
 
     return LayoutBuilder(
       builder: (context, constraints) {
         final availableW = constraints.maxWidth;
-        
+
         double totalXUnits = 0;
         for (var xId in xSteps) {
           totalXUnits += (matrixData.xMergeMap[xId]?.length ?? 1);
@@ -154,15 +147,175 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           totalYUnits += (matrixData.yMergeMap[yId]?.length ?? 1);
         }
 
-        // NO CLAMP on width - force it to fit the screen dimension
-        final double unitWidth = (availableW - effectiveYHeaderWidth) / (totalXUnits > 0 ? totalXUnits : 1);
-        // Height follows width to stay relatively square, but with a reasonable minimum for the text
-        final double unitHeight = unitWidth.clamp(50.0, 100.0); 
+        final layout = _computeLayout(
+          availableWidth: availableW,
+          totalXUnits: totalXUnits,
+          totalYUnits: totalYUnits,
+          hasYAxis: hasYAxis,
+          xSteps: xSteps,
+          ySteps: ySteps,
+          matrixData: matrixData,
+          allVarSteps: allVarSteps,
+          showStepCodes: !_showStepNames,
+        );
+
+        final gridWidth = totalXUnits * layout.unitWidth;
+
+        Widget gridColumn = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: gridWidth,
+              height: totalYUnits * layout.unitHeight,
+              child: Stack(
+                children: [
+                  _buildBackgroundGrid(
+                    matrixData,
+                    xSteps,
+                    ySteps,
+                    layout.unitWidth,
+                    layout.unitHeight,
+                    colorScheme,
+                  ),
+                  if (widget.gadConstancy != null && widget.gadConstancy!.isNotEmpty)
+                    ..._buildGadHeatmap(
+                      matrixData,
+                      xSteps,
+                      ySteps,
+                      layout.unitWidth,
+                      layout.unitHeight,
+                    ),
+                  ..._buildIslands(
+                    matrixData,
+                    xSteps,
+                    ySteps,
+                    layout.unitWidth,
+                    layout.unitHeight,
+                    colorScheme,
+                  ),
+                  if (widget.gadConstancy != null && widget.gadConstancy!.isNotEmpty)
+                    ..._buildGadLabels(
+                      matrixData,
+                      xSteps,
+                      ySteps,
+                      layout.unitWidth,
+                      layout.unitHeight,
+                    ),
+                ],
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: xSteps.map((xId) {
+                final group = matrixData.xMergeMap[xId]!;
+                final rangeLabel = _formatRangeLabel(
+                  group,
+                  allVarSteps[_xAxisVar],
+                  showStepNames: _showStepNames,
+                );
+                final width = group.length * layout.unitWidth;
+
+                return _buildXAxisStepLabel(
+                  context,
+                  colorScheme: colorScheme,
+                  width: width,
+                  rangeLabel: rangeLabel,
+                  stepCodes: group,
+                  showStepCodes: layout.showStepCodes,
+                  unitWidth: layout.unitWidth,
+                  axisHeight: layout.xAxisHeight,
+                );
+              }).toList(),
+            ),
+            Semantics(
+              label: 'X-axis variable: $_xAxisVar. Tap to view details.',
+              button: true,
+              child: InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => VariableDetailScreen(variableId: _xAxisVar!),
+                  ),
+                ),
+                child: Container(
+                  width: gridWidth,
+                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withOpacity(0.1),
+                    borderRadius: const BorderRadius.vertical(bottom: Radius.circular(4)),
+                    border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+                  ),
+                  child: _MatrixLabel(
+                    text: '$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                    ),
+                    maxLines: 2,
+                    minFontSize: 10,
+                    maxFontSize: 13,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+
+        if (layout.scrollHorizontally) {
+          gridColumn = SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: gridColumn,
+          );
+        }
+
+        final matrixBlock = Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (hasYAxis) ...[
+              _buildYAxisVariableStrip(
+                context,
+                colorScheme: colorScheme,
+                height: totalYUnits * layout.unitHeight,
+                width: layout.yVariableStripWidth,
+                label: '$_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'})',
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => VariableDetailScreen(variableId: _yAxisVar!),
+                  ),
+                ),
+              ),
+              Column(
+                children: ySteps.map((yId) {
+                  final group = matrixData.yMergeMap[yId]!;
+                  final rangeLabel = _formatRangeLabel(
+                    group,
+                    allVarSteps[_yAxisVar],
+                    showStepNames: _showStepNames,
+                  );
+                  final height = group.length * layout.unitHeight;
+
+                  return _buildYAxisStepLabel(
+                    context,
+                    colorScheme: colorScheme,
+                    width: layout.yHeaderWidth,
+                    height: height,
+                    rangeLabel: rangeLabel,
+                    stepCodes: group,
+                    showStepCodes: layout.showStepCodes,
+                    unitHeight: layout.unitHeight,
+                  );
+                }).toList(),
+              ),
+            ],
+            Expanded(child: gridColumn),
+          ],
+        );
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Variable Toggles (Slices) - Merged by Effect
             if (_activeFilters.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -171,13 +324,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   children: _activeFilters.keys.map((filterVar) {
                     final allSteps = allVarSteps[filterVar]!.keys.toList()..sort();
                     final displayName = varNames[filterVar] ?? filterVar;
-                    
-                    // Group steps that produce the SAME matrix
+
                     final List<List<String>> mergedGroups = [];
                     if (allSteps.isNotEmpty) {
                       List<String> currentGroup = [allSteps[0]];
                       String? currentGridHash = _calculateGridHash(filterVar, allSteps[0]);
-                      
+
                       for (int i = 1; i < allSteps.length; i++) {
                         final nextHash = _calculateGridHash(filterVar, allSteps[i]);
                         if (nextHash == currentGridHash) {
@@ -196,24 +348,36 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                       child: Row(
                         children: [
                           SizedBox(
-                            width: yHeaderWidth, 
+                            width: layout.yVariableStripWidth + (hasYAxis ? layout.yHeaderWidth : 0),
                             child: Semantics(
                               label: 'View details for variable $displayName',
                               button: true,
                               child: InkWell(
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: filterVar))),
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => VariableDetailScreen(variableId: filterVar),
+                                  ),
+                                ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      displayName, 
-                                      style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                                      maxLines: 1,
+                                      displayName,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        color: colorScheme.primary,
+                                      ),
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
                                       filterVar,
-                                      style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4)),
+                                      style: TextStyle(
+                                        fontSize: 9,
+                                        color: colorScheme.onSurface.withOpacity(0.45),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -226,21 +390,17 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                               child: Row(
                                 children: mergedGroups.map((group) {
                                   final isSelected = group.contains(_activeFilters[filterVar]);
-                                  final String rangeLabel;
-                                  if (_showStepNames) {
-                                    final startLabel = allVarSteps[filterVar]?[group.first] ?? group.first;
-                                    final endLabel = allVarSteps[filterVar]?[group.last] ?? group.last;
-                                    rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : startLabel;
-                                  } else {
-                                    rangeLabel = group.join(', ');
-                                  }
+                                  final rangeLabel = _formatRangeLabel(
+                                    group,
+                                    allVarSteps[filterVar],
+                                    showStepNames: _showStepNames,
+                                  );
 
                                   return Padding(
-                                    padding: const EdgeInsets.only(right: 2.0),
+                                    padding: const EdgeInsets.only(right: 4.0),
                                     child: ChoiceChip(
                                       visualDensity: VisualDensity.compact,
-                                      padding: EdgeInsets.zero,
-                                      label: Text(rangeLabel, style: const TextStyle(fontSize: 8)),
+                                      label: Text(rangeLabel, style: const TextStyle(fontSize: 10)),
                                       selected: isSelected,
                                       onSelected: (val) {
                                         if (val) setState(() => _activeFilters[filterVar] = group.first);
@@ -257,7 +417,6 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   }).toList(),
                 ),
               ),
-            
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Row(
@@ -266,216 +425,353 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      hasYAxis 
-                        ? '${varNames[_xAxisVar] ?? _xAxisVar} \u00d7 ${varNames[_yAxisVar] ?? _yAxisVar}'
-                        : '${varNames[_xAxisVar] ?? _xAxisVar}',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: colorScheme.primary),
+                      hasYAxis
+                          ? '${varNames[_xAxisVar] ?? _xAxisVar} \u00d7 ${varNames[_yAxisVar] ?? _yAxisVar}'
+                          : '${varNames[_xAxisVar] ?? _xAxisVar}',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.primary,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               ),
             ),
-
-        // The Archipelago (Outside the box!)
-        // The Archipelago (Outside the box!)
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // The Data Row (Y-Header + Grid)
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Y-Axis LKM Name Button (Pinned to left)
-                  if (hasYAxis)
-                    Semantics(
-                      label: 'Y-axis variable: $_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'}). Tap to view details.',
-                      button: true,
-                      child: InkWell(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _yAxisVar!))),
-                        child: Container(
-                          width: yLkmNameWidth,
-                          height: totalYUnits * unitHeight,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: colorScheme.primary.withOpacity(0.1),
-                            borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
-                            border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
-                          ),
-                          child: RotatedBox(
-                            quarterTurns: 3,
-                            child: Text(
-                              "$_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'})",
-                              style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  // Y-Axis Range Labels
-                  if (hasYAxis)
-                    Column(
-                      children: ySteps.map((yId) {
-                        final group = matrixData.yMergeMap[yId]!;
-                        final startLabel = allVarSteps[_yAxisVar]?[group.first] ?? group.first;
-                        final endLabel = allVarSteps[_yAxisVar]?[group.last] ?? group.last;
-                        final rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : (startLabel == '' ? '-' : startLabel);
-                        final height = group.length * unitHeight;
-
-                        return Container(
-                          width: yHeaderWidth - yLkmNameWidth,
-                          height: height,
-                          decoration: BoxDecoration(border: Border(right: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(
-                                    rangeLabel,
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: colorScheme.primary),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: group.map((code) => Container(
-                                  width: 15,
-                                  height: unitHeight,
-                                  alignment: Alignment.center,
-                                  child: Text(code, style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4))),
-                                )).toList(),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  // The Data Area (Stack)
-                  SizedBox(
-                    width: totalXUnits * unitWidth,
-                    height: totalYUnits * unitHeight,
-                    child: Stack(
-                      children: [
-                        // Subtle Background Grid
-                        _buildBackgroundGrid(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
-
-                        if (widget.gadConstancy != null &&
-                            widget.gadConstancy!.isNotEmpty)
-                          ..._buildGadHeatmap(
-                            matrixData,
-                            xSteps,
-                            ySteps,
-                            unitWidth,
-                            unitHeight,
-                          ),
-
-                        // The Islands
-                        ..._buildIslands(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
-
-                        if (widget.gadConstancy != null &&
-                            widget.gadConstancy!.isNotEmpty)
-                          ..._buildGadLabels(
-                            matrixData,
-                            xSteps,
-                            ySteps,
-                            unitWidth,
-                            unitHeight,
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              // X-Axis Range Headers (The codes/steps)
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(width: effectiveYHeaderWidth), 
-                  ...xSteps.map((xId) {
-                    final group = matrixData.xMergeMap[xId]!;
-                    final startLabel = allVarSteps[_xAxisVar]?[group.first] ?? group.first;
-                    final endLabel = allVarSteps[_xAxisVar]?[group.last] ?? group.last;
-                    final rangeLabel = group.length > 1 ? "$startLabel-$endLabel" : startLabel;
-                    final width = group.length * unitWidth;
-
-                    return Container(
-                      width: width,
-                      decoration: BoxDecoration(border: Border(top: BorderSide(color: colorScheme.onSurface.withOpacity(0.1)))),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: group.map((code) => Container(
-                              width: unitWidth,
-                              height: 10,
-                              alignment: Alignment.center,
-                              child: Text(code, style: TextStyle(fontSize: 6, color: colorScheme.onSurface.withOpacity(0.4))),
-                            )).toList(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.0),
-                            child: Text(
-                              rangeLabel,
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: colorScheme.primary),
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                ],
-              ),
-              // X-Axis LKM Header (Full Width Name)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: matrixBlock,
+            ),
+            if (layout.scrollHorizontally)
               Padding(
-                padding: EdgeInsets.only(left: effectiveYHeaderWidth),
-                child: Semantics(
-                  label: 'X-axis variable: $_xAxisVar. Tap to view details.',
-                  button: true,
-                  child: InkWell(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _xAxisVar!))),
-                    child: Container(
-                      width: totalXUnits * unitWidth,
-                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                      decoration: BoxDecoration(
-                        color: colorScheme.primary.withOpacity(0.1),
-                        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(4)),
-                        border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})",
-                            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
-                          ),
-                        ],
-                      ),
-                    ),
+                padding: const EdgeInsets.only(top: 6),
+                child: Text(
+                  'Scroll horizontally to read all columns',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: colorScheme.onSurface.withOpacity(0.45),
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text(
-            'Matrix Axes: X=$_xAxisVar, Y=${_yAxisVar ?? "None"}',
-            style: TextStyle(fontSize: 10, color: colorScheme.onSurface.withOpacity(0.2)),
-          ),
-        ),
           ],
         );
       },
+    );
+  }
+
+  String _formatRangeLabel(
+    List<String> group,
+    Map<String, String>? stepNames, {
+    required bool showStepNames,
+  }) {
+    if (group.isEmpty) return '-';
+    if (showStepNames) {
+      final startLabel = stepNames?[group.first] ?? group.first;
+      final endLabel = stepNames?[group.last] ?? group.last;
+      if (startLabel.isEmpty) return '-';
+      return group.length > 1 ? '$startLabel–$endLabel' : startLabel;
+    }
+    return group.join(', ');
+  }
+
+  _MatrixLayout _computeLayout({
+    required double availableWidth,
+    required double totalXUnits,
+    required double totalYUnits,
+    required bool hasYAxis,
+    required List<String> xSteps,
+    required List<String> ySteps,
+    required _MatrixData matrixData,
+    required Map<String, Map<String, String>> allVarSteps,
+    required bool showStepCodes,
+  }) {
+    const idealUnit = 56.0;
+    const minUnit = 44.0;
+
+    double yVariableStripWidth(bool compact) =>
+        hasYAxis ? (compact ? 18.0 : 26.0) : 0.0;
+
+    double yHeaderWidth(bool compact) {
+      if (!hasYAxis) return 0.0;
+      if (showStepCodes) return compact ? 22.0 : 28.0;
+
+      var width = compact ? 40.0 : 52.0;
+      for (final yId in ySteps) {
+        final group = matrixData.yMergeMap[yId]!;
+        final label = _formatRangeLabel(
+          group,
+          allVarSteps[_yAxisVar],
+          showStepNames: true,
+        );
+        if (label.length > 14) {
+          width = (width + 8).clamp(52.0, 88.0);
+        }
+      }
+      return width;
+    }
+
+    // Prefer scrolling over shrinking cells on narrow viewports.
+    final compactYGutter =
+        yVariableStripWidth(true) + yHeaderWidth(true);
+    final naturalGridWidth = totalXUnits * idealUnit;
+    final scrollHorizontally =
+        naturalGridWidth > (availableWidth - compactYGutter).clamp(80.0, double.infinity);
+
+    final yVarStrip = yVariableStripWidth(scrollHorizontally);
+    final yHeader = yHeaderWidth(scrollHorizontally);
+    final yAxisGutterWidth = yVarStrip + yHeader;
+    final gridBudget =
+        (availableWidth - yAxisGutterWidth).clamp(80.0, double.infinity);
+
+    final unitWidth = scrollHorizontally
+        ? idealUnit
+        : (gridBudget / (totalXUnits > 0 ? totalXUnits : 1))
+            .clamp(minUnit, 112.0);
+    final unitHeight = unitWidth.clamp(minUnit, 112.0);
+    final xAxisHeight = showStepCodes ? 26.0 : 34.0;
+
+    return _MatrixLayout(
+      unitWidth: unitWidth,
+      unitHeight: unitHeight,
+      yVariableStripWidth: yVarStrip,
+      yHeaderWidth: yHeader,
+      yAxisGutterWidth: yAxisGutterWidth,
+      xAxisHeight: xAxisHeight,
+      showStepCodes: showStepCodes,
+      scrollHorizontally: scrollHorizontally,
+    );
+  }
+
+  Widget _buildYAxisVariableStrip(
+    BuildContext context, {
+    required ColorScheme colorScheme,
+    required double height,
+    required double width,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Semantics(
+      label: 'Y-axis variable. Tap to view details.',
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          width: width,
+          height: height,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: colorScheme.primary.withOpacity(0.1),
+            borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
+            border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+          ),
+          child: RotatedBox(
+            quarterTurns: 3,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: _MatrixLabel(
+                text: label,
+                style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.primary),
+                maxLines: 2,
+                minFontSize: 9,
+                maxFontSize: 12,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildYAxisStepLabel(
+    BuildContext context, {
+    required ColorScheme colorScheme,
+    required double width,
+    required double height,
+    required String rangeLabel,
+    required List<String> stepCodes,
+    required bool showStepCodes,
+    required double unitHeight,
+  }) {
+    if (showStepCodes) {
+      return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          border: Border(right: BorderSide(color: colorScheme.onSurface.withOpacity(0.12))),
+        ),
+        child: Column(
+          children: stepCodes
+              .map(
+                (code) => SizedBox(
+                  height: unitHeight,
+                  child: Center(
+                    child: _MatrixLabel(
+                      text: code,
+                      style: TextStyle(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      maxLines: 1,
+                      minFontSize: 9,
+                      maxFontSize: 12,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
+
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        border: Border(right: BorderSide(color: colorScheme.onSurface.withOpacity(0.12))),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 3),
+        child: RotatedBox(
+          quarterTurns: 3,
+          child: _MatrixLabel(
+            text: rangeLabel,
+            style: TextStyle(fontWeight: FontWeight.w700, color: colorScheme.primary),
+            maxLines: 3,
+            minFontSize: 9,
+            maxFontSize: 12,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildXAxisStepLabel(
+    BuildContext context, {
+    required ColorScheme colorScheme,
+    required double width,
+    required String rangeLabel,
+    required List<String> stepCodes,
+    required bool showStepCodes,
+    required double unitWidth,
+    required double axisHeight,
+  }) {
+    if (showStepCodes) {
+      return Container(
+        width: width,
+        height: axisHeight,
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: colorScheme.onSurface.withOpacity(0.12))),
+        ),
+        child: Row(
+          children: stepCodes
+              .map(
+                (code) => SizedBox(
+                  width: unitWidth,
+                  child: Center(
+                    child: _MatrixLabel(
+                      text: code,
+                      style: TextStyle(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      maxLines: 1,
+                      minFontSize: 9,
+                      maxFontSize: 12,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
+
+    return Container(
+      width: width,
+      height: axisHeight,
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: colorScheme.onSurface.withOpacity(0.12))),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(2, 4, 2, 4),
+        child: _MatrixLabel(
+          text: rangeLabel,
+          style: TextStyle(fontWeight: FontWeight.w700, color: colorScheme.primary),
+          maxLines: 3,
+          minFontSize: 9,
+          maxFontSize: 12,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCellContent(
+    NinType type,
+    double width,
+    double height,
+    ColorScheme colorScheme,
+  ) {
+    final showName = height >= 34 && width >= 30;
+
+    return Padding(
+      padding: const EdgeInsets.all(3),
+      child: SizedBox(
+        width: width - 2,
+        height: height - 2,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: colorScheme.surface.withOpacity(0.78),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: _MatrixLabel(
+                      text: type.id,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        color: colorScheme.primary,
+                        letterSpacing: -0.2,
+                      ),
+                      maxLines: 2,
+                      minFontSize: 9,
+                      maxFontSize: 14,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                if (showName)
+                  Expanded(
+                    flex: 2,
+                    child: Center(
+                      child: _MatrixLabel(
+                        text: type.navn,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: colorScheme.onSurface.withOpacity(0.88),
+                        ),
+                        maxLines: height >= 72 ? 3 : 2,
+                        minFontSize: 8,
+                        maxFontSize: 11,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -886,31 +1182,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                           ] : [],
                         ),
                         alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              type.id.split('-').last,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold, 
-                                fontSize: unitWidth < 40 ? 10 : (unitWidth < 60 ? 11 : 13), 
-                                color: colorScheme.primary
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            if (unitHeight > 55 && unitWidth > 40) ...[
-                              const SizedBox(height: 1),
-                              Text(
-                                type.navn,
-                                maxLines: unitHeight > 85 ? 2 : 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 8, color: colorScheme.onSurface.withOpacity(0.7)),
-                              ),
-                            ],
-                          ],
-                        ),
+                        child: _buildCellContent(type, width, height, colorScheme),
                       ),
                     ),
                   );
@@ -923,6 +1195,84 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     }
 
     return islands;
+  }
+}
+
+class _MatrixLayout {
+  final double unitWidth;
+  final double unitHeight;
+  final double yVariableStripWidth;
+  final double yHeaderWidth;
+  final double yAxisGutterWidth;
+  final double xAxisHeight;
+  final bool showStepCodes;
+  final bool scrollHorizontally;
+
+  const _MatrixLayout({
+    required this.unitWidth,
+    required this.unitHeight,
+    required this.yVariableStripWidth,
+    required this.yHeaderWidth,
+    required this.yAxisGutterWidth,
+    required this.xAxisHeight,
+    required this.showStepCodes,
+    required this.scrollHorizontally,
+  });
+}
+
+class _MatrixLabel extends StatelessWidget {
+  final String text;
+  final TextStyle style;
+  final int maxLines;
+  final double minFontSize;
+  final double maxFontSize;
+  final TextAlign textAlign;
+
+  const _MatrixLabel({
+    required this.text,
+    required this.style,
+    this.maxLines = 1,
+    this.minFontSize = 8,
+    this.maxFontSize = 12,
+    this.textAlign = TextAlign.start,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth.isFinite && constraints.maxWidth > 0
+            ? constraints.maxWidth
+            : double.infinity;
+
+        return FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: _alignmentFor(textAlign),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            child: Text(
+              text,
+              style: style.copyWith(fontSize: maxFontSize),
+              maxLines: maxLines,
+              overflow: TextOverflow.ellipsis,
+              textAlign: textAlign,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Alignment _alignmentFor(TextAlign align) {
+    switch (align) {
+      case TextAlign.center:
+        return Alignment.center;
+      case TextAlign.end:
+      case TextAlign.right:
+        return Alignment.centerRight;
+      default:
+        return Alignment.centerLeft;
+    }
   }
 }
 
@@ -945,31 +1295,34 @@ class _GadValueBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: compact ? 3 : 5,
-        vertical: compact ? 1 : 2,
-      ),
-      decoration: BoxDecoration(
-        color: const Color(0xDD1A1A1A),
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: const Color(0xFFFFB300), width: 1.5),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x44000000),
-            blurRadius: 2,
-            offset: Offset(0, 1),
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: compact ? 3 : 5,
+          vertical: compact ? 1 : 2,
+        ),
+        decoration: BoxDecoration(
+          color: const Color(0xDD1A1A1A),
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: const Color(0xFFFFB300), width: 1.5),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x44000000),
+              blurRadius: 2,
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: compact ? 10 : 13,
+            fontWeight: FontWeight.w800,
+            color: Colors.white,
+            height: 1,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
-        ],
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: compact ? 10 : 13,
-          fontWeight: FontWeight.w800,
-          color: Colors.white,
-          height: 1,
-          fontFeatures: const [FontFeature.tabularFigures()],
         ),
       ),
     );
