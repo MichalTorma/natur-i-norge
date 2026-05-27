@@ -36,8 +36,10 @@ if [ -z "$PLATFORM" ]; then
   echo "  web               Build Flutter web app for GitHub Pages"
   echo "  all               Publish iOS + Android, then build web"
   echo ""
-  echo "  --deploy|-d       With 'web': commit docs/app/ and push to origin"
+  echo "  --deploy|-d       With 'web': commit docs/app/ (+ docs/v2.3/ if archive exists) and push"
   echo "  --preview|-p      With 'web': serve local preview (GitHub Pages layout)"
+  echo ""
+  echo "  Legacy v2.3: copy prod web/ to archive/v2.3-web/web/, then ./scripts/sync_legacy_web_to_docs.sh"
   exit 1
 fi
 

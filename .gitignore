@@ -272,6 +272,10 @@ Gemfile.lock
 **/screenshots/
 *.png
 !assets/fonts/*.ttf
+# Legacy web archive (production v2.3 snapshot)
+!archive/v2.3-web/web/**/*.png
+!docs/logo.png
+!docs/v2.3/**/*.png
 
 # Python venv
 scripts/venv/

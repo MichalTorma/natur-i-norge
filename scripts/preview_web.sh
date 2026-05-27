@@ -23,10 +23,16 @@ rsync -a docs/ "$PREVIEW_ROOT/${REPO_NAME}/"
 
 LANDING_URL="http://localhost:${PORT}/${REPO_NAME}/"
 APP_URL="http://localhost:${PORT}/${REPO_NAME}/app/"
+LEGACY_URL="http://localhost:${PORT}/${REPO_NAME}/v2.3/"
 
 echo "🌐 Preview server (GitHub Pages layout)"
-echo "   Landing page: ${LANDING_URL}"
-echo "   Web app:      ${APP_URL}"
+echo "   Landing page:  ${LANDING_URL}"
+echo "   Web app:       ${APP_URL}"
+if [ -f docs/v2.3/index.html ]; then
+  echo "   Legacy v2.3:   ${LEGACY_URL}"
+else
+  echo "   Legacy v2.3:   (not synced — run ./scripts/sync_legacy_web_to_docs.sh)"
+fi
 echo "   Press Ctrl+C to stop."
 echo ""
 

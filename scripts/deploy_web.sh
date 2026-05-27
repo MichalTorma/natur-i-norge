@@ -32,6 +32,12 @@ rsync -a --delete "${BUILD_DIR}/" "${WEB_OUTPUT_DIR}/"
 # Prevent GitHub Pages from running Jekyll (Flutter uses paths Jekyll ignores).
 touch docs/.nojekyll
 
+if [ -f archive/v2.3-web/web/index.html ]; then
+  ./scripts/sync_legacy_web_to_docs.sh
+else
+  echo "ℹ️  Skipping docs/v2.3/ (no archive at archive/v2.3-web/web/)"
+fi
+
 BUILD_SIZE=$(du -sh "${WEB_OUTPUT_DIR}" | cut -f1)
 echo "✅ Web build ready in ${WEB_OUTPUT_DIR}/ (${BUILD_SIZE})"
 echo "   Preview locally:  ./scripts/preview_web.sh"
@@ -52,6 +58,9 @@ fi
 VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
 git add docs/.nojekyll
 git add -f docs/app
+if [ -d docs/v2.3 ] && [ -f docs/v2.3/index.html ]; then
+  git add -f docs/v2.3
+fi
 
 if git diff --cached --quiet; then
   echo "ℹ️  No changes to deploy (build output is unchanged)."
@@ -65,4 +74,7 @@ EOF
   echo "📤 Pushing to origin..."
   git push origin HEAD
   echo "✅ Deployed! Live at: https://geco-nhm.github.io/${REPO_NAME}/app/"
+  if [ -f docs/v2.3/index.html ]; then
+    echo "   Legacy v2.3: https://geco-nhm.github.io/${REPO_NAME}/v2.3/"
+  fi
 fi

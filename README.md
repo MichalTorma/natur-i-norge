@@ -14,9 +14,13 @@ GitHub Pages is configured to serve from **`main` / `docs`**. The landing page i
 
 `https://geco-nhm.github.io/natur-i-norge/`
 
-The web app is at:
+The **live** web app is at:
 
 `https://geco-nhm.github.io/natur-i-norge/app/`
+
+The frozen **NiN 2.3** archive (when synced) is at:
+
+`https://geco-nhm.github.io/natur-i-norge/v2.3/`
 
 ### Build and deploy the web app
 
@@ -60,6 +64,25 @@ If you develop with `flutter run -d chrome` on a different port, add that origin
 
 Also ensure **Firebase Console → Authentication → Settings → Authorized domains**
 includes `geco-nhm.github.io` and `localhost`.
+
+## Legacy web (v2.3, for posterity)
+
+1. Copy prod `web/` → [`archive/v2.3-web/web/`](archive/v2.3-web/web/)
+2. Publish to GitHub Pages:
+
+```bash
+./scripts/sync_legacy_web_to_docs.sh   # copies to docs/v2.3/ with correct paths
+./publish.sh web --deploy              # or sync runs automatically if archive exists
+```
+
+The landing page links to the **live** app (`docs/app/`) and the **v2.3 archive** (`docs/v2.3/`). Preview the full site layout:
+
+```bash
+./scripts/preview_web.sh
+# http://localhost:8080/natur-i-norge/  (landing + app + v2.3)
+```
+
+See [`archive/v2.3-web/README.md`](archive/v2.3-web/README.md) for details.
 
 ## Getting Started
 
