@@ -89,8 +89,7 @@ class GalleryScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.push(
-                        context,
+                      Navigator.of(context, rootNavigator: true).push(
                         MaterialPageRoute(builder: (_) => const CameraScreen()),
                       );
                     },
@@ -182,8 +181,7 @@ class GalleryScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-            context,
+          Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(builder: (_) => const CameraScreen()),
           );
         },

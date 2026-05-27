@@ -251,20 +251,47 @@ class _GadBorrowedDataWarning extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+    final isHighContrast =
+        colorScheme.primary == Colors.black || colorScheme.primary == Colors.white;
+
+    final Color backgroundColor;
+    final Color borderColor;
+    final Color accentColor;
+    final Color textColor;
+
+    if (isHighContrast) {
+      backgroundColor = colorScheme.surfaceContainerHighest;
+      borderColor = colorScheme.outline;
+      accentColor = colorScheme.onSurface;
+      textColor = colorScheme.onSurface;
+    } else {
+      backgroundColor = Color.alphaBlend(
+        (isDark ? Colors.amber.shade200 : Colors.amber.shade900)
+            .withOpacity(isDark ? 0.15 : 0.08),
+        colorScheme.surface,
+      );
+      borderColor = isDark ? Colors.amber.shade600 : Colors.amber.shade700;
+      accentColor = isDark ? Colors.amber.shade300 : Colors.amber.shade800;
+      textColor = isDark
+          ? Colors.amber.shade50
+          : colorScheme.onSurface.withOpacity(0.85);
+    }
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF8E1),
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFFFB300), width: 1.5),
+        border: Border.all(color: borderColor, width: 1.5),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.warning_amber_rounded, size: 20, color: Color(0xFFF57C00)),
+          Icon(Icons.warning_amber_rounded, size: 20, color: accentColor),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -276,7 +303,7 @@ class _GadBorrowedDataWarning extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 height: 1.35,
-                color: colorScheme.onSurface.withOpacity(0.85),
+                color: textColor,
               ),
             ),
           ),

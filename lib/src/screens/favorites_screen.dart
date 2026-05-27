@@ -6,8 +6,25 @@ import '../models/nin_database.dart';
 import '../widgets/local_image.dart';
 import 'types_screen.dart';
 
+Color _favoriteCategoryColor(String category) {
+  switch (category) {
+    case 'Type':
+      return Colors.blueAccent;
+    case 'Hovedtypegruppe':
+      return Colors.greenAccent;
+    case 'Hovedtype':
+      return Colors.orangeAccent;
+    case 'Grunntype':
+      return Colors.purpleAccent;
+    default:
+      return Colors.tealAccent;
+  }
+}
+
 class FavoritesScreen extends ConsumerWidget {
-  const FavoritesScreen({super.key});
+  final Future<void> Function(NinType type)? onOpenType;
+
+  const FavoritesScreen({super.key, this.onOpenType});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -53,11 +70,14 @@ class FavoritesScreen extends ConsumerWidget {
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.2,
-                            color: _getCategoryColor(entry.key),
+                            color: _favoriteCategoryColor(entry.key),
                           ),
                         ),
                       ),
-                      ...entry.value.map((type) => _FavoriteTile(type: type)),
+                      ...entry.value.map((type) => _FavoriteTile(
+                            type: type,
+                            onOpenType: onOpenType,
+                          )),
                       const SizedBox(height: 16),
                     ],
                   );
@@ -86,22 +106,13 @@ class FavoritesScreen extends ConsumerWidget {
     }
     return groups;
   }
-
-  Color _getCategoryColor(String category) {
-    switch (category) {
-      case 'Type': return Colors.blueAccent;
-      case 'Hovedtypegruppe': return Colors.greenAccent;
-      case 'Hovedtype': return Colors.orangeAccent;
-      case 'Grunntype': return Colors.purpleAccent;
-      default: return Colors.tealAccent;
-    }
-  }
 }
 
 class _FavoriteTile extends ConsumerWidget {
   final NinType type;
+  final Future<void> Function(NinType type)? onOpenType;
 
-  const _FavoriteTile({required this.type});
+  const _FavoriteTile({required this.type, this.onOpenType});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -120,7 +131,7 @@ class _FavoriteTile extends ConsumerWidget {
                 : LocalTypeImage(
                     imageUrl: type.imageUrl,
                     fit: BoxFit.cover,
-                    placeholder: Container(color: Colors.black26, child: const Icon(Icons.image_not_supported, size: 20)),
+                    accentColor: _favoriteCategoryColor(type.kategori),
                   ),
           ),
         ),
@@ -128,10 +139,14 @@ class _FavoriteTile extends ConsumerWidget {
         subtitle: Text(type.id, style: const TextStyle(fontSize: 12, color: Colors.white54)),
         trailing: const Icon(Icons.chevron_right, color: Colors.white24),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => TypesScreen(type: type)),
-          );
+          if (onOpenType != null) {
+            onOpenType!(type);
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => TypesScreen(type: type)),
+            );
+          }
         },
       ),
     );

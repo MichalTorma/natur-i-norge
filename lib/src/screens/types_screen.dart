@@ -12,6 +12,7 @@ import '../widgets/gad_species_panel.dart';
 import '../providers/gad_provider.dart';
 import '../widgets/expandable_markdown.dart';
 import '../widgets/local_image.dart';
+import '../widgets/type_image_viewer.dart';
 import 'camera_screen.dart';
 
 class TypesScreen extends ConsumerStatefulWidget {
@@ -403,8 +404,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           if (isMappingUnit || isGrunntype) {
              return FloatingActionButton.extended(
               onPressed: () {
-                Navigator.push(
-                  context,
+                Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(builder: (_) => CameraScreen(initialType: widget.type)),
                 );
               },
@@ -424,6 +424,11 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
     final type = widget.type;
     final level = type == null ? 0 : (type.kategori == 'Type' ? 0 : (type.kategori == 'Hovedtype' ? 1 : 2));
     final color = level == 0 ? Colors.blue : (level == 1 ? Colors.green : Colors.orange);
+    final disableImages = ref.watch(disableImagesProvider);
+    final canViewImage = type != null &&
+        !disableImages &&
+        type.imageUrl != null &&
+        type.imageUrl!.isNotEmpty;
     
     return SliverAppBar(
       expandedHeight: type == null ? 120 : 350,
@@ -536,27 +541,18 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
         background: type == null ? null : Stack(
           fit: StackFit.expand,
           children: [
-            // Hero Image
-            Hero(
-              tag: 'image_${type.id}',
-              child: ref.watch(disableImagesProvider)
-                  ? Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            color.withOpacity(0.8),
-                            Theme.of(context).colorScheme.surface,
-                          ],
-                        ),
-                      ),
-                    )
-                  : LocalTypeImage(
-                      imageUrl: type.imageUrl,
-                      fit: BoxFit.cover,
-                      semanticLabel: 'Representative photo of ${type.navn}',
-                      placeholder: Container(
+            GestureDetector(
+              onTap: canViewImage
+                  ? () => showTypeImageViewer(
+                        context,
+                        imageUrl: type.imageUrl!,
+                        title: type.navn,
+                      )
+                  : null,
+              child: Hero(
+                tag: 'image_${type.id}',
+                child: disableImages
+                    ? Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -567,22 +563,47 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                             ],
                           ),
                         ),
+                      )
+                    : LocalTypeImage(
+                        imageUrl: type.imageUrl,
+                        fit: BoxFit.cover,
+                        semanticLabel: 'Representative photo of ${type.navn}',
+                        accentColor: color,
                       ),
-                    ),
+              ),
             ),
-            // Legibility Gradient
+            if (canViewImage)
+              const Positioned(
+                top: 72,
+                right: 12,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Color(0x66000000),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(Icons.zoom_out_map, color: Colors.white, size: 18),
+                    ),
+                  ),
+                ),
+              ),
+            // Legibility Gradient — ignore pointer so taps reach the image
             Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    stops: const [0.0, 0.4, 0.8],
-                    colors: [
-                      Theme.of(context).colorScheme.surface.withOpacity(0.7),
-                      Theme.of(context).colorScheme.surface.withOpacity(0.2),
-                      Colors.transparent,
-                    ],
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      stops: const [0.0, 0.4, 0.8],
+                      colors: [
+                        Theme.of(context).colorScheme.surface.withOpacity(0.7),
+                        Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                        Colors.transparent,
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -623,7 +644,7 @@ class _TypeCard extends ConsumerWidget {
                         fit: isIcon ? BoxFit.contain : BoxFit.cover,
                         semanticLabel: 'Representative photo of ${type.navn}',
                         padding: isIcon ? const EdgeInsets.all(16.0) : EdgeInsets.zero,
-                        placeholder: Container(color: Theme.of(context).colorScheme.surfaceContainerHighest),
+                        accentColor: color,
                       ),
               ),
             ),
