@@ -4,7 +4,9 @@ import '../models/nin_database.dart';
 import '../providers/gad_provider.dart';
 
 class GadSpeciesPanel extends ConsumerStatefulWidget {
-  const GadSpeciesPanel({super.key});
+  final String hovedtypeId;
+
+  const GadSpeciesPanel({super.key, required this.hovedtypeId});
 
   @override
   ConsumerState<GadSpeciesPanel> createState() => _GadSpeciesPanelState();
@@ -29,6 +31,7 @@ class _GadSpeciesPanelState extends ConsumerState<GadSpeciesPanel> {
     final overlayVisible = ref.watch(gadOverlayVisibleProvider);
     final colorScheme = Theme.of(context).colorScheme;
     final hasSpecies = selectedIds.isNotEmpty;
+    final showBorrowedWarning = !isGadNativeHovedtype(widget.hovedtypeId);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,6 +70,10 @@ class _GadSpeciesPanelState extends ConsumerState<GadSpeciesPanel> {
             ),
           ],
         ),
+        if (showBorrowedWarning) ...[
+          const SizedBox(height: 8),
+          const _GadBorrowedDataWarning(),
+        ],
         const SizedBox(height: 4),
         Text(
           'Konstans (0–6) vises som gule merker midt i hver celle.',
@@ -235,6 +242,46 @@ class _SpeciesChip extends ConsumerWidget {
       tooltip: species.nameLatin,
       onDeleted: () =>
           ref.read(gadSelectedSpeciesProvider.notifier).remove(species.id),
+    );
+  }
+}
+
+class _GadBorrowedDataWarning extends StatelessWidget {
+  const _GadBorrowedDataWarning();
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF8E1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFFFFB300), width: 1.5),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.warning_amber_rounded, size: 20, color: Color(0xFFF57C00)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              "The species' responses to LKMs for this major type illustrate how "
+              'data from the GAD dataset for NA-TB01 are distributed in the '
+              'ecological space of the present major type. This implementation '
+              'comes without any pretension of being correct, and you use it at '
+              'your own risk.',
+              style: TextStyle(
+                fontSize: 11,
+                height: 1.35,
+                color: colorScheme.onSurface.withOpacity(0.85),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

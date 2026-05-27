@@ -33,9 +33,11 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
   Widget build(BuildContext context) {
     final selectedScale = ref.watch(selectedScaleProvider);
     final showLkmNames = ref.watch(showLkmNamesProvider);
-    final isTb01 = widget.type?.id == gadHovedtypeId;
-    final gadOverlayVisible = isTb01 ? ref.watch(gadOverlayVisibleProvider) : false;
-    final gadConstancy = isTb01 && gadOverlayVisible
+    final hovedtypeId = widget.type?.id;
+    final isGadCompatible = isGadCompatibleHovedtype(hovedtypeId);
+    final gadOverlayVisible =
+        isGadCompatible ? ref.watch(gadOverlayVisibleProvider) : false;
+    final gadConstancy = isGadCompatible && gadOverlayVisible
         ? ref.watch(gadConstancyMapProvider).asData?.value
         : null;
     final parentId = widget.type?.id;
@@ -250,8 +252,8 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (isTb01) ...[
-                              const GadSpeciesPanel(),
+                            if (isGadCompatible) ...[
+                              GadSpeciesPanel(hovedtypeId: hovedtypeId!),
                               const SizedBox(height: 12),
                             ],
                             Row(
@@ -461,15 +463,78 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           ),
       ],
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.only(left: 56, right: 16, bottom: 0),
-        title: _TypeAppBarTitle(
-          type: type,
-          color: color,
-          onArtsdatabankenTap: () => launchUrl(
-            Uri.parse('https://artsdatabanken.no'),
-            mode: LaunchMode.externalApplication,
-          ),
-        ),
+        titlePadding: const EdgeInsets.only(left: 56, right: 16, bottom: 14),
+        title: type == null
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'NiN Explorer',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => launchUrl(
+                      Uri.parse('https://artsdatabanken.no'),
+                      mode: LaunchMode.externalApplication,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2.0),
+                      child: Text(
+                        'Data provided by Artsdatabanken.no',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                          decoration: TextDecoration.underline,
+                          decorationColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                      boxShadow: [
+                        BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
+                      ],
+                    ),
+                    child: Text(
+                      type.id,
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        color: color,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      type.navn,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
         background: type == null ? null : Stack(
           fit: StackFit.expand,
           children: [
@@ -529,124 +594,6 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
     final docsDir = await getApplicationDocumentsDirectory();
     final file = File(p.join(docsDir.path, 'images', type.imageUrl!));
     return await file.exists() ? file : null;
-  }
-}
-
-class _TypeAppBarTitle extends StatelessWidget {
-  final NinType? type;
-  final Color color;
-  final VoidCallback onArtsdatabankenTap;
-
-  const _TypeAppBarTitle({
-    required this.type,
-    required this.color,
-    required this.onArtsdatabankenTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final settings = context.dependOnInheritedWidgetOfExactType<FlexibleSpaceBarSettings>();
-    final collapsed = settings != null &&
-        settings.maxExtent > settings.minExtent &&
-        settings.currentExtent <= settings.minExtent + 1;
-
-    if (type == null) {
-      final explorerTitle = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'NiN Explorer',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Theme.of(context).colorScheme.onSurface,
-              shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
-            ),
-          ),
-          GestureDetector(
-            onTap: onArtsdatabankenTap,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 2.0),
-              child: Text(
-                'Data provided by Artsdatabanken.no',
-                style: TextStyle(
-                  fontSize: 10,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
-                  decoration: TextDecoration.underline,
-                  decorationColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-      if (collapsed) {
-        return SizedBox(
-          height: kToolbarHeight,
-          child: Align(alignment: Alignment.centerLeft, child: explorerTitle),
-        );
-      }
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 14),
-        child: explorerTitle,
-      );
-    }
-
-    final typeTitle = Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(4),
-            boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
-            ],
-          ),
-          child: Text(
-            type!.id,
-            style: TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w900,
-              color: color,
-              letterSpacing: 0.5,
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            type!.navn,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              height: 1.0,
-              color: Theme.of(context).colorScheme.onSurface,
-              shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textHeightBehavior: const TextHeightBehavior(
-              applyHeightToFirstAscent: false,
-              applyHeightToLastDescent: false,
-            ),
-          ),
-        ),
-      ],
-    );
-
-    if (collapsed) {
-      return SizedBox(
-        height: kToolbarHeight,
-        child: Align(alignment: Alignment.centerLeft, child: typeTitle),
-      );
-    }
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
-      child: typeTitle,
-    );
   }
 }
 

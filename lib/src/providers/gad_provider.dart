@@ -3,7 +3,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/nin_database.dart';
 import 'database_provider.dart';
 
-const gadHovedtypeId = 'NA-TB01';
+/// GAD matrix data in the database is only collected for this hovedtype (v2.3 T-4).
+const gadDataSourceHovedtypeId = 'NA-TB01';
+
+/// Hovedtyper that share LM-KA × LM-UF × LM-VM with [gadDataSourceHovedtypeId].
+const gadCompatibleHovedtypeIds = {
+  'NA-TB01', // Fastmarksskogsmark — native GAD source
+  'NA-TA02', // Åpen grunnlendt mark
+  'NA-TA03', // Arktisk-alpin hei og leside
+  'NA-TH01', // Avskoget hei og eng
+  'NA-TK03', // Kystlynghei
+};
+
+bool isGadCompatibleHovedtype(String? id) =>
+    id != null && gadCompatibleHovedtypeIds.contains(id);
+
+bool isGadNativeHovedtype(String? id) => id == gadDataSourceHovedtypeId;
+
+/// @deprecated Use [gadDataSourceHovedtypeId].
+const gadHovedtypeId = gadDataSourceHovedtypeId;
 
 class GadSelectedSpeciesNotifier extends Notifier<List<String>> {
   @override
@@ -69,7 +87,7 @@ final gadConstancyMapProvider = FutureProvider<Map<String, double>>((ref) async 
   final rows = await (db.select(db.ninSpeciesGad)
         ..where(
           (g) =>
-              g.hovedtypeId.equals(gadHovedtypeId) &
+              g.hovedtypeId.equals(gadDataSourceHovedtypeId) &
               g.speciesId.isIn(speciesIds),
         ))
       .get();
