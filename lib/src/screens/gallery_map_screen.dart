@@ -5,8 +5,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
+import '../widgets/local_image.dart';
 import 'observation_detail_screen.dart';
-import 'dart:io';
 
 class GalleryMapScreen extends ConsumerWidget {
   const GalleryMapScreen({super.key});
@@ -126,12 +126,14 @@ class GalleryMapScreen extends ConsumerWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.file(
-                  File(obs.imagePath),
+                child: SizedBox(
                   height: 200,
                   width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => const SizedBox(height: 200, child: Center(child: Icon(Icons.broken_image))),
+                  child: LocalObservationImage(
+                    imagePath: obs.imagePath,
+                    cloudUrl: obs.cloudUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),

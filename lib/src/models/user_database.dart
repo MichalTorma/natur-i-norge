@@ -1,8 +1,5 @@
-import 'dart:io';
+import 'drift/user_connection.dart';
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 
 part 'user_database.g.dart';
 
@@ -32,7 +29,7 @@ class Observations extends Table {
 
 @DriftDatabase(tables: [Favorites, Observations])
 class UserDatabase extends _$UserDatabase {
-  UserDatabase() : super(_openConnection());
+  UserDatabase() : super(openUserConnection());
 
   @override
   int get schemaVersion => 4;
@@ -57,12 +54,4 @@ class UserDatabase extends _$UserDatabase {
       },
     );
   }
-}
-
-LazyDatabase _openConnection() {
-  return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'user_data.sqlite'));
-    return NativeDatabase(file);
-  });
 }

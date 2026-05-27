@@ -6,15 +6,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'src/screens/home_screen.dart';
 import 'src/providers/settings_provider.dart';
+import 'src/services/app_storage.dart';
 import 'src/services/sync_service.dart';
 
 import 'src/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  initAppStorage();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await AppStorage.instance.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   
   final container = ProviderContainer(

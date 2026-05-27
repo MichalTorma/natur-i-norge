@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
+
 import '../models/nin_database.dart';
+import 'camera_capture.dart';
 import 'observation_review_screen.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -16,147 +13,124 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  CameraController? _controller;
-  bool _isInitialized = false;
-  bool _isCapturing = false;
-  String? _error;
+  late final CameraCapture _capture;
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
+    initCameraCapture();
+    _capture = CameraCapture.create();
+    _initialize();
   }
 
-  Future<void> _initializeCamera() async {
-    final status = await Permission.camera.request();
-    if (status.isGranted) {
-      try {
-        final cameras = await availableCameras();
-        if (cameras.isEmpty) {
-          setState(() => _error = 'No cameras found.');
-          return;
-        }
-
-        _controller = CameraController(cameras[0], ResolutionPreset.high);
-        await _controller!.initialize();
-        if (mounted) {
-          setState(() => _isInitialized = true);
-        }
-      } catch (e) {
-        setState(() => _error = 'Camera error: $e');
-      }
-    } else {
-      setState(() => _error = 'Camera permission denied.');
-    }
-  }
-
-  Future<void> _captureImage() async {
-    if (_controller == null || !_controller!.value.isInitialized || _isCapturing) return;
-
-    setState(() => _isCapturing = true);
-
-    try {
-      final image = await _controller!.takePicture();
-      
-      // Save to app documents directory
-      final docsDir = await getApplicationDocumentsDirectory();
-      final observationsDir = Directory(p.join(docsDir.path, 'observations'));
-      if (!await observationsDir.exists()) {
-        await observationsDir.create(recursive: true);
-      }
-      
-      final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final savedFile = await File(image.path).copy(p.join(observationsDir.path, fileName));
-
-      if (mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ObservationReviewScreen(
-              imagePath: savedFile.path,
-              initialType: widget.initialType,
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Capture failed: $e')));
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isCapturing = false);
-      }
+  Future<void> _initialize() async {
+    await _capture.initialize();
+    if (mounted) {
+      setState(() => _initialized = true);
     }
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _capture.dispose();
     super.dispose();
+  }
+
+  Future<void> _captureImage() async {
+    final result = await _capture.capture(widget.initialType);
+    if (!mounted || result == null) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ObservationReviewScreen(
+          imagePath: result.imagePath,
+          initialType: widget.initialType,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final preview = _capture.buildPreview();
+
+    if (_capture.error != null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Capture Observation')),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.error_outline, size: 48, color: Colors.redAccent),
+                const SizedBox(height: 16),
+                Text(_capture.error!, textAlign: TextAlign.center),
+                const SizedBox(height: 24),
+                FilledButton.icon(
+                  onPressed: _captureImage,
+                  icon: const Icon(Icons.photo_library_outlined),
+                  label: const Text('Choose Photo'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (!_initialized) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (preview == null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Capture Observation')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.photo_camera_outlined, size: 64),
+              const SizedBox(height: 16),
+              const Text('Choose a photo for your observation'),
+              const SizedBox(height: 24),
+              FilledButton.icon(
+                onPressed: _capture.isCapturing ? null : _captureImage,
+                icon: const Icon(Icons.photo_library_outlined),
+                label: Text(_capture.isCapturing ? 'Loading...' : 'Choose Photo'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text('Field Camera'),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-      ),
-      body: _error != null
-          ? Center(child: Text(_error!, style: const TextStyle(color: Colors.white)))
-          : !_isInitialized
-              ? const Center(child: CircularProgressIndicator())
-              : Stack(
-                  children: [
-                    Positioned.fill(
-                      child: AspectRatio(
-                        aspectRatio: _controller!.value.aspectRatio,
-                        child: CameraPreview(_controller!),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 40,
-                      left: 0,
-                      right: 0,
-                      child: Center(
-                        child: _isCapturing
-                            ? const CircularProgressIndicator(color: Colors.white)
-                            : FloatingActionButton.large(
-                                onPressed: _captureImage,
-                                tooltip: 'Capture photo of nature type',
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.black,
-                                child: const Icon(Icons.camera, size: 40),
-                              ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 20,
-                      left: 20,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.gps_fixed, size: 14, color: Colors.green),
-                            SizedBox(width: 8),
-                            Text(
-                              'GPS Active',
-                              style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          preview,
+          SafeArea(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: FloatingActionButton.large(
+                  onPressed: _capture.isCapturing ? null : _captureImage,
+                  child: _capture.isCapturing
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Icon(Icons.camera_alt),
                 ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

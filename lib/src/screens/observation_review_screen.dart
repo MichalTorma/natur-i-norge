@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,6 +8,7 @@ import '../models/user_database.dart';
 import '../models/nin_database.dart';
 import '../providers/auth_provider.dart';
 import '../services/sync_service.dart';
+import '../widgets/local_image.dart';
 import 'types_screen.dart';
 
 class ObservationReviewScreen extends ConsumerStatefulWidget {
@@ -119,7 +119,11 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
             // Image Preview
             AspectRatio(
               aspectRatio: 1,
-              child: Image.file(File(widget.imagePath), fit: BoxFit.cover, semanticLabel: 'Photo of the nature type observation'),
+              child: LocalObservationImage(
+                imagePath: widget.imagePath,
+                fit: BoxFit.cover,
+                semanticLabel: 'Photo of the nature type observation',
+              ),
             ),
             
             Padding(

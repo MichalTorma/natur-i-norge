@@ -5,42 +5,27 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000275">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000318">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to ios check_remote_version lane" time="7.7e-05">
+      <testcase classname="fastlane.lanes" name="1: Switch to android check_remote_version lane" time="0.000217">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: app_store_build_number" time="2.72941">
+      <testcase classname="fastlane.lanes" name="2: google_play_track_version_codes" time="2.294991">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos;+&apos; -f 2" time="0.029453">
+      <testcase classname="fastlane.lanes" name="3: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos;+&apos; -f 2" time="0.018852">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build ipa --release" time="366.51954">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="5: upload_to_testflight" time="121.130144">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="6: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos; &apos; -f 2 | cut -d &apos;+&apos; -f 1" time="0.021326">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="7: deliver" time="42.264659">
+      <testcase classname="fastlane.lanes" name="4: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build appbundle --release" time="58.040907">
         
       </testcase>
     

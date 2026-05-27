@@ -1,13 +1,14 @@
-import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
 import '../providers/auth_provider.dart';
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
+import '../services/app_storage.dart';
 import 'package:drift/drift.dart';
 
 enum SyncStatus { idle, syncing, error }
@@ -41,7 +42,7 @@ class SyncService extends Notifier<SyncStatus> {
     if (user == null) return;
 
     print('SyncService: Starting cloud restore...');
-    
+
     try {
       final firestore = FirebaseFirestore.instance;
       final db = ref.read(userDatabaseProvider);
@@ -54,33 +55,23 @@ class SyncService extends Notifier<SyncStatus> {
         return;
       }
 
-      final appDocDir = await getApplicationDocumentsDirectory();
-      final observationsDir = Directory(p.join(appDocDir.path, 'observations'));
-      if (!await observationsDir.exists()) {
-        await observationsDir.create(recursive: true);
-      }
-
       for (final doc in docs.docs) {
         final data = doc.data();
         final id = int.tryParse(doc.id);
         if (id == null) continue;
 
-        // Check if already exists locally
         final existing = await (db.select(db.observations)..where((t) => t.id.equals(id))).getSingleOrNull();
         if (existing != null) continue;
 
         print('SyncService: Restoring observation $id...');
 
-        // 1. Download image
         final imageUrl = data['imageUrl'] as String;
-        final localPath = p.join(observationsDir.path, '${id}_restored.jpg');
-        
+        final localPath = p.join('observations', '${id}_restored.jpg');
+
         final response = await http.get(Uri.parse(imageUrl));
         if (response.statusCode == 200) {
-          final file = File(localPath);
-          await file.writeAsBytes(response.bodyBytes);
+          await AppStorage.instance.writeBytes(localPath, response.bodyBytes);
 
-          // 2. Insert into local DB
           await db.into(db.observations).insert(
             ObservationsCompanion.insert(
               id: Value(id),
@@ -120,10 +111,10 @@ class SyncService extends Notifier<SyncStatus> {
       }
 
       final db = ref.read(userDatabaseProvider);
-      
+
       while (true) {
         _needsAnotherPass = false;
-        
+
         final unsynced = await (db.select(db.observations)
               ..where((t) => t.isSynced.equals(false) & (t.ownerUid.equals(user.uid) | t.ownerUid.isNull())))
             .get();
@@ -138,7 +129,7 @@ class SyncService extends Notifier<SyncStatus> {
 
         if (!_needsAnotherPass) break;
       }
-      
+
       state = SyncStatus.idle;
     } catch (e) {
       print('Sync error: $e');
@@ -152,8 +143,8 @@ class SyncService extends Notifier<SyncStatus> {
     final firestore = FirebaseFirestore.instance;
 
     try {
-      final file = File(obs.imagePath);
-      if (!await file.exists()) {
+      final storageKey = _storageKey(obs.imagePath);
+      if (!await AppStorage.instance.exists(storageKey)) {
         print('SyncService: Image not found for obs ${obs.id}, marking as synced.');
         await (db.update(db.observations)..where((t) => t.id.equals(obs.id))).write(
           const ObservationsCompanion(isSynced: Value(true)),
@@ -163,14 +154,18 @@ class SyncService extends Notifier<SyncStatus> {
 
       final fileName = '${obs.id}_${obs.createdAt.millisecondsSinceEpoch}.jpg';
       final storageRef = storage.ref().child('observations/$userId/$fileName');
-      
+
       String downloadUrl;
       try {
         downloadUrl = await storageRef.getDownloadURL();
       } catch (_) {
         print('SyncService: Uploading image for obs ${obs.id}...');
-        final uploadTask = await storageRef.putFile(
-          file,
+        final bytes = await AppStorage.instance.readBytes(storageKey);
+        if (bytes == null) {
+          throw StateError('Missing image bytes for observation ${obs.id}');
+        }
+        final uploadTask = await storageRef.putData(
+          Uint8List.fromList(bytes),
           SettableMetadata(contentType: 'image/jpeg'),
         );
         downloadUrl = await uploadTask.ref.getDownloadURL();
@@ -202,6 +197,15 @@ class SyncService extends Notifier<SyncStatus> {
     } catch (e) {
       rethrow;
     }
+  }
+
+  String _storageKey(String path) {
+    final marker = 'observations/';
+    final index = path.indexOf(marker);
+    if (index >= 0) {
+      return path.substring(index);
+    }
+    return path;
   }
 }
 

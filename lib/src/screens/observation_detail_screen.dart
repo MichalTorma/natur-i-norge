@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +9,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
 import '../providers/auth_provider.dart';
+import '../services/app_storage.dart';
+import '../widgets/local_image.dart';
 import 'gallery_map_screen.dart';
 
 class ObservationDetailScreen extends ConsumerStatefulWidget {
@@ -66,10 +67,10 @@ class _ObservationDetailScreenState extends ConsumerState<ObservationDetailScree
         // For MVP, deleting the Firestore record hides it from the science collection.
       }
 
-      // 2. Local File Deletion
-      final file = File(obs.imagePath);
-      if (await file.exists()) {
-        await file.delete();
+      // 2. Local file deletion
+      final storageKey = _storageKey(obs.imagePath);
+      if (await AppStorage.instance.exists(storageKey)) {
+        await AppStorage.instance.delete(storageKey);
       }
 
       // 3. Local DB Deletion
@@ -124,8 +125,9 @@ class _ObservationDetailScreenState extends ConsumerState<ObservationDetailScree
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: 'obs_image_${obs.id}',
-                child: Image.file(
-                  File(obs.imagePath),
+                child: LocalObservationImage(
+                  imagePath: obs.imagePath,
+                  cloudUrl: obs.cloudUrl,
                   fit: BoxFit.cover,
                   semanticLabel: 'Full size photo of the observation',
                 ),
@@ -334,5 +336,14 @@ class _ObservationDetailScreenState extends ConsumerState<ObservationDetailScree
         ],
       ),
     );
+  }
+
+  String _storageKey(String path) {
+    const marker = 'observations/';
+    final index = path.indexOf(marker);
+    if (index >= 0) {
+      return path.substring(index);
+    }
+    return path;
   }
 }

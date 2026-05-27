@@ -1,1 +1,1 @@
-Lansering av NiN 3.0 med data fra Artsdatabanken.no. Bidra til åpen forskning med dine observasjoner.
+Artsmatrise (GAD): velg arter, vis konstans i økologisk matrise og sjekk kompatibilitet med naturtype. Advarsel ved lånt data. Forbedret matrisevisning og typevisning.

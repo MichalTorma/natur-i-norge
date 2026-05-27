@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 import '../providers/database_provider.dart';
 import '../providers/settings_provider.dart';
 import '../models/nin_database.dart';
+import '../widgets/local_image.dart';
 import 'types_screen.dart';
 
 class FavoritesScreen extends ConsumerWidget {
@@ -105,13 +103,6 @@ class _FavoriteTile extends ConsumerWidget {
 
   const _FavoriteTile({required this.type});
 
-  Future<File?> _getLocalImage() async {
-    if (type.imageUrl == null) return null;
-    final docsDir = await getApplicationDocumentsDirectory();
-    final file = File(p.join(docsDir.path, 'images', type.imageUrl!));
-    return await file.exists() ? file : null;
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final disableImages = ref.watch(disableImagesProvider);
@@ -124,15 +115,13 @@ class _FavoriteTile extends ConsumerWidget {
           child: SizedBox(
             width: 60,
             height: 60,
-            child: FutureBuilder<File?>(
-              future: disableImages ? Future.value(null) : _getLocalImage(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data != null) {
-                  return Image.file(snapshot.data!, fit: BoxFit.cover);
-                }
-                return Container(color: Colors.black26, child: const Icon(Icons.image_not_supported, size: 20));
-              },
-            ),
+            child: disableImages
+                ? Container(color: Colors.black26, child: const Icon(Icons.image_not_supported, size: 20))
+                : LocalTypeImage(
+                    imageUrl: type.imageUrl,
+                    fit: BoxFit.cover,
+                    placeholder: Container(color: Colors.black26, child: const Icon(Icons.image_not_supported, size: 20)),
+                  ),
           ),
         ),
         title: Text(type.navn, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),

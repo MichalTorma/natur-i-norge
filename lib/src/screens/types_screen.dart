@@ -1,10 +1,7 @@
-import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 import 'package:drift/drift.dart' show Value;
 import '../providers/settings_provider.dart';
 import '../providers/database_provider.dart';
@@ -14,6 +11,7 @@ import '../widgets/ecological_matrix.dart';
 import '../widgets/gad_species_panel.dart';
 import '../providers/gad_provider.dart';
 import '../widgets/expandable_markdown.dart';
+import '../widgets/local_image.dart';
 import 'camera_screen.dart';
 
 class TypesScreen extends ConsumerStatefulWidget {
@@ -541,30 +539,36 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
             // Hero Image
             Hero(
               tag: 'image_${type.id}',
-              child: FutureBuilder<File?>(
-                future: ref.watch(disableImagesProvider) ? Future.value(null) : _getLocalImage(type),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    return Image.file(
-                      snapshot.data!,
+              child: ref.watch(disableImagesProvider)
+                  ? Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            color.withOpacity(0.8),
+                            Theme.of(context).colorScheme.surface,
+                          ],
+                        ),
+                      ),
+                    )
+                  : LocalTypeImage(
+                      imageUrl: type.imageUrl,
                       fit: BoxFit.cover,
                       semanticLabel: 'Representative photo of ${type.navn}',
-                    );
-                  }
-                  return Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          color.withOpacity(0.8),
-                          Theme.of(context).colorScheme.surface,
-                        ],
+                      placeholder: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              color.withOpacity(0.8),
+                              Theme.of(context).colorScheme.surface,
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  );
-                },
-              ),
             ),
             // Legibility Gradient
             Positioned.fill(
@@ -588,13 +592,6 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
       ),
     );
   }
-
-  Future<File?> _getLocalImage(NinType type) async {
-    if (type.imageUrl == null) return null;
-    final docsDir = await getApplicationDocumentsDirectory();
-    final file = File(p.join(docsDir.path, 'images', type.imageUrl!));
-    return await file.exists() ? file : null;
-  }
 }
 
 class _TypeCard extends ConsumerWidget {
@@ -603,13 +600,6 @@ class _TypeCard extends ConsumerWidget {
   final int level;
 
   const _TypeCard({required this.type, required this.onTap, required this.level});
-
-  Future<File?> _getLocalImage() async {
-    if (type.imageUrl == null) return null;
-    final docsDir = await getApplicationDocumentsDirectory();
-    final file = File(p.join(docsDir.path, 'images', type.imageUrl!));
-    return await file.exists() ? file : null;
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -626,25 +616,15 @@ class _TypeCard extends ConsumerWidget {
             Positioned.fill(
               child: Hero(
                 tag: 'image_${type.id}',
-                child: FutureBuilder<File?>(
-                  future: disableImages ? Future.value(null) : _getLocalImage(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      return Opacity(
-                        opacity: isIcon ? 1.0 : 0.8,
-                        child: Padding(
-                          padding: isIcon ? const EdgeInsets.all(16.0) : EdgeInsets.zero,
-                          child: Image.file(
-                            snapshot.data!,
-                            fit: isIcon ? BoxFit.contain : BoxFit.cover,
-                            semanticLabel: 'Representative photo of ${type.navn}',
-                          ),
-                        ),
-                      );
-                    }
-                    return Container(color: Theme.of(context).colorScheme.surfaceContainerHighest);
-                  },
-                ),
+                child: disableImages
+                    ? Container(color: Theme.of(context).colorScheme.surfaceContainerHighest)
+                    : LocalTypeImage(
+                        imageUrl: type.imageUrl,
+                        fit: isIcon ? BoxFit.contain : BoxFit.cover,
+                        semanticLabel: 'Representative photo of ${type.navn}',
+                        padding: isIcon ? const EdgeInsets.all(16.0) : EdgeInsets.zero,
+                        placeholder: Container(color: Theme.of(context).colorScheme.surfaceContainerHighest),
+                      ),
               ),
             ),
             Positioned.fill(

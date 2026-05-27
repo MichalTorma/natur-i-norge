@@ -1,9 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
+import '../widgets/local_image.dart';
 import 'camera_screen.dart';
 import 'gallery_map_screen.dart';
 import 'observation_detail_screen.dart';
@@ -264,11 +264,11 @@ class _ObservationCard extends StatelessWidget {
                 children: [
                   Hero(
                     tag: 'obs_image_${observation.id}',
-                    child: Image.file(
-                      File(observation.imagePath),
+                    child: LocalObservationImage(
+                      imagePath: observation.imagePath,
+                      cloudUrl: observation.cloudUrl,
                       fit: BoxFit.cover,
                       semanticLabel: 'Observation of ${observation.typeId}',
-                      errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.broken_image)),
                     ),
                   ),
                   Positioned(
