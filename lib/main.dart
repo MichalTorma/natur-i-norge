@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'src/screens/home_screen.dart';
 import 'src/providers/settings_provider.dart';
+import 'src/models/drift/web_init.dart';
 import 'src/services/app_storage.dart';
 import 'src/services/sync_service.dart';
 
@@ -18,6 +19,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await AppStorage.instance.ensureInitialized();
+  await ensureDriftWebReady();
   final prefs = await SharedPreferences.getInstance();
   
   final container = ProviderContainer(

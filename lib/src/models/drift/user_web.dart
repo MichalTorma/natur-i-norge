@@ -1,12 +1,10 @@
 import 'package:drift/drift.dart';
-import 'package:drift/wasm.dart';
+import 'web_shared.dart';
 
 QueryExecutor openUserConnection() {
   return DatabaseConnection.delayed(Future(() async {
-    final result = await WasmDatabase.open(
+    final result = await openSharedWasmDatabase(
       databaseName: 'user_data',
-      sqlite3Uri: Uri.parse('sqlite3.wasm'),
-      driftWorkerUri: Uri.parse('drift_worker.js'),
     );
 
     if (result.missingFeatures.isNotEmpty) {

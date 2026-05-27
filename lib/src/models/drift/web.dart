@@ -1,16 +1,14 @@
 import 'package:drift/drift.dart';
-import 'package:drift/wasm.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import '../../services/app_storage.dart';
+import 'web_shared.dart';
 
 QueryExecutor openConnection() {
   return DatabaseConnection.delayed(Future(() async {
     await AppStorage.instance.ensureInitialized();
 
-    final result = await WasmDatabase.open(
+    final result = await openSharedWasmDatabase(
       databaseName: 'nin_database',
-      sqlite3Uri: Uri.parse('sqlite3.wasm'),
-      driftWorkerUri: Uri.parse('drift_worker.js'),
       initializeDatabase: () async {
         final data = await rootBundle.load('assets/nin_database.sqlite');
         return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
