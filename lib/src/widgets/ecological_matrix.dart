@@ -291,7 +291,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   // Y-Axis LKM Name Button (Pinned to left)
                   if (hasYAxis)
                     Semantics(
-                      label: 'Y-axis variable: $_yAxisVar. Tap to view details.',
+                      label: 'Y-axis variable: $_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'}). Tap to view details.',
                       button: true,
                       child: InkWell(
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => VariableDetailScreen(variableId: _yAxisVar!))),
@@ -307,7 +307,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                           child: RotatedBox(
                             quarterTurns: 3,
                             child: Text(
-                              "$_yAxisVar",
+                              "$_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'})",
                               style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: colorScheme.primary),
                             ),
                           ),
