@@ -124154,27 +124154,27 @@ $0(){var s=t.N
 return A.p(s,s)},
 $S:954}
 A.aV3.prototype={
-$2(a4,a5){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1=this,a2=null,a3=". Tap to view details."
-for(s=a1.b,r=s.length,q=a1.c,p=q.d,o=0,n=0;n<s.length;s.length===r||(0,A.z)(s),++n){m=p.h(0,s[n])
-m=m==null?a2:J.aX(m)
-o+=m==null?1:m}for(r=a1.d,p=r.length,m=q.e,l=0,n=0;n<r.length;r.length===p||(0,A.z)(r),++n){k=m.h(0,r[n])
-k=k==null?a2:J.aX(k)
-l+=k==null?1:k}p=a1.e
+$2(a6,a7){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4=this,a5=null
+for(s=a4.b,r=s.length,q=a4.c,p=q.d,o=0,n=0;n<s.length;s.length===r||(0,A.z)(s),++n){m=p.h(0,s[n])
+m=m==null?a5:J.aX(m)
+o+=m==null?1:m}for(r=a4.d,p=r.length,m=q.e,l=0,n=0;n<r.length;r.length===p||(0,A.z)(r),++n){k=m.h(0,r[n])
+k=k==null?a5:J.aX(k)
+l+=k==null?1:k}p=a4.e
 m=o>0?o:1
-j=(a5.b-p)/m
+j=(a7.b-p)/m
 i=B.d.eL(j,50,100)
 m=t.p
 k=A.b([],m)
-h=a1.a
+h=a4.a
 g=h.f
 if(g.a!==0){f=A.h(g).i("bj<1>")
-f=A.fp(new A.bj(g,f),new A.aUY(h,a1.f,a1.r,a4,a1.w),f.i("A.E"),t.Rn)
+f=A.fp(new A.bj(g,f),new A.aUY(h,a4.f,a4.r,a6,a4.w),f.i("A.E"),t.Rn)
 g=A.U(f,A.h(f).i("A.E"))
-k.push(new A.aI(B.Ns,A.bH(g,B.Q,B.o,B.r),a2))}g=a1.w
+k.push(new A.aI(B.Ns,A.bH(g,B.Q,B.o,B.r),a5))}g=a4.w
 f=g.b
-e=A.em(B.tT,f,a2,14)
-d=a1.x
-c=a1.r
+e=A.em(B.tT,f,a5,14)
+d=a4.x
+c=a4.r
 b=h.d
 if(d){b=c.h(0,b)
 if(b==null)b=h.d
@@ -124182,13 +124182,18 @@ a=c.h(0,h.e)
 if(a==null)a=h.e
 a=A.l(b)+" \xd7 "+A.l(a)
 b=a}else{b=c.h(0,b)
-b=A.l(b==null?h.d:b)}k.push(new A.aI(B.mh,A.cG(A.b([e,B.eh,A.h1(A.af(b,a2,B.at,a2,A.bu(a2,a2,f,a2,a2,a2,a2,a2,a2,a2,a2,12,a2,a2,B.N,a2,a2,!0,a2,a2,a2,a2,a2,a2,a2,a2),a2,a2),1)],m),B.x,B.o,B.r,0,a2),a2))
+b=A.l(b==null?h.d:b)}k.push(new A.aI(B.mh,A.cG(A.b([e,B.eh,A.h1(A.af(b,a5,B.at,a5,A.bu(a5,a5,f,a5,a5,a5,a5,a5,a5,a5,a5,12,a5,a5,B.N,a5,a5,!0,a5,a5,a5,a5,a5,a5,a5,a5),a5,a5),1)],m),B.x,B.o,B.r,0,a5),a5))
 b=A.b([],m)
 if(d){e=h.e
-a=f.aI(0.1)
-a0=A.ll(f.aI(0.2),1)
-b.push(A.bs(!0,a2,A.jc(!1,a2,!0,A.ca(B.H,new A.NP(3,A.af(A.l(h.e),a2,a2,a2,A.bu(a2,a2,f,a2,a2,a2,a2,a2,a2,a2,a2,8,a2,a2,B.N,a2,a2,!0,a2,a2,a2,a2,a2,a2,a2,a2),a2,a2),a2),B.n,a2,a2,new A.c2(a,a2,a0,B.HO,a2,a2,B.U),a2,l*i,a2,a2,a2,a2,a2,20),a2,!0,a2,a2,a2,a2,a2,a2,a2,a2,a2,new A.aUZ(h,a4),a2,a2,a2,a2,a2,a2,a2),!1,a2,a2,!1,a2,!1,a2,a2,a2,a2,a2,a2,a2,a2,a2,"Y-axis variable: "+A.l(e)+a3,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2))}if(d){e=A.a_(r).i("X<1,nE>")
-e=A.U(new A.X(r,new A.aV_(h,q,a1.f,i,g),e),e.i("ac.E"))
+a=c.h(0,e)
+if(a==null)a="N/A"
+a0=f.aI(0.1)
+a1=A.ll(f.aI(0.2),1)
+a2=h.e
+a3=c.h(0,a2)
+if(a3==null)a3="N/A"
+b.push(A.bs(!0,a5,A.jc(!1,a5,!0,A.ca(B.H,new A.NP(3,A.af(A.l(a2)+" ("+a3+")",a5,a5,a5,A.bu(a5,a5,f,a5,a5,a5,a5,a5,a5,a5,a5,8,a5,a5,B.N,a5,a5,!0,a5,a5,a5,a5,a5,a5,a5,a5),a5,a5),a5),B.n,a5,a5,new A.c2(a0,a5,a1,B.HO,a5,a5,B.U),a5,l*i,a5,a5,a5,a5,a5,20),a5,!0,a5,a5,a5,a5,a5,a5,a5,a5,a5,new A.aUZ(h,a6),a5,a5,a5,a5,a5,a5,a5),!1,a5,a5,!1,a5,!1,a5,a5,a5,a5,a5,a5,a5,a5,a5,"Y-axis variable: "+A.l(e)+" ("+a+"). Tap to view details.",a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5))}if(d){e=A.a_(r).i("X<1,nE>")
+e=A.U(new A.X(r,new A.aV_(h,q,a4.f,i,g),e),e.i("ac.E"))
 b.push(A.bH(e,B.x,B.o,B.r))}e=o*j
 d=A.b([h.aoa(q,s,r,j,i,g)],m)
 a=h.a.f
@@ -124197,22 +124202,22 @@ B.b.M(d,h.aoi(q,s,r,j,i,g))
 a=h.a.f
 if(a!=null&&a.gbR(a))B.b.M(d,h.Zn(q,s,r,j,i,!1,!0))
 b.push(A.d7(A.eR(B.aS,d,B.F,B.aQ),l*i,e))
-r=A.cG(b,B.Q,B.o,B.r,0,a2)
-d=A.b([A.d7(a2,a2,p)],m)
-B.b.M(d,new A.X(s,new A.aV0(h,q,a1.f,j,g),A.a_(s).i("X<1,f>")))
-d=A.cG(d,B.Q,B.o,B.r,0,a2)
+r=A.cG(b,B.Q,B.o,B.r,0,a5)
+d=A.b([A.d7(a5,a5,p)],m)
+B.b.M(d,new A.X(s,new A.aV0(h,q,a4.f,j,g),A.a_(s).i("X<1,f>")))
+d=A.cG(d,B.Q,B.o,B.r,0,a5)
 s=h.d
 q=f.aI(0.1)
 b=A.ll(f.aI(0.2),1)
 a=h.d
 c=c.h(0,a)
 if(c==null)c="N/A"
-k.push(new A.aI(B.mi,A.bH(A.b([r,d,new A.aI(new A.ao(p,0,0,0),A.bs(!0,a2,A.jc(!1,a2,!0,A.ca(a2,A.cG(A.b([A.af(A.l(a)+" ("+c+")",a2,a2,a2,A.bu(a2,a2,f,a2,a2,a2,a2,a2,a2,a2,a2,8,a2,a2,B.N,a2,a2,!0,a2,a2,a2,a2,a2,a2,a2,a2),a2,a2)],m),B.x,B.c0,B.r,0,a2),B.n,a2,a2,new A.c2(q,a2,b,B.HP,a2,a2,B.U),a2,a2,a2,a2,B.NI,a2,a2,e),a2,!0,a2,a2,a2,a2,a2,a2,a2,a2,a2,new A.aV1(h,a4),a2,a2,a2,a2,a2,a2,a2),!1,a2,a2,!1,a2,!1,a2,a2,a2,a2,a2,a2,a2,a2,a2,"X-axis variable: "+A.l(s)+a3,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2,a2),a2)],m),B.Q,B.o,B.r),a2))
+k.push(new A.aI(B.mi,A.bH(A.b([r,d,new A.aI(new A.ao(p,0,0,0),A.bs(!0,a5,A.jc(!1,a5,!0,A.ca(a5,A.cG(A.b([A.af(A.l(a)+" ("+c+")",a5,a5,a5,A.bu(a5,a5,f,a5,a5,a5,a5,a5,a5,a5,a5,8,a5,a5,B.N,a5,a5,!0,a5,a5,a5,a5,a5,a5,a5,a5),a5,a5)],m),B.x,B.c0,B.r,0,a5),B.n,a5,a5,new A.c2(q,a5,b,B.HP,a5,a5,B.U),a5,a5,a5,a5,B.NI,a5,a5,e),a5,!0,a5,a5,a5,a5,a5,a5,a5,a5,a5,new A.aV1(h,a6),a5,a5,a5,a5,a5,a5,a5),!1,a5,a5,!1,a5,!1,a5,a5,a5,a5,a5,a5,a5,a5,a5,"X-axis variable: "+A.l(s)+". Tap to view details.",a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5,a5),a5)],m),B.Q,B.o,B.r),a5))
 m=h.d
 h=h.e
 s=h==null?"None":h
 g=g.k3
-k.push(new A.aI(B.mi,A.af("Matrix Axes: X="+A.l(m)+", Y="+s,a2,a2,a2,A.bu(a2,a2,A.a7(51,g.n()>>>16&255,g.n()>>>8&255,g.n()&255),a2,a2,a2,a2,a2,a2,a2,a2,10,a2,a2,a2,a2,a2,!0,a2,a2,a2,a2,a2,a2,a2,a2),a2,a2),a2))
+k.push(new A.aI(B.mi,A.af("Matrix Axes: X="+A.l(m)+", Y="+s,a5,a5,a5,A.bu(a5,a5,A.a7(51,g.n()>>>16&255,g.n()>>>8&255,g.n()&255),a5,a5,a5,a5,a5,a5,a5,a5,10,a5,a5,a5,a5,a5,!0,a5,a5,a5,a5,a5,a5,a5,a5),a5,a5),a5))
 return A.bH(k,B.Q,B.o,B.r)},
 $S:320}
 A.aUY.prototype={
