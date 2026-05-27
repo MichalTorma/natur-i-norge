@@ -32,10 +32,12 @@ rsync -a --delete "${BUILD_DIR}/" "${WEB_OUTPUT_DIR}/"
 # Prevent GitHub Pages from running Jekyll (Flutter uses paths Jekyll ignores).
 touch docs/.nojekyll
 
-if [ -f archive/v2.3-web/web/index.html ]; then
+# shellcheck source=legacy_web_root.sh
+source "$(dirname "$0")/legacy_web_root.sh"
+if _legacy_web_root >/dev/null 2>&1; then
   ./scripts/sync_legacy_web_to_docs.sh
 else
-  echo "ℹ️  Skipping docs/v2.3/ (no archive at archive/v2.3-web/web/)"
+  echo "ℹ️  Skipping docs/v2.3/ (no legacy build in archive/v2.3-web/)"
 fi
 
 BUILD_SIZE=$(du -sh "${WEB_OUTPUT_DIR}" | cut -f1)

@@ -11,6 +11,8 @@ from pathlib import Path
 
 def patch_html(path: Path, base_href: str) -> None:
     text = path.read_text(encoding="utf-8")
+    # Root-absolute paths (/icons/…) break on GitHub Pages subpaths; make relative first.
+    text = re.sub(r'(href|src)="/', r'\1="', text)
     if "<base " not in text.lower():
         text = re.sub(
             r"(<head[^>]*>)",
@@ -19,7 +21,6 @@ def patch_html(path: Path, base_href: str) -> None:
             count=1,
             flags=re.IGNORECASE,
         )
-    text = re.sub(r'(href|src)="/', r'\1="', text)
     path.write_text(text, encoding="utf-8")
 
 

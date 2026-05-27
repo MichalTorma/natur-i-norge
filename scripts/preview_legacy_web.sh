@@ -7,19 +7,14 @@ set -e
 #   ./scripts/preview_legacy_web.sh
 #   PORT=9090 ./scripts/preview_legacy_web.sh
 
-ARCHIVE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-WEB_ROOT="${ARCHIVE_ROOT}/archive/v2.3-web/web"
-PORT="${PORT:-8081}"
-
-if [ ! -f "${WEB_ROOT}/index.html" ]; then
-  echo "❌ No legacy web build in archive/v2.3-web/web/"
-  echo ""
-  echo "   Copy the production web/ folder there, e.g.:"
-  echo "   rsync -a --delete /path/to/prod/web/ archive/v2.3-web/web/"
-  echo ""
-  echo "   See archive/v2.3-web/README.md"
+# shellcheck source=legacy_web_root.sh
+source "$(dirname "$0")/legacy_web_root.sh"
+WEB_ROOT="$(_legacy_web_root)" || {
+  echo "❌ No legacy web build found."
+  echo "   Copy prod web/ to archive/v2.3-web/ or archive/v2.3-web/web/"
   exit 1
-fi
+}
+PORT="${PORT:-8081}"
 
 if [ ! -f "${WEB_ROOT}/main.dart.js" ]; then
   echo "⚠️  Warning: main.dart.js not found — build may be incomplete."
