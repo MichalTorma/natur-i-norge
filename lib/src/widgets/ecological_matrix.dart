@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../models/nin_database.dart';
 import '../screens/types_screen.dart';
 import '../screens/variable_detail_screen.dart';
+import '../utils/gad_konstans_colors.dart';
+
+enum _IslandPart { full, background, content }
 
 class EcologicalMatrix extends StatefulWidget {
   final List<NinType> subTypes;
@@ -93,6 +96,27 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     super.dispose();
   }
 
+  bool _isHighContrast(ColorScheme colorScheme) =>
+      colorScheme.primary == Colors.black || colorScheme.primary == Colors.white;
+
+  Color _matrixBorderColor(ColorScheme colorScheme, {double opacity = 0.12}) =>
+      _isHighContrast(colorScheme)
+          ? colorScheme.outline
+          : colorScheme.onSurface.withOpacity(opacity);
+
+  Color _matrixGridLineColor(ColorScheme colorScheme) =>
+      _isHighContrast(colorScheme)
+          ? colorScheme.outline.withOpacity(0.65)
+          : colorScheme.onSurface.withOpacity(0.08);
+
+  double _matrixBorderWidth(ColorScheme colorScheme, {double normal = 1}) =>
+      _isHighContrast(colorScheme) ? 2 : normal;
+
+  Color _matrixAxisFillColor(ColorScheme colorScheme) =>
+      _isHighContrast(colorScheme)
+          ? colorScheme.surface
+          : colorScheme.primary.withOpacity(0.1);
+
   @override
   Widget build(BuildContext context) {
     if (widget.subTypes.isEmpty || _xAxisVar == null) {
@@ -149,6 +173,9 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
 
         final layout = _computeLayout(
           availableWidth: availableW,
+          availableHeight: constraints.maxHeight.isFinite
+              ? constraints.maxHeight
+              : _viewportMatrixBudget(context, totalXUnits, totalYUnits),
           totalXUnits: totalXUnits,
           totalYUnits: totalYUnits,
           hasYAxis: hasYAxis,
@@ -177,30 +204,54 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                     layout.unitHeight,
                     colorScheme,
                   ),
-                  if (widget.gadConstancy != null && widget.gadConstancy!.isNotEmpty)
+                  if (widget.gadConstancy != null && widget.gadConstancy!.isNotEmpty) ...[
+                    ..._buildIslands(
+                      matrixData,
+                      xSteps,
+                      ySteps,
+                      layout.unitWidth,
+                      layout.unitHeight,
+                      colorScheme,
+                      part: _IslandPart.background,
+                      gadOverlayActive: true,
+                    ),
                     ..._buildGadHeatmap(
                       matrixData,
                       xSteps,
                       ySteps,
                       layout.unitWidth,
                       layout.unitHeight,
+                      colorScheme,
                     ),
-                  ..._buildIslands(
-                    matrixData,
-                    xSteps,
-                    ySteps,
-                    layout.unitWidth,
-                    layout.unitHeight,
-                    colorScheme,
-                  ),
-                  if (widget.gadConstancy != null && widget.gadConstancy!.isNotEmpty)
+                    ..._buildIslands(
+                      matrixData,
+                      xSteps,
+                      ySteps,
+                      layout.unitWidth,
+                      layout.unitHeight,
+                      colorScheme,
+                      part: _IslandPart.content,
+                      gadOverlayActive: true,
+                    ),
                     ..._buildGadLabels(
                       matrixData,
                       xSteps,
                       ySteps,
                       layout.unitWidth,
                       layout.unitHeight,
+                      colorScheme,
                     ),
+                  ] else ...[
+                    ..._buildIslands(
+                      matrixData,
+                      xSteps,
+                      ySteps,
+                      layout.unitWidth,
+                      layout.unitHeight,
+                      colorScheme,
+                      part: _IslandPart.full,
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -241,9 +292,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   width: gridWidth,
                   padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                   decoration: BoxDecoration(
-                    color: colorScheme.primary.withOpacity(0.1),
+                    color: _matrixAxisFillColor(colorScheme),
                     borderRadius: const BorderRadius.vertical(bottom: Radius.circular(4)),
-                    border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+                    border: Border.all(
+                      color: _matrixBorderColor(colorScheme, opacity: 0.2),
+                      width: _matrixBorderWidth(colorScheme),
+                    ),
                   ),
                   child: _MatrixLabel(
                     text: '$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})',
@@ -318,10 +372,29 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           children: [
             if (_activeFilters.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                padding: const EdgeInsets.only(bottom: 8.0, top: 4.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _activeFilters.keys.map((filterVar) {
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.tune, size: 14, color: colorScheme.primary),
+                          const SizedBox(width: 6),
+                          Text(
+                            'ADDITIONAL LKMs',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.1,
+                              color: colorScheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ..._activeFilters.keys.map((filterVar) {
                     final allSteps = allVarSteps[filterVar]!.keys.toList()..sort();
                     final displayName = varNames[filterVar] ?? filterVar;
 
@@ -344,77 +417,66 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Row(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: layout.yVariableStripWidth + (hasYAxis ? layout.yHeaderWidth : 0),
-                            child: Semantics(
-                              label: 'View details for variable $displayName',
-                              button: true,
-                              child: InkWell(
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => VariableDetailScreen(variableId: filterVar),
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      displayName,
+                          _buildAdditionalLkmHeader(
+                            context,
+                            colorScheme: colorScheme,
+                            variableId: filterVar,
+                            displayName: displayName,
+                          ),
+                          const SizedBox(height: 8),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: mergedGroups.map((group) {
+                                final isSelected = group.contains(_activeFilters[filterVar]);
+                                final rangeLabel = _formatRangeLabel(
+                                  group,
+                                  allVarSteps[filterVar],
+                                  showStepNames: _showStepNames,
+                                );
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 6.0),
+                                  child: ChoiceChip(
+                                    label: Text(
+                                      rangeLabel,
                                       style: TextStyle(
                                         fontSize: 11,
-                                        fontWeight: FontWeight.bold,
-                                        color: colorScheme.primary,
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      filterVar,
-                                      style: TextStyle(
-                                        fontSize: 9,
-                                        color: colorScheme.onSurface.withOpacity(0.45),
+                                        fontWeight: FontWeight.w600,
+                                        color: isSelected
+                                            ? colorScheme.onPrimary
+                                            : colorScheme.onSurface,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: mergedGroups.map((group) {
-                                  final isSelected = group.contains(_activeFilters[filterVar]);
-                                  final rangeLabel = _formatRangeLabel(
-                                    group,
-                                    allVarSteps[filterVar],
-                                    showStepNames: _showStepNames,
-                                  );
-
-                                  return Padding(
-                                    padding: const EdgeInsets.only(right: 4.0),
-                                    child: ChoiceChip(
-                                      visualDensity: VisualDensity.compact,
-                                      label: Text(rangeLabel, style: const TextStyle(fontSize: 10)),
-                                      selected: isSelected,
-                                      onSelected: (val) {
-                                        if (val) setState(() => _activeFilters[filterVar] = group.first);
-                                      },
+                                    selected: isSelected,
+                                    showCheckmark: false,
+                                    selectedColor: colorScheme.primary,
+                                    backgroundColor: colorScheme.surface,
+                                    side: BorderSide(
+                                      color: isSelected
+                                          ? colorScheme.primary
+                                          : colorScheme.outline.withOpacity(0.55),
+                                      width: isSelected ? 1.5 : 1,
                                     ),
-                                  );
-                                }).toList(),
-                              ),
+                                    onSelected: (val) {
+                                      if (val) {
+                                        setState(() => _activeFilters[filterVar] = group.first);
+                                      }
+                                    },
+                                  ),
+                                );
+                              }).toList(),
                             ),
                           ),
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
+                  ],
                 ),
               ),
             Padding(
@@ -460,6 +522,92 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     );
   }
 
+  Widget _buildAdditionalLkmHeader(
+    BuildContext context, {
+    required ColorScheme colorScheme,
+    required String variableId,
+    required String displayName,
+  }) {
+    return Semantics(
+      label: 'View details for variable $displayName',
+      button: true,
+      child: InkWell(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => VariableDetailScreen(variableId: variableId),
+          ),
+        ),
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            color: colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: _matrixBorderColor(colorScheme, opacity: 0.45),
+              width: _matrixBorderWidth(colorScheme),
+            ),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: colorScheme.primary,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  variableId,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: colorScheme.onPrimary,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      displayName,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        height: 1.2,
+                        color: colorScheme.onPrimaryContainer,
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Tap for variable details',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: colorScheme.onPrimaryContainer.withOpacity(0.72),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.open_in_new,
+                size: 16,
+                color: colorScheme.onPrimaryContainer,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   String _formatRangeLabel(
     List<String> group,
     Map<String, String>? stepNames, {
@@ -475,8 +623,30 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     return group.join(', ');
   }
 
+  double _viewportMatrixBudget(
+    BuildContext context,
+    double totalXUnits,
+    double totalYUnits,
+  ) {
+    final media = MediaQuery.sizeOf(context);
+    final padding = MediaQuery.paddingOf(context);
+    final usableHeight = media.height - padding.top - padding.bottom;
+    final matrixAspect = totalYUnits / (totalXUnits > 0 ? totalXUnits : 1);
+
+    final factor = switch (matrixAspect) {
+      >= 2.0 => 0.36,
+      >= 1.4 => 0.42,
+      >= 1.0 => 0.48,
+      >= 0.65 => 0.54,
+      _ => 0.58,
+    };
+
+    return usableHeight * factor;
+  }
+
   _MatrixLayout _computeLayout({
     required double availableWidth,
+    required double availableHeight,
     required double totalXUnits,
     required double totalYUnits,
     required bool hasYAxis,
@@ -488,6 +658,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
   }) {
     const idealUnit = 56.0;
     const minUnit = 44.0;
+    const minUnitHeight = 34.0;
 
     double yVariableStripWidth(bool compact) =>
         hasYAxis ? (compact ? 18.0 : 26.0) : 0.0;
@@ -528,8 +699,19 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
         ? idealUnit
         : (gridBudget / (totalXUnits > 0 ? totalXUnits : 1))
             .clamp(minUnit, 112.0);
-    final unitHeight = unitWidth.clamp(minUnit, 112.0);
+
     final xAxisHeight = showStepCodes ? 26.0 : 34.0;
+    const xLkmBarHeight = 34.0;
+    final maxGridHeight = (availableHeight - xAxisHeight - xLkmBarHeight)
+        .clamp(minUnitHeight * 2, double.infinity);
+
+    final squareHeight = unitWidth.clamp(minUnitHeight, 112.0);
+    final fittedHeight = totalYUnits > 0
+        ? (maxGridHeight / totalYUnits).clamp(minUnitHeight, squareHeight)
+        : squareHeight;
+    final unitHeight = totalYUnits * squareHeight > maxGridHeight
+        ? fittedHeight
+        : squareHeight;
 
     return _MatrixLayout(
       unitWidth: unitWidth,
@@ -561,9 +743,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           height: height,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: colorScheme.primary.withOpacity(0.1),
+            color: _matrixAxisFillColor(colorScheme),
             borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
-            border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+            border: Border.all(
+              color: _matrixBorderColor(colorScheme, opacity: 0.2),
+              width: _matrixBorderWidth(colorScheme),
+            ),
           ),
           child: RotatedBox(
             quarterTurns: 3,
@@ -599,7 +784,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          border: Border(right: BorderSide(color: colorScheme.onSurface.withOpacity(0.12))),
+          border: Border(
+            right: BorderSide(
+              color: _matrixBorderColor(colorScheme),
+              width: _matrixBorderWidth(colorScheme),
+            ),
+          ),
         ),
         child: Column(
           children: stepCodes
@@ -630,7 +820,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        border: Border(right: BorderSide(color: colorScheme.onSurface.withOpacity(0.12))),
+        border: Border(
+          right: BorderSide(
+            color: _matrixBorderColor(colorScheme),
+            width: _matrixBorderWidth(colorScheme),
+          ),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 3),
@@ -664,7 +859,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
         width: width,
         height: axisHeight,
         decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: colorScheme.onSurface.withOpacity(0.12))),
+          border: Border(
+            top: BorderSide(
+              color: _matrixBorderColor(colorScheme),
+              width: _matrixBorderWidth(colorScheme),
+            ),
+          ),
         ),
         child: Row(
           children: stepCodes
@@ -695,7 +895,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       width: width,
       height: axisHeight,
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: colorScheme.onSurface.withOpacity(0.12))),
+        border: Border(
+          top: BorderSide(
+            color: _matrixBorderColor(colorScheme),
+            width: _matrixBorderWidth(colorScheme),
+          ),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(2, 4, 2, 4),
@@ -715,9 +920,41 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     NinType type,
     double width,
     double height,
-    ColorScheme colorScheme,
-  ) {
-    final showName = height >= 34 && width >= 30;
+    ColorScheme colorScheme, {
+    bool gadOverlayActive = false,
+  }) {
+    final showName = height >= 30 && width >= 28;
+
+    TextStyle labelStyle(TextStyle base) {
+      if (!gadOverlayActive) return base;
+      return base.copyWith(
+        shadows: [
+          Shadow(
+            color: Colors.black.withOpacity(0.65),
+            blurRadius: 3,
+          ),
+          Shadow(
+            color: Colors.white.withOpacity(0.35),
+            blurRadius: 1,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      );
+    }
+
+    Widget textBlock(Widget child) {
+      if (!gadOverlayActive) return child;
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: colorScheme.surface.withOpacity(0.62),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          child: child,
+        ),
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.all(3),
@@ -726,8 +963,18 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
         height: height - 2,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: colorScheme.surface.withOpacity(0.78),
+            color: gadOverlayActive
+                ? Colors.transparent
+                : (_isHighContrast(colorScheme)
+                    ? colorScheme.surface
+                    : colorScheme.surface.withOpacity(0.78)),
             borderRadius: BorderRadius.circular(4),
+            border: !gadOverlayActive && _isHighContrast(colorScheme)
+                ? Border.all(
+                    color: colorScheme.outline,
+                    width: 1,
+                  )
+                : null,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
@@ -736,17 +983,21 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               children: [
                 Expanded(
                   child: Center(
-                    child: _MatrixLabel(
-                      text: type.id,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: colorScheme.primary,
-                        letterSpacing: -0.2,
+                    child: textBlock(
+                      _MatrixLabel(
+                        text: type.id,
+                        style: labelStyle(
+                          TextStyle(
+                            fontWeight: FontWeight.w800,
+                            color: colorScheme.primary,
+                            letterSpacing: -0.2,
+                          ),
+                        ),
+                        maxLines: 2,
+                        minFontSize: 9,
+                        maxFontSize: 14,
+                        textAlign: TextAlign.center,
                       ),
-                      maxLines: 2,
-                      minFontSize: 9,
-                      maxFontSize: 14,
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -754,16 +1005,20 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   Expanded(
                     flex: 2,
                     child: Center(
-                      child: _MatrixLabel(
-                        text: type.navn,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: colorScheme.onSurface.withOpacity(0.88),
+                      child: textBlock(
+                        _MatrixLabel(
+                          text: type.navn,
+                          style: labelStyle(
+                            TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: colorScheme.onSurface.withOpacity(0.88),
+                            ),
+                          ),
+                          maxLines: height >= 72 ? 3 : 2,
+                          minFontSize: 8,
+                          maxFontSize: 11,
+                          textAlign: TextAlign.center,
                         ),
-                        maxLines: height >= 72 ? 3 : 2,
-                        minFontSize: 8,
-                        maxFontSize: 11,
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
@@ -923,6 +1178,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
   }
 
   Widget _buildBackgroundGrid(_MatrixData data, List<String> xSteps, List<String> ySteps, double unitWidth, double unitHeight, ColorScheme colorScheme) {
+    final lineColor = _matrixGridLineColor(colorScheme);
+    final lineWidth = _isHighContrast(colorScheme) ? 1.5 : 1.0;
     final List<Widget> lines = [];
     double currentX = 0;
     for (var xId in xSteps) {
@@ -930,7 +1187,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       for (int i = 0; i < group.length; i++) {
         lines.add(Positioned(
           left: currentX, top: 0, bottom: 0,
-          child: Container(width: 1, color: colorScheme.onSurface.withOpacity(0.05)),
+          child: Container(width: lineWidth, color: lineColor),
         ));
         currentX += unitWidth;
       }
@@ -941,7 +1198,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       for (int i = 0; i < group.length; i++) {
         lines.add(Positioned(
           top: currentY, left: 0, right: 0,
-          child: Container(height: 1, color: colorScheme.onSurface.withOpacity(0.05)),
+          child: Container(height: lineWidth, color: lineColor),
         ));
         currentY += unitHeight;
       }
@@ -982,11 +1239,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     return map['$ka|$uf|$vm'];
   }
 
-  Color _gadColor(double value) {
-    if (value <= 0) return Colors.transparent;
-    if (value <= 2) return const Color(0xFFE8F5E9).withOpacity(0.85);
-    if (value <= 4) return const Color(0xFF81C784).withOpacity(0.75);
-    return const Color(0xFF2E7D32).withOpacity(0.82);
+  Color _gadOverlayColor(double value, ColorScheme colorScheme) {
+    return GadKonstansColors.colorFor(value, colorScheme);
   }
 
   String _formatGadValue(double value) {
@@ -1002,6 +1256,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     List<String> ySteps,
     double unitWidth,
     double unitHeight,
+    ColorScheme colorScheme,
   ) {
     return _buildGadCells(
       data,
@@ -1009,6 +1264,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       ySteps,
       unitWidth,
       unitHeight,
+      colorScheme,
       includeColor: true,
       includeLabel: false,
     );
@@ -1020,6 +1276,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     List<String> ySteps,
     double unitWidth,
     double unitHeight,
+    ColorScheme colorScheme,
   ) {
     return _buildGadCells(
       data,
@@ -1027,6 +1284,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       ySteps,
       unitWidth,
       unitHeight,
+      colorScheme,
       includeColor: false,
       includeLabel: true,
     );
@@ -1037,7 +1295,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     List<String> xSteps,
     List<String> ySteps,
     double unitWidth,
-    double unitHeight, {
+    double unitHeight,
+    ColorScheme colorScheme, {
     required bool includeColor,
     required bool includeLabel,
   }) {
@@ -1063,7 +1322,22 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                     clipBehavior: Clip.none,
                     children: [
                       if (includeColor)
-                        Container(color: _gadColor(value)),
+                        IgnorePointer(
+                          child: Container(
+                            margin: const EdgeInsets.all(0.5),
+                            decoration: BoxDecoration(
+                              color: _gadOverlayColor(value, colorScheme),
+                              borderRadius: BorderRadius.circular(2),
+                              border: Border.all(
+                                color: _matrixBorderColor(
+                                  colorScheme,
+                                  opacity: 0.18,
+                                ),
+                                width: 0.5,
+                              ),
+                            ),
+                          ),
+                        ),
                       if (includeLabel)
                         Center(
                           child: _GadValueBadge(
@@ -1086,7 +1360,154 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     return cells;
   }
 
-  List<Widget> _buildIslands(_MatrixData data, List<String> xSteps, List<String> ySteps, double unitWidth, double unitHeight, ColorScheme colorScheme) {
+  Widget _buildIslandLayer({
+    required _IslandPart part,
+    required NinType type,
+    required double width,
+    required double height,
+    required ColorScheme colorScheme,
+    required bool gadOverlayActive,
+  }) {
+    if (part == _IslandPart.background) {
+      return ValueListenableBuilder<String?>(
+        valueListenable: _hoveredTypeId,
+        builder: (context, hoveredId, _) {
+          final isHighlighted = hoveredId == type.id;
+          return IgnorePointer(
+            child: Container(
+              decoration: _islandDecoration(
+                colorScheme: colorScheme,
+                isHighlighted: isHighlighted,
+                gadOverlayActive: gadOverlayActive,
+                backgroundOnly: true,
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    return MouseRegion(
+      onEnter: (_) => _hoveredTypeId.value = type.id,
+      onExit: (_) => _hoveredTypeId.value = null,
+      child: ValueListenableBuilder<String?>(
+        valueListenable: _hoveredTypeId,
+        builder: (context, hoveredId, _) {
+          final isHighlighted = hoveredId == type.id;
+          final showBackground = part == _IslandPart.full;
+
+          return InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => TypesScreen(type: type, onPick: widget.onPick),
+              ),
+            ),
+            child: Semantics(
+              label: 'Nature type ${type.id}: ${type.navn}. Tap to select or view details.',
+              button: true,
+              child: Container(
+                decoration: showBackground
+                    ? _islandDecoration(
+                        colorScheme: colorScheme,
+                        isHighlighted: isHighlighted,
+                        gadOverlayActive: gadOverlayActive,
+                        backgroundOnly: false,
+                      )
+                    : null,
+                alignment: Alignment.center,
+                child: _buildCellContent(
+                  type,
+                  width,
+                  height,
+                  colorScheme,
+                  gadOverlayActive: gadOverlayActive,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  BoxDecoration _islandDecoration({
+    required ColorScheme colorScheme,
+    required bool isHighlighted,
+    required bool gadOverlayActive,
+    required bool backgroundOnly,
+  }) {
+    final primaryColor = colorScheme.primary;
+
+    if (gadOverlayActive && backgroundOnly) {
+      return BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(
+          color: isHighlighted
+              ? primaryColor
+              : _matrixBorderColor(colorScheme, opacity: 0.22),
+          width: _matrixBorderWidth(colorScheme),
+        ),
+      );
+    }
+
+    if (_isHighContrast(colorScheme)) {
+      return BoxDecoration(
+        color: isHighlighted
+            ? colorScheme.surfaceContainerHighest
+            : colorScheme.surface,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(
+          color: isHighlighted
+              ? primaryColor
+              : _matrixBorderColor(colorScheme, opacity: 0.25),
+          width: _matrixBorderWidth(colorScheme),
+        ),
+      );
+    }
+
+    final baseOpacity = isHighlighted ? 0.4 : 0.15;
+    final endOpacity = isHighlighted ? 0.2 : 0.05;
+
+    return BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          primaryColor.withOpacity(baseOpacity),
+          primaryColor.withOpacity(endOpacity),
+        ],
+      ),
+      borderRadius: BorderRadius.circular(4),
+      border: Border.all(
+        color: isHighlighted
+            ? primaryColor
+            : _matrixBorderColor(colorScheme, opacity: 0.25),
+        width: _matrixBorderWidth(colorScheme),
+      ),
+      boxShadow: isHighlighted && !gadOverlayActive
+          ? [
+              BoxShadow(
+                color: primaryColor.withOpacity(0.2),
+                blurRadius: 4,
+                spreadRadius: 0,
+              ),
+            ]
+          : [],
+    );
+  }
+
+  List<Widget> _buildIslands(
+    _MatrixData data,
+    List<String> xSteps,
+    List<String> ySteps,
+    double unitWidth,
+    double unitHeight,
+    ColorScheme colorScheme, {
+    _IslandPart part = _IslandPart.full,
+    bool gadOverlayActive = false,
+  }) {
     final List<Widget> islands = [];
     final Set<String> processedCells = {}; // Format: "yIndex-xIndex"
 
@@ -1152,42 +1573,13 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           height: height,
           child: Padding(
             padding: const EdgeInsets.all(1.0),
-            child: MouseRegion(
-              onEnter: (_) => _hoveredTypeId.value = type.id,
-              onExit: (_) => _hoveredTypeId.value = null,
-              child: ValueListenableBuilder<String?>(
-                valueListenable: _hoveredTypeId,
-                builder: (context, hoveredId, _) {
-                  final isHighlighted = hoveredId == type.id;
-                  final primaryColor = colorScheme.primary;
-                  
-                  return InkWell(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TypesScreen(type: type, onPick: widget.onPick))),
-                    child: Semantics(
-                      label: 'Nature type ${type.id}: ${type.navn}. Tap to select or view details.',
-                      button: true,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: isHighlighted 
-                              ? [primaryColor.withOpacity(0.4), primaryColor.withOpacity(0.2)]
-                              : [primaryColor.withOpacity(0.15), primaryColor.withOpacity(0.05)],
-                          ),
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: isHighlighted ? primaryColor : colorScheme.onSurface.withOpacity(0.1)),
-                          boxShadow: isHighlighted ? [
-                            BoxShadow(color: primaryColor.withOpacity(0.2), blurRadius: 4, spreadRadius: 0)
-                          ] : [],
-                        ),
-                        alignment: Alignment.center,
-                        child: _buildCellContent(type, width, height, colorScheme),
-                      ),
-                    ),
-                  );
-                }
-              ),
+            child: _buildIslandLayer(
+              part: part,
+              type: type,
+              width: width,
+              height: height,
+              colorScheme: colorScheme,
+              gadOverlayActive: gadOverlayActive,
             ),
           ),
         ));

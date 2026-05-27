@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/nin_database.dart';
 import '../providers/gad_provider.dart';
+import '../utils/gad_konstans_colors.dart';
 
 class GadSpeciesPanel extends ConsumerStatefulWidget {
   final String hovedtypeId;
@@ -36,39 +37,85 @@ class _GadSpeciesPanelState extends ConsumerState<GadSpeciesPanel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Icon(Icons.grass, size: 14, color: colorScheme.secondary),
-            const SizedBox(width: 6),
-            Text(
-              'ARTSMATRISE (GAD)',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: colorScheme.secondary,
-                letterSpacing: 1.2,
-              ),
-            ),
-            const Spacer(),
-            if (hasSpecies)
-              FilterChip(
-                label: const Text('Konstans'),
-                selected: overlayVisible,
-                showCheckmark: false,
-                avatar: Icon(
-                  overlayVisible ? Icons.grid_on : Icons.grid_off,
-                  size: 16,
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final narrow = constraints.maxWidth < 420;
+
+            final title = Row(
+              children: [
+                Icon(Icons.grass, size: 14, color: colorScheme.secondary),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    'ARTSMATRISE (GAD)',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.secondary,
+                      letterSpacing: 1.2,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                onSelected: (_) => ref
-                    .read(gadOverlayVisibleProvider.notifier)
-                    .setVisible(!overlayVisible),
-              ),
-            TextButton.icon(
-              onPressed: _openSpeciesPicker,
-              icon: const Icon(Icons.add, size: 16),
-              label: const Text('Legg til art'),
-            ),
-          ],
+              ],
+            );
+
+            final addButton = narrow
+                ? IconButton(
+                    onPressed: _openSpeciesPicker,
+                    icon: const Icon(Icons.add),
+                    tooltip: 'Legg til art',
+                    visualDensity: VisualDensity.compact,
+                  )
+                : TextButton.icon(
+                    onPressed: _openSpeciesPicker,
+                    icon: const Icon(Icons.add, size: 16),
+                    label: const Text('Legg til art'),
+                  );
+
+            final konstansChip = hasSpecies
+                ? FilterChip(
+                    label: const Text('Konstans'),
+                    selected: overlayVisible,
+                    showCheckmark: false,
+                    visualDensity: VisualDensity.compact,
+                    avatar: Icon(
+                      overlayVisible ? Icons.grid_on : Icons.grid_off,
+                      size: 16,
+                    ),
+                    onSelected: (_) => ref
+                        .read(gadOverlayVisibleProvider.notifier)
+                        .setVisible(!overlayVisible),
+                  )
+                : null;
+
+            if (narrow) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  title,
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 4,
+                    runSpacing: 4,
+                    alignment: WrapAlignment.end,
+                    children: [
+                      if (konstansChip != null) konstansChip,
+                      addButton,
+                    ],
+                  ),
+                ],
+              );
+            }
+
+            return Row(
+              children: [
+                Expanded(child: title),
+                if (konstansChip != null) konstansChip,
+                addButton,
+              ],
+            );
+          },
         ),
         if (showBorrowedWarning) ...[
           const SizedBox(height: 8),
@@ -318,57 +365,48 @@ class _GadLegend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final labels = ['0', '1–2', '3–4', '5–6'];
-    final colors = [
-      Colors.transparent,
-      const Color(0xFFE8F5E9),
-      const Color(0xFF81C784),
-      const Color(0xFF2E7D32),
-    ];
+    final colorScheme = Theme.of(context).colorScheme;
+    final stops = GadKonstansColors.stopsFor(colorScheme);
 
-    return Row(
+    return Wrap(
+      spacing: 6,
+      runSpacing: 4,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         Text(
           'Konstans:',
           style: TextStyle(
             fontSize: 9,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+            color: colorScheme.onSurface.withOpacity(0.4),
           ),
         ),
-        const SizedBox(width: 6),
-        ...List.generate(labels.length, (i) {
-          return Padding(
-            padding: const EdgeInsets.only(right: 6),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color: colors[i],
-                    border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .outline
-                          .withOpacity(0.3),
-                    ),
-                    borderRadius: BorderRadius.circular(2),
+        ...List.generate(GadKonstansColors.maxValue + 1, (i) {
+          final swatchColor = stops[i].a == 0
+              ? colorScheme.surfaceContainerHighest
+              : stops[i];
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 11,
+                height: 11,
+                decoration: BoxDecoration(
+                  color: swatchColor,
+                  border: Border.all(
+                    color: colorScheme.outline.withOpacity(0.35),
                   ),
+                  borderRadius: BorderRadius.circular(2),
                 ),
-                const SizedBox(width: 2),
-                Text(
-                  labels[i],
-                  style: TextStyle(
-                    fontSize: 8,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.45),
-                  ),
+              ),
+              const SizedBox(width: 2),
+              Text(
+                '$i',
+                style: TextStyle(
+                  fontSize: 8,
+                  color: colorScheme.onSurface.withOpacity(0.45),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         }),
       ],
