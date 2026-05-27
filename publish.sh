@@ -1,27 +1,23 @@
 #!/bin/bash
+set -e
 
-# publish.sh - Non-interactive publication script for iOS and Android
+# publish.sh - Non-interactive publication script for iOS, Android, and Web
 
-# 1. Load environment variables from .env file
-if [ -f .env ]; then
-  echo "🔑 Loading environment variables from .env..."
-  export $(grep -v '^#' .env | xargs)
-else
-  echo "⚠️  No .env file found. Please create one from .env.template"
-  exit 1
-fi
-
-# 2. Parse arguments
+# 1. Parse arguments
 PLATFORM=""
 RUN_SCREENSHOTS=false
+DEPLOY_WEB=false
 
 for arg in "$@"; do
   case $arg in
-    ios|android|both)
+    ios|android|both|web|all)
       PLATFORM=$arg
       ;;
     --screenshots|-s)
       RUN_SCREENSHOTS=true
+      ;;
+    --deploy|-d)
+      DEPLOY_WEB=true
       ;;
     *)
       # Ignore unknown arguments for now
@@ -30,61 +26,96 @@ for arg in "$@"; do
 done
 
 if [ -z "$PLATFORM" ]; then
-  echo "Usage: ./publish.sh [ios|android|both] [--screenshots|-s]"
+  echo "Usage: ./publish.sh [ios|android|both|web|all] [--screenshots|-s] [--deploy|-d]"
+  echo ""
+  echo "  ios|android|both  Publish to App Store / Google Play (requires .env)"
+  echo "  web               Build Flutter web app for GitHub Pages"
+  echo "  all               Publish iOS + Android, then build web"
+  echo ""
+  echo "  --deploy|-d       With 'web': commit docs/app/ and push to origin"
   exit 1
 fi
 
-# 3. Basic validation
-if [ -z "$FASTLANE_USER" ]; then
-  echo "❌ Error: FASTLANE_USER is not set in .env"
-  exit 1
+# 2. Load environment variables from .env (required for mobile, optional for web)
+NEEDS_ENV=false
+if [[ "$PLATFORM" == "ios" || "$PLATFORM" == "android" || "$PLATFORM" == "both" || "$PLATFORM" == "all" ]]; then
+  NEEDS_ENV=true
 fi
 
-# 4. Optional: Run Screenshots
+if [ "$NEEDS_ENV" = true ]; then
+  if [ -f .env ]; then
+    echo "🔑 Loading environment variables from .env..."
+    export $(grep -v '^#' .env | xargs)
+  else
+    echo "⚠️  No .env file found. Please create one from .env.template"
+    exit 1
+  fi
+
+  if [ -z "$FASTLANE_USER" ]; then
+    echo "❌ Error: FASTLANE_USER is not set in .env"
+    exit 1
+  fi
+fi
+
+# 3. Optional: Run Screenshots
 if [ "$RUN_SCREENSHOTS" = true ]; then
   echo "📸 Starting automated screenshot generation..."
-  
-  # Run Android screenshots if platform is android or both
-  if [[ "$PLATFORM" == "android" || "$PLATFORM" == "both" ]]; then
+
+  if [[ "$PLATFORM" == "android" || "$PLATFORM" == "both" || "$PLATFORM" == "all" ]]; then
     echo "🤖 Generating Android screenshots..."
     ./scripts/automate_screenshots.sh
-    if [ $? -ne 0 ]; then
-      echo "❌ Android screenshot automation failed. Aborting publication."
-      exit 1
-    fi
   fi
 
-  # Run iOS screenshots if platform is ios or both
-  if [[ "$PLATFORM" == "ios" || "$PLATFORM" == "both" ]]; then
+  if [[ "$PLATFORM" == "ios" || "$PLATFORM" == "both" || "$PLATFORM" == "all" ]]; then
     echo "🍏 Generating iOS screenshots..."
     ./scripts/automate_ios_screenshots.sh
-    if [ $? -ne 0 ]; then
-      echo "❌ iOS screenshot automation failed. Aborting publication."
-      exit 1
-    fi
   fi
-  
+
   echo "✅ All requested screenshots generated successfully."
 fi
 
-# 5. Execute Publication
+# 4. Execute Publication
+publish_mobile() {
+  local target=$1
+  case $target in
+    ios)
+      echo "🍏 Starting iOS Publication..."
+      echo "📦 Ensuring CocoaPods are up to date..."
+      (cd ios && pod install)
+      bundle exec fastlane ios deploy
+      ;;
+    android)
+      echo "🤖 Starting Android Publication..."
+      bundle exec fastlane android deploy
+      ;;
+    both)
+      echo "🚀 Starting Full Publication (iOS + Android)..."
+      echo "📦 Ensuring iOS CocoaPods are up to date..."
+      (cd ios && pod install)
+      bundle exec fastlane ios deploy
+      bundle exec fastlane android deploy
+      ;;
+  esac
+}
+
 case $PLATFORM in
-  ios)
-    echo "🍏 Starting iOS Publication..."
-    echo "📦 Ensuring CocoaPods are up to date..."
-    (cd ios && pod install)
-    bundle exec fastlane ios deploy
+  ios|android|both)
+    publish_mobile "$PLATFORM"
     ;;
-  android)
-    echo "🤖 Starting Android Publication..."
-    bundle exec fastlane android deploy
+  web)
+    DEPLOY_ARGS=()
+    if [ "$DEPLOY_WEB" = true ]; then
+      DEPLOY_ARGS+=(--deploy)
+    fi
+    ./scripts/deploy_web.sh "${DEPLOY_ARGS[@]}"
     ;;
-  both)
-    echo "🚀 Starting Full Publication (iOS + Android)..."
-    echo "📦 Ensuring iOS CocoaPods are up to date..."
-    (cd ios && pod install)
-    bundle exec fastlane ios deploy
-    bundle exec fastlane android deploy
+  all)
+    publish_mobile both
+    DEPLOY_ARGS=()
+    if [ "$DEPLOY_WEB" = true ]; then
+      DEPLOY_ARGS+=(--deploy)
+    fi
+    ./scripts/deploy_web.sh "${DEPLOY_ARGS[@]}"
     ;;
 esac
 

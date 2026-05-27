@@ -6,15 +6,37 @@ A new Flutter project.
 
 App for mapping and identifying nature types in Norway.
 
-## Landing Page & Privacy Policy
-The project includes a landing page and privacy policy in the `docs/` directory.
-To host it on GitHub Pages:
-1. Go to repository **Settings** > **Pages**.
-2. Select **Deploy from a branch**.
-3. Set **Branch** to `main` and **Folder** to `/docs`.
-4. Click **Save**.
+## Landing Page, Web App & Privacy Policy
 
-The page will be available at `https://geco-nhm.github.io/natur-i-norge/`.
+The project includes a landing page and privacy policy in the `docs/` directory. The Flutter web build is published under `docs/app/`.
+
+GitHub Pages is configured to serve from **`main` / `docs`**. The landing page is at:
+
+`https://geco-nhm.github.io/natur-i-norge/`
+
+The web app is at:
+
+`https://geco-nhm.github.io/natur-i-norge/app/`
+
+### Build and deploy the web app
+
+```bash
+# Build only (output in docs/app/)
+./publish.sh web
+
+# Build, commit, and push to GitHub Pages
+./publish.sh web --deploy
+
+# Preview locally before deploying
+python3 -m http.server 8080 --directory docs
+# open http://localhost:8080/app/
+```
+
+To publish mobile stores and build web in one go:
+
+```bash
+./publish.sh all --deploy
+```
 
 ## Getting Started
 

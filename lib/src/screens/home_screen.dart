@@ -39,10 +39,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               labelType: NavigationRailLabelType.all,
               leading: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Image.network(
-                  'https://artsdatabanken.no/Files/14104/NiN_Logo_RGB.png',
-                  height: 40,
-                  errorBuilder: (_, __, ___) => const Icon(Icons.nature_people, size: 40),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/app_icon.png',
+                    height: 40,
+                    width: 40,
+                  ),
                 ),
               ),
               destinations: const [
