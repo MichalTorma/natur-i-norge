@@ -460,63 +460,78 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           ),
       ],
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (type != null)
-              Container(
-                margin: const EdgeInsets.only(bottom: 4),
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4),
-                  boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
-                  ],
-                ),
-                child: Text(
-                  type.id,
-                  style: TextStyle(
-                    fontSize: 10, 
-                    fontWeight: FontWeight.w900, 
-                    color: color,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ),
-            Text(
-              type?.navn ?? 'NiN Explorer',
-              style: TextStyle(
-                fontWeight: FontWeight.bold, 
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.onSurface,
-                shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
-              ),
-              maxLines: null,
-            ),
-            if (type == null)
-              GestureDetector(
-                onTap: () => launchUrl(
-                  Uri.parse('https://artsdatabanken.no'),
-                  mode: LaunchMode.externalApplication,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 2.0),
-                  child: Text(
-                    'Data provided by Artsdatabanken.no',
+        titlePadding: const EdgeInsets.only(left: 56, right: 16, bottom: 14),
+        title: type == null
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'NiN Explorer',
                     style: TextStyle(
-                      fontSize: 10,
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
-                      decoration: TextDecoration.underline,
-                      decorationColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
                     ),
                   ),
-                ),
+                  GestureDetector(
+                    onTap: () => launchUrl(
+                      Uri.parse('https://artsdatabanken.no'),
+                      mode: LaunchMode.externalApplication,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2.0),
+                      child: Text(
+                        'Data provided by Artsdatabanken.no',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                          decoration: TextDecoration.underline,
+                          decorationColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                      boxShadow: [
+                        BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
+                      ],
+                    ),
+                    child: Text(
+                      type.id,
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        color: color,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      type.navn,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
-          ],
-        ),
         background: type == null ? null : Stack(
           fit: StackFit.expand,
           children: [
