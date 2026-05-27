@@ -1,3 +1,3 @@
 import 'web_shared.dart';
 
-Future<void> ensureDriftWebReady() => ensureDriftWebProbe().then((_) {});
+Future<void> ensureDriftWebReady() => warmUpDriftWeb();

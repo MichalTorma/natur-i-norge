@@ -17,8 +17,8 @@ QueryExecutor openConnection() {
 
     if (result.missingFeatures.isNotEmpty) {
       print(
-        'NiN database using fallback storage due to missing browser features: '
-        '${result.missingFeatures}',
+        'NiN database using ${result.chosenImplementation} due to missing '
+        'browser features: ${result.missingFeatures}',
       );
     }
 

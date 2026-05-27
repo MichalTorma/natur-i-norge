@@ -9,8 +9,8 @@ QueryExecutor openUserConnection() {
 
     if (result.missingFeatures.isNotEmpty) {
       print(
-        'User database using fallback storage due to missing browser features: '
-        '${result.missingFeatures}',
+        'User database using ${result.chosenImplementation} due to missing '
+        'browser features: ${result.missingFeatures}',
       );
     }
 
