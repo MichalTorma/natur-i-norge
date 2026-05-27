@@ -11,6 +11,8 @@ import '../providers/database_provider.dart';
 import '../models/nin_database.dart';
 import '../models/user_database.dart';
 import '../widgets/ecological_matrix.dart';
+import '../widgets/gad_species_panel.dart';
+import '../providers/gad_provider.dart';
 import '../widgets/expandable_markdown.dart';
 import 'camera_screen.dart';
 
@@ -31,6 +33,10 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
   Widget build(BuildContext context) {
     final selectedScale = ref.watch(selectedScaleProvider);
     final showLkmNames = ref.watch(showLkmNamesProvider);
+    final isTb01 = widget.type?.id == gadHovedtypeId;
+    final gadConstancy = isTb01
+        ? ref.watch(gadConstancyMapProvider).asData?.value
+        : null;
     final parentId = widget.type?.id;
     final typesAsync = _searchQuery.isEmpty
         ? ref.watch(subTypesProvider(parentId ?? ''))
@@ -243,6 +249,10 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            if (isTb01) ...[
+                              const GadSpeciesPanel(),
+                              const SizedBox(height: 12),
+                            ],
                             Row(
                               children: [
                                 Text(
@@ -265,9 +275,10 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                             ),
                             const SizedBox(height: 8),
                             EcologicalMatrix(
-                              subTypes: matrixTypes, 
+                              subTypes: matrixTypes,
                               onPick: widget.onPick,
                               showStepNames: showLkmNames,
+                              gadConstancy: gadConstancy,
                             ),
                             const Divider(height: 48),
                           ],

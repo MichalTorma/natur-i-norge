@@ -8,7 +8,15 @@ class EcologicalMatrix extends StatefulWidget {
   final List<NinType> subTypes;
   final ValueChanged<NinType>? onPick;
   final bool showStepNames;
-  const EcologicalMatrix({super.key, required this.subTypes, this.onPick, this.showStepNames = true});
+  final Map<String, double>? gadConstancy;
+
+  const EcologicalMatrix({
+    super.key,
+    required this.subTypes,
+    this.onPick,
+    this.showStepNames = true,
+    this.gadConstancy,
+  });
 
   @override
   State<EcologicalMatrix> createState() => _EcologicalMatrixState();
@@ -356,6 +364,16 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                       children: [
                         // Subtle Background Grid
                         _buildBackgroundGrid(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
+
+                        if (widget.gadConstancy != null &&
+                            widget.gadConstancy!.isNotEmpty)
+                          ..._buildGadHeatmap(
+                            matrixData,
+                            xSteps,
+                            ySteps,
+                            unitWidth,
+                            unitHeight,
+                          ),
                         
                         // The Islands
                         ..._buildIslands(matrixData, xSteps, ySteps, unitWidth, unitHeight, colorScheme),
@@ -623,6 +641,100 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       }
     }
     return Stack(children: lines);
+  }
+
+  (String?, String?, String?) _resolveGadTrinn(String xTrinn, String yTrinn) {
+    String? ka;
+    String? uf;
+    String? vm;
+
+    void assign(String varCode, String trinn) {
+      switch (varCode) {
+        case 'LM-KA':
+          ka = trinn;
+        case 'LM-UF':
+          uf = trinn;
+        case 'LM-VM':
+          vm = trinn;
+      }
+    }
+
+    if (_xAxisVar != null) assign(_xAxisVar!, xTrinn);
+    if (_yAxisVar != null) assign(_yAxisVar!, yTrinn);
+    for (final entry in _activeFilters.entries) {
+      assign(entry.key, entry.value);
+    }
+
+    return (ka, uf, vm);
+  }
+
+  double? _lookupGad(String xTrinn, String yTrinn) {
+    final map = widget.gadConstancy;
+    if (map == null || map.isEmpty) return null;
+    final (ka, uf, vm) = _resolveGadTrinn(xTrinn, yTrinn);
+    if (ka == null || uf == null || vm == null) return null;
+    return map['$ka|$uf|$vm'];
+  }
+
+  Color _gadColor(double value) {
+    if (value <= 0) return Colors.transparent;
+    if (value <= 2) return const Color(0xFFE8F5E9).withOpacity(0.85);
+    if (value <= 4) return const Color(0xFF81C784).withOpacity(0.75);
+    return const Color(0xFF2E7D32).withOpacity(0.82);
+  }
+
+  List<Widget> _buildGadHeatmap(
+    _MatrixData data,
+    List<String> xSteps,
+    List<String> ySteps,
+    double unitWidth,
+    double unitHeight,
+  ) {
+    final cells = <Widget>[];
+    double cumX = 0;
+
+    for (final xId in xSteps) {
+      final xGroup = data.xMergeMap[xId]!;
+      for (final xTrinn in xGroup) {
+        double cumY = 0;
+        for (final yId in ySteps) {
+          final yGroup = data.yMergeMap[yId]!;
+          for (final yTrinn in yGroup) {
+            final value = _lookupGad(xTrinn, yTrinn);
+            if (value != null && value > 0) {
+              cells.add(
+                Positioned(
+                  left: cumX,
+                  top: cumY,
+                  width: unitWidth,
+                  height: unitHeight,
+                  child: Container(
+                    color: _gadColor(value),
+                    alignment: Alignment.center,
+                    child: value >= 4
+                        ? Text(
+                            value.toStringAsFixed(0),
+                            style: TextStyle(
+                              fontSize: 8,
+                              fontWeight: FontWeight.bold,
+                              color: value >= 5
+                                  ? Colors.white.withOpacity(0.9)
+                                  : Colors.black.withOpacity(0.55),
+                            ),
+                          )
+                        : null,
+                  ),
+                ),
+              );
+            }
+            cumY += unitHeight;
+          }
+        }
+        cumX += unitWidth;
+      }
+    }
+
+    return cells;
   }
 
   List<Widget> _buildIslands(_MatrixData data, List<String> xSteps, List<String> ySteps, double unitWidth, double unitHeight, ColorScheme colorScheme) {

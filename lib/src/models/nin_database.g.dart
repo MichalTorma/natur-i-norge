@@ -1783,12 +1783,763 @@ class NinConversionsCompanion extends UpdateCompanion<NinConversion> {
   }
 }
 
+class $NinSpeciesTable extends NinSpecies
+    with TableInfo<$NinSpeciesTable, NinSpecy> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NinSpeciesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _gbifIdMeta = const VerificationMeta('gbifId');
+  @override
+  late final GeneratedColumn<int> gbifId = GeneratedColumn<int>(
+    'gbif_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameLatinMeta = const VerificationMeta(
+    'nameLatin',
+  );
+  @override
+  late final GeneratedColumn<String> nameLatin = GeneratedColumn<String>(
+    'name_latin',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameNbMeta = const VerificationMeta('nameNb');
+  @override
+  late final GeneratedColumn<String> nameNb = GeneratedColumn<String>(
+    'name_nb',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, gbifId, nameLatin, nameNb];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'nin_species';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<NinSpecy> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('gbif_id')) {
+      context.handle(
+        _gbifIdMeta,
+        gbifId.isAcceptableOrUnknown(data['gbif_id']!, _gbifIdMeta),
+      );
+    }
+    if (data.containsKey('name_latin')) {
+      context.handle(
+        _nameLatinMeta,
+        nameLatin.isAcceptableOrUnknown(data['name_latin']!, _nameLatinMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameLatinMeta);
+    }
+    if (data.containsKey('name_nb')) {
+      context.handle(
+        _nameNbMeta,
+        nameNb.isAcceptableOrUnknown(data['name_nb']!, _nameNbMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  NinSpecy map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NinSpecy(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      gbifId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}gbif_id'],
+      ),
+      nameLatin: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name_latin'],
+      )!,
+      nameNb: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name_nb'],
+      ),
+    );
+  }
+
+  @override
+  $NinSpeciesTable createAlias(String alias) {
+    return $NinSpeciesTable(attachedDatabase, alias);
+  }
+}
+
+class NinSpecy extends DataClass implements Insertable<NinSpecy> {
+  final String id;
+  final int? gbifId;
+  final String nameLatin;
+  final String? nameNb;
+  const NinSpecy({
+    required this.id,
+    this.gbifId,
+    required this.nameLatin,
+    this.nameNb,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || gbifId != null) {
+      map['gbif_id'] = Variable<int>(gbifId);
+    }
+    map['name_latin'] = Variable<String>(nameLatin);
+    if (!nullToAbsent || nameNb != null) {
+      map['name_nb'] = Variable<String>(nameNb);
+    }
+    return map;
+  }
+
+  NinSpeciesCompanion toCompanion(bool nullToAbsent) {
+    return NinSpeciesCompanion(
+      id: Value(id),
+      gbifId: gbifId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gbifId),
+      nameLatin: Value(nameLatin),
+      nameNb: nameNb == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nameNb),
+    );
+  }
+
+  factory NinSpecy.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NinSpecy(
+      id: serializer.fromJson<String>(json['id']),
+      gbifId: serializer.fromJson<int?>(json['gbifId']),
+      nameLatin: serializer.fromJson<String>(json['nameLatin']),
+      nameNb: serializer.fromJson<String?>(json['nameNb']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'gbifId': serializer.toJson<int?>(gbifId),
+      'nameLatin': serializer.toJson<String>(nameLatin),
+      'nameNb': serializer.toJson<String?>(nameNb),
+    };
+  }
+
+  NinSpecy copyWith({
+    String? id,
+    Value<int?> gbifId = const Value.absent(),
+    String? nameLatin,
+    Value<String?> nameNb = const Value.absent(),
+  }) => NinSpecy(
+    id: id ?? this.id,
+    gbifId: gbifId.present ? gbifId.value : this.gbifId,
+    nameLatin: nameLatin ?? this.nameLatin,
+    nameNb: nameNb.present ? nameNb.value : this.nameNb,
+  );
+  NinSpecy copyWithCompanion(NinSpeciesCompanion data) {
+    return NinSpecy(
+      id: data.id.present ? data.id.value : this.id,
+      gbifId: data.gbifId.present ? data.gbifId.value : this.gbifId,
+      nameLatin: data.nameLatin.present ? data.nameLatin.value : this.nameLatin,
+      nameNb: data.nameNb.present ? data.nameNb.value : this.nameNb,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinSpecy(')
+          ..write('id: $id, ')
+          ..write('gbifId: $gbifId, ')
+          ..write('nameLatin: $nameLatin, ')
+          ..write('nameNb: $nameNb')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, gbifId, nameLatin, nameNb);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NinSpecy &&
+          other.id == this.id &&
+          other.gbifId == this.gbifId &&
+          other.nameLatin == this.nameLatin &&
+          other.nameNb == this.nameNb);
+}
+
+class NinSpeciesCompanion extends UpdateCompanion<NinSpecy> {
+  final Value<String> id;
+  final Value<int?> gbifId;
+  final Value<String> nameLatin;
+  final Value<String?> nameNb;
+  final Value<int> rowid;
+  const NinSpeciesCompanion({
+    this.id = const Value.absent(),
+    this.gbifId = const Value.absent(),
+    this.nameLatin = const Value.absent(),
+    this.nameNb = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  NinSpeciesCompanion.insert({
+    required String id,
+    this.gbifId = const Value.absent(),
+    required String nameLatin,
+    this.nameNb = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       nameLatin = Value(nameLatin);
+  static Insertable<NinSpecy> custom({
+    Expression<String>? id,
+    Expression<int>? gbifId,
+    Expression<String>? nameLatin,
+    Expression<String>? nameNb,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (gbifId != null) 'gbif_id': gbifId,
+      if (nameLatin != null) 'name_latin': nameLatin,
+      if (nameNb != null) 'name_nb': nameNb,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  NinSpeciesCompanion copyWith({
+    Value<String>? id,
+    Value<int?>? gbifId,
+    Value<String>? nameLatin,
+    Value<String?>? nameNb,
+    Value<int>? rowid,
+  }) {
+    return NinSpeciesCompanion(
+      id: id ?? this.id,
+      gbifId: gbifId ?? this.gbifId,
+      nameLatin: nameLatin ?? this.nameLatin,
+      nameNb: nameNb ?? this.nameNb,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (gbifId.present) {
+      map['gbif_id'] = Variable<int>(gbifId.value);
+    }
+    if (nameLatin.present) {
+      map['name_latin'] = Variable<String>(nameLatin.value);
+    }
+    if (nameNb.present) {
+      map['name_nb'] = Variable<String>(nameNb.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinSpeciesCompanion(')
+          ..write('id: $id, ')
+          ..write('gbifId: $gbifId, ')
+          ..write('nameLatin: $nameLatin, ')
+          ..write('nameNb: $nameNb, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $NinSpeciesGadTable extends NinSpeciesGad
+    with TableInfo<$NinSpeciesGadTable, NinSpeciesGadData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NinSpeciesGadTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _hovedtypeIdMeta = const VerificationMeta(
+    'hovedtypeId',
+  );
+  @override
+  late final GeneratedColumn<String> hovedtypeId = GeneratedColumn<String>(
+    'hovedtype_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _speciesIdMeta = const VerificationMeta(
+    'speciesId',
+  );
+  @override
+  late final GeneratedColumn<String> speciesId = GeneratedColumn<String>(
+    'species_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES nin_species (id)',
+    ),
+  );
+  static const VerificationMeta _lmKaTrinnMeta = const VerificationMeta(
+    'lmKaTrinn',
+  );
+  @override
+  late final GeneratedColumn<String> lmKaTrinn = GeneratedColumn<String>(
+    'lm_ka_trinn',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lmUfTrinnMeta = const VerificationMeta(
+    'lmUfTrinn',
+  );
+  @override
+  late final GeneratedColumn<String> lmUfTrinn = GeneratedColumn<String>(
+    'lm_uf_trinn',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lmVmTrinnMeta = const VerificationMeta(
+    'lmVmTrinn',
+  );
+  @override
+  late final GeneratedColumn<String> lmVmTrinn = GeneratedColumn<String>(
+    'lm_vm_trinn',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _constancyM7Meta = const VerificationMeta(
+    'constancyM7',
+  );
+  @override
+  late final GeneratedColumn<int> constancyM7 = GeneratedColumn<int>(
+    'constancy_m7',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    hovedtypeId,
+    speciesId,
+    lmKaTrinn,
+    lmUfTrinn,
+    lmVmTrinn,
+    constancyM7,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'nin_species_gad';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<NinSpeciesGadData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('hovedtype_id')) {
+      context.handle(
+        _hovedtypeIdMeta,
+        hovedtypeId.isAcceptableOrUnknown(
+          data['hovedtype_id']!,
+          _hovedtypeIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_hovedtypeIdMeta);
+    }
+    if (data.containsKey('species_id')) {
+      context.handle(
+        _speciesIdMeta,
+        speciesId.isAcceptableOrUnknown(data['species_id']!, _speciesIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_speciesIdMeta);
+    }
+    if (data.containsKey('lm_ka_trinn')) {
+      context.handle(
+        _lmKaTrinnMeta,
+        lmKaTrinn.isAcceptableOrUnknown(data['lm_ka_trinn']!, _lmKaTrinnMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lmKaTrinnMeta);
+    }
+    if (data.containsKey('lm_uf_trinn')) {
+      context.handle(
+        _lmUfTrinnMeta,
+        lmUfTrinn.isAcceptableOrUnknown(data['lm_uf_trinn']!, _lmUfTrinnMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lmUfTrinnMeta);
+    }
+    if (data.containsKey('lm_vm_trinn')) {
+      context.handle(
+        _lmVmTrinnMeta,
+        lmVmTrinn.isAcceptableOrUnknown(data['lm_vm_trinn']!, _lmVmTrinnMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lmVmTrinnMeta);
+    }
+    if (data.containsKey('constancy_m7')) {
+      context.handle(
+        _constancyM7Meta,
+        constancyM7.isAcceptableOrUnknown(
+          data['constancy_m7']!,
+          _constancyM7Meta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_constancyM7Meta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {
+    hovedtypeId,
+    speciesId,
+    lmKaTrinn,
+    lmUfTrinn,
+    lmVmTrinn,
+  };
+  @override
+  NinSpeciesGadData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NinSpeciesGadData(
+      hovedtypeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hovedtype_id'],
+      )!,
+      speciesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}species_id'],
+      )!,
+      lmKaTrinn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lm_ka_trinn'],
+      )!,
+      lmUfTrinn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lm_uf_trinn'],
+      )!,
+      lmVmTrinn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lm_vm_trinn'],
+      )!,
+      constancyM7: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}constancy_m7'],
+      )!,
+    );
+  }
+
+  @override
+  $NinSpeciesGadTable createAlias(String alias) {
+    return $NinSpeciesGadTable(attachedDatabase, alias);
+  }
+}
+
+class NinSpeciesGadData extends DataClass
+    implements Insertable<NinSpeciesGadData> {
+  final String hovedtypeId;
+  final String speciesId;
+  final String lmKaTrinn;
+  final String lmUfTrinn;
+  final String lmVmTrinn;
+  final int constancyM7;
+  const NinSpeciesGadData({
+    required this.hovedtypeId,
+    required this.speciesId,
+    required this.lmKaTrinn,
+    required this.lmUfTrinn,
+    required this.lmVmTrinn,
+    required this.constancyM7,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['hovedtype_id'] = Variable<String>(hovedtypeId);
+    map['species_id'] = Variable<String>(speciesId);
+    map['lm_ka_trinn'] = Variable<String>(lmKaTrinn);
+    map['lm_uf_trinn'] = Variable<String>(lmUfTrinn);
+    map['lm_vm_trinn'] = Variable<String>(lmVmTrinn);
+    map['constancy_m7'] = Variable<int>(constancyM7);
+    return map;
+  }
+
+  NinSpeciesGadCompanion toCompanion(bool nullToAbsent) {
+    return NinSpeciesGadCompanion(
+      hovedtypeId: Value(hovedtypeId),
+      speciesId: Value(speciesId),
+      lmKaTrinn: Value(lmKaTrinn),
+      lmUfTrinn: Value(lmUfTrinn),
+      lmVmTrinn: Value(lmVmTrinn),
+      constancyM7: Value(constancyM7),
+    );
+  }
+
+  factory NinSpeciesGadData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NinSpeciesGadData(
+      hovedtypeId: serializer.fromJson<String>(json['hovedtypeId']),
+      speciesId: serializer.fromJson<String>(json['speciesId']),
+      lmKaTrinn: serializer.fromJson<String>(json['lmKaTrinn']),
+      lmUfTrinn: serializer.fromJson<String>(json['lmUfTrinn']),
+      lmVmTrinn: serializer.fromJson<String>(json['lmVmTrinn']),
+      constancyM7: serializer.fromJson<int>(json['constancyM7']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'hovedtypeId': serializer.toJson<String>(hovedtypeId),
+      'speciesId': serializer.toJson<String>(speciesId),
+      'lmKaTrinn': serializer.toJson<String>(lmKaTrinn),
+      'lmUfTrinn': serializer.toJson<String>(lmUfTrinn),
+      'lmVmTrinn': serializer.toJson<String>(lmVmTrinn),
+      'constancyM7': serializer.toJson<int>(constancyM7),
+    };
+  }
+
+  NinSpeciesGadData copyWith({
+    String? hovedtypeId,
+    String? speciesId,
+    String? lmKaTrinn,
+    String? lmUfTrinn,
+    String? lmVmTrinn,
+    int? constancyM7,
+  }) => NinSpeciesGadData(
+    hovedtypeId: hovedtypeId ?? this.hovedtypeId,
+    speciesId: speciesId ?? this.speciesId,
+    lmKaTrinn: lmKaTrinn ?? this.lmKaTrinn,
+    lmUfTrinn: lmUfTrinn ?? this.lmUfTrinn,
+    lmVmTrinn: lmVmTrinn ?? this.lmVmTrinn,
+    constancyM7: constancyM7 ?? this.constancyM7,
+  );
+  NinSpeciesGadData copyWithCompanion(NinSpeciesGadCompanion data) {
+    return NinSpeciesGadData(
+      hovedtypeId: data.hovedtypeId.present
+          ? data.hovedtypeId.value
+          : this.hovedtypeId,
+      speciesId: data.speciesId.present ? data.speciesId.value : this.speciesId,
+      lmKaTrinn: data.lmKaTrinn.present ? data.lmKaTrinn.value : this.lmKaTrinn,
+      lmUfTrinn: data.lmUfTrinn.present ? data.lmUfTrinn.value : this.lmUfTrinn,
+      lmVmTrinn: data.lmVmTrinn.present ? data.lmVmTrinn.value : this.lmVmTrinn,
+      constancyM7: data.constancyM7.present
+          ? data.constancyM7.value
+          : this.constancyM7,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinSpeciesGadData(')
+          ..write('hovedtypeId: $hovedtypeId, ')
+          ..write('speciesId: $speciesId, ')
+          ..write('lmKaTrinn: $lmKaTrinn, ')
+          ..write('lmUfTrinn: $lmUfTrinn, ')
+          ..write('lmVmTrinn: $lmVmTrinn, ')
+          ..write('constancyM7: $constancyM7')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    hovedtypeId,
+    speciesId,
+    lmKaTrinn,
+    lmUfTrinn,
+    lmVmTrinn,
+    constancyM7,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NinSpeciesGadData &&
+          other.hovedtypeId == this.hovedtypeId &&
+          other.speciesId == this.speciesId &&
+          other.lmKaTrinn == this.lmKaTrinn &&
+          other.lmUfTrinn == this.lmUfTrinn &&
+          other.lmVmTrinn == this.lmVmTrinn &&
+          other.constancyM7 == this.constancyM7);
+}
+
+class NinSpeciesGadCompanion extends UpdateCompanion<NinSpeciesGadData> {
+  final Value<String> hovedtypeId;
+  final Value<String> speciesId;
+  final Value<String> lmKaTrinn;
+  final Value<String> lmUfTrinn;
+  final Value<String> lmVmTrinn;
+  final Value<int> constancyM7;
+  final Value<int> rowid;
+  const NinSpeciesGadCompanion({
+    this.hovedtypeId = const Value.absent(),
+    this.speciesId = const Value.absent(),
+    this.lmKaTrinn = const Value.absent(),
+    this.lmUfTrinn = const Value.absent(),
+    this.lmVmTrinn = const Value.absent(),
+    this.constancyM7 = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  NinSpeciesGadCompanion.insert({
+    required String hovedtypeId,
+    required String speciesId,
+    required String lmKaTrinn,
+    required String lmUfTrinn,
+    required String lmVmTrinn,
+    required int constancyM7,
+    this.rowid = const Value.absent(),
+  }) : hovedtypeId = Value(hovedtypeId),
+       speciesId = Value(speciesId),
+       lmKaTrinn = Value(lmKaTrinn),
+       lmUfTrinn = Value(lmUfTrinn),
+       lmVmTrinn = Value(lmVmTrinn),
+       constancyM7 = Value(constancyM7);
+  static Insertable<NinSpeciesGadData> custom({
+    Expression<String>? hovedtypeId,
+    Expression<String>? speciesId,
+    Expression<String>? lmKaTrinn,
+    Expression<String>? lmUfTrinn,
+    Expression<String>? lmVmTrinn,
+    Expression<int>? constancyM7,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (hovedtypeId != null) 'hovedtype_id': hovedtypeId,
+      if (speciesId != null) 'species_id': speciesId,
+      if (lmKaTrinn != null) 'lm_ka_trinn': lmKaTrinn,
+      if (lmUfTrinn != null) 'lm_uf_trinn': lmUfTrinn,
+      if (lmVmTrinn != null) 'lm_vm_trinn': lmVmTrinn,
+      if (constancyM7 != null) 'constancy_m7': constancyM7,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  NinSpeciesGadCompanion copyWith({
+    Value<String>? hovedtypeId,
+    Value<String>? speciesId,
+    Value<String>? lmKaTrinn,
+    Value<String>? lmUfTrinn,
+    Value<String>? lmVmTrinn,
+    Value<int>? constancyM7,
+    Value<int>? rowid,
+  }) {
+    return NinSpeciesGadCompanion(
+      hovedtypeId: hovedtypeId ?? this.hovedtypeId,
+      speciesId: speciesId ?? this.speciesId,
+      lmKaTrinn: lmKaTrinn ?? this.lmKaTrinn,
+      lmUfTrinn: lmUfTrinn ?? this.lmUfTrinn,
+      lmVmTrinn: lmVmTrinn ?? this.lmVmTrinn,
+      constancyM7: constancyM7 ?? this.constancyM7,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (hovedtypeId.present) {
+      map['hovedtype_id'] = Variable<String>(hovedtypeId.value);
+    }
+    if (speciesId.present) {
+      map['species_id'] = Variable<String>(speciesId.value);
+    }
+    if (lmKaTrinn.present) {
+      map['lm_ka_trinn'] = Variable<String>(lmKaTrinn.value);
+    }
+    if (lmUfTrinn.present) {
+      map['lm_uf_trinn'] = Variable<String>(lmUfTrinn.value);
+    }
+    if (lmVmTrinn.present) {
+      map['lm_vm_trinn'] = Variable<String>(lmVmTrinn.value);
+    }
+    if (constancyM7.present) {
+      map['constancy_m7'] = Variable<int>(constancyM7.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NinSpeciesGadCompanion(')
+          ..write('hovedtypeId: $hovedtypeId, ')
+          ..write('speciesId: $speciesId, ')
+          ..write('lmKaTrinn: $lmKaTrinn, ')
+          ..write('lmUfTrinn: $lmUfTrinn, ')
+          ..write('lmVmTrinn: $lmVmTrinn, ')
+          ..write('constancyM7: $constancyM7, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$NinDatabase extends GeneratedDatabase {
   _$NinDatabase(QueryExecutor e) : super(e);
   $NinDatabaseManager get managers => $NinDatabaseManager(this);
   late final $NinTypesTable ninTypes = $NinTypesTable(this);
   late final $NinVariablesTable ninVariables = $NinVariablesTable(this);
   late final $NinConversionsTable ninConversions = $NinConversionsTable(this);
+  late final $NinSpeciesTable ninSpecies = $NinSpeciesTable(this);
+  late final $NinSpeciesGadTable ninSpeciesGad = $NinSpeciesGadTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1797,6 +2548,8 @@ abstract class _$NinDatabase extends GeneratedDatabase {
     ninTypes,
     ninVariables,
     ninConversions,
+    ninSpecies,
+    ninSpeciesGad,
   ];
 }
 
@@ -2659,6 +3412,640 @@ typedef $$NinConversionsTableProcessedTableManager =
       NinConversion,
       PrefetchHooks Function()
     >;
+typedef $$NinSpeciesTableCreateCompanionBuilder =
+    NinSpeciesCompanion Function({
+      required String id,
+      Value<int?> gbifId,
+      required String nameLatin,
+      Value<String?> nameNb,
+      Value<int> rowid,
+    });
+typedef $$NinSpeciesTableUpdateCompanionBuilder =
+    NinSpeciesCompanion Function({
+      Value<String> id,
+      Value<int?> gbifId,
+      Value<String> nameLatin,
+      Value<String?> nameNb,
+      Value<int> rowid,
+    });
+
+final class $$NinSpeciesTableReferences
+    extends BaseReferences<_$NinDatabase, $NinSpeciesTable, NinSpecy> {
+  $$NinSpeciesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$NinSpeciesGadTable, List<NinSpeciesGadData>>
+  _ninSpeciesGadRefsTable(_$NinDatabase db) => MultiTypedResultKey.fromTable(
+    db.ninSpeciesGad,
+    aliasName: $_aliasNameGenerator(
+      db.ninSpecies.id,
+      db.ninSpeciesGad.speciesId,
+    ),
+  );
+
+  $$NinSpeciesGadTableProcessedTableManager get ninSpeciesGadRefs {
+    final manager = $$NinSpeciesGadTableTableManager(
+      $_db,
+      $_db.ninSpeciesGad,
+    ).filter((f) => f.speciesId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_ninSpeciesGadRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$NinSpeciesTableFilterComposer
+    extends Composer<_$NinDatabase, $NinSpeciesTable> {
+  $$NinSpeciesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get gbifId => $composableBuilder(
+    column: $table.gbifId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get nameLatin => $composableBuilder(
+    column: $table.nameLatin,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get nameNb => $composableBuilder(
+    column: $table.nameNb,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> ninSpeciesGadRefs(
+    Expression<bool> Function($$NinSpeciesGadTableFilterComposer f) f,
+  ) {
+    final $$NinSpeciesGadTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.ninSpeciesGad,
+      getReferencedColumn: (t) => t.speciesId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$NinSpeciesGadTableFilterComposer(
+            $db: $db,
+            $table: $db.ninSpeciesGad,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$NinSpeciesTableOrderingComposer
+    extends Composer<_$NinDatabase, $NinSpeciesTable> {
+  $$NinSpeciesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get gbifId => $composableBuilder(
+    column: $table.gbifId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get nameLatin => $composableBuilder(
+    column: $table.nameLatin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get nameNb => $composableBuilder(
+    column: $table.nameNb,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$NinSpeciesTableAnnotationComposer
+    extends Composer<_$NinDatabase, $NinSpeciesTable> {
+  $$NinSpeciesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get gbifId =>
+      $composableBuilder(column: $table.gbifId, builder: (column) => column);
+
+  GeneratedColumn<String> get nameLatin =>
+      $composableBuilder(column: $table.nameLatin, builder: (column) => column);
+
+  GeneratedColumn<String> get nameNb =>
+      $composableBuilder(column: $table.nameNb, builder: (column) => column);
+
+  Expression<T> ninSpeciesGadRefs<T extends Object>(
+    Expression<T> Function($$NinSpeciesGadTableAnnotationComposer a) f,
+  ) {
+    final $$NinSpeciesGadTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.ninSpeciesGad,
+      getReferencedColumn: (t) => t.speciesId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$NinSpeciesGadTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ninSpeciesGad,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$NinSpeciesTableTableManager
+    extends
+        RootTableManager<
+          _$NinDatabase,
+          $NinSpeciesTable,
+          NinSpecy,
+          $$NinSpeciesTableFilterComposer,
+          $$NinSpeciesTableOrderingComposer,
+          $$NinSpeciesTableAnnotationComposer,
+          $$NinSpeciesTableCreateCompanionBuilder,
+          $$NinSpeciesTableUpdateCompanionBuilder,
+          (NinSpecy, $$NinSpeciesTableReferences),
+          NinSpecy,
+          PrefetchHooks Function({bool ninSpeciesGadRefs})
+        > {
+  $$NinSpeciesTableTableManager(_$NinDatabase db, $NinSpeciesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$NinSpeciesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$NinSpeciesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$NinSpeciesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<int?> gbifId = const Value.absent(),
+                Value<String> nameLatin = const Value.absent(),
+                Value<String?> nameNb = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => NinSpeciesCompanion(
+                id: id,
+                gbifId: gbifId,
+                nameLatin: nameLatin,
+                nameNb: nameNb,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                Value<int?> gbifId = const Value.absent(),
+                required String nameLatin,
+                Value<String?> nameNb = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => NinSpeciesCompanion.insert(
+                id: id,
+                gbifId: gbifId,
+                nameLatin: nameLatin,
+                nameNb: nameNb,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$NinSpeciesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({ninSpeciesGadRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (ninSpeciesGadRefs) db.ninSpeciesGad,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (ninSpeciesGadRefs)
+                    await $_getPrefetchedData<
+                      NinSpecy,
+                      $NinSpeciesTable,
+                      NinSpeciesGadData
+                    >(
+                      currentTable: table,
+                      referencedTable: $$NinSpeciesTableReferences
+                          ._ninSpeciesGadRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$NinSpeciesTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).ninSpeciesGadRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.speciesId == item.id),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$NinSpeciesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$NinDatabase,
+      $NinSpeciesTable,
+      NinSpecy,
+      $$NinSpeciesTableFilterComposer,
+      $$NinSpeciesTableOrderingComposer,
+      $$NinSpeciesTableAnnotationComposer,
+      $$NinSpeciesTableCreateCompanionBuilder,
+      $$NinSpeciesTableUpdateCompanionBuilder,
+      (NinSpecy, $$NinSpeciesTableReferences),
+      NinSpecy,
+      PrefetchHooks Function({bool ninSpeciesGadRefs})
+    >;
+typedef $$NinSpeciesGadTableCreateCompanionBuilder =
+    NinSpeciesGadCompanion Function({
+      required String hovedtypeId,
+      required String speciesId,
+      required String lmKaTrinn,
+      required String lmUfTrinn,
+      required String lmVmTrinn,
+      required int constancyM7,
+      Value<int> rowid,
+    });
+typedef $$NinSpeciesGadTableUpdateCompanionBuilder =
+    NinSpeciesGadCompanion Function({
+      Value<String> hovedtypeId,
+      Value<String> speciesId,
+      Value<String> lmKaTrinn,
+      Value<String> lmUfTrinn,
+      Value<String> lmVmTrinn,
+      Value<int> constancyM7,
+      Value<int> rowid,
+    });
+
+final class $$NinSpeciesGadTableReferences
+    extends
+        BaseReferences<_$NinDatabase, $NinSpeciesGadTable, NinSpeciesGadData> {
+  $$NinSpeciesGadTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $NinSpeciesTable _speciesIdTable(_$NinDatabase db) =>
+      db.ninSpecies.createAlias(
+        $_aliasNameGenerator(db.ninSpeciesGad.speciesId, db.ninSpecies.id),
+      );
+
+  $$NinSpeciesTableProcessedTableManager get speciesId {
+    final $_column = $_itemColumn<String>('species_id')!;
+
+    final manager = $$NinSpeciesTableTableManager(
+      $_db,
+      $_db.ninSpecies,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_speciesIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$NinSpeciesGadTableFilterComposer
+    extends Composer<_$NinDatabase, $NinSpeciesGadTable> {
+  $$NinSpeciesGadTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get hovedtypeId => $composableBuilder(
+    column: $table.hovedtypeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lmKaTrinn => $composableBuilder(
+    column: $table.lmKaTrinn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lmUfTrinn => $composableBuilder(
+    column: $table.lmUfTrinn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lmVmTrinn => $composableBuilder(
+    column: $table.lmVmTrinn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get constancyM7 => $composableBuilder(
+    column: $table.constancyM7,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$NinSpeciesTableFilterComposer get speciesId {
+    final $$NinSpeciesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.speciesId,
+      referencedTable: $db.ninSpecies,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$NinSpeciesTableFilterComposer(
+            $db: $db,
+            $table: $db.ninSpecies,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$NinSpeciesGadTableOrderingComposer
+    extends Composer<_$NinDatabase, $NinSpeciesGadTable> {
+  $$NinSpeciesGadTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get hovedtypeId => $composableBuilder(
+    column: $table.hovedtypeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lmKaTrinn => $composableBuilder(
+    column: $table.lmKaTrinn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lmUfTrinn => $composableBuilder(
+    column: $table.lmUfTrinn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lmVmTrinn => $composableBuilder(
+    column: $table.lmVmTrinn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get constancyM7 => $composableBuilder(
+    column: $table.constancyM7,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$NinSpeciesTableOrderingComposer get speciesId {
+    final $$NinSpeciesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.speciesId,
+      referencedTable: $db.ninSpecies,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$NinSpeciesTableOrderingComposer(
+            $db: $db,
+            $table: $db.ninSpecies,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$NinSpeciesGadTableAnnotationComposer
+    extends Composer<_$NinDatabase, $NinSpeciesGadTable> {
+  $$NinSpeciesGadTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get hovedtypeId => $composableBuilder(
+    column: $table.hovedtypeId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lmKaTrinn =>
+      $composableBuilder(column: $table.lmKaTrinn, builder: (column) => column);
+
+  GeneratedColumn<String> get lmUfTrinn =>
+      $composableBuilder(column: $table.lmUfTrinn, builder: (column) => column);
+
+  GeneratedColumn<String> get lmVmTrinn =>
+      $composableBuilder(column: $table.lmVmTrinn, builder: (column) => column);
+
+  GeneratedColumn<int> get constancyM7 => $composableBuilder(
+    column: $table.constancyM7,
+    builder: (column) => column,
+  );
+
+  $$NinSpeciesTableAnnotationComposer get speciesId {
+    final $$NinSpeciesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.speciesId,
+      referencedTable: $db.ninSpecies,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$NinSpeciesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ninSpecies,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$NinSpeciesGadTableTableManager
+    extends
+        RootTableManager<
+          _$NinDatabase,
+          $NinSpeciesGadTable,
+          NinSpeciesGadData,
+          $$NinSpeciesGadTableFilterComposer,
+          $$NinSpeciesGadTableOrderingComposer,
+          $$NinSpeciesGadTableAnnotationComposer,
+          $$NinSpeciesGadTableCreateCompanionBuilder,
+          $$NinSpeciesGadTableUpdateCompanionBuilder,
+          (NinSpeciesGadData, $$NinSpeciesGadTableReferences),
+          NinSpeciesGadData,
+          PrefetchHooks Function({bool speciesId})
+        > {
+  $$NinSpeciesGadTableTableManager(_$NinDatabase db, $NinSpeciesGadTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$NinSpeciesGadTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$NinSpeciesGadTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$NinSpeciesGadTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> hovedtypeId = const Value.absent(),
+                Value<String> speciesId = const Value.absent(),
+                Value<String> lmKaTrinn = const Value.absent(),
+                Value<String> lmUfTrinn = const Value.absent(),
+                Value<String> lmVmTrinn = const Value.absent(),
+                Value<int> constancyM7 = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => NinSpeciesGadCompanion(
+                hovedtypeId: hovedtypeId,
+                speciesId: speciesId,
+                lmKaTrinn: lmKaTrinn,
+                lmUfTrinn: lmUfTrinn,
+                lmVmTrinn: lmVmTrinn,
+                constancyM7: constancyM7,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String hovedtypeId,
+                required String speciesId,
+                required String lmKaTrinn,
+                required String lmUfTrinn,
+                required String lmVmTrinn,
+                required int constancyM7,
+                Value<int> rowid = const Value.absent(),
+              }) => NinSpeciesGadCompanion.insert(
+                hovedtypeId: hovedtypeId,
+                speciesId: speciesId,
+                lmKaTrinn: lmKaTrinn,
+                lmUfTrinn: lmUfTrinn,
+                lmVmTrinn: lmVmTrinn,
+                constancyM7: constancyM7,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$NinSpeciesGadTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({speciesId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (speciesId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.speciesId,
+                                referencedTable: $$NinSpeciesGadTableReferences
+                                    ._speciesIdTable(db),
+                                referencedColumn: $$NinSpeciesGadTableReferences
+                                    ._speciesIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$NinSpeciesGadTableProcessedTableManager =
+    ProcessedTableManager<
+      _$NinDatabase,
+      $NinSpeciesGadTable,
+      NinSpeciesGadData,
+      $$NinSpeciesGadTableFilterComposer,
+      $$NinSpeciesGadTableOrderingComposer,
+      $$NinSpeciesGadTableAnnotationComposer,
+      $$NinSpeciesGadTableCreateCompanionBuilder,
+      $$NinSpeciesGadTableUpdateCompanionBuilder,
+      (NinSpeciesGadData, $$NinSpeciesGadTableReferences),
+      NinSpeciesGadData,
+      PrefetchHooks Function({bool speciesId})
+    >;
 
 class $NinDatabaseManager {
   final _$NinDatabase _db;
@@ -2669,4 +4056,8 @@ class $NinDatabaseManager {
       $$NinVariablesTableTableManager(_db, _db.ninVariables);
   $$NinConversionsTableTableManager get ninConversions =>
       $$NinConversionsTableTableManager(_db, _db.ninConversions);
+  $$NinSpeciesTableTableManager get ninSpecies =>
+      $$NinSpeciesTableTableManager(_db, _db.ninSpecies);
+  $$NinSpeciesGadTableTableManager get ninSpeciesGad =>
+      $$NinSpeciesGadTableTableManager(_db, _db.ninSpeciesGad);
 }

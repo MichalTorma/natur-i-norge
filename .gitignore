@@ -247,6 +247,8 @@ all_koder_v3.json
 **/.DS_Store
 assets/nin_database.sqlite-journal
 assets/nin_database.sqlite
+assets/nin_database_v2.3.db
+assets/gad_na_tb01.sqlite
 nin_web_cache.sqlite
 web_cache/
 scratch/find_mismatch.py

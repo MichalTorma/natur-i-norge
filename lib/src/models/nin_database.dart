@@ -46,12 +46,34 @@ class NinConversions extends Table {
   TextColumn get url => text().nullable()();
 }
 
-@DriftDatabase(tables: [NinTypes, NinVariables, NinConversions])
+class NinSpecies extends Table {
+  TextColumn get id => text()();
+  IntColumn get gbifId => integer().nullable()();
+  TextColumn get nameLatin => text()();
+  TextColumn get nameNb => text().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+class NinSpeciesGad extends Table {
+  TextColumn get hovedtypeId => text()();
+  TextColumn get speciesId => text().references(NinSpecies, #id)();
+  TextColumn get lmKaTrinn => text()();
+  TextColumn get lmUfTrinn => text()();
+  TextColumn get lmVmTrinn => text()();
+  IntColumn get constancyM7 => integer()();
+
+  @override
+  Set<Column> get primaryKey => {hovedtypeId, speciesId, lmKaTrinn, lmUfTrinn, lmVmTrinn};
+}
+
+@DriftDatabase(tables: [NinTypes, NinVariables, NinConversions, NinSpecies, NinSpeciesGad])
 class NinDatabase extends _$NinDatabase {
   NinDatabase() : super(openConnection());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -60,8 +82,10 @@ class NinDatabase extends _$NinDatabase {
       // but Drift needs the internal metadata.
     },
     onUpgrade: (m, from, to) async {
-      // DO NOT use createAll() here as it wipes pre-populated data.
-      // In development, if we need a fresh start, we delete the file manually.
+      if (from < 5) {
+        await m.createTable(ninSpecies);
+        await m.createTable(ninSpeciesGad);
+      }
     },
   );
 
