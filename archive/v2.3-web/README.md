@@ -11,13 +11,16 @@ Static Flutter web build from production, preserved so the old UI can be opened 
 
 ## Folder layout
 
-Copy **everything** from the production `web/` output into `web/` below (replace this README's sibling folder contents):
+Copy **everything** from the production `web/` output into this folder (either directly here, or into a `web/` subfolder — both work):
 
 ```
 archive/v2.3-web/
 ├── README.md          ← this file
 ├── MANIFEST.json      ← optional metadata (edit after copy)
-└── web/               ← dump prod web/ here
+├── index.html         ← prod files can live here …
+├── main.dart.js
+│   … or under web/:
+└── web/
     ├── index.html
     ├── main.dart.js
     ├── flutter.js          (if present)
@@ -31,7 +34,8 @@ archive/v2.3-web/
 Quick copy from a local folder named `web`:
 
 ```bash
-rsync -a --delete /path/to/prod/web/ archive/v2.3-web/web/
+rsync -a --delete /path/to/prod/web/ archive/v2.3-web/
+# or: rsync -a --delete /path/to/prod/web/ archive/v2.3-web/web/
 ```
 
 Or if prod gave you a tarball:
@@ -44,8 +48,8 @@ tar -xf prod-web.tar -C archive/v2.3-web/
 **Sanity check** after copying:
 
 ```bash
-test -f archive/v2.3-web/web/index.html
-test -f archive/v2.3-web/web/main.dart.js
+test -f archive/v2.3-web/index.html || test -f archive/v2.3-web/web/index.html
+test -f archive/v2.3-web/main.dart.js || test -f archive/v2.3-web/web/main.dart.js
 ```
 
 ## Publish on GitHub Pages
