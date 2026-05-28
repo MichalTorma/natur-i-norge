@@ -11,7 +11,7 @@ import '../navigation/app_routes.dart';
 import '../navigation/app_url_sync.dart';
 import '../providers/database_provider.dart';
 import '../providers/nin_search_provider.dart';
-import '../widgets/bug_report_button.dart';
+import '../services/bug_report_service.dart';
 import '../widgets/nin_search_sheet.dart';
 import 'types_screen.dart';
 import 'variables_screen.dart';
@@ -32,11 +32,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   static const _favoritesTab = 2;
   static const _galleryTab = 3;
   static const _settingsTab = 4;
+  static const _feedbackNavIndex = 3;
 
   int _selectedIndex = _typesTab;
   late final List<GlobalKey<NavigatorState>> _navigatorKeys;
   late final List<AppRouteTracker> _tabTrackers;
   StreamSubscription<String?>? _hashSubscription;
+
+  int _tabIndexFromNavIndex(int navIndex) {
+    return navIndex < _feedbackNavIndex ? navIndex : navIndex - 1;
+  }
+
+  int _navIndexFromTabIndex(int tabIndex) {
+    return tabIndex < _feedbackNavIndex ? tabIndex : tabIndex + 1;
+  }
 
   @override
   void initState() {
@@ -81,6 +90,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _resetTabToRoot(int index) {
     _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
+  }
+
+  void _openFeedback() {
+    BugReportService.showSheet(context, ref);
+  }
+
+  void _onNavSelected(int navIndex) {
+    if (navIndex == _feedbackNavIndex) {
+      _openFeedback();
+      return;
+    }
+    _onTabSelected(_tabIndexFromNavIndex(navIndex));
   }
 
   void _onTabSelected(int index) {
@@ -176,6 +197,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width > 800;
+    final navSelectedIndex = _navIndexFromTabIndex(_selectedIndex);
     final tabRoots = [
       const TypesScreen(),
       const VariablesScreen(),
@@ -189,13 +211,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.digit1): const _SelectTabIntent(_typesTab),
         LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.digit2): const _SelectTabIntent(_variablesTab),
         LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.digit3): const _SelectTabIntent(_favoritesTab),
-        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.digit4): const _SelectTabIntent(_galleryTab),
-        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.digit5): const _SelectTabIntent(_settingsTab),
+        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.digit4): const _OpenFeedbackIntent(),
+        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.digit5): const _SelectTabIntent(_galleryTab),
+        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.digit6): const _SelectTabIntent(_settingsTab),
         LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit1): const _SelectTabIntent(_typesTab),
         LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit2): const _SelectTabIntent(_variablesTab),
         LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit3): const _SelectTabIntent(_favoritesTab),
-        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit4): const _SelectTabIntent(_galleryTab),
-        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit5): const _SelectTabIntent(_settingsTab),
+        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit4): const _OpenFeedbackIntent(),
+        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit5): const _SelectTabIntent(_galleryTab),
+        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit6): const _SelectTabIntent(_settingsTab),
         LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyK): const _OpenSearchIntent(),
         LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK): const _OpenSearchIntent(),
       },
@@ -204,6 +228,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           _SelectTabIntent: CallbackAction<_SelectTabIntent>(
             onInvoke: (intent) {
               _onTabSelected(intent.index);
+              return null;
+            },
+          ),
+          _OpenFeedbackIntent: CallbackAction<_OpenFeedbackIntent>(
+            onInvoke: (_) {
+              _openFeedback();
               return null;
             },
           ),
@@ -223,8 +253,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     if (isDesktop)
                       NavigationRail(
-                        selectedIndex: _selectedIndex,
-                        onDestinationSelected: _onTabSelected,
+                        selectedIndex: navSelectedIndex,
+                        onDestinationSelected: _onNavSelected,
                         labelType: NavigationRailLabelType.all,
                         leading: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 24),
@@ -252,6 +282,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             icon: Icon(Icons.star_outline),
                             selectedIcon: Icon(Icons.star),
                             label: Text('Favorites'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Icons.chat_bubble_outline),
+                            selectedIcon: Icon(Icons.chat_bubble),
+                            label: Text('Feedback'),
                           ),
                           NavigationRailDestination(
                             icon: Icon(Icons.photo_library_outlined),
@@ -284,8 +319,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 bottomNavigationBar: isDesktop
                     ? null
                     : NavigationBar(
-                        selectedIndex: _selectedIndex,
-                        onDestinationSelected: _onTabSelected,
+                        selectedIndex: navSelectedIndex,
+                        onDestinationSelected: _onNavSelected,
                         destinations: const [
                           NavigationDestination(
                             icon: Icon(Icons.category_outlined),
@@ -303,6 +338,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             label: 'Favorites',
                           ),
                           NavigationDestination(
+                            icon: Icon(Icons.chat_bubble_outline),
+                            selectedIcon: Icon(Icons.chat_bubble),
+                            label: 'Feedback',
+                          ),
+                          NavigationDestination(
                             icon: Icon(Icons.photo_library_outlined),
                             selectedIcon: Icon(Icons.photo_library),
                             label: 'Gallery',
@@ -315,7 +355,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ],
                       ),
               ),
-              const BugReportButton(),
             ],
           ),
         ),
@@ -351,6 +390,10 @@ class _SelectTabIntent extends Intent {
   final int index;
 
   const _SelectTabIntent(this.index);
+}
+
+class _OpenFeedbackIntent extends Intent {
+  const _OpenFeedbackIntent();
 }
 
 class _OpenSearchIntent extends Intent {

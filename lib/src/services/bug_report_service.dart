@@ -57,7 +57,7 @@ class BugReportService {
   }
 
   static BugReportDraft buildDraft(WidgetRef ref) {
-    final location = ref.read(appLocationProvider);
+    final AppLocation reportLocation = ref.read(appLocationProvider);
     final packageInfo = ref.read(packageInfoProvider).asData?.value;
     final theme = ref.read(appThemeProvider);
     final scale = ref.read(selectedScaleProvider);
@@ -65,7 +65,7 @@ class BugReportService {
     final showLkmNames = ref.read(showLkmNamesProvider);
     final gadOverlayVisible = ref.read(gadOverlayVisibleProvider);
 
-    final hashPath = location.toHashPath();
+    final hashPath = reportLocation.toHashPath();
     final deepLink = buildWebDeepLink(hashPath);
 
     final contextJson = {
@@ -80,11 +80,11 @@ class BugReportService {
       'disableImages': disableImages,
       'showLkmNames': showLkmNames,
       'gadOverlayVisible': gadOverlayVisible,
-      'location': location.toJson(),
+      'location': reportLocation.toJson(),
     };
 
     return BugReportDraft(
-      location: location,
+      location: reportLocation,
       deepLink: deepLink,
       contextJson: contextJson,
     );
@@ -92,6 +92,7 @@ class BugReportService {
 
   static Future<void> showSheet(BuildContext context, WidgetRef ref) {
     final draft = buildDraft(ref);
+    final showIntro = !ref.read(feedbackIntroSeenProvider);
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -110,6 +111,8 @@ class BugReportService {
               draft: draft,
               scrollController: scrollController,
               minCommentLength: minCommentLength,
+              showIntro: showIntro,
+              onIntroDismiss: () => ref.read(feedbackIntroSeenProvider.notifier).markSeen(),
               onSubmit: (kind, comment) => launchOnGitHub(draft, kind, comment),
             ),
           ),

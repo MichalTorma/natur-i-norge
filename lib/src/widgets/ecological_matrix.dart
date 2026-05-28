@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../models/nin_database.dart';
 import '../navigation/app_routes.dart';
 import '../utils/gad_konstans_colors.dart';
+import '../matrix/effective_lkm.dart';
 
 class EcologicalMatrix extends StatefulWidget {
   final List<NinType> subTypes;
+  final Map<String, NinType> grunntypeById;
   final ValueChanged<NinType>? onPick;
   final bool showStepNames;
   final Map<String, double>? gadConstancy;
@@ -13,6 +15,7 @@ class EcologicalMatrix extends StatefulWidget {
   const EcologicalMatrix({
     super.key,
     required this.subTypes,
+    this.grunntypeById = const {},
     this.onPick,
     this.showStepNames = true,
     this.gadConstancy,
@@ -49,13 +52,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
   void _identifyAxes() {
     final Map<String, Set<String>> varSteps = {};
     for (var type in widget.subTypes) {
-      if (type.lkmData == null) continue;
-      final List<dynamic> lkm = jsonDecode(type.lkmData!);
-      for (var entry in lkm) {
-        final code = entry['v_kode'] as String;
-        final trinn = entry['v_trinn']?.toString();
-        if (trinn == null) continue;
-        varSteps.putIfAbsent(code, () => {}).add(trinn);
+      final vars = EffectiveLkm.variablesForType(
+        type,
+        grunntypeById: widget.grunntypeById,
+      );
+      for (var entry in vars.entries) {
+        varSteps.putIfAbsent(entry.key, () => {}).addAll(entry.value);
       }
     }
 
@@ -135,21 +137,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     // Get all available steps and names for our filter variables
     final Map<String, Map<String, String>> allVarSteps = {};
     final Map<String, String> varNames = {};
-    for (var type in widget.subTypes) {
-      if (type.lkmData == null) continue;
-      final List<dynamic> lkm = jsonDecode(type.lkmData!);
-      for (var entry in lkm) {
-        final code = entry['v_kode'] as String;
-        final name = entry['v_navn']?.toString();
-        final trinn = entry['v_trinn']?.toString();
-        final trinnNavn = entry['v_trinn_navn'] as String?;
-        if (trinn == null) continue;
-        
-        allVarSteps.putIfAbsent(code, () => {});
-        if (trinnNavn != null) allVarSteps[code]![trinn] = trinnNavn;
-        if (name != null) varNames[code] = name;
-      }
-    }
+    EffectiveLkm.collectVariableMetadata(
+      types: widget.subTypes,
+      grunntypeById: widget.grunntypeById,
+      stepNamesByVar: allVarSteps,
+      varNames: varNames,
+    );
 
     // Responsive sizing — prefer readable cells; scroll horizontally if needed.
     final colorScheme = Theme.of(context).colorScheme;
@@ -281,15 +274,10 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                       width: _matrixBorderWidth(colorScheme),
                     ),
                   ),
-                  child: _MatrixLabel(
-                    text: '$_xAxisVar (${varNames[_xAxisVar] ?? 'N/A'})',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.primary,
-                    ),
-                    maxLines: 2,
-                    minFontSize: 10,
-                    maxFontSize: 13,
+                  child: _MatrixAxisVariableLabel(
+                    variableCode: _xAxisVar!,
+                    variableName: varNames[_xAxisVar] ?? 'N/A',
+                    color: colorScheme.primary,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -314,7 +302,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                 colorScheme: colorScheme,
                 height: totalYUnits * layout.unitHeight,
                 width: layout.yVariableStripWidth,
-                label: '$_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'})',
+                label: _yAxisVar!,
+                variableName: varNames[_yAxisVar] ?? 'N/A',
                 onTap: () => Navigator.push(
                   context,
                   AppRoutes.variableDetail(_yAxisVar!),
@@ -375,7 +364,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                       ),
                     ),
                     ..._activeFilters.keys.map((filterVar) {
-                    final allSteps = allVarSteps[filterVar]!.keys.toList()..sort();
+                    final allSteps = (allVarSteps[filterVar]?.keys.toList() ?? [])..sort();
+                    if (allSteps.isEmpty) return const SizedBox.shrink();
                     final displayName = varNames[filterVar] ?? filterVar;
 
                     final List<List<String>> mergedGroups = [];
@@ -601,6 +591,21 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     return group.join(', ');
   }
 
+  static const _axisCodeFontSize = 12.0;
+
+  double _minWidthForStepCodes(Iterable<String> codes) {
+    if (codes.isEmpty) return 28;
+    final longest = codes.fold<int>(0, (max, code) => code.length > max ? code.length : max);
+    return (longest * 7.5 + 10).clamp(28.0, 56.0);
+  }
+
+  Iterable<String> _allStepCodes(
+    List<String> stepIds,
+    Map<String, List<String>> mergeMap,
+  ) {
+    return stepIds.expand((id) => mergeMap[id] ?? const <String>[]);
+  }
+
   double _viewportMatrixBudget(
     BuildContext context,
     double totalXUnits,
@@ -643,7 +648,9 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
 
     double yHeaderWidth(bool compact) {
       if (!hasYAxis) return 0.0;
-      if (showStepCodes) return compact ? 22.0 : 28.0;
+      if (showStepCodes) {
+        return _minWidthForStepCodes(_allStepCodes(ySteps, matrixData.yMergeMap));
+      }
 
       var width = compact ? 40.0 : 52.0;
       for (final yId in ySteps) {
@@ -673,12 +680,17 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     final gridBudget =
         (availableWidth - yAxisGutterWidth).clamp(80.0, double.infinity);
 
+    final minCodeColumnWidth = _minWidthForStepCodes(
+      _allStepCodes(xSteps, matrixData.xMergeMap),
+    );
+    final minUnitWidth = minUnit > minCodeColumnWidth ? minUnit : minCodeColumnWidth;
+
     final unitWidth = scrollHorizontally
         ? idealUnit
         : (gridBudget / (totalXUnits > 0 ? totalXUnits : 1))
-            .clamp(minUnit, 112.0);
+            .clamp(minUnitWidth, 112.0);
 
-    final xAxisHeight = showStepCodes ? 26.0 : 34.0;
+    final xAxisHeight = showStepCodes ? _axisCodeFontSize + 16 : 34.0;
     const xLkmBarHeight = 34.0;
     final maxGridHeight = (availableHeight - xAxisHeight - xLkmBarHeight)
         .clamp(minUnitHeight * 2, double.infinity);
@@ -709,6 +721,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     required double height,
     required double width,
     required String label,
+    required String variableName,
     required VoidCallback onTap,
   }) {
     return Semantics(
@@ -732,13 +745,12 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
             quarterTurns: 3,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: _MatrixLabel(
-                text: label,
-                style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.primary),
-                maxLines: 2,
-                minFontSize: 9,
-                maxFontSize: 12,
+              child: _MatrixAxisVariableLabel(
+                variableCode: label,
+                variableName: variableName,
+                color: colorScheme.primary,
                 textAlign: TextAlign.center,
+                maxNameLines: 3,
               ),
             ),
           ),
@@ -775,16 +787,9 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                 (code) => SizedBox(
                   height: unitHeight,
                   child: Center(
-                    child: _MatrixLabel(
+                    child: _MatrixAxisCodeLabel(
                       text: code,
-                      style: TextStyle(
-                        color: colorScheme.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      maxLines: 1,
-                      minFontSize: 9,
-                      maxFontSize: 12,
-                      textAlign: TextAlign.center,
+                      color: colorScheme.primary,
                     ),
                   ),
                 ),
@@ -850,16 +855,9 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                 (code) => SizedBox(
                   width: unitWidth,
                   child: Center(
-                    child: _MatrixLabel(
+                    child: _MatrixAxisCodeLabel(
                       text: code,
-                      style: TextStyle(
-                        color: colorScheme.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      maxLines: 1,
-                      minFontSize: 9,
-                      maxFontSize: 12,
-                      textAlign: TextAlign.center,
+                      color: colorScheme.primary,
                     ),
                   ),
                 ),
@@ -972,23 +970,17 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     final Set<String> ySteps = {};
 
     for (var type in widget.subTypes) {
-      if (type.lkmData == null) continue;
-      final List<dynamic> lkm = jsonDecode(type.lkmData!);
-      
+      final typeVars = EffectiveLkm.variablesForType(
+        type,
+        grunntypeById: widget.grunntypeById,
+        activeFilters: _activeFilters,
+      );
+      if (typeVars.isEmpty) continue;
+
       final List<String> currentXSteps = [];
       final List<String> currentYSteps = [];
       bool matchesFilters = true;
 
-      // Group steps by variable for this type
-      final typeVars = <String, Set<String>>{};
-      for (var entry in lkm) {
-        final code = entry['v_kode'] as String;
-        final trinn = entry['v_trinn']?.toString();
-        if (trinn == null) continue;
-        typeVars.putIfAbsent(code, () => {}).add(trinn);
-      }
-
-      // Check if this type exists in our current slice (for dimensions other than X/Y)
       _activeFilters.forEach((filterVar, selectedTrinn) {
         if (typeVars.containsKey(filterVar) && !typeVars[filterVar]!.contains(selectedTrinn)) {
           matchesFilters = false;
@@ -1488,6 +1480,87 @@ class _MatrixLayout {
     required this.showStepCodes,
     required this.scrollHorizontally,
   });
+}
+
+class _MatrixAxisCodeLabel extends StatelessWidget {
+  static const _fontSize = 12.0;
+
+  final String text;
+  final Color color;
+
+  const _MatrixAxisCodeLabel({
+    required this.text,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        color: color,
+        fontWeight: FontWeight.w800,
+        fontSize: _fontSize,
+        height: 1.1,
+        letterSpacing: 0.2,
+      ),
+      maxLines: 1,
+      softWrap: false,
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+class _MatrixAxisVariableLabel extends StatelessWidget {
+  final String variableCode;
+  final String variableName;
+  final Color color;
+  final TextAlign textAlign;
+  final int maxNameLines;
+
+  const _MatrixAxisVariableLabel({
+    required this.variableCode,
+    required this.variableName,
+    required this.color,
+    this.textAlign = TextAlign.start,
+    this.maxNameLines = 2,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final nameStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 13,
+      color: color,
+      height: 1.2,
+    );
+    final codeStyle = nameStyle.copyWith(fontWeight: FontWeight.w800);
+
+    final row = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          variableCode,
+          style: codeStyle,
+          softWrap: false,
+        ),
+        Flexible(
+          child: Text(
+            ' ($variableName)',
+            style: nameStyle,
+            maxLines: maxNameLines,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+
+    return switch (textAlign) {
+      TextAlign.center => Center(child: row),
+      TextAlign.end || TextAlign.right => Align(alignment: Alignment.centerRight, child: row),
+      _ => row,
+    };
+  }
 }
 
 class _MatrixLabel extends StatelessWidget {

@@ -120,10 +120,7 @@ class _FavoriteTile extends ConsumerWidget {
             width: 60,
             height: 60,
             child: disableImages
-                ? Container(
-                    color: colorScheme.surfaceContainerHighest,
-                    child: Icon(Icons.image_not_supported, size: 20, color: colorScheme.onSurfaceVariant),
-                  )
+                ? TypeImageAmbientBackground(accentColor: accentColor)
                 : LocalTypeImage(
                     imageUrl: type.imageUrl,
                     fit: BoxFit.cover,

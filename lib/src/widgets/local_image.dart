@@ -111,7 +111,13 @@ class _LocalTypeImageState extends State<LocalTypeImage>
   @override
   Widget build(BuildContext context) {
     if (widget.imageUrl == null) {
-      return widget.placeholder ?? _TypeImagePlaceholder.missing(context);
+      return _wrapForFit(
+        widget.placeholder ??
+            _TypeImagePlaceholder.missing(
+              context,
+              accentColor: widget.accentColor,
+            ),
+      );
     }
 
     return FutureBuilder<_TypeImageResult>(
@@ -128,7 +134,7 @@ class _LocalTypeImageState extends State<LocalTypeImage>
         }
 
         Widget content = Stack(
-          fit: StackFit.passthrough,
+          fit: widget.fit == BoxFit.cover ? StackFit.expand : StackFit.passthrough,
           alignment: Alignment.center,
           children: [
             if (!hasImage)
@@ -139,16 +145,28 @@ class _LocalTypeImageState extends State<LocalTypeImage>
                       fallback: widget.placeholder,
                     )
                   : (widget.placeholder ??
-                      _TypeImagePlaceholder.missing(context)),
+                      _TypeImagePlaceholder.missing(
+                        context,
+                        accentColor: widget.accentColor,
+                      )),
             if (hasImage)
               FadeTransition(
                 opacity: _fadeAnimation,
-                child: Image.memory(
-                  result!.data!,
-                  fit: widget.fit,
-                  semanticLabel: widget.semanticLabel,
-                  gaplessPlayback: true,
-                ),
+                child: widget.fit == BoxFit.cover
+                    ? SizedBox.expand(
+                        child: Image.memory(
+                          result!.data!,
+                          fit: widget.fit,
+                          semanticLabel: widget.semanticLabel,
+                          gaplessPlayback: true,
+                        ),
+                      )
+                    : Image.memory(
+                        result!.data!,
+                        fit: widget.fit,
+                        semanticLabel: widget.semanticLabel,
+                        gaplessPlayback: true,
+                      ),
               ),
           ],
         );
@@ -157,9 +175,16 @@ class _LocalTypeImageState extends State<LocalTypeImage>
           content = Padding(padding: widget.padding!, child: content);
         }
 
-        return content;
+        return _wrapForFit(content);
       },
     );
+  }
+
+  Widget _wrapForFit(Widget child) {
+    if (widget.fit == BoxFit.cover) {
+      return SizedBox.expand(child: child);
+    }
+    return child;
   }
 }
 
@@ -179,12 +204,14 @@ class _TypeImagePlaceholder extends StatelessWidget {
   final Widget? fallback;
   final bool showShimmer;
   final bool showMissingIcon;
+  final bool ambient;
 
   const _TypeImagePlaceholder({
     this.accentColor,
     this.fallback,
     this.showShimmer = false,
     this.showMissingIcon = false,
+    this.ambient = false,
   });
 
   factory _TypeImagePlaceholder.loading(
@@ -196,11 +223,20 @@ class _TypeImagePlaceholder extends StatelessWidget {
       accentColor: accentColor,
       fallback: fallback,
       showShimmer: true,
+      ambient: accentColor != null,
     );
   }
 
-  factory _TypeImagePlaceholder.missing(BuildContext context) {
-    return const _TypeImagePlaceholder(showMissingIcon: true);
+  factory _TypeImagePlaceholder.missing(
+    BuildContext context, {
+    Color? accentColor,
+  }) {
+    final hasAccent = accentColor != null;
+    return _TypeImagePlaceholder(
+      accentColor: accentColor,
+      showMissingIcon: !hasAccent,
+      ambient: hasAccent,
+    );
   }
 
   @override
@@ -211,16 +247,48 @@ class _TypeImagePlaceholder extends StatelessWidget {
     Widget base = fallback ??
         DecoratedBox(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color.alphaBlend(tint.withOpacity(0.18), colorScheme.surfaceContainerHighest),
-                Color.alphaBlend(tint.withOpacity(0.06), colorScheme.surfaceContainer),
-              ],
-            ),
+            gradient: ambient
+                ? LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: const [0.0, 0.45, 1.0],
+                    colors: [
+                      Color.alphaBlend(tint.withValues(alpha: 0.38), colorScheme.surfaceContainerHighest),
+                      Color.alphaBlend(tint.withValues(alpha: 0.18), colorScheme.surfaceContainer),
+                      Color.alphaBlend(tint.withValues(alpha: 0.08), colorScheme.surface),
+                    ],
+                  )
+                : LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color.alphaBlend(tint.withValues(alpha: 0.18), colorScheme.surfaceContainerHighest),
+                      Color.alphaBlend(tint.withValues(alpha: 0.06), colorScheme.surfaceContainer),
+                    ],
+                  ),
           ),
         );
+
+    if (ambient) {
+      base = Stack(
+        fit: StackFit.expand,
+        children: [
+          base,
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: const Alignment(0.2, -0.35),
+                radius: 1.1,
+                colors: [
+                  tint.withValues(alpha: 0.14),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    }
 
     if (showShimmer) {
       base = _ShimmerOverlay(accentColor: tint, child: base);
@@ -228,13 +296,13 @@ class _TypeImagePlaceholder extends StatelessWidget {
 
     if (showMissingIcon) {
       base = Stack(
-        fit: StackFit.passthrough,
+        fit: StackFit.expand,
         alignment: Alignment.center,
         children: [
           base,
           Icon(
             Icons.image_not_supported_outlined,
-            color: colorScheme.onSurface.withOpacity(0.28),
+            color: colorScheme.onSurface.withValues(alpha: 0.28),
             size: 28,
           ),
         ],
@@ -327,6 +395,17 @@ class _ShimmerOverlayState extends State<_ShimmerOverlay>
         ),
       ],
     );
+  }
+}
+
+class TypeImageAmbientBackground extends StatelessWidget {
+  final Color accentColor;
+
+  const TypeImageAmbientBackground({super.key, required this.accentColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return _TypeImagePlaceholder.missing(context, accentColor: accentColor);
   }
 }
 

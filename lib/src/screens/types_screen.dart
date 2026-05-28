@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:drift/drift.dart' show Value;
@@ -17,6 +18,8 @@ import '../widgets/local_image.dart';
 import '../widgets/type_image_viewer.dart';
 import '../nin_type_colors.dart';
 import '../search/nin_type_navigation.dart';
+import '../services/nin_api_source.dart';
+import '../widgets/matrix_health_sheet.dart';
 import '../widgets/nin_search_sheet.dart';
 
 class TypesScreen extends ConsumerStatefulWidget {
@@ -95,6 +98,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                                   width: 160,
                                   child: _TypeCard(
                                     type: types[index],
+                                    showFavoriteStar: false,
                                     onTap: () => Navigator.push(
                                       context,
                                       AppRoutes.types(type: types[index], onPick: widget.onPick),
@@ -243,31 +247,18 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       
                       // Show matrix for both biological and mapping scales
                       () {
+                        final gtMap = {
+                          for (final gt in allTypes.where((t) => t.kategori == 'Grunntype')) gt.id: gt,
+                        };
                         final List<NinType> matrixTypes;
                         if (selectedScale == 'Biologisk') {
-                          matrixTypes = allTypes.where((t) => t.kategori == 'Grunntype').toList()..sort((a, b) => a.id.compareTo(b.id));
+                          matrixTypes = allTypes.where((t) => t.kategori == 'Grunntype').toList()
+                            ..sort((a, b) => a.id.compareTo(b.id));
                         } else {
-                          // For Kartleggingsenhet, synthesize LKM data from constituent Grunntyper
-                          final gtMap = {for (var gt in allTypes.where((t) => t.kategori == 'Grunntype')) gt.id: gt};
                           matrixTypes = allTypes
                               .where((t) => t.kategori == 'Kartleggingsenhet' && t.scale == selectedScale)
-                              .map((ke) {
-                            if (ke.containsTypes == null) return ke;
-                            try {
-                              final List<dynamic> ids = json.decode(ke.containsTypes!);
-                              final List<dynamic> mergedLkm = [];
-                              for (var id in ids) {
-                                final gt = gtMap[id.toString()];
-                                if (gt?.lkmData != null) {
-                                  mergedLkm.addAll(json.decode(gt!.lkmData!));
-                                }
-                              }
-                              if (mergedLkm.isEmpty) return ke;
-                              return ke.copyWith(lkmData: Value(json.encode(mergedLkm)));
-                            } catch (e) {
-                              return ke;
-                            }
-                          }).toList()..sort((a, b) => a.id.compareTo(b.id));
+                              .toList()
+                            ..sort((a, b) => a.id.compareTo(b.id));
                         }
 
                         if (matrixTypes.isEmpty) return const SizedBox.shrink();
@@ -286,6 +277,24 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, letterSpacing: 1.2),
                                 ),
                                 const SizedBox(width: 4),
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                                  icon: Icon(
+                                    Icons.monitor_heart_outlined,
+                                    size: 18,
+                                    color: Theme.of(context).colorScheme.primary.withOpacity(0.75),
+                                  ),
+                                  tooltip: 'Check matrix health',
+                                  onPressed: () => showMatrixHealthSheet(
+                                    context,
+                                    matrixTypes: matrixTypes,
+                                    grunntypeById: gtMap,
+                                    parentTypeId: widget.type!.id,
+                                    parentTypeName: widget.type!.navn,
+                                    scale: selectedScale,
+                                  ),
+                                ),
                                 PopupMenuButton<bool>(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
@@ -302,6 +311,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                             const SizedBox(height: 8),
                             EcologicalMatrix(
                               subTypes: matrixTypes,
+                              grunntypeById: gtMap,
                               onPick: widget.onPick,
                               showStepNames: showLkmNames,
                               gadConstancy: gadConstancy,
@@ -484,6 +494,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
               final favorites = ref.watch(favoritesProvider).value ?? [];
               final isFavorite = favorites.contains(type.id);
               final hasArtsdatabankenLink = type.langkode != null;
+              final typeApiUrl = NinApiSourceService.typeApiUrl(type);
 
               return PopupMenuButton<_TypeDetailMenuAction>(
                 icon: const Icon(Icons.more_vert, color: Colors.white),
@@ -502,6 +513,15 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       } else {
                         await db.into(db.favorites).insert(FavoritesCompanion.insert(typeId: type.id));
                       }
+                    case _TypeDetailMenuAction.copyApiUrl:
+                      final url = NinApiSourceService.typeApiUrl(type);
+                      if (url == null) return;
+                      await Clipboard.setData(ClipboardData(text: url));
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('API URL copied to clipboard')),
+                        );
+                      }
                   }
                 },
                 itemBuilder: (context) => [
@@ -513,6 +533,17 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                           Icon(Icons.open_in_browser),
                           SizedBox(width: 12),
                           Text('Open on Artsdatabanken'),
+                        ],
+                      ),
+                    ),
+                  if (typeApiUrl != null)
+                    const PopupMenuItem(
+                      value: _TypeDetailMenuAction.copyApiUrl,
+                      child: Row(
+                        children: [
+                          Icon(Icons.link),
+                          SizedBox(width: 12),
+                          Text('Copy API URL'),
                         ],
                       ),
                     ),
@@ -535,7 +566,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
         titlePadding: EdgeInsets.only(
           left: 56,
           right: type == null ? 16 : 48,
-          bottom: 14,
+          bottom: type == null ? 14 : 16,
         ),
         title: type == null
             ? Column(
@@ -575,54 +606,32 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
         background: type == null ? null : Stack(
           fit: StackFit.expand,
           children: [
-            GestureDetector(
-              onTap: canViewImage
-                  ? () => showTypeImageViewer(
-                        context,
-                        imageUrl: type.imageUrl!,
-                        title: type.navn,
-                      )
-                  : null,
-              child: Hero(
-                tag: 'image_${type.id}',
-                child: disableImages
-                    ? Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              color.withOpacity(0.8),
-                              Theme.of(context).colorScheme.surface,
-                            ],
-                          ),
+            MouseRegion(
+              cursor: canViewImage ? SystemMouseCursors.click : MouseCursor.defer,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: canViewImage
+                    ? () => showTypeImageViewer(
+                          context,
+                          imageUrl: type.imageUrl!,
+                          title: type.navn,
+                        )
+                    : null,
+                child: Hero(
+                  tag: 'image_${type.id}',
+                  child: disableImages
+                      ? TypeImageAmbientBackground(accentColor: color)
+                      : LocalTypeImage(
+                          imageUrl: type.imageUrl,
+                          fit: BoxFit.cover,
+                          semanticLabel: canViewImage
+                              ? 'Representative photo of ${type.navn}. Tap to view full size.'
+                              : 'Representative photo of ${type.navn}',
+                          accentColor: color,
                         ),
-                      )
-                    : LocalTypeImage(
-                        imageUrl: type.imageUrl,
-                        fit: BoxFit.cover,
-                        semanticLabel: 'Representative photo of ${type.navn}',
-                        accentColor: color,
-                      ),
-              ),
-            ),
-            if (canViewImage)
-              const Positioned(
-                top: 72,
-                right: 12,
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Color(0x66000000),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(Icons.zoom_out_map, color: Colors.white, size: 18),
-                    ),
-                  ),
                 ),
               ),
+            ),
             // Legibility Gradient — ignore pointer so taps reach the image
             Positioned.fill(
               child: IgnorePointer(
@@ -649,7 +658,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
   }
 }
 
-enum _TypeDetailMenuAction { openArtsdatabanken, toggleFavorite }
+enum _TypeDetailMenuAction { openArtsdatabanken, copyApiUrl, toggleFavorite }
 
 class _TypeDetailAppBarTitle extends ConsumerWidget {
   final NinType type;
@@ -734,20 +743,23 @@ class _TypeDetailAppBarTitle extends ConsumerWidget {
       );
     }
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        _codeChipRow(color, isFavorite),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            type.navn,
-            style: nameStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+    return Transform.translate(
+      offset: const Offset(0, -3),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _codeChipRow(color, isFavorite),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              type.navn,
+              style: nameStyle.copyWith(height: 1.0),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -755,14 +767,18 @@ class _TypeDetailAppBarTitle extends ConsumerWidget {
 class _TypeCard extends ConsumerWidget {
   final NinType type;
   final VoidCallback onTap;
+  final bool showFavoriteStar;
 
-  const _TypeCard({required this.type, required this.onTap});
+  const _TypeCard({
+    required this.type,
+    required this.onTap,
+    this.showFavoriteStar = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final disableImages = ref.watch(disableImagesProvider);
     final isFavorite = (ref.watch(favoritesProvider).value ?? []).contains(type.id);
-    final isIcon = ninTypeUsesIconLayout(type);
     final color = ninTypeAccentColor(type);
 
     return Card(
@@ -775,12 +791,11 @@ class _TypeCard extends ConsumerWidget {
               child: Hero(
                 tag: 'image_${type.id}',
                 child: disableImages
-                    ? Container(color: Theme.of(context).colorScheme.surfaceContainerHighest)
+                    ? TypeImageAmbientBackground(accentColor: color)
                     : LocalTypeImage(
                         imageUrl: type.imageUrl,
-                        fit: isIcon ? BoxFit.contain : BoxFit.cover,
+                        fit: BoxFit.cover,
                         semanticLabel: 'Representative photo of ${type.navn}',
-                        padding: isIcon ? const EdgeInsets.all(16.0) : EdgeInsets.zero,
                         accentColor: color,
                       ),
               ),
@@ -802,67 +817,99 @@ class _TypeCard extends ConsumerWidget {
                 padding: const EdgeInsets.all(12),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final bool isTight = constraints.maxHeight < 80;
-                    
+                    final isTight = constraints.maxHeight < 80;
+
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 6, vertical: isTight ? 1 : 2),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(4),
-                                boxShadow: [
-                                  BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4, offset: const Offset(0, 2)),
-                                ],
-                              ),
-                              child: Text(
-                                type.id,
-                                style: TextStyle(
-                                  fontSize: isTight ? 10 : 12,
-                                  fontWeight: FontWeight.w900,
-                                  color: color,
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                            ),
-                            if (isFavorite) ...[
-                              const SizedBox(width: 6),
-                              Icon(
-                                Icons.star,
-                                size: isTight ? 14 : 16,
-                                color: Colors.amber[700],
-                                shadows: const [Shadow(color: Colors.black45, blurRadius: 6)],
-                              ),
-                            ],
-                          ],
-                        ),
-                        SizedBox(height: isTight ? 4 : 8),
-                        Text(
-                          type.navn,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: isTight ? 12 : 14, 
-                            fontWeight: FontWeight.bold, 
-                            color: Theme.of(context).colorScheme.onSurface,
-                            shadows: [
-                              Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 4),
-                            ],
-                          ),
+                        _TypeCardLabelPanel(
+                          type: type,
+                          accentColor: color,
+                          isFavorite: isFavorite,
+                          showFavoriteStar: showFavoriteStar,
+                          isTight: isTight,
                         ),
                       ],
                     );
-                  }
+                  },
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _TypeCardLabelPanel extends StatelessWidget {
+  final NinType type;
+  final Color accentColor;
+  final bool isFavorite;
+  final bool showFavoriteStar;
+  final bool isTight;
+
+  const _TypeCardLabelPanel({
+    required this.type,
+    required this.accentColor,
+    required this.isFavorite,
+    required this.showFavoriteStar,
+    required this.isTight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final panelColor = colorScheme.brightness == Brightness.dark ? Colors.white : colorScheme.surface;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: isTight ? 8 : 10, vertical: isTight ? 6 : 8),
+      decoration: BoxDecoration(
+        color: panelColor,
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.14),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Text(
+                type.id,
+                style: TextStyle(
+                  fontSize: isTight ? 10 : 11,
+                  fontWeight: FontWeight.w900,
+                  color: accentColor,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              if (isFavorite && showFavoriteStar) ...[
+                const SizedBox(width: 6),
+                Icon(Icons.star, size: isTight ? 13 : 14, color: Colors.amber[700]),
+              ],
+            ],
+          ),
+          SizedBox(height: isTight ? 3 : 5),
+          Text(
+            type.navn,
+            maxLines: isTight ? 1 : 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: isTight ? 12 : 14,
+              fontWeight: FontWeight.w700,
+              height: 1.2,
+              color: colorScheme.brightness == Brightness.dark ? Colors.black87 : colorScheme.onSurface,
+            ),
+          ),
+        ],
       ),
     );
   }

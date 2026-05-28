@@ -6,7 +6,6 @@ import '../providers/database_provider.dart';
 import '../providers/settings_provider.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
-import '../services/bug_report_service.dart';
 import '../widgets/backup_consent_dialog.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -126,20 +125,6 @@ class SettingsScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Text(
-            'Support',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: primaryColor),
-          ),
-        ),
-        ListTile(
-          leading: const Icon(Icons.chat_bubble_outline),
-          title: const Text('Send feedback'),
-          subtitle: const Text('Comment or bug report — finishes on GitHub, no login in the app'),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () => BugReportService.showSheet(context, ref),
-        ),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(

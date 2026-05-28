@@ -96,3 +96,23 @@ class ShowLkmNamesNotifier extends Notifier<bool> {
 final showLkmNamesProvider = NotifierProvider<ShowLkmNamesNotifier, bool>(() {
   return ShowLkmNamesNotifier();
 });
+
+class FeedbackIntroSeenNotifier extends Notifier<bool> {
+  static const _key = 'feedback_intro_seen';
+
+  @override
+  bool build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    return prefs.getBool(_key) ?? false;
+  }
+
+  void markSeen() {
+    if (state) return;
+    state = true;
+    ref.read(sharedPreferencesProvider).setBool(_key, true);
+  }
+}
+
+final feedbackIntroSeenProvider = NotifierProvider<FeedbackIntroSeenNotifier, bool>(() {
+  return FeedbackIntroSeenNotifier();
+});

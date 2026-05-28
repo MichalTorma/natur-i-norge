@@ -8,6 +8,9 @@ class BugReportSheet extends StatefulWidget {
   final ScrollController scrollController;
   final int minCommentLength;
   final Future<BugReportLaunchResult> Function(ReportKind kind, String comment) onSubmit;
+  final bool popOnSuccess;
+  final bool showIntro;
+  final VoidCallback? onIntroDismiss;
 
   const BugReportSheet({
     super.key,
@@ -15,6 +18,9 @@ class BugReportSheet extends StatefulWidget {
     required this.scrollController,
     required this.minCommentLength,
     required this.onSubmit,
+    this.popOnSuccess = true,
+    this.showIntro = false,
+    this.onIntroDismiss,
   });
 
   @override
@@ -25,14 +31,19 @@ class _BugReportSheetState extends State<BugReportSheet> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
   bool _submitting = false;
+  bool _introVisible = false;
+  bool _introMarkedSeen = false;
   ReportKind _kind = ReportKind.comment;
 
   @override
   void initState() {
     super.initState();
+    _introVisible = widget.showIntro;
     _controller.addListener(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.requestFocus();
+      if (!_introVisible) {
+        _focusNode.requestFocus();
+      }
     });
   }
 
@@ -56,13 +67,28 @@ class _BugReportSheetState extends State<BugReportSheet> {
         ReportKind.comment => 'Write your comment',
       };
 
+  void _dismissIntro() {
+    if (!_introMarkedSeen) {
+      _introMarkedSeen = true;
+      widget.onIntroDismiss?.call();
+    }
+    setState(() => _introVisible = false);
+    _focusNode.requestFocus();
+  }
+
+  void _showIntroAgain() {
+    setState(() => _introVisible = true);
+  }
+
   Future<void> _submit() async {
     if (!_canSubmit) return;
     setState(() => _submitting = true);
     try {
       final result = await widget.onSubmit(_kind, _controller.text);
       if (!mounted) return;
-      Navigator.pop(context);
+      if (widget.popOnSuccess) {
+        Navigator.pop(context);
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(BugReportService.successMessage(result))),
       );
@@ -92,12 +118,34 @@ class _BugReportSheetState extends State<BugReportSheet> {
           style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        Text(
-          'Write your message, then finish on GitHub. A link to this screen is included automatically — not GPS or device location.',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                'Write your message, then finish on GitHub. A link to this screen is included automatically — not GPS or device location.',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                _introVisible ? Icons.info : Icons.info_outline,
+                color: theme.colorScheme.primary,
+              ),
+              tooltip: 'How feedback works',
+              onPressed: _showIntroAgain,
+            ),
+          ],
         ),
+        if (_introVisible) ...[
+          const SizedBox(height: 16),
+          _FeedbackIntroCard(
+            theme: theme,
+            onDismiss: _dismissIntro,
+          ),
+        ],
         const SizedBox(height: 16),
         SegmentedButton<ReportKind>(
           segments: const [
@@ -200,6 +248,96 @@ class _BugReportSheetState extends State<BugReportSheet> {
           label: Text(_submitting ? 'Opening GitHub…' : 'Continue on GitHub'),
         ),
       ],
+    );
+  }
+}
+
+class _FeedbackIntroCard extends StatelessWidget {
+  final ThemeData theme;
+  final VoidCallback onDismiss;
+
+  const _FeedbackIntroCard({
+    required this.theme,
+    required this.onDismiss,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      color: theme.colorScheme.primaryContainer.withValues(alpha: 0.45),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.chat_bubble_outline, color: theme.colorScheme.primary),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Comments work from any screen',
+                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            _IntroBullet(
+              theme: theme,
+              text: 'Tap the chat icon while viewing whatever you want to talk about.',
+            ),
+            _IntroBullet(
+              theme: theme,
+              text: 'We attach a link to that screen in the report — not your GPS location.',
+            ),
+            _IntroBullet(
+              theme: theme,
+              text: 'Write here, then finish submitting on GitHub in one more step.',
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: onDismiss,
+                child: const Text('Got it'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _IntroBullet extends StatelessWidget {
+  final ThemeData theme;
+  final String text;
+
+  const _IntroBullet({
+    required this.theme,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('• ', style: theme.textTheme.bodyMedium),
+          Expanded(
+            child: Text(
+              text,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.85),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
