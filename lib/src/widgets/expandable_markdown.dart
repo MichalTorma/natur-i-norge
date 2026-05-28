@@ -4,11 +4,13 @@ import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 class ExpandableMarkdown extends StatefulWidget {
   final String data;
   final int maxCollapsedHeight;
+  final bool collapsible;
 
   const ExpandableMarkdown({
     super.key,
     required this.data,
     this.maxCollapsedHeight = 200,
+    this.collapsible = true,
   });
 
   @override
@@ -23,7 +25,20 @@ class _ExpandableMarkdownState extends State<ExpandableMarkdown> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkHeight());
+    if (widget.collapsible) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _checkHeight());
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ExpandableMarkdown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.collapsible && !oldWidget.collapsible) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _checkHeight());
+    } else if (!widget.collapsible) {
+      _canExpand = false;
+      _isExpanded = false;
+    }
   }
 
   void _checkHeight() {
@@ -51,6 +66,10 @@ class _ExpandableMarkdownState extends State<ExpandableMarkdown> {
         listBullet: TextStyle(color: colorScheme.primary),
       ),
     );
+
+    if (!widget.collapsible) {
+      return markdownContent;
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

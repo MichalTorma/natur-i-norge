@@ -133,43 +133,52 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           
           // Description Header
           if (widget.type != null && widget.type!.description != null && _searchQuery.isEmpty)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 4, 24, 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+            Consumer(
+              builder: (context, ref, _) {
+                final subtypesAsync = ref.watch(subTypesProvider(widget.type!.id));
+                final hasSubtypes = subtypesAsync.maybeWhen(
+                  data: (types) => types.isNotEmpty,
+                  orElse: () => false,
+                );
+
+                return SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 4, 24, 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _Badge(label: widget.type!.kategori),
-                        if (widget.type!.ecosystnivaaNavn != null) ...[
-                          const SizedBox(width: 8),
-                          _Badge(label: widget.type!.ecosystnivaaNavn!, color: Colors.blue),
-                        ],
+                        Row(
+                          children: [
+                            _Badge(label: widget.type!.kategori),
+                            if (widget.type!.ecosystnivaaNavn != null) ...[
+                              const SizedBox(width: 8),
+                              _Badge(label: widget.type!.ecosystnivaaNavn!, color: Colors.blue),
+                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Beskrivelse',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 12),
+                        ExpandableMarkdown(
+                          data: widget.type!.description!,
+                          collapsible: hasSubtypes,
+                        ),
+                        const Divider(height: 32),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Beskrivelse',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 12),
-                    ExpandableMarkdown(data: widget.type!.description!),
-                    const Divider(height: 32),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
 
           // Sub-types Content
           typesAsync.when(
             data: (allTypes) {
               if (allTypes.isEmpty && widget.type != null) {
-                return SliverFillRemaining(
-                  child: Center(
-                    child: Text('No further sub-types available.', style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3))),
-                  ),
-                );
+                return const SliverToBoxAdapter(child: SizedBox.shrink());
               }
 
               final isHovedtype = widget.type?.kategori == 'Hovedtype';
@@ -375,14 +384,20 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
-      floatingActionButton: () {
-        if (widget.type == null) return null;
-        
+      floatingActionButton: _buildFloatingActionButton(typesAsync),
+    );
+  }
+
+  Widget? _buildFloatingActionButton(AsyncValue<List<NinType>> typesAsync) {
+    if (widget.type == null || _searchQuery.isNotEmpty) return null;
+
+    return typesAsync.when(
+      data: (subtypes) {
+        final isLeaf = subtypes.isEmpty;
         final isMappingUnit = widget.type!.kategori == 'Kartleggingsenhet';
         final isGrunntype = widget.type!.kategori == 'Grunntype';
 
         if (widget.onPick != null) {
-          // Picker mode logic
           if (isMappingUnit) {
             return FloatingActionButton.extended(
               onPressed: () => widget.onPick!(widget.type!),
@@ -391,32 +406,36 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
               backgroundColor: Colors.green[700],
               foregroundColor: Colors.white,
             );
-          } else if (isGrunntype) {
+          }
+          if (isGrunntype) {
             return FloatingActionButton.extended(
-              onPressed: null, // Disabled
+              onPressed: null,
               icon: const Icon(Icons.warning_amber_rounded, color: Colors.white70),
               label: const Text('Please select a Mapping Unit level'),
               backgroundColor: Colors.orange[800]?.withOpacity(0.8),
             );
           }
-        } else {
-          // Browsing mode logic
-          if (isMappingUnit || isGrunntype) {
-             return FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(builder: (_) => CameraScreen(initialType: widget.type)),
-                );
-              },
-              icon: const Icon(Icons.add_a_photo),
-              label: const Text('Capture Observation'),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            );
-          }
+          return null;
         }
-        return null;
-      }(),
+
+        if (!isLeaf) return null;
+
+        return FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(
+                builder: (_) => CameraScreen(initialType: widget.type),
+              ),
+            );
+          },
+          icon: const Icon(Icons.add_a_photo),
+          label: const Text('Capture Observation'),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        );
+      },
+      loading: () => null,
+      error: (_, __) => null,
     );
   }
 
