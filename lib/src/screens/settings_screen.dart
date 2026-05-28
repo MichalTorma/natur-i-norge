@@ -6,6 +6,7 @@ import '../providers/database_provider.dart';
 import '../providers/settings_provider.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
+import '../services/bug_report_service.dart';
 import '../widgets/backup_consent_dialog.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -30,7 +31,7 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
           _buildBackupSection(context, ref),
           const Divider(),
-          _buildLegalSection(context, packageInfo),
+          _buildLegalSection(context, ref, packageInfo),
         ],
       ),
     );
@@ -120,11 +121,34 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildLegalSection(BuildContext context, AsyncValue<PackageInfo> packageInfo) {
+  Widget _buildLegalSection(BuildContext context, WidgetRef ref, AsyncValue<PackageInfo> packageInfo) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Text(
+            'Support',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: primaryColor),
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.bug_report_outlined),
+          title: const Text('Report a Bug'),
+          subtitle: const Text('Open GitHub with your current app location pre-filled'),
+          trailing: const Icon(Icons.open_in_new),
+          onTap: () async {
+            try {
+              await BugReportService.launch(ref);
+            } catch (error) {
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Could not open GitHub: $error')),
+              );
+            }
+          },
+        ),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(
@@ -147,7 +171,7 @@ class SettingsScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(12.0),
                 child: _AppIcon(size: 48),
               ),
-              applicationLegalese: '© 2026 Natur i Norge Guide Contributors',
+              applicationLegalese: '© 2026 Natur i Norge Guide Contributors\n\nReleased under the MIT License.',
             );
           },
         ),

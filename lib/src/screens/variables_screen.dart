@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/database_provider.dart';
 import '../models/nin_database.dart';
+import '../navigation/app_routes.dart';
 import 'variable_detail_screen.dart';
 
 class VariablesScreen extends ConsumerStatefulWidget {
@@ -88,11 +89,7 @@ class _VariablesScreenState extends ConsumerState<VariablesScreen> {
               
               return InkWell(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => VariableDetailScreen(variableId: v.id),
-                    ),
-                  );
+                  Navigator.of(context).push(AppRoutes.variableDetail(v.id));
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

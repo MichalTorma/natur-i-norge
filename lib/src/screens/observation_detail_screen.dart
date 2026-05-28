@@ -11,6 +11,7 @@ import '../models/user_database.dart';
 import '../providers/auth_provider.dart';
 import '../services/app_storage.dart';
 import '../widgets/local_image.dart';
+import '../navigation/app_routes.dart';
 import 'gallery_map_screen.dart';
 
 class ObservationDetailScreen extends ConsumerStatefulWidget {
@@ -308,10 +309,7 @@ class _ObservationDetailScreenState extends ConsumerState<ObservationDetailScree
                               onTap: () {
                                 Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(
-                                    settings: const RouteSettings(name: 'gallery_map'),
-                                    builder: (_) => const GalleryMapScreen(),
-                                  ),
+                                  AppRoutes.galleryMap(),
                                 );
                               },
                             ),

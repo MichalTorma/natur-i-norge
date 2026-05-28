@@ -5,42 +5,37 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000279">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000253">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to ios check_remote_version lane" time="7.4e-05">
+      <testcase classname="fastlane.lanes" name="1: Switch to android check_remote_version lane" time="7.5e-05">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: app_store_build_number" time="2.445589">
+      <testcase classname="fastlane.lanes" name="2: google_play_track_version_codes" time="2.617619">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos;+&apos; -f 2" time="0.015414">
+      <testcase classname="fastlane.lanes" name="3: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos;+&apos; -f 2" time="0.033122">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build ipa --release" time="202.791726">
+      <testcase classname="fastlane.lanes" name="4: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build appbundle --release" time="125.31779">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: upload_to_testflight" time="114.914496">
+      <testcase classname="fastlane.lanes" name="5: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build apk --release" time="37.626508">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos; &apos; -f 2 | cut -d &apos;+&apos; -f 1" time="0.023082">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="7: deliver" time="24.611045">
+      <testcase classname="fastlane.lanes" name="6: upload_to_play_store" time="121.076144">
         
       </testcase>
     

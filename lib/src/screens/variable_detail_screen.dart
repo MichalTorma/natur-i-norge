@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:convert';
 import '../models/nin_database.dart';
 import '../providers/database_provider.dart';
+import '../navigation/app_routes.dart';
 import '../widgets/expandable_markdown.dart';
 
 class VariableDetailScreen extends ConsumerWidget {
@@ -97,7 +98,7 @@ class VariableDetailScreen extends ConsumerWidget {
         ? const SizedBox.shrink() 
         : InkWell(
             onTap: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => VariableDetailScreen(variableId: parent.id)),
+              AppRoutes.variableDetail(parent.id),
             ),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -128,7 +129,7 @@ class VariableDetailScreen extends ConsumerWidget {
       subtitle: Text(variable.id, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.outline)),
       trailing: const Icon(Icons.chevron_right, size: 20),
       onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => VariableDetailScreen(variableId: variable.id)),
+        AppRoutes.variableDetail(variable.id),
       ),
     );
   }

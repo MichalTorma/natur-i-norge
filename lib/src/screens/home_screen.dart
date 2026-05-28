@@ -1,8 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/nin_database.dart';
+import '../navigation/app_location.dart';
+import '../navigation/app_location_provider.dart';
+import '../navigation/app_route_tracker.dart';
+import '../navigation/app_routes.dart';
+import '../navigation/app_url_sync.dart';
 import '../providers/database_provider.dart';
+import '../widgets/bug_report_button.dart';
 import 'types_screen.dart';
 import 'variables_screen.dart';
 import 'favorites_screen.dart';
@@ -25,11 +33,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   int _selectedIndex = _typesTab;
   late final List<GlobalKey<NavigatorState>> _navigatorKeys;
+  late final List<AppRouteTracker> _tabTrackers;
+  StreamSubscription<String?>? _hashSubscription;
 
   @override
   void initState() {
     super.initState();
-    _navigatorKeys = List.generate(5, (_) => GlobalKey<NavigatorState>());
+    _navigatorKeys = List.generate(AppLocation.tabNames.length, (_) => GlobalKey<NavigatorState>());
+    _tabTrackers = List.generate(AppLocation.tabNames.length, (index) {
+      return AppRouteTracker(
+        onStackChanged: (stack) {
+          ref.read(appLocationProvider.notifier).updateTabStack(index, stack);
+        },
+      );
+    });
+
+    ref.listenManual(appLocationProvider, (previous, next) {
+      if (ref.read(appLocationProvider.notifier).suppressUrlSync) return;
+      writeUrlHashPath(next.toHashPath());
+    });
+
+    _hashSubscription = watchUrlHashPathChanges().listen((path) {
+      if (!mounted) return;
+      if (ref.read(appLocationProvider.notifier).suppressUrlSync) return;
+      final location = path == null ? null : AppLocation.fromHashPath(path);
+      if (location == null) return;
+      _restoreLocation(location);
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final initialPath = readUrlHashPath();
+      if (initialPath == null) return;
+      final location = AppLocation.fromHashPath(initialPath);
+      if (location != null) {
+        _restoreLocation(location);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _hashSubscription?.cancel();
+    super.dispose();
   }
 
   void _resetTabToRoot(int index) {
@@ -47,6 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
 
     setState(() => _selectedIndex = index);
+    ref.read(appLocationProvider.notifier).setTab(index);
   }
 
   Future<void> _openTypeInTypesTab(NinType target) async {
@@ -68,14 +114,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _resetTabToRoot(_typesTab);
 
     for (final type in path) {
-      typesNav.push(
-        MaterialPageRoute(builder: (_) => TypesScreen(type: type)),
-      );
+      typesNav.push(AppRoutes.types(type: type));
     }
 
     if (mounted) {
       setState(() => _selectedIndex = _typesTab);
+      ref.read(appLocationProvider.notifier).setTab(_typesTab);
     }
+  }
+
+  Future<void> _restoreLocation(AppLocation location) async {
+    await ref.read(appLocationProvider.notifier).runWithoutUrlSync(() async {
+      if (!mounted) return;
+
+      for (var i = 0; i < _navigatorKeys.length; i++) {
+        _resetTabToRoot(i);
+      }
+
+      setState(() => _selectedIndex = location.tabIndex);
+      ref.read(appLocationProvider.notifier).setTab(location.tabIndex);
+
+      final nav = _navigatorKeys[location.tabIndex].currentState;
+      if (nav == null) return;
+
+      for (final frame in location.tabStack.skip(1)) {
+        final route = await AppRoutes.routeForFrame(frame, ref);
+        if (route != null) {
+          nav.push(route);
+        }
+      }
+
+      for (final frame in location.rootStack) {
+        final route = await AppRoutes.routeForFrame(frame, ref);
+        if (route != null && mounted) {
+          Navigator.of(context, rootNavigator: true).push(route);
+        }
+      }
+    });
   }
 
   @override
@@ -113,100 +188,107 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
         child: Focus(
           autofocus: true,
-          child: Scaffold(
-            body: Row(
-              children: [
-                if (isDesktop)
-                  NavigationRail(
-                    selectedIndex: _selectedIndex,
-                    onDestinationSelected: _onTabSelected,
-                    labelType: NavigationRailLabelType.all,
-                    leading: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          'assets/app_icon.png',
-                          height: 40,
-                          width: 40,
+          child: Stack(
+            children: [
+              Scaffold(
+                body: Row(
+                  children: [
+                    if (isDesktop)
+                      NavigationRail(
+                        selectedIndex: _selectedIndex,
+                        onDestinationSelected: _onTabSelected,
+                        labelType: NavigationRailLabelType.all,
+                        leading: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 24),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              'assets/app_icon.png',
+                              height: 40,
+                              width: 40,
+                            ),
+                          ),
                         ),
+                        destinations: const [
+                          NavigationRailDestination(
+                            icon: Icon(Icons.category_outlined),
+                            selectedIcon: Icon(Icons.category),
+                            label: Text('Types'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Icons.straighten_outlined),
+                            selectedIcon: Icon(Icons.straighten),
+                            label: Text('Variables'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Icons.star_outline),
+                            selectedIcon: Icon(Icons.star),
+                            label: Text('Favorites'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Icons.photo_library_outlined),
+                            selectedIcon: Icon(Icons.photo_library),
+                            label: Text('Gallery'),
+                          ),
+                          NavigationRailDestination(
+                            icon: Icon(Icons.settings_outlined),
+                            selectedIcon: Icon(Icons.settings),
+                            label: Text('Settings'),
+                          ),
+                        ],
+                      ),
+                    Expanded(
+                      child: IndexedStack(
+                        index: _selectedIndex,
+                        children: [
+                          for (var i = 0; i < tabRoots.length; i++)
+                            _TabNavigator(
+                              tabIndex: i,
+                              navigatorKey: _navigatorKeys[i],
+                              observer: _tabTrackers[i],
+                              root: tabRoots[i],
+                            ),
+                        ],
                       ),
                     ),
-                    destinations: const [
-                      NavigationRailDestination(
-                        icon: Icon(Icons.category_outlined),
-                        selectedIcon: Icon(Icons.category),
-                        label: Text('Types'),
-                      ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.straighten_outlined),
-                        selectedIcon: Icon(Icons.straighten),
-                        label: Text('Variables'),
-                      ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.star_outline),
-                        selectedIcon: Icon(Icons.star),
-                        label: Text('Favorites'),
-                      ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.photo_library_outlined),
-                        selectedIcon: Icon(Icons.photo_library),
-                        label: Text('Gallery'),
-                      ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.settings_outlined),
-                        selectedIcon: Icon(Icons.settings),
-                        label: Text('Settings'),
-                      ),
-                    ],
-                  ),
-                Expanded(
-                  child: IndexedStack(
-                    index: _selectedIndex,
-                    children: [
-                      for (var i = 0; i < tabRoots.length; i++)
-                        _TabNavigator(
-                          navigatorKey: _navigatorKeys[i],
-                          root: tabRoots[i],
-                        ),
-                    ],
-                  ),
+                  ],
                 ),
-              ],
-            ),
-            bottomNavigationBar: isDesktop
-                ? null
-                : NavigationBar(
-                    selectedIndex: _selectedIndex,
-                    onDestinationSelected: _onTabSelected,
-                    destinations: const [
-                      NavigationDestination(
-                        icon: Icon(Icons.category_outlined),
-                        selectedIcon: Icon(Icons.category),
-                        label: 'Types',
+                bottomNavigationBar: isDesktop
+                    ? null
+                    : NavigationBar(
+                        selectedIndex: _selectedIndex,
+                        onDestinationSelected: _onTabSelected,
+                        destinations: const [
+                          NavigationDestination(
+                            icon: Icon(Icons.category_outlined),
+                            selectedIcon: Icon(Icons.category),
+                            label: 'Types',
+                          ),
+                          NavigationDestination(
+                            icon: Icon(Icons.straighten_outlined),
+                            selectedIcon: Icon(Icons.straighten),
+                            label: 'Variables',
+                          ),
+                          NavigationDestination(
+                            icon: Icon(Icons.star_outline),
+                            selectedIcon: Icon(Icons.star),
+                            label: 'Favorites',
+                          ),
+                          NavigationDestination(
+                            icon: Icon(Icons.photo_library_outlined),
+                            selectedIcon: Icon(Icons.photo_library),
+                            label: 'Gallery',
+                          ),
+                          NavigationDestination(
+                            icon: Icon(Icons.settings_outlined),
+                            selectedIcon: Icon(Icons.settings),
+                            label: 'Settings',
+                          ),
+                        ],
                       ),
-                      NavigationDestination(
-                        icon: Icon(Icons.straighten_outlined),
-                        selectedIcon: Icon(Icons.straighten),
-                        label: 'Variables',
-                      ),
-                      NavigationDestination(
-                        icon: Icon(Icons.star_outline),
-                        selectedIcon: Icon(Icons.star),
-                        label: 'Favorites',
-                      ),
-                      NavigationDestination(
-                        icon: Icon(Icons.photo_library_outlined),
-                        selectedIcon: Icon(Icons.photo_library),
-                        label: 'Gallery',
-                      ),
-                      NavigationDestination(
-                        icon: Icon(Icons.settings_outlined),
-                        selectedIcon: Icon(Icons.settings),
-                        label: 'Settings',
-                      ),
-                    ],
-                  ),
+              ),
+              const BugReportButton(),
+            ],
           ),
         ),
       ),
@@ -215,11 +297,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 }
 
 class _TabNavigator extends StatelessWidget {
+  final int tabIndex;
   final GlobalKey<NavigatorState> navigatorKey;
+  final AppRouteTracker observer;
   final Widget root;
 
   const _TabNavigator({
+    required this.tabIndex,
     required this.navigatorKey,
+    required this.observer,
     required this.root,
   });
 
@@ -227,12 +313,8 @@ class _TabNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Navigator(
       key: navigatorKey,
-      onGenerateRoute: (settings) {
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => root,
-        );
-      },
+      observers: [observer],
+      onGenerateRoute: (settings) => AppRoutes.tabRoot(tabIndex, root),
     );
   }
 }

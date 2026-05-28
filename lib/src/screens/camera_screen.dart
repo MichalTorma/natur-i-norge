@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../models/nin_database.dart';
+import '../navigation/app_routes.dart';
 import 'camera_capture.dart';
-import 'observation_review_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   final NinType? initialType;
@@ -43,11 +43,9 @@ class _CameraScreenState extends State<CameraScreen> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => ObservationReviewScreen(
-          imagePath: result.imagePath,
-          initialType: widget.initialType,
-        ),
+      AppRoutes.observationReview(
+        imagePath: result.imagePath,
+        initialType: widget.initialType,
       ),
     );
   }

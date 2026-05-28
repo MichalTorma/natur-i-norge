@@ -7,6 +7,7 @@ import '../providers/settings_provider.dart';
 import '../providers/database_provider.dart';
 import '../models/nin_database.dart';
 import '../models/user_database.dart';
+import '../navigation/app_routes.dart';
 import '../widgets/ecological_matrix.dart';
 import '../widgets/gad_species_panel.dart';
 import '../providers/gad_provider.dart';
@@ -88,7 +89,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                                     type: types[index],
                                     onTap: () => Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (_) => TypesScreen(type: types[index], onPick: widget.onPick)),
+                                      AppRoutes.types(type: types[index], onPick: widget.onPick),
                                     ),
                                     level: 2,
                                   ),
@@ -334,7 +335,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                                   type: cTypes[index],
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => TypesScreen(type: cTypes[index], onPick: widget.onPick)),
+                                    AppRoutes.types(type: cTypes[index], onPick: widget.onPick),
                                   ),
                                   level: 2,
                                 ),
@@ -364,7 +365,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                           type: types[index],
                           onTap: () => Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => TypesScreen(type: types[index], onPick: widget.onPick)),
+                            AppRoutes.types(type: types[index], onPick: widget.onPick),
                           ),
                           level: widget.type == null ? 0 : 2,
                         ),
@@ -423,9 +424,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
         return FloatingActionButton.extended(
           onPressed: () {
             Navigator.of(context, rootNavigator: true).push(
-              MaterialPageRoute(
-                builder: (_) => CameraScreen(initialType: widget.type),
-              ),
+              AppRoutes.camera(initialType: widget.type),
             );
           },
           icon: const Icon(Icons.add_a_photo),

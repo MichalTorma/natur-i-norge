@@ -9,7 +9,7 @@ import '../models/nin_database.dart';
 import '../providers/auth_provider.dart';
 import '../services/sync_service.dart';
 import '../widgets/local_image.dart';
-import 'types_screen.dart';
+import '../navigation/app_routes.dart';
 
 class ObservationReviewScreen extends ConsumerStatefulWidget {
   final String imagePath;
@@ -349,16 +349,12 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
   Future<void> _pickType() async {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        settings: const RouteSettings(name: 'type_picker'),
-        builder: (context) => TypesScreen(
-          onPick: (type) {
-            setState(() => _selectedType = type);
-            // Pop back to the start of the picker flow
-            Navigator.of(context).popUntil((route) => route.settings.name == 'type_picker');
-            Navigator.of(context).pop(); // Finally pop the picker itself
-          },
-        ),
+      AppRoutes.types(
+        onPick: (type) {
+          setState(() => _selectedType = type);
+          Navigator.of(context).popUntil((route) => route.settings.name == 'type_picker');
+          Navigator.of(context).pop();
+        },
       ),
     );
   }

@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/nin_database.dart';
-import '../screens/types_screen.dart';
-import '../screens/variable_detail_screen.dart';
+import '../navigation/app_routes.dart';
 import '../utils/gad_konstans_colors.dart';
 
 class EcologicalMatrix extends StatefulWidget {
@@ -269,9 +268,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               child: InkWell(
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => VariableDetailScreen(variableId: _xAxisVar!),
-                  ),
+                  AppRoutes.variableDetail(_xAxisVar!),
                 ),
                 child: Container(
                   width: gridWidth,
@@ -320,9 +317,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                 label: '$_yAxisVar (${varNames[_yAxisVar] ?? 'N/A'})',
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => VariableDetailScreen(variableId: _yAxisVar!),
-                  ),
+                  AppRoutes.variableDetail(_yAxisVar!),
                 ),
               ),
               Column(
@@ -519,9 +514,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       child: InkWell(
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (_) => VariableDetailScreen(variableId: variableId),
-          ),
+          AppRoutes.variableDetail(variableId),
         ),
         borderRadius: BorderRadius.circular(8),
         child: Container(
@@ -1310,9 +1303,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           return InkWell(
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (_) => TypesScreen(type: type, onPick: widget.onPick),
-              ),
+              AppRoutes.types(type: type, onPick: widget.onPick),
             ),
             child: Semantics(
               label: 'Nature type ${type.id}: ${type.navn}. Tap to select or view details.',

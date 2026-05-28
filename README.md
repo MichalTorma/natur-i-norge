@@ -84,6 +84,12 @@ The landing page links to the **live** app (`docs/app/`) and the **v2.3 archive*
 
 See [`archive/v2.3-web/README.md`](archive/v2.3-web/README.md) for details.
 
+## License
+
+The application source code in this repository is released under the [MIT License](LICENSE).
+
+Bundled NiN classification data is provided by [Artsdatabanken](https://artsdatabanken.no). User-submitted observations shared via cloud backup are published under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

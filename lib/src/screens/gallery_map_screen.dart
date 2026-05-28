@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/database_provider.dart';
 import '../models/user_database.dart';
 import '../widgets/local_image.dart';
-import 'observation_detail_screen.dart';
+import '../navigation/app_routes.dart';
 
 class GalleryMapScreen extends ConsumerWidget {
   const GalleryMapScreen({super.key});
@@ -81,10 +81,7 @@ class GalleryMapScreen extends ConsumerWidget {
                       onTap: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(
-                            settings: const RouteSettings(name: 'observation_detail'),
-                            builder: (_) => ObservationDetailScreen(observationWithType: obsWithType),
-                          ),
+                          AppRoutes.observationDetail(obsWithType),
                         );
                       },
                       child: Container(

@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../providers/database_provider.dart';
-import '../models/user_database.dart';
 import '../widgets/local_image.dart';
-import 'camera_screen.dart';
-import 'gallery_map_screen.dart';
-import 'observation_detail_screen.dart';
+import '../navigation/app_routes.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/backup_consent_dialog.dart';
 import '../services/sync_service.dart';
@@ -48,10 +45,7 @@ class GalleryScreen extends ConsumerWidget {
             icon: const Icon(Icons.map),
             tooltip: 'View observations on map',
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const GalleryMapScreen()),
-              );
+              Navigator.push(context, AppRoutes.galleryMap());
             },
           ),
           PopupMenuButton<ObservationSortMode>(
@@ -89,9 +83,7 @@ class GalleryScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                        MaterialPageRoute(builder: (_) => const CameraScreen()),
-                      );
+                      Navigator.of(context, rootNavigator: true).push(AppRoutes.camera());
                     },
                     icon: const Icon(Icons.camera_alt),
                     label: const Text('Take your first photo'),
@@ -181,9 +173,7 @@ class GalleryScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.of(context, rootNavigator: true).push(
-            MaterialPageRoute(builder: (_) => const CameraScreen()),
-          );
+          Navigator.of(context, rootNavigator: true).push(AppRoutes.camera());
         },
         icon: const Icon(Icons.camera_alt),
         label: const Text('Capture'),
@@ -246,12 +236,7 @@ class _ObservationCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ObservationDetailScreen(observationWithType: observationWithType),
-            ),
-          );
+          Navigator.push(context, AppRoutes.observationDetail(observationWithType));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

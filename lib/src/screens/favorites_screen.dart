@@ -4,7 +4,7 @@ import '../providers/database_provider.dart';
 import '../providers/settings_provider.dart';
 import '../models/nin_database.dart';
 import '../widgets/local_image.dart';
-import 'types_screen.dart';
+import '../navigation/app_routes.dart';
 
 Color _favoriteCategoryColor(String category) {
   switch (category) {
@@ -142,10 +142,7 @@ class _FavoriteTile extends ConsumerWidget {
           if (onOpenType != null) {
             onOpenType!(type);
           } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => TypesScreen(type: type)),
-            );
+            Navigator.push(context, AppRoutes.types(type: type));
           }
         },
       ),
