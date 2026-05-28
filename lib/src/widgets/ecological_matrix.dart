@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/nin_database.dart';
 import '../navigation/app_routes.dart';
@@ -30,6 +29,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
   String? _yAxisVar;
   final Map<String, String> _activeFilters = {};
   late bool _showStepNames;
+  bool _showFixedLkms = false;
 
   @override
   void initState() {
@@ -42,6 +42,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
   void didUpdateWidget(EcologicalMatrix oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.subTypes != oldWidget.subTypes) {
+      _showFixedLkms = false;
       _identifyAxes();
     }
     if (widget.showStepNames != oldWidget.showStepNames) {
@@ -336,116 +337,87 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           ],
         );
 
+        final interactiveFilters = _activeFilters.keys
+            .where((filterVar) => _isInteractiveFilter(filterVar, allVarSteps))
+            .toList();
+        final fixedFilters = _activeFilters.keys
+            .where((filterVar) => !_isInteractiveFilter(filterVar, allVarSteps))
+            .toList();
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (_activeFilters.isNotEmpty)
+            if (interactiveFilters.isNotEmpty || fixedFilters.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0, top: 4.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.tune, size: 14, color: colorScheme.primary),
-                          const SizedBox(width: 6),
-                          Text(
-                            'ADDITIONAL LKMs',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.1,
-                              color: colorScheme.primary,
+                    if (interactiveFilters.isNotEmpty) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.tune, size: 14, color: colorScheme.primary),
+                            const SizedBox(width: 6),
+                            Text(
+                              'ADDITIONAL LKMs',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.1,
+                                color: colorScheme.primary,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    ..._activeFilters.keys.map((filterVar) {
-                    final allSteps = (allVarSteps[filterVar]?.keys.toList() ?? [])..sort();
-                    if (allSteps.isEmpty) return const SizedBox.shrink();
-                    final displayName = varNames[filterVar] ?? filterVar;
-
-                    final List<List<String>> mergedGroups = [];
-                    if (allSteps.isNotEmpty) {
-                      List<String> currentGroup = [allSteps[0]];
-                      String? currentGridHash = _calculateGridHash(filterVar, allSteps[0]);
-
-                      for (int i = 1; i < allSteps.length; i++) {
-                        final nextHash = _calculateGridHash(filterVar, allSteps[i]);
-                        if (nextHash == currentGridHash) {
-                          currentGroup.add(allSteps[i]);
-                        } else {
-                          mergedGroups.add(currentGroup);
-                          currentGroup = [allSteps[i]];
-                          currentGridHash = nextHash;
-                        }
-                      }
-                      mergedGroups.add(currentGroup);
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildAdditionalLkmHeader(
-                            context,
+                      _buildAdditionalLkmFiltersSection(
+                        colorScheme: colorScheme,
+                        allVarSteps: allVarSteps,
+                        varNames: varNames,
+                        filterVars: interactiveFilters,
+                        interactive: true,
+                      ),
+                    ],
+                    if (fixedFilters.isNotEmpty) ...[
+                      if (interactiveFilters.isNotEmpty) const SizedBox(height: 2),
+                      TextButton.icon(
+                        onPressed: () => setState(() => _showFixedLkms = !_showFixedLkms),
+                        icon: Icon(
+                          _showFixedLkms ? Icons.expand_less : Icons.expand_more,
+                          size: 18,
+                          color: colorScheme.onSurface.withOpacity(0.65),
+                        ),
+                        label: Text(
+                          _showFixedLkms
+                              ? 'Hide fixed LKMs (${fixedFilters.length})'
+                              : 'Show fixed LKMs (${fixedFilters.length})',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onSurface.withOpacity(0.72),
+                          ),
+                        ),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          alignment: Alignment.centerLeft,
+                        ),
+                      ),
+                      if (_showFixedLkms)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: _buildAdditionalLkmFiltersSection(
                             colorScheme: colorScheme,
-                            variableId: filterVar,
-                            displayName: displayName,
+                            allVarSteps: allVarSteps,
+                            varNames: varNames,
+                            filterVars: fixedFilters,
+                            interactive: false,
                           ),
-                          const SizedBox(height: 8),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: mergedGroups.map((group) {
-                                final isSelected = group.contains(_activeFilters[filterVar]);
-                                final rangeLabel = _formatRangeLabel(
-                                  group,
-                                  allVarSteps[filterVar],
-                                  showStepNames: _showStepNames,
-                                );
-
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 6.0),
-                                  child: ChoiceChip(
-                                    label: Text(
-                                      rangeLabel,
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w600,
-                                        color: isSelected
-                                            ? colorScheme.onPrimary
-                                            : colorScheme.onSurface,
-                                      ),
-                                    ),
-                                    selected: isSelected,
-                                    showCheckmark: false,
-                                    selectedColor: colorScheme.primary,
-                                    backgroundColor: colorScheme.surface,
-                                    side: BorderSide(
-                                      color: isSelected
-                                          ? colorScheme.primary
-                                          : colorScheme.outline.withOpacity(0.55),
-                                      width: isSelected ? 1.5 : 1,
-                                    ),
-                                    onSelected: (val) {
-                                      if (val) {
-                                        setState(() => _activeFilters[filterVar] = group.first);
-                                      }
-                                    },
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
+                        ),
+                    ],
                   ],
                 ),
               ),
@@ -519,7 +491,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
             ),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -539,35 +511,17 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      displayName,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        height: 1.2,
-                        color: colorScheme.onPrimaryContainer,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Tap for variable details',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: colorScheme.onPrimaryContainer.withOpacity(0.72),
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  displayName,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    height: 1.2,
+                    color: colorScheme.onPrimaryContainer,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              Icon(
-                Icons.open_in_new,
-                size: 16,
-                color: colorScheme.onPrimaryContainer,
               ),
             ],
           ),
@@ -589,6 +543,149 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
       return group.length > 1 ? '$startLabel–$endLabel' : startLabel;
     }
     return group.join(', ');
+  }
+
+  List<List<String>> _mergedStepGroups(String filterVar, List<String> allSteps) {
+    if (allSteps.isEmpty) return [];
+
+    final mergedGroups = <List<String>>[];
+    var currentGroup = [allSteps[0]];
+    var currentGridHash = _calculateGridHash(filterVar, allSteps[0]);
+
+    for (var i = 1; i < allSteps.length; i++) {
+      final nextHash = _calculateGridHash(filterVar, allSteps[i]);
+      if (nextHash == currentGridHash) {
+        currentGroup.add(allSteps[i]);
+      } else {
+        mergedGroups.add(currentGroup);
+        currentGroup = [allSteps[i]];
+        currentGridHash = nextHash;
+      }
+    }
+    mergedGroups.add(currentGroup);
+    return mergedGroups;
+  }
+
+  bool _isInteractiveFilter(String filterVar, Map<String, Map<String, String>> allVarSteps) {
+    final allSteps = (allVarSteps[filterVar]?.keys.toList() ?? [])..sort();
+    if (allSteps.length <= 1) return false;
+    return _mergedStepGroups(filterVar, allSteps).length > 1;
+  }
+
+  Iterable<String> _sortedFilterSteps(
+    String filterVar,
+    Map<String, Map<String, String>> allVarSteps,
+  ) {
+    return (allVarSteps[filterVar]?.keys.toList() ?? [])..sort();
+  }
+
+  Widget _buildAdditionalLkmFiltersSection({
+    required ColorScheme colorScheme,
+    required Map<String, Map<String, String>> allVarSteps,
+    required Map<String, String> varNames,
+    required List<String> filterVars,
+    required bool interactive,
+  }) {
+    if (filterVars.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: filterVars.map((filterVar) {
+        final allSteps = _sortedFilterSteps(filterVar, allVarSteps).toList();
+        if (allSteps.isEmpty) return const SizedBox.shrink();
+        final displayName = varNames[filterVar] ?? filterVar;
+        final mergedGroups = _mergedStepGroups(filterVar, allSteps);
+        final selectedGroup = mergedGroups.firstWhere(
+          (group) => group.contains(_activeFilters[filterVar]),
+          orElse: () => mergedGroups.first,
+        );
+        final rangeLabel = _formatRangeLabel(
+          selectedGroup,
+          allVarSteps[filterVar],
+          showStepNames: _showStepNames,
+        );
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildAdditionalLkmHeader(
+                context,
+                colorScheme: colorScheme,
+                variableId: filterVar,
+                displayName: displayName,
+              ),
+              const SizedBox(height: 8),
+              if (interactive)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: mergedGroups.map((group) {
+                      final isSelected = group.contains(_activeFilters[filterVar]);
+                      final groupLabel = _formatRangeLabel(
+                        group,
+                        allVarSteps[filterVar],
+                        showStepNames: _showStepNames,
+                      );
+
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: ChoiceChip(
+                          label: Text(
+                            groupLabel,
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: isSelected
+                                  ? colorScheme.onPrimary
+                                  : colorScheme.onSurface,
+                            ),
+                          ),
+                          selected: isSelected,
+                          showCheckmark: false,
+                          selectedColor: colorScheme.primary,
+                          backgroundColor: colorScheme.surface,
+                          side: BorderSide(
+                            color: isSelected
+                                ? colorScheme.primary
+                                : colorScheme.outline.withOpacity(0.55),
+                            width: isSelected ? 1.5 : 1,
+                          ),
+                          onSelected: (val) {
+                            if (val) {
+                              setState(() => _activeFilters[filterVar] = group.first);
+                            }
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                )
+              else
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest.withOpacity(0.65),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: colorScheme.outline.withOpacity(0.35),
+                    ),
+                  ),
+                  child: Text(
+                    rangeLabel,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurface.withOpacity(0.72),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
   }
 
   static const _axisCodeFontSize = 12.0;
