@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/database_provider.dart';
@@ -13,12 +14,13 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentTheme = ref.watch(appThemeProvider);
+    final packageInfo = ref.watch(packageInfoProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Settings & About')),
       body: ListView(
         children: [
-          _buildHeader(context),
+          _buildHeader(context, packageInfo),
           const Divider(),
           _buildThemeSection(context, ref, currentTheme),
           const Divider(),
@@ -28,7 +30,7 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
           _buildBackupSection(context, ref),
           const Divider(),
-          _buildLegalSection(context),
+          _buildLegalSection(context, packageInfo),
         ],
       ),
     );
@@ -118,7 +120,7 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildLegalSection(BuildContext context) {
+  Widget _buildLegalSection(BuildContext context, AsyncValue<PackageInfo> packageInfo) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,13 +138,14 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: const Text('View licenses for the libraries used in this app'),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
+            final info = packageInfo.asData?.value;
             showLicensePage(
               context: context,
               applicationName: 'NiN Guide 3.0',
-              applicationVersion: '1.0.0',
+              applicationVersion: info != null ? '${info.version} (${info.buildNumber})' : '',
               applicationIcon: Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Icon(Icons.eco, size: 48, color: Theme.of(context).colorScheme.primary),
+                child: _AppIcon(size: 48),
               ),
               applicationLegalese: '© 2026 Natur i Norge Guide Contributors',
             );
@@ -153,22 +156,33 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, AsyncValue<PackageInfo> packageInfo) {
+    final mutedColor = Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
+
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(
         children: [
-          Icon(Icons.eco_outlined, size: 80, color: Theme.of(context).colorScheme.primary),
+          const _AppIcon(size: 80),
           const SizedBox(height: 16),
           const Text(
             'NiN Guide 3.0',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
+          packageInfo.when(
+            data: (info) => Text(
+              'Version ${info.version} · Build ${info.buildNumber}',
+              style: TextStyle(fontSize: 13, color: mutedColor, fontWeight: FontWeight.w500),
+            ),
+            loading: () => Text('Loading version…', style: TextStyle(fontSize: 13, color: mutedColor)),
+            error: (_, _) => Text('Version unavailable', style: TextStyle(fontSize: 13, color: mutedColor)),
+          ),
+          const SizedBox(height: 12),
           Text(
             'A comprehensive field guide for the Natur i Norge (NiN) 3.0 classification system.\nData is pre-packaged for full offline use.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+            style: TextStyle(color: mutedColor),
           ),
           const SizedBox(height: 16),
           TextButton.icon(
@@ -290,15 +304,6 @@ class SettingsScreen extends ConsumerWidget {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
-                      child: Text(
-                        'Version 1.0.0 (Pre-filled)',
-                        style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
-                      ),
-                    ),
-                  ),
                 ],
               );
             }
@@ -309,6 +314,24 @@ class SettingsScreen extends ConsumerWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+class _AppIcon extends StatelessWidget {
+  final double size;
+
+  const _AppIcon({required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(size * 0.2),
+      child: Image.asset(
+        'assets/app_icon.png',
+        height: size,
+        width: size,
+      ),
     );
   }
 }

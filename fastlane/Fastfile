@@ -91,8 +91,9 @@ platform :android do
   lane :deploy do
     check_remote_version
     
-    # Run flutter build from project root
+    # Play Store (AAB) and sideload (APK) share the same release signing config.
     sh "cd #{PROJECT_ROOT} && flutter build appbundle --release"
+    sh "cd #{PROJECT_ROOT} && flutter build apk --release"
     
     upload_to_play_store(
       track: 'internal',

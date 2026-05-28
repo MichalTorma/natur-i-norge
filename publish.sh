@@ -8,6 +8,7 @@ PLATFORM=""
 RUN_SCREENSHOTS=false
 DEPLOY_WEB=false
 PREVIEW_WEB=false
+GITHUB_RELEASE=false
 
 for arg in "$@"; do
   case $arg in
@@ -23,6 +24,9 @@ for arg in "$@"; do
     --preview|-p)
       PREVIEW_WEB=true
       ;;
+    --github-release|-r)
+      GITHUB_RELEASE=true
+      ;;
     *)
       # Ignore unknown arguments for now
       ;;
@@ -30,16 +34,23 @@ for arg in "$@"; do
 done
 
 if [ -z "$PLATFORM" ]; then
-  echo "Usage: ./publish.sh [ios|android|both|web|all] [--screenshots|-s] [--deploy|-d]"
+  echo "Usage: ./publish.sh [ios|android|both|web|all] [options]"
   echo ""
   echo "  ios|android|both  Publish to App Store / Google Play (requires .env)"
   echo "  web               Build Flutter web app for GitHub Pages"
   echo "  all               Publish iOS + Android, then build web"
   echo ""
-  echo "  --deploy|-d       With 'web': commit docs/app/ (+ docs/v2.3/ if archive exists) and push"
-  echo "  --preview|-p      With 'web': serve local preview (GitHub Pages layout)"
+  echo "  --deploy|-d         With 'web': commit docs/app/ (+ docs/v2.3/ if archive exists) and push"
+  echo "  --preview|-p        With 'web': serve local preview (GitHub Pages layout)"
+  echo "  --github-release|-r After Android publish: create GitHub release with signed APK"
+  echo "                      (triggers Zenodo; requires gh auth login)"
   echo ""
   echo "  Legacy v2.3: copy prod web/ to archive/v2.3-web/web/, then ./scripts/sync_legacy_web_to_docs.sh"
+  exit 1
+fi
+
+if [ "$GITHUB_RELEASE" = true ] && [[ "$PLATFORM" != "android" && "$PLATFORM" != "both" && "$PLATFORM" != "all" ]]; then
+  echo "❌ --github-release requires android, both, or all"
   exit 1
 fi
 
@@ -99,6 +110,9 @@ publish_mobile() {
     android)
       echo "🤖 Starting Android Publication..."
       bundle exec fastlane android deploy
+      if [ "$GITHUB_RELEASE" = true ]; then
+        ./scripts/create_github_release.sh
+      fi
       ;;
     both)
       echo "🚀 Starting Full Publication (iOS + Android)..."
@@ -106,6 +120,9 @@ publish_mobile() {
       (cd ios && pod install)
       bundle exec fastlane ios deploy
       bundle exec fastlane android deploy
+      if [ "$GITHUB_RELEASE" = true ]; then
+        ./scripts/create_github_release.sh
+      fi
       ;;
   esac
 }
@@ -134,5 +151,8 @@ case $PLATFORM in
     ./scripts/deploy_web.sh "${DEPLOY_ARGS[@]}"
     ;;
 esac
+
+# Note: GitHub release (Zenodo trigger) runs after Android publish and before web
+# deploy when using: ./publish.sh all --github-release --deploy
 
 echo "✅ Publication process completed!"
