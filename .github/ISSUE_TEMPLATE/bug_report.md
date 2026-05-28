@@ -1,6 +1,6 @@
 ---
 name: Bug report
-description: Report a problem — best opened from the in-app bug button
+about: Report a problem — best opened from the in-app feedback button
 title: "[Bug] "
 labels:
   - bug

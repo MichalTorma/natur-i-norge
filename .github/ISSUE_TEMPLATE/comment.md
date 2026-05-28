@@ -1,6 +1,6 @@
 ---
 name: Comment
-description: Share feedback, ideas, or something confusing — from NiN Guide or the web app
+about: Share feedback, ideas, or something confusing from NiN Guide or the web app
 title: "[Comment] "
 labels:
   - comment

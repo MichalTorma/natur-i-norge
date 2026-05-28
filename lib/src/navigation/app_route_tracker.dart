@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'route_frame.dart';
 
@@ -8,10 +9,18 @@ class AppRouteTracker extends NavigatorObserver {
 
   final ValueChanged<List<RouteFrame>> onStackChanged;
   final List<Route<dynamic>> _stack = [];
+  bool _notifyScheduled = false;
 
   List<RouteFrame> get frames => _stack.map(RouteFrame.fromRoute).toList();
 
-  void _notify() => onStackChanged(frames);
+  void _notify() {
+    if (_notifyScheduled) return;
+    _notifyScheduled = true;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _notifyScheduled = false;
+      onStackChanged(frames);
+    });
+  }
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
