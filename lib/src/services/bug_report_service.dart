@@ -97,11 +97,24 @@ class BugReportService {
       isScrollControlled: true,
       useSafeArea: true,
       showDragHandle: true,
-      builder: (sheetContext) => BugReportSheet(
-        draft: draft,
-        minCommentLength: minCommentLength,
-        onSubmit: (kind, comment) => launchOnGitHub(draft, kind, comment),
-      ),
+      builder: (sheetContext) {
+        final bottomInset = MediaQuery.viewInsetsOf(sheetContext).bottom;
+        return Padding(
+          padding: EdgeInsets.only(bottom: bottomInset),
+          child: DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.88,
+            minChildSize: 0.45,
+            maxChildSize: 0.95,
+            builder: (context, scrollController) => BugReportSheet(
+              draft: draft,
+              scrollController: scrollController,
+              minCommentLength: minCommentLength,
+              onSubmit: (kind, comment) => launchOnGitHub(draft, kind, comment),
+            ),
+          ),
+        );
+      },
     );
   }
 

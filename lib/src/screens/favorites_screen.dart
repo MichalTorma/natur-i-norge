@@ -5,21 +5,7 @@ import '../providers/settings_provider.dart';
 import '../models/nin_database.dart';
 import '../widgets/local_image.dart';
 import '../navigation/app_routes.dart';
-
-Color _favoriteCategoryColor(String category) {
-  switch (category) {
-    case 'Type':
-      return Colors.blueAccent;
-    case 'Hovedtypegruppe':
-      return Colors.greenAccent;
-    case 'Hovedtype':
-      return Colors.orangeAccent;
-    case 'Grunntype':
-      return Colors.purpleAccent;
-    default:
-      return Colors.tealAccent;
-  }
-}
+import '../nin_type_colors.dart';
 
 class FavoritesScreen extends ConsumerWidget {
   final Future<void> Function(NinType type)? onOpenType;
@@ -35,14 +21,18 @@ class FavoritesScreen extends ConsumerWidget {
       body: favoritesAsync.when(
         data: (favoriteIds) {
           if (favoriteIds.isEmpty) {
-            return const Center(
+            final muted = Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5);
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.star_outline, size: 64, color: Colors.white24),
-                  SizedBox(height: 16),
-                  Text('No favorites yet', style: TextStyle(color: Colors.white54)),
-                  Text('Star any nature type to see it here.', style: TextStyle(color: Colors.white38, fontSize: 12)),
+                  Icon(Icons.star_outline, size: 64, color: muted.withValues(alpha: 0.5)),
+                  const SizedBox(height: 16),
+                  Text('No favorites yet', style: TextStyle(color: muted)),
+                  Text(
+                    'Star any nature type to see it here.',
+                    style: TextStyle(color: muted.withValues(alpha: 0.75), fontSize: 12),
+                  ),
                 ],
               ),
             );
@@ -70,7 +60,7 @@ class FavoritesScreen extends ConsumerWidget {
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.2,
-                            color: _favoriteCategoryColor(entry.key),
+                            color: ninCategoryAccentColor(entry.key),
                           ),
                         ),
                       ),
@@ -117,6 +107,9 @@ class _FavoriteTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final disableImages = ref.watch(disableImagesProvider);
+    final colorScheme = Theme.of(context).colorScheme;
+    final accentColor = ninTypeAccentColor(type);
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
@@ -127,17 +120,33 @@ class _FavoriteTile extends ConsumerWidget {
             width: 60,
             height: 60,
             child: disableImages
-                ? Container(color: Colors.black26, child: const Icon(Icons.image_not_supported, size: 20))
+                ? Container(
+                    color: colorScheme.surfaceContainerHighest,
+                    child: Icon(Icons.image_not_supported, size: 20, color: colorScheme.onSurfaceVariant),
+                  )
                 : LocalTypeImage(
                     imageUrl: type.imageUrl,
                     fit: BoxFit.cover,
-                    accentColor: _favoriteCategoryColor(type.kategori),
+                    accentColor: accentColor,
                   ),
           ),
         ),
-        title: Text(type.navn, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-        subtitle: Text(type.id, style: const TextStyle(fontSize: 12, color: Colors.white54)),
-        trailing: const Icon(Icons.chevron_right, color: Colors.white24),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              type.navn,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 6),
+            _NinCodeBadge(typeId: type.id, color: accentColor),
+          ],
+        ),
+        trailing: Icon(Icons.chevron_right, color: colorScheme.onSurface.withValues(alpha: 0.35)),
         onTap: () {
           if (onOpenType != null) {
             onOpenType!(type);
@@ -145,6 +154,41 @@ class _FavoriteTile extends ConsumerWidget {
             Navigator.push(context, AppRoutes.types(type: type));
           }
         },
+      ),
+    );
+  }
+}
+
+class _NinCodeBadge extends StatelessWidget {
+  final String typeId;
+  final Color color;
+
+  const _NinCodeBadge({required this.typeId, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final badgeBackground = colorScheme.brightness == Brightness.dark
+        ? Colors.white
+        : colorScheme.surface;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: badgeBackground,
+        borderRadius: BorderRadius.circular(4),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 4),
+        ],
+      ),
+      child: Text(
+        typeId,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w900,
+          color: color,
+          letterSpacing: 0.5,
+        ),
       ),
     );
   }

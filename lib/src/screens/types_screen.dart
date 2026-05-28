@@ -14,6 +14,7 @@ import '../providers/gad_provider.dart';
 import '../widgets/expandable_markdown.dart';
 import '../widgets/local_image.dart';
 import '../widgets/type_image_viewer.dart';
+import '../nin_type_colors.dart';
 import 'camera_screen.dart';
 
 class TypesScreen extends ConsumerStatefulWidget {
@@ -91,7 +92,6 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                                       context,
                                       AppRoutes.types(type: types[index], onPick: widget.onPick),
                                     ),
-                                    level: 2,
                                   ),
                                 ),
                               ),
@@ -150,7 +150,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                       children: [
                         Row(
                           children: [
-                            _Badge(label: widget.type!.kategori),
+                            _Badge(label: widget.type!.kategori, color: ninTypeAccentColor(widget.type!)),
                             if (widget.type!.ecosystnivaaNavn != null) ...[
                               const SizedBox(width: 8),
                               _Badge(label: widget.type!.ecosystnivaaNavn!, color: Colors.blue),
@@ -337,7 +337,6 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                                     context,
                                     AppRoutes.types(type: cTypes[index], onPick: widget.onPick),
                                   ),
-                                  level: 2,
                                 ),
                               ),
                               loading: () => const Center(child: CircularProgressIndicator()),
@@ -367,7 +366,6 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                             context,
                             AppRoutes.types(type: types[index], onPick: widget.onPick),
                           ),
-                          level: widget.type == null ? 0 : 2,
                         ),
                       ),
                   ]),
@@ -440,8 +438,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
 
   Widget _buildAppBar(BuildContext context, WidgetRef ref) {
     final type = widget.type;
-    final level = type == null ? 0 : (type.kategori == 'Type' ? 0 : (type.kategori == 'Hovedtype' ? 1 : 2));
-    final color = level == 0 ? Colors.blue : (level == 1 ? Colors.green : Colors.orange);
+    final color = type != null ? ninTypeAccentColor(type) : Colors.blue;
     final disableImages = ref.watch(disableImagesProvider);
     final canViewImage = type != null &&
         !disableImages &&
@@ -453,38 +450,65 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
       pinned: true,
       iconTheme: const IconThemeData(color: Colors.white, shadows: [Shadow(color: Colors.black45, blurRadius: 8)]),
       actions: [
-        if (type != null && type.langkode != null)
-          IconButton(
-            icon: const Icon(Icons.open_in_browser, color: Colors.white),
-            tooltip: 'View details on Artsdatabanken website',
-            onPressed: () => launchUrl(
-              Uri.parse('https://artsdatabanken.no/naturtyper/natur-i-norge/${type.langkode}'),
-              mode: LaunchMode.externalApplication,
-            ),
-          ),
         if (type != null)
           Consumer(
-            builder: (context, ref, child) {
+            builder: (context, ref, _) {
               final favorites = ref.watch(favoritesProvider).value ?? [];
               final isFavorite = favorites.contains(type.id);
-              return IconButton(
-                icon: Icon(isFavorite ? Icons.star : Icons.star_border),
-                color: isFavorite ? Colors.amber : Colors.white,
-                tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
-                onPressed: () async {
-                  final db = ref.read(userDatabaseProvider);
-                  if (isFavorite) {
-                    await (db.delete(db.favorites)..where((t) => t.typeId.equals(type.id))).go();
-                  } else {
-                    await db.into(db.favorites).insert(FavoritesCompanion.insert(typeId: type.id));
+              final hasArtsdatabankenLink = type.langkode != null;
+
+              return PopupMenuButton<_TypeDetailMenuAction>(
+                icon: const Icon(Icons.more_vert, color: Colors.white),
+                tooltip: 'More options',
+                onSelected: (action) async {
+                  switch (action) {
+                    case _TypeDetailMenuAction.openArtsdatabanken:
+                      await launchUrl(
+                        Uri.parse('https://artsdatabanken.no/naturtyper/natur-i-norge/${type.langkode}'),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    case _TypeDetailMenuAction.toggleFavorite:
+                      final db = ref.read(userDatabaseProvider);
+                      if (isFavorite) {
+                        await (db.delete(db.favorites)..where((t) => t.typeId.equals(type.id))).go();
+                      } else {
+                        await db.into(db.favorites).insert(FavoritesCompanion.insert(typeId: type.id));
+                      }
                   }
                 },
+                itemBuilder: (context) => [
+                  if (hasArtsdatabankenLink)
+                    const PopupMenuItem(
+                      value: _TypeDetailMenuAction.openArtsdatabanken,
+                      child: Row(
+                        children: [
+                          Icon(Icons.open_in_browser),
+                          SizedBox(width: 12),
+                          Text('Open on Artsdatabanken'),
+                        ],
+                      ),
+                    ),
+                  PopupMenuItem(
+                    value: _TypeDetailMenuAction.toggleFavorite,
+                    child: Row(
+                      children: [
+                        Icon(isFavorite ? Icons.star : Icons.star_border),
+                        const SizedBox(width: 12),
+                        Text(isFavorite ? 'Remove from favorites' : 'Add to favorites'),
+                      ],
+                    ),
+                  ),
+                ],
               );
             },
           ),
       ],
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.only(left: 56, right: 16, bottom: 14),
+        titlePadding: EdgeInsets.only(
+          left: 56,
+          right: type == null ? 16 : 48,
+          bottom: 14,
+        ),
         title: type == null
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -519,43 +543,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                   ),
                 ],
               )
-            : Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
-                      boxShadow: [
-                        BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
-                      ],
-                    ),
-                    child: Text(
-                      type.id,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                        color: color,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      type.navn,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.onSurface,
-                        shadows: [Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12)],
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
+            : _TypeDetailAppBarTitle(type: type, color: color),
         background: type == null ? null : Stack(
           fit: StackFit.expand,
           children: [
@@ -633,18 +621,121 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
   }
 }
 
+enum _TypeDetailMenuAction { openArtsdatabanken, toggleFavorite }
+
+class _TypeDetailAppBarTitle extends ConsumerWidget {
+  final NinType type;
+  final Color color;
+
+  const _TypeDetailAppBarTitle({required this.type, required this.color});
+
+  bool _isExpanded(FlexibleSpaceBarSettings? settings) {
+    if (settings == null) return true;
+    final range = settings.maxExtent - settings.minExtent;
+    if (range <= 0) return true;
+    final expandRatio = (settings.currentExtent - settings.minExtent) / range;
+    return expandRatio > 0.65;
+  }
+
+  Widget _codeChipRow(Color chipColor, bool isFavorite) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
+            ],
+          ),
+          child: Text(
+            type.id,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+              color: chipColor,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ),
+        if (isFavorite) ...[
+          const SizedBox(width: 6),
+          Icon(
+            Icons.star,
+            size: 16,
+            color: Colors.amber[700],
+            shadows: const [Shadow(color: Colors.black45, blurRadius: 6)],
+          ),
+        ],
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = context.dependOnInheritedWidgetOfExactType<FlexibleSpaceBarSettings>();
+    final isExpanded = _isExpanded(settings);
+    final isFavorite = (ref.watch(favoritesProvider).value ?? []).contains(type.id);
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    final nameShadow = Shadow(color: Theme.of(context).colorScheme.surface.withOpacity(0.8), blurRadius: 12);
+    final nameStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: isExpanded ? 15 : 16,
+      height: isExpanded ? 1.25 : 1.1,
+      color: onSurface,
+      shadows: [nameShadow],
+    );
+
+    if (isExpanded) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _codeChipRow(color, isFavorite),
+          const SizedBox(height: 6),
+          Text(
+            type.navn,
+            style: nameStyle,
+            softWrap: true,
+            maxLines: 6,
+            overflow: TextOverflow.clip,
+          ),
+        ],
+      );
+    }
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        _codeChipRow(color, isFavorite),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            type.navn,
+            style: nameStyle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _TypeCard extends ConsumerWidget {
   final NinType type;
   final VoidCallback onTap;
-  final int level;
 
-  const _TypeCard({required this.type, required this.onTap, required this.level});
+  const _TypeCard({required this.type, required this.onTap});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final disableImages = ref.watch(disableImagesProvider);
-    final isIcon = level <= 1;
-    final color = level == 0 ? Colors.blue : (level == 1 ? Colors.green : Colors.orange);
+    final isFavorite = (ref.watch(favoritesProvider).value ?? []).contains(type.id);
+    final isIcon = ninTypeUsesIconLayout(type);
+    final color = ninTypeAccentColor(type);
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -689,24 +780,38 @@ class _TypeCard extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 6, vertical: isTight ? 1 : 2),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(4),
-                            boxShadow: [
-                              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4, offset: const Offset(0, 2)),
-                            ],
-                          ),
-                          child: Text(
-                            type.id,
-                            style: TextStyle(
-                              fontSize: isTight ? 10 : 12, 
-                              fontWeight: FontWeight.w900, 
-                              color: color, 
-                              letterSpacing: 0.5
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 6, vertical: isTight ? 1 : 2),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4),
+                                boxShadow: [
+                                  BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4, offset: const Offset(0, 2)),
+                                ],
+                              ),
+                              child: Text(
+                                type.id,
+                                style: TextStyle(
+                                  fontSize: isTight ? 10 : 12,
+                                  fontWeight: FontWeight.w900,
+                                  color: color,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
                             ),
-                          ),
+                            if (isFavorite) ...[
+                              const SizedBox(width: 6),
+                              Icon(
+                                Icons.star,
+                                size: isTight ? 14 : 16,
+                                color: Colors.amber[700],
+                                shadows: const [Shadow(color: Colors.black45, blurRadius: 6)],
+                              ),
+                            ],
+                          ],
                         ),
                         SizedBox(height: isTight ? 4 : 8),
                         Text(

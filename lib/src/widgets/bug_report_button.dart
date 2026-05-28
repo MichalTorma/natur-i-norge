@@ -10,9 +10,10 @@ class BugReportButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isDesktop = MediaQuery.sizeOf(context).width > 800;
     final bottomPadding = isDesktop ? 16.0 : 88.0;
+    final leftPadding = isDesktop ? 88.0 : 16.0;
 
     return Positioned(
-      right: 16,
+      left: leftPadding,
       bottom: bottomPadding,
       child: FloatingActionButton.small(
         heroTag: 'bug_report_fab',
