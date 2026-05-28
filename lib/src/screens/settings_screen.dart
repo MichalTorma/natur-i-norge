@@ -136,18 +136,9 @@ class SettingsScreen extends ConsumerWidget {
         ListTile(
           leading: const Icon(Icons.bug_report_outlined),
           title: const Text('Report a Bug'),
-          subtitle: const Text('Open GitHub with your current app location pre-filled'),
-          trailing: const Icon(Icons.open_in_new),
-          onTap: () async {
-            try {
-              await BugReportService.launch(ref);
-            } catch (error) {
-              if (!context.mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Could not open GitHub: $error')),
-              );
-            }
-          },
+          subtitle: const Text('Write a comment, then finish on GitHub — no login in the app'),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () => BugReportService.showSheet(context, ref),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),

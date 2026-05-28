@@ -16,17 +16,8 @@ class BugReportButton extends ConsumerWidget {
       bottom: bottomPadding,
       child: FloatingActionButton.small(
         heroTag: 'bug_report_fab',
-        tooltip: 'Report a bug with app location',
-        onPressed: () async {
-          try {
-            await BugReportService.launch(ref);
-          } catch (error) {
-            if (!context.mounted) return;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Could not open GitHub: $error')),
-            );
-          }
-        },
+        tooltip: 'Report a problem',
+        onPressed: () => BugReportService.showSheet(context, ref),
         child: const Icon(Icons.bug_report_outlined),
       ),
     );
