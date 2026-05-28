@@ -6,22 +6,22 @@ abstract final class GadKonstansColors {
 
   static const List<Color> lightStops = [
     Color(0x00000000), // 0 — no fill
-    Color(0xFFF1F8E9), // 1
-    Color(0xFFDCEDC8), // 2
-    Color(0xFFC5E1A5), // 3
-    Color(0xFF81C784), // 4
-    Color(0xFF43A047), // 5
-    Color(0xFF1B5E20), // 6
+    Color(0xFFC8E6C9), // 1 — green 200
+    Color(0xFFA5D6A7), // 2 — green 300
+    Color(0xFF81C784), // 3 — green 400
+    Color(0xFF66BB6A), // 4 — green 400
+    Color(0xFF43A047), // 5 — green 600
+    Color(0xFF1B5E20), // 6 — green 900
   ];
 
   static const List<Color> darkStops = [
     Color(0x00000000), // 0
-    Color(0xFF152218), // 1
-    Color(0xFF1B3A24), // 2
-    Color(0xFF245C32), // 3
-    Color(0xFF2E7D32), // 4
+    Color(0xFF1B3A24), // 1
+    Color(0xFF245C32), // 2
+    Color(0xFF2E7D32), // 3
+    Color(0xFF388E3C), // 4
     Color(0xFF43A047), // 5
-    Color(0xFF81C784), // 6
+    Color(0xFF66BB6A), // 6
   ];
 
   static List<Color> stopsFor(ColorScheme colorScheme) {
@@ -41,5 +41,14 @@ abstract final class GadKonstansColors {
 
     final fraction = clamped - lower.toDouble();
     return Color.lerp(stops[lower], stops[upper], fraction)!;
+  }
+
+  /// Semi-transparent tint between island background and labels.
+  static Color tintFor(double value, ColorScheme colorScheme) {
+    if (value <= 0) return Colors.transparent;
+
+    final t = value.clamp(0, maxValue.toDouble()) / maxValue;
+    final alpha = 0.42 + t * 0.38;
+    return colorFor(value, colorScheme).withValues(alpha: alpha);
   }
 }

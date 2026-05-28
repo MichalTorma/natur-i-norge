@@ -5,8 +5,6 @@ import '../screens/types_screen.dart';
 import '../screens/variable_detail_screen.dart';
 import '../utils/gad_konstans_colors.dart';
 
-enum _IslandPart { full, background, content }
-
 class EcologicalMatrix extends StatefulWidget {
   final List<NinType> subTypes;
   final ValueChanged<NinType>? onPick;
@@ -212,8 +210,6 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                       layout.unitWidth,
                       layout.unitHeight,
                       colorScheme,
-                      part: _IslandPart.background,
-                      gadOverlayActive: true,
                     ),
                     ..._buildGadHeatmap(
                       matrixData,
@@ -222,16 +218,6 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                       layout.unitWidth,
                       layout.unitHeight,
                       colorScheme,
-                    ),
-                    ..._buildIslands(
-                      matrixData,
-                      xSteps,
-                      ySteps,
-                      layout.unitWidth,
-                      layout.unitHeight,
-                      colorScheme,
-                      part: _IslandPart.content,
-                      gadOverlayActive: true,
                     ),
                     ..._buildGadLabels(
                       matrixData,
@@ -249,7 +235,6 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                       layout.unitWidth,
                       layout.unitHeight,
                       colorScheme,
-                      part: _IslandPart.full,
                     ),
                   ],
                 ],
@@ -920,41 +905,9 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     NinType type,
     double width,
     double height,
-    ColorScheme colorScheme, {
-    bool gadOverlayActive = false,
-  }) {
+    ColorScheme colorScheme,
+  ) {
     final showName = height >= 30 && width >= 28;
-
-    TextStyle labelStyle(TextStyle base) {
-      if (!gadOverlayActive) return base;
-      return base.copyWith(
-        shadows: [
-          Shadow(
-            color: Colors.black.withOpacity(0.65),
-            blurRadius: 3,
-          ),
-          Shadow(
-            color: Colors.white.withOpacity(0.35),
-            blurRadius: 1,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      );
-    }
-
-    Widget textBlock(Widget child) {
-      if (!gadOverlayActive) return child;
-      return DecoratedBox(
-        decoration: BoxDecoration(
-          color: colorScheme.surface.withOpacity(0.62),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-          child: child,
-        ),
-      );
-    }
 
     return Padding(
       padding: const EdgeInsets.all(3),
@@ -963,13 +916,11 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
         height: height - 2,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: gadOverlayActive
-                ? Colors.transparent
-                : (_isHighContrast(colorScheme)
-                    ? colorScheme.surface
-                    : colorScheme.surface.withOpacity(0.78)),
+            color: _isHighContrast(colorScheme)
+                ? colorScheme.surface
+                : colorScheme.surface.withOpacity(0.78),
             borderRadius: BorderRadius.circular(4),
-            border: !gadOverlayActive && _isHighContrast(colorScheme)
+            border: _isHighContrast(colorScheme)
                 ? Border.all(
                     color: colorScheme.outline,
                     width: 1,
@@ -983,21 +934,17 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               children: [
                 Expanded(
                   child: Center(
-                    child: textBlock(
-                      _MatrixLabel(
-                        text: type.id,
-                        style: labelStyle(
-                          TextStyle(
-                            fontWeight: FontWeight.w800,
-                            color: colorScheme.primary,
-                            letterSpacing: -0.2,
-                          ),
-                        ),
-                        maxLines: 2,
-                        minFontSize: 9,
-                        maxFontSize: 14,
-                        textAlign: TextAlign.center,
+                    child: _MatrixLabel(
+                      text: type.id,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        color: colorScheme.primary,
+                        letterSpacing: -0.2,
                       ),
+                      maxLines: 2,
+                      minFontSize: 9,
+                      maxFontSize: 14,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -1005,20 +952,16 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                   Expanded(
                     flex: 2,
                     child: Center(
-                      child: textBlock(
-                        _MatrixLabel(
-                          text: type.navn,
-                          style: labelStyle(
-                            TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: colorScheme.onSurface.withOpacity(0.88),
-                            ),
-                          ),
-                          maxLines: height >= 72 ? 3 : 2,
-                          minFontSize: 8,
-                          maxFontSize: 11,
-                          textAlign: TextAlign.center,
+                      child: _MatrixLabel(
+                        text: type.navn,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: colorScheme.onSurface.withOpacity(0.88),
                         ),
+                        maxLines: height >= 72 ? 3 : 2,
+                        minFontSize: 8,
+                        maxFontSize: 11,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
@@ -1239,10 +1182,6 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     return map['$ka|$uf|$vm'];
   }
 
-  Color _gadOverlayColor(double value, ColorScheme colorScheme) {
-    return GadKonstansColors.colorFor(value, colorScheme);
-  }
-
   String _formatGadValue(double value) {
     if (value == value.roundToDouble()) {
       return value.toInt().toString();
@@ -1312,6 +1251,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           for (final yTrinn in yGroup) {
             final value = _lookupGad(xTrinn, yTrinn);
             if (value != null && value > 0) {
+              final tint = GadKonstansColors.tintFor(value, colorScheme);
               cells.add(
                 Positioned(
                   left: cumX,
@@ -1324,17 +1264,10 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
                       if (includeColor)
                         IgnorePointer(
                           child: Container(
-                            margin: const EdgeInsets.all(0.5),
+                            margin: const EdgeInsets.all(1),
                             decoration: BoxDecoration(
-                              color: _gadOverlayColor(value, colorScheme),
-                              borderRadius: BorderRadius.circular(2),
-                              border: Border.all(
-                                color: _matrixBorderColor(
-                                  colorScheme,
-                                  opacity: 0.18,
-                                ),
-                                width: 0.5,
-                              ),
+                              color: tint,
+                              borderRadius: BorderRadius.circular(3),
                             ),
                           ),
                         ),
@@ -1361,32 +1294,11 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
   }
 
   Widget _buildIslandLayer({
-    required _IslandPart part,
     required NinType type,
     required double width,
     required double height,
     required ColorScheme colorScheme,
-    required bool gadOverlayActive,
   }) {
-    if (part == _IslandPart.background) {
-      return ValueListenableBuilder<String?>(
-        valueListenable: _hoveredTypeId,
-        builder: (context, hoveredId, _) {
-          final isHighlighted = hoveredId == type.id;
-          return IgnorePointer(
-            child: Container(
-              decoration: _islandDecoration(
-                colorScheme: colorScheme,
-                isHighlighted: isHighlighted,
-                gadOverlayActive: gadOverlayActive,
-                backgroundOnly: true,
-              ),
-            ),
-          );
-        },
-      );
-    }
-
     return MouseRegion(
       onEnter: (_) => _hoveredTypeId.value = type.id,
       onExit: (_) => _hoveredTypeId.value = null,
@@ -1394,7 +1306,6 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
         valueListenable: _hoveredTypeId,
         builder: (context, hoveredId, _) {
           final isHighlighted = hoveredId == type.id;
-          final showBackground = part == _IslandPart.full;
 
           return InkWell(
             onTap: () => Navigator.push(
@@ -1407,21 +1318,16 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
               label: 'Nature type ${type.id}: ${type.navn}. Tap to select or view details.',
               button: true,
               child: Container(
-                decoration: showBackground
-                    ? _islandDecoration(
-                        colorScheme: colorScheme,
-                        isHighlighted: isHighlighted,
-                        gadOverlayActive: gadOverlayActive,
-                        backgroundOnly: false,
-                      )
-                    : null,
+                decoration: _islandDecoration(
+                  colorScheme: colorScheme,
+                  isHighlighted: isHighlighted,
+                ),
                 alignment: Alignment.center,
                 child: _buildCellContent(
                   type,
                   width,
                   height,
                   colorScheme,
-                  gadOverlayActive: gadOverlayActive,
                 ),
               ),
             ),
@@ -1434,23 +1340,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
   BoxDecoration _islandDecoration({
     required ColorScheme colorScheme,
     required bool isHighlighted,
-    required bool gadOverlayActive,
-    required bool backgroundOnly,
   }) {
     final primaryColor = colorScheme.primary;
-
-    if (gadOverlayActive && backgroundOnly) {
-      return BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(
-          color: isHighlighted
-              ? primaryColor
-              : _matrixBorderColor(colorScheme, opacity: 0.22),
-          width: _matrixBorderWidth(colorScheme),
-        ),
-      );
-    }
 
     if (_isHighContrast(colorScheme)) {
       return BoxDecoration(
@@ -1486,7 +1377,7 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
             : _matrixBorderColor(colorScheme, opacity: 0.25),
         width: _matrixBorderWidth(colorScheme),
       ),
-      boxShadow: isHighlighted && !gadOverlayActive
+      boxShadow: isHighlighted
           ? [
               BoxShadow(
                 color: primaryColor.withOpacity(0.2),
@@ -1504,10 +1395,8 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
     List<String> ySteps,
     double unitWidth,
     double unitHeight,
-    ColorScheme colorScheme, {
-    _IslandPart part = _IslandPart.full,
-    bool gadOverlayActive = false,
-  }) {
+    ColorScheme colorScheme,
+  ) {
     final List<Widget> islands = [];
     final Set<String> processedCells = {}; // Format: "yIndex-xIndex"
 
@@ -1574,12 +1463,10 @@ class _EcologicalMatrixState extends State<EcologicalMatrix> {
           child: Padding(
             padding: const EdgeInsets.all(1.0),
             child: _buildIslandLayer(
-              part: part,
               type: type,
               width: width,
               height: height,
               colorScheme: colorScheme,
-              gadOverlayActive: gadOverlayActive,
             ),
           ),
         ));
