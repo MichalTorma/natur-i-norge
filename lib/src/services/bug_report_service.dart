@@ -13,16 +13,16 @@ import '../providers/gad_provider.dart';
 import '../providers/settings_provider.dart';
 import '../widgets/bug_report_sheet.dart';
 
+enum ReportKind { bug, comment }
+
 class BugReportDraft {
   final AppLocation location;
   final String deepLink;
-  final String title;
   final Map<String, dynamic> contextJson;
 
   const BugReportDraft({
     required this.location,
     required this.deepLink,
-    required this.title,
     required this.contextJson,
   });
 
@@ -39,9 +39,15 @@ enum BugReportLaunchResult {
 
 class BugReportService {
   static const repoIssuesUrl = 'https://github.com/geco-nhm/natur-i-norge/issues/new';
-  static const issueTemplate = 'bug_report.md';
   static const maxPrefilledUrlLength = 7500;
   static const minCommentLength = 8;
+
+  static String templateFor(ReportKind kind) {
+    return switch (kind) {
+      ReportKind.bug => 'bug_report.md',
+      ReportKind.comment => 'comment.md',
+    };
+  }
 
   static BugReportDraft buildDraft(WidgetRef ref) {
     final location = ref.read(appLocationProvider);
@@ -73,7 +79,6 @@ class BugReportService {
     return BugReportDraft(
       location: location,
       deepLink: deepLink,
-      title: suggestedTitle(location),
       contextJson: contextJson,
     );
   }
@@ -88,13 +93,22 @@ class BugReportService {
       builder: (sheetContext) => BugReportSheet(
         draft: draft,
         minCommentLength: minCommentLength,
-        onSubmit: (comment) => launchOnGitHub(draft, comment),
+        onSubmit: (kind, comment) => launchOnGitHub(draft, kind, comment),
       ),
     );
   }
 
+  static String suggestedTitle(ReportKind kind, AppLocation location) {
+    final prefix = switch (kind) {
+      ReportKind.bug => '[Bug]',
+      ReportKind.comment => '[Comment]',
+    };
+    return '$prefix ${location.tabName}${locationSuffix(location)}';
+  }
+
   static String composeIssueBody(
     BugReportDraft draft,
+    ReportKind kind,
     String comment, {
     bool compactJson = false,
   }) {
@@ -103,14 +117,19 @@ class BugReportService {
         ? jsonEncode(draft.contextJson)
         : const JsonEncoder.withIndent('  ').convert(draft.contextJson);
 
+    final contextHeading = switch (kind) {
+      ReportKind.bug => 'Debug context (auto-generated)',
+      ReportKind.comment => 'App context (auto-generated)',
+    };
+
     return '''
 $userComment
 
 ---
-<sub>Reported from NiN Guide · [Open reproduction link](${draft.deepLink})</sub>
+<sub>Sent from NiN Guide · [Open app location](${draft.deepLink})</sub>
 
 <details>
-<summary>Debug context (auto-generated)</summary>
+<summary>$contextHeading</summary>
 
 **Reproduction link:** ${draft.deepLink}
 
@@ -124,34 +143,39 @@ $encodedContext
 
   static Uri buildIssueUri(
     BugReportDraft draft,
+    ReportKind kind,
     String comment, {
     bool compactJson = false,
     bool includeBody = true,
   }) {
     final params = <String, String>{
-      'template': issueTemplate,
-      'title': draft.title,
+      'template': templateFor(kind),
+      'title': suggestedTitle(kind, draft.location),
     };
     if (includeBody) {
-      params['body'] = composeIssueBody(draft, comment, compactJson: compactJson);
+      params['body'] = composeIssueBody(draft, kind, comment, compactJson: compactJson);
     }
     return Uri.parse(repoIssuesUrl).replace(queryParameters: params);
   }
 
   static Future<BugReportLaunchResult> launchOnGitHub(
     BugReportDraft draft,
+    ReportKind kind,
     String comment,
   ) async {
-    var uri = buildIssueUri(draft, comment);
+    final title = suggestedTitle(kind, draft.location);
+    var uri = buildIssueUri(draft, kind, comment);
     if (uri.toString().length > maxPrefilledUrlLength) {
-      uri = buildIssueUri(draft, comment, compactJson: true);
+      uri = buildIssueUri(draft, kind, comment, compactJson: true);
     }
 
     if (uri.toString().length > maxPrefilledUrlLength) {
       await Clipboard.setData(
-        ClipboardData(text: '# ${draft.title}\n\n${composeIssueBody(draft, comment, compactJson: true)}'),
+        ClipboardData(
+          text: '# $title\n\n${composeIssueBody(draft, kind, comment, compactJson: true)}',
+        ),
       );
-      uri = buildIssueUri(draft, comment, includeBody: false);
+      uri = buildIssueUri(draft, kind, comment, includeBody: false);
       final launched = await _openGitHub(uri);
       if (!launched) {
         throw Exception('Could not open GitHub issue page');
@@ -172,10 +196,6 @@ $encodedContext
       mode: LaunchMode.externalApplication,
       webOnlyWindowName: kIsWeb ? '_blank' : null,
     );
-  }
-
-  static String suggestedTitle(AppLocation location) {
-    return '[Bug] ${location.tabName}${locationSuffix(location)}';
   }
 
   static String locationSuffix(AppLocation location) {
@@ -200,9 +220,9 @@ $encodedContext
   static String successMessage(BugReportLaunchResult result) {
     return switch (result) {
       BugReportLaunchResult.openedPrefilled =>
-        'GitHub opened with your comment attached. Click Submit new issue to finish.',
+        'GitHub opened with your message attached. Click Submit new issue to finish.',
       BugReportLaunchResult.openedWithClipboardFallback =>
-        'Report copied to clipboard. On GitHub, paste into the issue body, then submit.',
+        'Message copied to clipboard. On GitHub, paste into the issue body, then submit.',
     };
   }
 

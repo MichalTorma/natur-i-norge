@@ -134,9 +134,9 @@ class SettingsScreen extends ConsumerWidget {
           ),
         ),
         ListTile(
-          leading: const Icon(Icons.bug_report_outlined),
-          title: const Text('Report a Bug'),
-          subtitle: const Text('Write a comment, then finish on GitHub — no login in the app'),
+          leading: const Icon(Icons.chat_bubble_outline),
+          title: const Text('Send feedback'),
+          subtitle: const Text('Comment or bug report — finishes on GitHub, no login in the app'),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => BugReportService.showSheet(context, ref),
         ),

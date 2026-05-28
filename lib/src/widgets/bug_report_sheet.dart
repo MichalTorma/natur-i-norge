@@ -6,7 +6,7 @@ import '../services/bug_report_service.dart';
 class BugReportSheet extends StatefulWidget {
   final BugReportDraft draft;
   final int minCommentLength;
-  final Future<BugReportLaunchResult> Function(String comment) onSubmit;
+  final Future<BugReportLaunchResult> Function(ReportKind kind, String comment) onSubmit;
 
   const BugReportSheet({
     super.key,
@@ -23,6 +23,7 @@ class _BugReportSheetState extends State<BugReportSheet> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
   bool _submitting = false;
+  ReportKind _kind = ReportKind.comment;
 
   @override
   void initState() {
@@ -43,11 +44,21 @@ class _BugReportSheetState extends State<BugReportSheet> {
   bool get _canSubmit =>
       !_submitting && _controller.text.trim().length >= widget.minCommentLength;
 
+  String get _hintText => switch (_kind) {
+        ReportKind.bug => 'What went wrong? Steps to reproduce help.',
+        ReportKind.comment => 'Share feedback, an idea, or something confusing…',
+      };
+
+  String get _stepOneLabel => switch (_kind) {
+        ReportKind.bug => 'Describe the bug',
+        ReportKind.comment => 'Write your comment',
+      };
+
   Future<void> _submit() async {
     if (!_canSubmit) return;
     setState(() => _submitting = true);
     try {
-      final result = await widget.onSubmit(_controller.text);
+      final result = await widget.onSubmit(_kind, _controller.text);
       if (!mounted) return;
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -76,20 +87,39 @@ class _BugReportSheetState extends State<BugReportSheet> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Report a problem',
+            'Send to GitHub',
             style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            'Write a short comment here. Your screen location and debug details are attached automatically on GitHub — no login needed in the app.',
+            'Choose bug or comment, write your message, then finish on GitHub. App location is attached automatically.',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
           const SizedBox(height: 16),
+          SegmentedButton<ReportKind>(
+            segments: const [
+              ButtonSegment(
+                value: ReportKind.comment,
+                icon: Icon(Icons.chat_bubble_outline, size: 18),
+                label: Text('Comment'),
+              ),
+              ButtonSegment(
+                value: ReportKind.bug,
+                icon: Icon(Icons.bug_report_outlined, size: 18),
+                label: Text('Bug'),
+              ),
+            ],
+            selected: {_kind},
+            onSelectionChanged: (selection) {
+              setState(() => _kind = selection.first);
+            },
+          ),
+          const SizedBox(height: 16),
           _StepRow(
             step: 1,
-            label: 'Describe the problem',
+            label: _stepOneLabel,
             isActive: true,
             theme: theme,
           ),
@@ -104,12 +134,12 @@ class _BugReportSheetState extends State<BugReportSheet> {
               ),
               InputChip(
                 avatar: const Icon(Icons.link, size: 18),
-                label: const Text('Copy reproduction link'),
+                label: const Text('Copy app location link'),
                 onPressed: () async {
                   await Clipboard.setData(ClipboardData(text: widget.draft.deepLink));
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Reproduction link copied')),
+                    const SnackBar(content: Text('App location link copied')),
                   );
                 },
               ),
@@ -124,7 +154,7 @@ class _BugReportSheetState extends State<BugReportSheet> {
             maxLength: 4000,
             textCapitalization: TextCapitalization.sentences,
             decoration: InputDecoration(
-              hintText: 'What went wrong?',
+              hintText: _hintText,
               filled: true,
               fillColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
               border: OutlineInputBorder(
@@ -138,7 +168,7 @@ class _BugReportSheetState extends State<BugReportSheet> {
           Text(
             commentLength < widget.minCommentLength
                 ? 'At least ${widget.minCommentLength} characters'
-                : 'Ready to send',
+                : 'Ready to send as ${_kind == ReportKind.bug ? 'bug report' : 'comment'}',
             style: theme.textTheme.bodySmall?.copyWith(
               color: commentLength < widget.minCommentLength
                   ? theme.colorScheme.error

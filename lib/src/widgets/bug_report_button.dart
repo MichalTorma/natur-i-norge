@@ -16,9 +16,9 @@ class BugReportButton extends ConsumerWidget {
       bottom: bottomPadding,
       child: FloatingActionButton.small(
         heroTag: 'bug_report_fab',
-        tooltip: 'Report a problem',
+        tooltip: 'Send a comment or bug report',
         onPressed: () => BugReportService.showSheet(context, ref),
-        child: const Icon(Icons.bug_report_outlined),
+        child: const Icon(Icons.chat_bubble_outline),
       ),
     );
   }

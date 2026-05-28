@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: Report from the app (recommended)
     url: https://geco-nhm.github.io/natur-i-norge/app/
-    about: Use the bug button in NiN Guide — it attaches your screen location and debug context with no GitHub login in the app.
+    about: Use the feedback button in NiN Guide — choose Comment or Bug and your app location is attached automatically.
   - name: Questions & discussion
     url: https://github.com/geco-nhm/natur-i-norge/discussions
     about: Ask questions or share ideas that are not bug reports.
