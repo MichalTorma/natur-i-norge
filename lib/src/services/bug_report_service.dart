@@ -133,12 +133,12 @@ class BugReportService {
 $userComment
 
 ---
-<sub>Sent from NiN Guide · [Open app location](${draft.deepLink})</sub>
+<sub>Sent from NiN Guide · [Open this screen in the web app](${draft.deepLink})</sub>
 
 <details>
 <summary>$contextHeading</summary>
 
-**Reproduction link:** ${draft.deepLink}
+**Screen link:** ${draft.deepLink}
 
 ```json
 $encodedContext

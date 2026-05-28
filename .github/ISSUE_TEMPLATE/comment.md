@@ -16,7 +16,7 @@ Just click **Submit new issue**.
 <details>
 <summary>App context (auto-generated when reporting from the app)</summary>
 
-**Reproduction link:**
+**Screen link:**
 
 ```json
 {}

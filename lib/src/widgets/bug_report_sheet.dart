@@ -92,7 +92,7 @@ class _BugReportSheetState extends State<BugReportSheet> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Choose bug or comment, write your message, then finish on GitHub. App location is attached automatically.',
+            'Write your message, then finish on GitHub. A link to this screen is included automatically.',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
             ),
@@ -129,17 +129,17 @@ class _BugReportSheetState extends State<BugReportSheet> {
             runSpacing: 8,
             children: [
               Chip(
-                avatar: Icon(Icons.place_outlined, size: 18, color: theme.colorScheme.primary),
-                label: Text(widget.draft.locationLabel),
+                avatar: Icon(Icons.layers_outlined, size: 18, color: theme.colorScheme.primary),
+                label: Text('Screen: ${widget.draft.locationLabel}'),
               ),
               InputChip(
                 avatar: const Icon(Icons.link, size: 18),
-                label: const Text('Copy app location link'),
+                label: const Text('Copy link to this screen'),
                 onPressed: () async {
                   await Clipboard.setData(ClipboardData(text: widget.draft.deepLink));
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('App location link copied')),
+                    const SnackBar(content: Text('Link to this screen copied')),
                   );
                 },
               ),

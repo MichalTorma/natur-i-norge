@@ -18,7 +18,7 @@ Reporting manually? Describe the problem below like a comment.
 <details>
 <summary>Debug context (auto-generated when reporting from the app)</summary>
 
-**Reproduction link:**
+**Screen link:**
 
 ```json
 {}
