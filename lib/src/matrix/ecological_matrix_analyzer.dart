@@ -11,6 +11,7 @@ enum MatrixHealthKind {
   identicalFootprint,
   partialOverlap,
   missingLkm,
+  filterSliceHidden,
   unplacedType,
   multiStepSpan,
 }
@@ -133,14 +134,22 @@ class EcologicalMatrixAnalyzer {
       );
       if (vars.isNotEmpty) continue;
       if (type.kategori == 'Kartleggingsenhet' && type.containsTypes != null) {
+        final visibleAt = _matchingFilterValues(type, grunntypeById, axes.filters);
+        final filterDesc = axes.filters.entries
+            .map((e) => '${e.key}=${e.value}')
+            .join(', ');
         issues.add(
           MatrixHealthIssue(
-            severity: MatrixHealthSeverity.warning,
-            kind: MatrixHealthKind.missingLkm,
-            title: 'No matching grunntyper for filter',
+            severity: MatrixHealthSeverity.info,
+            kind: MatrixHealthKind.filterSliceHidden,
+            title: 'Hidden at current filter slice',
             description:
-                '${type.id} (${type.navn}) has no constituent grunntyper that match the current matrix filters.',
+                '${type.id} (${type.navn}) is not shown at the default matrix slice ($filterDesc). '
+                'Its constituent grunntyper belong to other slices of the fixed filter variable.',
             typeIds: [type.id],
+            detail: visibleAt.isEmpty
+                ? null
+                : 'Visible when ${_formatVisibleAtFilters(axes.filters.keys.first, visibleAt)}',
           ),
         );
         continue;
@@ -339,6 +348,59 @@ class EcologicalMatrixAnalyzer {
     );
   }
 
+  static Set<String> _matchingFilterValues(
+    NinType ke,
+    Map<String, NinType> grunntypeById,
+    Map<String, String> activeFilters,
+  ) {
+    if (ke.containsTypes == null || activeFilters.isEmpty) return {};
+
+    final visibleAt = <String>{};
+    for (final filter in activeFilters.entries) {
+      for (final alt in _filterValuesFromConstituents(ke, grunntypeById, filter.key)) {
+        if (alt == filter.value) continue;
+        final altFilters = Map<String, String>.from(activeFilters);
+        altFilters[filter.key] = alt;
+        final vars = parseTypeVariables(
+          ke,
+          grunntypeById: grunntypeById,
+          activeFilters: altFilters,
+        );
+        if (vars.isNotEmpty) visibleAt.add(alt);
+      }
+    }
+    return visibleAt;
+  }
+
+  static Iterable<String> _filterValuesFromConstituents(
+    NinType ke,
+    Map<String, NinType> grunntypeById,
+    String filterKey,
+  ) sync* {
+    try {
+      final ids = (jsonDecode(ke.containsTypes!) as List<dynamic>).map((e) => e.toString());
+      for (final id in ids) {
+        final gt = grunntypeById[id];
+        final lkmData = gt?.lkmData;
+        if (lkmData == null) continue;
+        try {
+          final gtVars = EffectiveLkm.parseEntries(jsonDecode(lkmData) as List<dynamic>);
+          final steps = gtVars[filterKey];
+          if (steps != null) {
+            for (final step in steps) {
+              yield step;
+            }
+          }
+        } catch (_) {}
+      }
+    } catch (_) {}
+  }
+
+  static String _formatVisibleAtFilters(String filterKey, Set<String> values) {
+    final sorted = values.toList()..sort();
+    return '$filterKey=${sorted.join(', ')}';
+  }
+
   static String _summarizeCells(Set<String> cells, String xVar, String? yVar) {
     final labels = cells.map((key) {
       final parts = key.split('|');
@@ -370,6 +432,10 @@ class EcologicalMatrixAnalyzer {
     if (report.activeFilters.isNotEmpty) {
       buffer.writeln(
         'Fixed filters: ${report.activeFilters.entries.map((e) => '${e.key}=${e.value}').join(', ')}',
+      );
+      buffer.writeln(
+        'Note: The report uses the default filter slice above. '
+        'Types hidden here may appear when you change that filter in the matrix.',
       );
     }
     buffer.writeln();
