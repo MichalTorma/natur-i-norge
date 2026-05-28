@@ -49,6 +49,13 @@ class BugReportService {
     };
   }
 
+  static String labelsFor(ReportKind kind) {
+    return switch (kind) {
+      ReportKind.bug => 'bug,from-app',
+      ReportKind.comment => 'comment,from-app',
+    };
+  }
+
   static BugReportDraft buildDraft(WidgetRef ref) {
     final location = ref.read(appLocationProvider);
     final packageInfo = ref.read(packageInfoProvider).asData?.value;
@@ -151,6 +158,7 @@ $encodedContext
     final params = <String, String>{
       'template': templateFor(kind),
       'title': suggestedTitle(kind, draft.location),
+      'labels': labelsFor(kind),
     };
     if (includeBody) {
       params['body'] = composeIssueBody(draft, kind, comment, compactJson: compactJson);
@@ -164,18 +172,14 @@ $encodedContext
     String comment,
   ) async {
     final title = suggestedTitle(kind, draft.location);
-    var uri = buildIssueUri(draft, kind, comment);
+    var uri = buildIssueUri(draft, kind, comment, compactJson: true);
     if (uri.toString().length > maxPrefilledUrlLength) {
-      uri = buildIssueUri(draft, kind, comment, compactJson: true);
-    }
-
-    if (uri.toString().length > maxPrefilledUrlLength) {
+      uri = buildIssueUri(draft, kind, comment, compactJson: true, includeBody: false);
       await Clipboard.setData(
         ClipboardData(
           text: '# $title\n\n${composeIssueBody(draft, kind, comment, compactJson: true)}',
         ),
       );
-      uri = buildIssueUri(draft, kind, comment, includeBody: false);
       final launched = await _openGitHub(uri);
       if (!launched) {
         throw Exception('Could not open GitHub issue page');
