@@ -10,7 +10,9 @@ import '../navigation/app_route_tracker.dart';
 import '../navigation/app_routes.dart';
 import '../navigation/app_url_sync.dart';
 import '../providers/database_provider.dart';
+import '../providers/nin_search_provider.dart';
 import '../widgets/bug_report_button.dart';
+import '../widgets/nin_search_sheet.dart';
 import 'types_screen.dart';
 import 'variables_screen.dart';
 import 'favorites_screen.dart';
@@ -95,7 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.read(appLocationProvider.notifier).setTab(index);
   }
 
-  Future<void> _openTypeInTypesTab(NinType target) async {
+  Future<void> _openTypeInTypesTab(NinType target, {String? highlightQuery}) async {
     final db = ref.read(databaseProvider);
     final path = <NinType>[];
     NinType? current = target;
@@ -113,14 +115,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final typesNav = _navigatorKeys[_typesTab].currentState!;
     _resetTabToRoot(_typesTab);
 
-    for (final type in path) {
-      typesNav.push(AppRoutes.types(type: type));
+    ref.read(pendingSearchHighlightProvider.notifier).setHighlight(
+          typeId: target.id,
+          query: highlightQuery,
+        );
+
+    for (var i = 0; i < path.length; i++) {
+      typesNav.push(
+        AppRoutes.types(
+          type: path[i],
+          highlightQuery: i == path.length - 1 ? highlightQuery : null,
+        ),
+      );
     }
 
     if (mounted) {
       setState(() => _selectedIndex = _typesTab);
       ref.read(appLocationProvider.notifier).setTab(_typesTab);
     }
+  }
+
+  void _openSearch() {
+    showNinSearchSheet(
+      context,
+      ref: ref,
+      onSelectType: (type, query) => _openTypeInTypesTab(type, highlightQuery: query),
+    );
   }
 
   Future<void> _restoreLocation(AppLocation location) async {
@@ -176,12 +196,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit3): const _SelectTabIntent(_favoritesTab),
         LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit4): const _SelectTabIntent(_galleryTab),
         LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.digit5): const _SelectTabIntent(_settingsTab),
+        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyK): const _OpenSearchIntent(),
+        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK): const _OpenSearchIntent(),
       },
       child: Actions(
         actions: {
           _SelectTabIntent: CallbackAction<_SelectTabIntent>(
             onInvoke: (intent) {
               _onTabSelected(intent.index);
+              return null;
+            },
+          ),
+          _OpenSearchIntent: CallbackAction<_OpenSearchIntent>(
+            onInvoke: (_) {
+              _openSearch();
               return null;
             },
           ),
@@ -323,4 +351,8 @@ class _SelectTabIntent extends Intent {
   final int index;
 
   const _SelectTabIntent(this.index);
+}
+
+class _OpenSearchIntent extends Intent {
+  const _OpenSearchIntent();
 }

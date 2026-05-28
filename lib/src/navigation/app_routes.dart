@@ -28,13 +28,24 @@ class AppRoutes {
   static MaterialPageRoute<void> types({
     NinType? type,
     ValueChanged<NinType>? onPick,
+    String? highlightQuery,
   }) {
     return MaterialPageRoute<void>(
       settings: settings(
         onPick != null ? 'type_picker' : 'types',
-        type != null ? {'typeId': type.id} : null,
+        type != null
+            ? {
+                'typeId': type.id,
+                if (highlightQuery != null && highlightQuery.isNotEmpty)
+                  'highlightQuery': highlightQuery,
+              }
+            : null,
       ),
-      builder: (_) => TypesScreen(type: type, onPick: onPick),
+      builder: (_) => TypesScreen(
+        type: type,
+        onPick: onPick,
+        highlightQuery: highlightQuery,
+      ),
     );
   }
 

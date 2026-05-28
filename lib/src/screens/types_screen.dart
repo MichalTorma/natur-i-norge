@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:drift/drift.dart' show Value;
+import '../providers/nin_search_provider.dart';
 import '../providers/settings_provider.dart';
 import '../providers/database_provider.dart';
 import '../models/nin_database.dart';
@@ -15,25 +16,33 @@ import '../widgets/expandable_markdown.dart';
 import '../widgets/local_image.dart';
 import '../widgets/type_image_viewer.dart';
 import '../nin_type_colors.dart';
-import 'camera_screen.dart';
+import '../search/nin_type_navigation.dart';
+import '../widgets/nin_search_sheet.dart';
 
 class TypesScreen extends ConsumerStatefulWidget {
   final NinType? type;
   final ValueChanged<NinType>? onPick;
-  const TypesScreen({super.key, this.type, this.onPick});
+  final String? highlightQuery;
+
+  const TypesScreen({
+    super.key,
+    this.type,
+    this.onPick,
+    this.highlightQuery,
+  });
 
   @override
   ConsumerState<TypesScreen> createState() => _TypesScreenState();
 }
 
 class _TypesScreenState extends ConsumerState<TypesScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-
   @override
   Widget build(BuildContext context) {
     final selectedScale = ref.watch(selectedScaleProvider);
     final showLkmNames = ref.watch(showLkmNamesProvider);
+    final pendingHighlight = ref.watch(pendingSearchHighlightProvider);
+    final effectiveHighlightQuery = widget.highlightQuery ??
+        (pendingHighlight?.typeId == widget.type?.id ? pendingHighlight?.query : null);
     final hovedtypeId = widget.type?.id;
     final isGadCompatible = isGadCompatibleHovedtype(hovedtypeId);
     final gadOverlayVisible =
@@ -42,9 +51,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
         ? ref.watch(gadConstancyMapProvider).asData?.value
         : null;
     final parentId = widget.type?.id;
-    final typesAsync = _searchQuery.isEmpty
-        ? ref.watch(subTypesProvider(parentId ?? ''))
-        : ref.watch(searchTypesProvider(_searchQuery));
+    final typesAsync = ref.watch(subTypesProvider(parentId ?? ''));
 
     return Scaffold(
       body: CustomScrollView(
@@ -110,15 +117,23 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
               },
             ),
           
-          // Search Bar
+          // Search entry
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
               child: TextField(
-                controller: _searchController,
+                readOnly: true,
+                onTap: _openSearch,
                 decoration: InputDecoration(
-                  hintText: 'Search codes or names...',
+                  hintText: 'Search codes, names, descriptions…',
                   prefixIcon: const Icon(Icons.search),
+                  suffixIcon: MediaQuery.sizeOf(context).width > 800
+                      ? Icon(
+                          Icons.keyboard_command_key,
+                          size: 18,
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.35),
+                        )
+                      : null,
                   filled: true,
                   fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
@@ -127,13 +142,12 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                   ),
                   contentPadding: EdgeInsets.zero,
                 ),
-                onChanged: (value) => setState(() => _searchQuery = value),
               ),
             ),
           ),
           
           // Description Header
-          if (widget.type != null && widget.type!.description != null && _searchQuery.isEmpty)
+          if (widget.type != null && widget.type!.description != null)
             Consumer(
               builder: (context, ref, _) {
                 final subtypesAsync = ref.watch(subTypesProvider(widget.type!.id));
@@ -166,6 +180,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                         ExpandableMarkdown(
                           data: widget.type!.description!,
                           collapsible: hasSubtypes,
+                          highlightQuery: effectiveHighlightQuery,
                         ),
                         const Divider(height: 32),
                       ],
@@ -186,7 +201,6 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
               
               // Filter types based on selection
               final types = allTypes.where((t) {
-                if (_searchQuery.isNotEmpty) return true;
                 if (!isHovedtype) return true;
                 
                 if (selectedScale == 'Biologisk') {
@@ -200,7 +214,7 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
-                    if (isHovedtype && _searchQuery.isEmpty) ...[
+                    if (isHovedtype) ...[
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                         child: Text(
@@ -387,8 +401,22 @@ class _TypesScreenState extends ConsumerState<TypesScreen> {
     );
   }
 
+  void _openSearch() {
+    showNinSearchSheet(
+      context,
+      ref: ref,
+      onSelectType: (type, query) => navigateToTypePath(
+        context,
+        ref,
+        type,
+        onPick: widget.onPick,
+        highlightQuery: query,
+      ),
+    );
+  }
+
   Widget? _buildFloatingActionButton(AsyncValue<List<NinType>> typesAsync) {
-    if (widget.type == null || _searchQuery.isNotEmpty) return null;
+    if (widget.type == null) return null;
 
     return typesAsync.when(
       data: (subtypes) {

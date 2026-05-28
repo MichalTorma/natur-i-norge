@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
+import 'highlighted_markdown.dart';
+
 class ExpandableMarkdown extends StatefulWidget {
   final String data;
   final int maxCollapsedHeight;
   final bool collapsible;
+  final String? highlightQuery;
 
   const ExpandableMarkdown({
     super.key,
     required this.data,
     this.maxCollapsedHeight = 200,
     this.collapsible = true,
+    this.highlightQuery,
   });
 
   @override
@@ -54,27 +58,31 @@ class _ExpandableMarkdownState extends State<ExpandableMarkdown> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
-    final markdownContent = MarkdownBody(
-      data: widget.data,
-      selectable: true,
-      styleSheet: MarkdownStyleSheet(
-        p: theme.textTheme.bodyMedium?.copyWith(fontSize: 16, height: 1.6, letterSpacing: 0.2),
-        h1: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
-        h2: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
-        h3: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
-        listBullet: TextStyle(color: colorScheme.primary),
-      ),
-    );
+    final highlightQuery = widget.highlightQuery?.trim();
+    final hasHighlight = highlightQuery != null && highlightQuery.isNotEmpty;
+    final effectiveCollapsible = widget.collapsible && !hasHighlight;
 
-    if (!widget.collapsible) {
+    final Widget markdownContent = hasHighlight
+        ? HighlightedMarkdown(data: widget.data, highlightQuery: highlightQuery)
+        : MarkdownBody(
+            data: widget.data,
+            selectable: true,
+            styleSheet: MarkdownStyleSheet(
+              p: theme.textTheme.bodyMedium?.copyWith(fontSize: 16, height: 1.6, letterSpacing: 0.2),
+              h1: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
+              h2: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
+              h3: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
+              listBullet: TextStyle(color: colorScheme.primary),
+            ),
+          );
+
+    if (!effectiveCollapsible) {
       return markdownContent;
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Measurement widget (hidden)
         Offstage(
           child: Container(
             key: _contentKey,
@@ -107,7 +115,7 @@ class _ExpandableMarkdownState extends State<ExpandableMarkdown> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          colorScheme.surface.withOpacity(0),
+                          colorScheme.surface.withValues(alpha: 0),
                           colorScheme.surface,
                         ],
                       ),
