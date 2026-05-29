@@ -56,13 +56,7 @@ class SettingsScreen extends ConsumerWidget {
             title: const Text('Sign in to Backup'),
             subtitle: const Text('Required for automated cloud storage'),
             trailing: ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) => const BackupConsentDialog(),
-                );
-              },
+              onPressed: () => showBackupConsentDialog(context),
               child: const Text('Google Sign-In'),
             ),
           )

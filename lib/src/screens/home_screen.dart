@@ -12,6 +12,7 @@ import '../navigation/app_url_sync.dart';
 import '../providers/database_provider.dart';
 import '../providers/nin_search_provider.dart';
 import '../services/bug_report_service.dart';
+import '../widgets/backup_consent_dialog.dart';
 import '../widgets/nin_search_sheet.dart';
 import 'types_screen.dart';
 import 'variables_screen.dart';
@@ -116,6 +117,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     setState(() => _selectedIndex = index);
     ref.read(appLocationProvider.notifier).setTab(index);
+
+    if (index == _galleryTab) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          showBackupConsentDialogIfNeeded(context, ref);
+        }
+      });
+    }
   }
 
   Future<void> _openTypeInTypesTab(NinType target, {String? highlightQuery}) async {
@@ -175,6 +184,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       setState(() => _selectedIndex = location.tabIndex);
       ref.read(appLocationProvider.notifier).setTab(location.tabIndex);
 
+      if (location.tabIndex == _galleryTab) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            showBackupConsentDialogIfNeeded(context, ref);
+          }
+        });
+      }
+
       final nav = _navigatorKeys[location.tabIndex].currentState;
       if (nav == null) return;
 
@@ -196,7 +213,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = MediaQuery.of(context).size.width > 800;
+    final size = MediaQuery.sizeOf(context);
+    // Wide but short viewports (e.g. 7" tablet 1024x600) cannot fit a labelled rail.
+    final useNavigationRail = size.width > 800 && size.height >= 720;
     final navSelectedIndex = _navIndexFromTabIndex(_selectedIndex);
     final tabRoots = [
       const TypesScreen(),
@@ -251,7 +270,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Scaffold(
                 body: Row(
                   children: [
-                    if (isDesktop)
+                    if (useNavigationRail)
                       NavigationRail(
                         selectedIndex: navSelectedIndex,
                         onDestinationSelected: _onNavSelected,
@@ -316,7 +335,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ],
                 ),
-                bottomNavigationBar: isDesktop
+                bottomNavigationBar: useNavigationRail
                     ? null
                     : NavigationBar(
                         selectedIndex: navSelectedIndex,

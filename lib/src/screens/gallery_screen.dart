@@ -15,25 +15,12 @@ class GalleryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final observationsAsync = ref.watch(observationsProvider);
-    final consentShown = ref.watch(consentShownProvider);
-    final user = ref.watch(authProvider);
     final collision = ref.watch(collisionProvider);
 
     // REACTIVE: Handle Account Collisions
     if (collision.type != CollisionType.none) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showCollisionDialog(context, ref, collision);
-      });
-    }
-
-    // Show consent dialog on first gallery visit ONLY if not already logged in
-    if (!consentShown && user == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => const BackupConsentDialog(),
-        );
       });
     }
 
@@ -371,13 +358,7 @@ class _SyncIconButtonState extends ConsumerState<_SyncIconButton> with SingleTic
       return IconButton(
         icon: const Icon(Icons.cloud_off, color: Colors.grey),
         tooltip: 'Backup not configured',
-        onPressed: () {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const BackupConsentDialog(),
-          );
-        },
+        onPressed: () => showBackupConsentDialog(context),
       );
     }
 

@@ -5,37 +5,37 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000267">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000251">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android check_remote_version lane" time="0.000113">
+      <testcase classname="fastlane.lanes" name="1: Switch to android check_remote_version lane" time="7.1e-05">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: google_play_track_version_codes" time="2.120981">
+      <testcase classname="fastlane.lanes" name="2: google_play_track_version_codes" time="2.053528">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos;+&apos; -f 2" time="0.021898">
+      <testcase classname="fastlane.lanes" name="3: grep &apos;version:&apos; /Users/amarok/src/NIN/natur-i-norge/pubspec.yaml | cut -d &apos;+&apos; -f 2" time="0.029256">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build appbundle --release" time="133.970412">
+      <testcase classname="fastlane.lanes" name="4: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build appbundle --release" time="156.252027">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build apk --release" time="31.979532">
+      <testcase classname="fastlane.lanes" name="5: cd /Users/amarok/src/NIN/natur-i-norge &amp;&amp; flutter build apk --release" time="21.421108">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: upload_to_play_store" time="115.38516">
+      <testcase classname="fastlane.lanes" name="6: upload_to_play_store" time="100.329562">
         
       </testcase>
     

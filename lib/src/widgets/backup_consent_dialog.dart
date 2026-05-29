@@ -3,6 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
 import '../utils/auth_errors.dart';
 
+bool _backupConsentDialogOpen = false;
+
+Future<void> showBackupConsentDialog(BuildContext context) async {
+  if (_backupConsentDialogOpen) return;
+
+  _backupConsentDialogOpen = true;
+  try {
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const BackupConsentDialog(),
+    );
+  } finally {
+    _backupConsentDialogOpen = false;
+  }
+}
+
+Future<void> showBackupConsentDialogIfNeeded(
+  BuildContext context,
+  WidgetRef ref,
+) async {
+  if (ref.read(consentShownProvider)) return;
+  if (ref.read(authProvider) != null) return;
+
+  await showBackupConsentDialog(context);
+}
+
 class BackupConsentDialog extends ConsumerStatefulWidget {
   const BackupConsentDialog({super.key});
 
