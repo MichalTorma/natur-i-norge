@@ -214,8 +214,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    // Wide but short viewports (e.g. 7" tablet 1024x600) cannot fit a labelled rail.
-    final useNavigationRail = size.width > 800 && size.height >= 720;
+    // Wide but short viewports (7–10" tablets) cannot fit a NavigationRail.
+    final useNavigationRail = size.width > 800 && size.height >= 850;
+    final railLabelType = size.height >= 960
+        ? NavigationRailLabelType.all
+        : NavigationRailLabelType.selected;
     final navSelectedIndex = _navIndexFromTabIndex(_selectedIndex);
     final tabRoots = [
       const TypesScreen(),
@@ -274,9 +277,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       NavigationRail(
                         selectedIndex: navSelectedIndex,
                         onDestinationSelected: _onNavSelected,
-                        labelType: NavigationRailLabelType.all,
+                        labelType: railLabelType,
                         leading: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 24),
+                          padding: EdgeInsets.symmetric(
+                            vertical: size.height >= 960 ? 24 : 8,
+                          ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.asset(

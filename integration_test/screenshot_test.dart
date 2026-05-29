@@ -7,6 +7,12 @@ import 'package:naturinorge_guide/main.dart' as app;
 import 'package:naturinorge_guide/src/widgets/ecological_matrix.dart';
 import 'package:naturinorge_guide/src/widgets/nin_search_sheet.dart';
 
+/// Headroom after [LocalTypeImage] fade-in (420 ms) on slow simulators/emulators.
+const _imageRevealDuration = Duration(milliseconds: 700);
+
+/// Extra pump after Flutter reports settled — CI simulators lag behind frames.
+const _simulatorSettleBuffer = Duration(milliseconds: 1800);
+
 const _allScreenshots = {
   '1_home_screen',
   '2_search_results',
@@ -42,12 +48,58 @@ bool needsNaTb01Detail(Set<String> selected) {
       selected.contains('4_natb01_matrix');
 }
 
+Finder _loadedTypeImages() {
+  return find.byWidgetPredicate(
+    (widget) => widget is Image && widget.image is MemoryImage,
+  );
+}
+
+(int minLoadedImages, Duration extra) _screenshotWaitParams(String name) {
+  return switch (name) {
+    '1_home_screen' => (4, Duration.zero),
+    '2_search_results' => (0, Duration.zero),
+    '3_natb01_detail' => (1, Duration.zero),
+    '4_natb01_matrix' => (0, const Duration(seconds: 1)),
+    _ => (0, Duration.zero),
+  };
+}
+
+Future<void> waitBeforeScreenshot(
+  WidgetTester tester, {
+  int minLoadedImages = 0,
+  Duration extra = Duration.zero,
+}) async {
+  await tester.pumpAndSettle(const Duration(seconds: 3));
+
+  for (var attempt = 0; attempt < 90; attempt++) {
+    await tester.pump(const Duration(milliseconds: 500));
+    if (find.byType(CircularProgressIndicator).evaluate().isEmpty) break;
+  }
+
+  if (minLoadedImages > 0) {
+    for (var attempt = 0; attempt < 80; attempt++) {
+      await tester.pump(const Duration(milliseconds: 500));
+      if (_loadedTypeImages().evaluate().length >= minLoadedImages) break;
+    }
+    await tester.pump(_imageRevealDuration);
+  }
+
+  await tester.pump(_simulatorSettleBuffer + extra);
+}
+
 Future<void> maybeCaptureScreenshot(
+  WidgetTester tester,
   IntegrationTestWidgetsFlutterBinding binding,
   Set<String> selected,
   String name,
 ) async {
   if (!selected.contains(name)) return;
+  final (minLoadedImages, extra) = _screenshotWaitParams(name);
+  await waitBeforeScreenshot(
+    tester,
+    minLoadedImages: minLoadedImages,
+    extra: extra,
+  );
   await binding.takeScreenshot(name);
   print('Captured $name');
 }
@@ -101,12 +153,22 @@ Future<void> captureSearchResults(
   expect(searchField, findsOneWidget);
   await tester.enterText(searchField, 'NA-TB01');
   await tester.pump(const Duration(milliseconds: 300));
-  await tester.pumpAndSettle(const Duration(seconds: 2));
+  await tester.pumpAndSettle(const Duration(seconds: 3));
+
+  final searchResult = find.descendant(
+    of: find.byType(ListTile, skipOffstage: _offstage),
+    matching: find.text('Fastmarksskogsmark', skipOffstage: _offstage),
+  );
+  for (var attempt = 0; attempt < 30; attempt++) {
+    await tester.pump(const Duration(milliseconds: 500));
+    if (searchResult.evaluate().isNotEmpty) break;
+  }
+  expect(searchResult, findsOneWidget);
 
   FocusManager.instance.primaryFocus?.unfocus();
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
-  await maybeCaptureScreenshot(binding, selected, '2_search_results');
+  await maybeCaptureScreenshot(tester, binding, selected, '2_search_results');
   await closeSearchSheet(tester);
 }
 
@@ -168,34 +230,45 @@ Future<void> scrollToEcologicalMatrix(WidgetTester tester) async {
     skipOffstage: _offstage,
   );
   final matrixWidget = find.byType(EcologicalMatrix, skipOffstage: _offstage);
+  final matrixCell = find.textContaining('TB01-', skipOffstage: _offstage);
 
   FocusManager.instance.primaryFocus?.unfocus();
   await tester.pumpAndSettle(const Duration(seconds: 1));
+  expect(find.byType(NinSearchSheet), findsNothing);
+
+  final viewSize = tester.view.physicalSize / tester.view.devicePixelRatio;
+  final pageScrollDelta = viewSize.height * 0.45;
+  final fineScrollDelta = viewSize.height * 0.12;
+  final targetTopMin = viewSize.height * 0.05;
+  final targetTopMax = viewSize.height * 0.2;
 
   // Search navigation leaves the full highlighted description expanded, so the
   // matrix sliver is far below the fold and builds lazily while scrolling.
-  for (var i = 0; i < 80; i++) {
+  for (var i = 0; i < 100; i++) {
     if (matrixWidget.evaluate().isNotEmpty &&
-        matrixHeader.evaluate().isNotEmpty) {
+        matrixHeader.evaluate().isNotEmpty &&
+        matrixCell.evaluate().isNotEmpty) {
       break;
     }
-    await scrollPageDown(tester, scrollView);
+    await scrollPageDown(tester, scrollView, delta: pageScrollDelta);
   }
 
   expect(matrixWidget, findsWidgets);
   expect(matrixHeader, findsWidgets);
+  expect(matrixCell, findsWidgets);
 
   // Do not use ensureVisible here — EcologicalMatrix is taller than the viewport
   // and contains nested scrollables, so ensureVisible loops on drag gestures.
-  for (var i = 0; i < 12; i++) {
+  for (var i = 0; i < 24; i++) {
     final headerTop = tester.getRect(matrixHeader.first).top;
-    if (headerTop >= 72 && headerTop <= 220) break;
-    final delta = headerTop < 72 ? 150.0 : -150.0;
+    if (headerTop >= targetTopMin && headerTop <= targetTopMax) break;
+    final delta = headerTop < targetTopMin ? fineScrollDelta : -fineScrollDelta;
     await tester.dragFrom(tester.getCenter(scrollView), Offset(0, delta));
     await tester.pump(const Duration(milliseconds: 250));
   }
 
-  await tester.pump(const Duration(milliseconds: 500));
+  await tester.pumpAndSettle(const Duration(seconds: 2));
+  await tester.pump(_simulatorSettleBuffer);
 }
 
 void main() {
@@ -213,7 +286,7 @@ void main() {
     }
 
     await waitForTypesHome(tester);
-    await maybeCaptureScreenshot(binding, selected, '1_home_screen');
+    await maybeCaptureScreenshot(tester, binding, selected, '1_home_screen');
 
     if (selected.contains('2_search_results')) {
       await captureSearchResults(tester, binding, selected);
@@ -221,12 +294,11 @@ void main() {
 
     if (needsNaTb01Detail(selected)) {
       await openNaTb01FromSearch(tester);
-      await maybeCaptureScreenshot(binding, selected, '3_natb01_detail');
-
+      await maybeCaptureScreenshot(tester, binding, selected, '3_natb01_detail');
 
       if (selected.contains('4_natb01_matrix')) {
         await scrollToEcologicalMatrix(tester);
-        await maybeCaptureScreenshot(binding, selected, '4_natb01_matrix');
+        await maybeCaptureScreenshot(tester, binding, selected, '4_natb01_matrix');
       }
     }
 

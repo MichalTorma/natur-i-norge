@@ -12,6 +12,9 @@ set -e
 # Debug Android on a visible emulator (single phone):
 #   HEADED=1 AVD=fastlane-phone ./scripts/capture_screenshots.sh matrix android
 #
+# iOS runs 3 simulators (iPhone 17 Pro Max, iPhone SE, iPad Pro 13").
+# Xcode only sees a simulator after it is fully booted — the script handles that.
+#
 # Aliases: 1/home, 2/search, 3/detail, 4/matrix
 
 SCREENSHOT="${1:-all}"

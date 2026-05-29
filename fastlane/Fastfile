@@ -46,7 +46,8 @@ platform :ios do
       screenshots_path: "#{FASTLANE_DIR}/screenshots/ios",
       skip_binary_upload: true, # We already uploaded it via upload_to_testflight
       force: true,
-      skip_screenshots: false
+      skip_screenshots: false,
+      overwrite_screenshots: true # replace App Store Connect screenshots, do not append to existing
     )
   end
   
@@ -56,7 +57,8 @@ platform :ios do
       metadata_path: "#{FASTLANE_DIR}/metadata/ios",
       screenshots_path: "#{FASTLANE_DIR}/screenshots/ios",
       skip_binary_upload: true,
-      force: true
+      force: true,
+      overwrite_screenshots: true
     )
   end
 end
@@ -87,6 +89,14 @@ platform :android do
     )
   end
 
+  # Play Store listing images: wipe each screenshot bucket on the store, then upload
+  # only what exists under metadata/android/<locale>/images/<type>/.
+  PLAY_STORE_LISTING_OPTIONS = {
+    metadata_path: "#{FASTLANE_DIR}/metadata/android",
+    sync_image_upload: false,
+    skip_upload_screenshots: false
+  }.freeze
+
   desc "Deploy a new version to the Google Play"
   lane :deploy do
     check_remote_version
@@ -98,7 +108,18 @@ platform :android do
     upload_to_play_store(
       track: 'internal',
       aab: "#{PROJECT_ROOT}/build/app/outputs/bundle/release/app-release.aab",
-      metadata_path: "#{FASTLANE_DIR}/metadata/android"
+      **PLAY_STORE_LISTING_OPTIONS
+    )
+  end
+
+  desc "Update Play Store metadata and screenshots (no binary upload)"
+  lane :metadata do
+    upload_to_play_store(
+      track: 'internal',
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_changelogs: true,
+      **PLAY_STORE_LISTING_OPTIONS
     )
   end
 end
