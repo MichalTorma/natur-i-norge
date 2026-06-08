@@ -1,0 +1,85 @@
+/**
+ * Natur i Norge — GitHub Pages web deploy (separate Jenkins job)
+ *
+ * Why a separate pipeline from Jenkinsfile (mobile)?
+ *   - Web build does not need macOS, emulators, or store signing.
+ *   - deploy_web.sh commits docs/app/ (and optionally docs/v2.3/) and pushes to
+ *     main — that should be manual or release-only, not on every mobile CI run.
+ *   - GitHub Pages is configured for main/docs; pushing docs is effectively a
+ *     production deploy distinct from TestFlight / Play internal.
+ *
+ * Suggested Jenkins setup:
+ *   - Job name: natur-i-norge-web
+ *   - Agent: any Linux node with Flutter (or mbp-m2p if you only have one worker)
+ *   - Branch filter: main only, or a dedicated branch (e.g. release/web) if you
+ *     prefer PRs to merge app code first and deploy web from a controlled branch.
+ *   - Parameter DEPLOY: default false on multibranch; true only for release clicks.
+ *
+ * Credential: natur-i-norge-github-push
+ *   SSH Username with private key (Jenkins credential), username = git, key = deploy key
+ */
+
+pipeline {
+  agent any
+
+  options {
+    timestamps()
+    timeout(time: 45, unit: 'MINUTES')
+    buildDiscarder(logRotator(numToKeepStr: '20'))
+  }
+
+  parameters {
+    booleanParam(name: 'DEPLOY', defaultValue: false,
+      description: 'If true: commit docs/ and git push (requires natur-i-norge-github-push)')
+  }
+
+  environment {
+    LANG = 'en_US.UTF-8'
+    LC_ALL = 'en_US.UTF-8'
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build web') {
+      steps {
+        sh '''
+          set -e
+          flutter pub get
+          ./scripts/deploy_web.sh
+        '''
+      }
+    }
+
+    stage('Deploy to GitHub Pages') {
+      when { expression { return params.DEPLOY } }
+      steps {
+        withCredentials([sshUserPrivateKey(
+          credentialsId: 'natur-i-norge-github-push',
+          keyFileVariable: 'GIT_SSH_KEY',
+          usernameVariable: 'GIT_SSH_USER'
+        )]) {
+          sh '''
+            set -e
+            export GIT_SSH_COMMAND="ssh -i $GIT_SSH_KEY -o StrictHostKeyChecking=accept-new"
+            git config user.name "Jenkins"
+            git config user.email "jenkins@natur-i-norge.ci"
+            ./scripts/deploy_web.sh --deploy
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      archiveArtifacts artifacts: 'docs/app/**',
+        allowEmptyArchive: true,
+        fingerprint: true
+    }
+  }
+}
