@@ -71,6 +71,7 @@ pipeline {
     LANG = 'en_US.UTF-8'
     LC_ALL = 'en_US.UTF-8'
     JAVA_HOME = '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home'
+    ANDROID_HOME = "${env.HOME}/Library/Android/sdk"
     ANDROID_SDK_ROOT = "${env.HOME}/Library/Android/sdk"
     PATH = "/opt/homebrew/opt/openjdk@17/bin:${env.HOME}/Library/Android/sdk/cmdline-tools/latest/bin:${env.HOME}/Library/Android/sdk/platform-tools:${env.HOME}/Library/Android/sdk/emulator:/opt/homebrew/bin:/usr/local/bin:${env.PATH}"
     // Must match fastlane/Appfile json_key_file basename
