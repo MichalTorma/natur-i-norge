@@ -284,3 +284,4 @@ scripts/venv/
 macos/Flutter/ephemeral/
 google-cloud-sdk/
 firebase/
+.cursor/settings.json
