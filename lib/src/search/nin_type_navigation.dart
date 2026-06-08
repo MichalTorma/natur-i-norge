@@ -34,7 +34,7 @@ Future<void> navigateToTypePath(
   if (!context.mounted) return;
 
   final nav = Navigator.of(context);
-  if (resetStack) {
+  if (resetStack && onPick == null) {
     nav.popUntil((route) => route.isFirst);
   }
 

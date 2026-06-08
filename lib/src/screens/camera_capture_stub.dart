@@ -8,6 +8,8 @@ typedef CameraCaptureFactory = CameraCapture Function();
 abstract class CameraCapture {
   static CameraCaptureFactory? _factory;
 
+  static bool get hasRegisteredFactory => _factory != null;
+
   static CameraCapture create() {
     final factory = _factory;
     if (factory == null) {
