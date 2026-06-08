@@ -352,8 +352,9 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
       AppRoutes.types(
         onPick: (type) {
           setState(() => _selectedType = type);
-          Navigator.of(context).popUntil((route) => route.settings.name == 'type_picker');
-          Navigator.of(context).pop();
+          Navigator.of(context).popUntil(
+            (route) => route.settings.name == 'observation_review',
+          );
         },
       ),
     );
