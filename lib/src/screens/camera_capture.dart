@@ -11,6 +11,8 @@ bool _cameraCaptureInitialized = false;
 /// Must be called before accessing [CameraCapture.create].
 void initCameraCapture() {
   if (_cameraCaptureInitialized) return;
-  CameraCapture.registerFactory(platform.createCameraCapture);
+  if (!CameraCapture.hasRegisteredFactory) {
+    CameraCapture.registerFactory(platform.createCameraCapture);
+  }
   _cameraCaptureInitialized = true;
 }
