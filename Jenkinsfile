@@ -43,7 +43,6 @@ pipeline {
   agent { label 'mbp-m2p' }
 
   options {
-    timestamps()
     disableConcurrentBuilds()
     timeout(time: 3, unit: 'HOURS')
     buildDiscarder(logRotator(numToKeepStr: '30'))
