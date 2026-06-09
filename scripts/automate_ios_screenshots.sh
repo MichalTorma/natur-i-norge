@@ -10,11 +10,40 @@ SCREENSHOT_NAME="${1:-all}"
 #   ./scripts/automate_ios_screenshots.sh matrix   # matrix only
 #
 # Devices (App Store sizes):
-#   iPhone 17 Pro Max, iPhone SE (3rd gen), iPad Pro 13-inch (M5)
+# Look up simulator UDIDs dynamically, falling back to older models if necessary.
+get_simulator_id() {
+    local primary_name="$1"
+    local fallback_name="$2"
+    
+    local id
+    id=$(xcrun simctl list devices | grep -E "${primary_name} \(" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+    if [ -n "$id" ]; then
+        echo "$id"
+        return 0
+    fi
+    
+    id=$(xcrun simctl list devices | grep -E "${fallback_name} \(" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+    if [ -n "$id" ]; then
+        echo "$id"
+        return 0
+    fi
+    
+    return 1
+}
 
-IPHONE_ID="A6715548-2D67-4C04-9159-7992A70C7674"    # iPhone 17 Pro Max
-IPHONE_SE_ID="D178596E-8A69-4A00-95C5-6D4A7426899F" # iPhone SE (3rd generation)
-IPAD_ID="CB4C0D58-BE3B-4E90-8BE3-B8F49CC7ABB4"      # iPad Pro 13-inch (M5)
+IPHONE_ID=$(get_simulator_id "iPhone 17 Pro Max" "iPhone 15 Pro Max" || echo "")
+IPHONE_SE_ID=$(get_simulator_id "iPhone SE (3rd generation)" "iPhone SE (3rd generation)" || echo "")
+IPAD_ID=$(get_simulator_id "iPad Pro 13-inch (M5)" "iPad Pro 13-inch (M4)" || echo "")
+
+if [ -z "$IPHONE_ID" ] || [ -z "$IPHONE_SE_ID" ] || [ -z "$IPAD_ID" ]; then
+    echo "❌ Error: Could not locate one or more required simulators."
+    exit 1
+fi
+
+echo "📱 Found Simulator UDIDs:"
+echo "   iPhone (6.7\"/6.9\"): $IPHONE_ID"
+echo "   iPhone SE (4.7\"):   $IPHONE_SE_ID"
+echo "   iPad Pro (13\"):      $IPAD_ID"
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TARGET_DIR="$ROOT/fastlane/screenshots/ios/no"
