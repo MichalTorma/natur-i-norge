@@ -13,6 +13,8 @@ SCREENSHOT_NAME="${1:-all}"
 #   HEADED=1 AVD=fastlane-phone ./scripts/automate_screenshots.sh matrix
 #   HEADED=1 PAUSE_BEFORE_DRIVE=1 ./scripts/automate_screenshots.sh matrix
 
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
 # 1. Setup Environment
 export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
@@ -123,7 +125,6 @@ for avd_name in fastlane-phone fastlane-tablet-7 fastlane-tablet-10; do
     configure_avd "$avd_name"
 done
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 # Only reuse an APK produced by flutter drive in this run (integration_test entry point).
 # A plain `flutter build apk` binary will hang waiting for the driver extension.
 TEST_APK=""
