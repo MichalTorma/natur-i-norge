@@ -42,6 +42,12 @@ Future<void> startCaptureFromGallery(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+Future<void> _safePump(WidgetTester tester, {int count = 15, Duration duration = const Duration(milliseconds: 200)}) async {
+  for (var i = 0; i < count; i++) {
+    await tester.pump(duration);
+  }
+}
+
 Future<void> takeFakePhoto(WidgetTester tester) async {
   final choosePhoto = find.text('Choose Photo', skipOffstage: _offstage);
   if (choosePhoto.evaluate().isNotEmpty) {
@@ -49,13 +55,13 @@ Future<void> takeFakePhoto(WidgetTester tester) async {
   } else {
     await tester.tap(find.byType(FloatingActionButton).last);
   }
-  await tester.pumpAndSettle(const Duration(seconds: 2));
+  await _safePump(tester);
   expect(find.text('New Observation'), findsOneWidget);
 }
 
 Future<void> openTypePickerFromReview(WidgetTester tester) async {
   await tester.tap(find.text('Select NiN Type...'));
-  await tester.pumpAndSettle(const Duration(seconds: 2));
+  await _safePump(tester);
 }
 
 Future<void> searchAndSelectMappingUnit(WidgetTester tester) async {
@@ -64,14 +70,14 @@ Future<void> searchAndSelectMappingUnit(WidgetTester tester) async {
   );
   expect(searchEntry, findsWidgets);
   await tester.tap(searchEntry.last);
-  await tester.pumpAndSettle();
+  await _safePump(tester);
 
   await tester.enterText(
     find.byWidgetPredicate((widget) => widget is TextField && !widget.readOnly),
     observationFlowMappingUnitId,
   );
   await tester.pump(const Duration(milliseconds: 400));
-  await tester.pumpAndSettle(const Duration(seconds: 3));
+  await _safePump(tester, count: 15);
 
   final result = find.descendant(
     of: find.byType(ListTile, skipOffstage: _offstage),
@@ -82,10 +88,10 @@ Future<void> searchAndSelectMappingUnit(WidgetTester tester) async {
   );
   expect(result, findsOneWidget);
   await tester.tap(result);
-  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await _safePump(tester, count: 25);
 
   await tester.tap(find.text('Select this Mapping Unit'));
-  await tester.pumpAndSettle(const Duration(seconds: 2));
+  await _safePump(tester, count: 15);
   expect(find.text('New Observation'), findsOneWidget);
 }
 
@@ -102,13 +108,18 @@ Future<void> waitForSaveEnabled(WidgetTester tester) async {
 }
 
 Future<void> saveObservation(WidgetTester tester) async {
-  await tester.tap(find.text('SAVE OBSERVATION'));
+  final saveButton = find.text('SAVE OBSERVATION');
+  await tester.ensureVisible(saveButton);
   await tester.pumpAndSettle();
+  await tester.tap(saveButton);
+  await _safePump(tester);
 
   final saveAnyway = find.text('Save Anyway');
   if (saveAnyway.evaluate().isNotEmpty) {
+    await tester.ensureVisible(saveAnyway);
+    await tester.pumpAndSettle();
     await tester.tap(saveAnyway);
-    await tester.pumpAndSettle(const Duration(seconds: 5));
+    await _safePump(tester, count: 25);
   }
 }
 

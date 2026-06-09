@@ -76,6 +76,26 @@ class _ObservationReviewScreenState extends ConsumerState<ObservationReviewScree
         return;
       }
 
+      // Seed location with getCurrentPosition in case the stream doesn't fire immediately
+      Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
+      ).then((Position position) {
+        if (mounted && _position == null) {
+          setState(() {
+            _position = position;
+            if (_bestPosition == null || position.accuracy < _bestPosition!.accuracy) {
+              _bestPosition = position;
+            }
+            _isGettingLocation = false;
+            _locationError = null;
+          });
+        }
+      }).catchError((e) {
+        debugPrint('Error getting initial position: $e');
+      });
+
       // Start the stream for continuous high-accuracy updates
       _positionSubscription = Geolocator.getPositionStream(
         locationSettings: const LocationSettings(

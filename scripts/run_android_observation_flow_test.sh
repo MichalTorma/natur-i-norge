@@ -116,6 +116,23 @@ prepare_device() {
 run_test() {
   echo "🧪 Running observation flow integration test on $SERIAL..."
   cd "$ROOT"
+
+  # Run a background job to grant permissions once the app is installed
+  (
+    echo "⏳ Background permission granter started..."
+    for i in {1..45}; do
+      if adb -s "$SERIAL" shell pm list packages | grep -q "$PACKAGE"; then
+        echo "🔐 Package $PACKAGE detected! Granting runtime permissions..."
+        adb -s "$SERIAL" shell pm grant "$PACKAGE" android.permission.CAMERA >/dev/null 2>&1 || true
+        adb -s "$SERIAL" shell pm grant "$PACKAGE" android.permission.ACCESS_FINE_LOCATION >/dev/null 2>&1 || true
+        adb -s "$SERIAL" shell pm grant "$PACKAGE" android.permission.ACCESS_COARSE_LOCATION >/dev/null 2>&1 || true
+        echo "✅ Runtime permissions granted in background"
+        break
+      fi
+      sleep 2
+    done
+  ) &
+
   flutter test integration_test/observation_flow_test.dart --device-id "$SERIAL"
 }
 
