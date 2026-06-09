@@ -49,7 +49,7 @@ create_avd() {
     fi
 }
 
-create_avd "fastlane-phone" "pixel_9"
+create_avd "fastlane-phone" "pixel_7"
 create_avd "fastlane-tablet-7" "7in WSVGA (Tablet)"
 create_avd "fastlane-tablet-10" "10.1in WXGA (Tablet)"
 

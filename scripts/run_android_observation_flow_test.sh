@@ -54,7 +54,7 @@ boot_emulator() {
 
   if ! "$AVDMANAGER" list avd | grep -q "$AVD"; then
       echo "📱 Creating emulator: $AVD..."
-      echo "no" | "$AVDMANAGER" create avd -n "$AVD" -k "$IMAGE" -d "pixel_9" --force
+      echo "no" | "$AVDMANAGER" create avd -n "$AVD" -k "$IMAGE" -d "pixel_7" --force
   fi
 
   # Configure the AVD (GPU host and cores)
