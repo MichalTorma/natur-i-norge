@@ -23,10 +23,20 @@ SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
 AVDMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager"
 IMAGE="system-images;android-34;google_apis;arm64-v8a"
 
-# Ensure Python's Pillow library is installed for image processing/validation
+# Set up a local Python virtual environment to avoid modifying global python
+VENV_DIR="$ROOT/.venv"
+if [ ! -d "$VENV_DIR" ]; then
+    echo "📦 Creating python virtual environment in $VENV_DIR..."
+    python3 -m venv "$VENV_DIR"
+fi
+# Activate venv
+source "$VENV_DIR/bin/activate"
+
+# Ensure Pillow is installed in the venv
 if ! python3 -c "import PIL" >/dev/null 2>&1; then
-    echo "📦 Pillow not found. Installing Pillow..."
-    python3 -m pip install Pillow --user || pip3 install Pillow || true
+    echo "📦 Installing Pillow in virtual environment..."
+    python3 -m pip install --upgrade pip
+    python3 -m pip install Pillow
 fi
 
 echo "🚀 Starting Screenshot Automation..."
