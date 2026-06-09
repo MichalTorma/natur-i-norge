@@ -282,7 +282,7 @@ capture_for() {
 
     if [[ "$avd_name" == fastlane-tablet-* ]]; then
         echo "📱 Hiding system bars for full-height Play Store screenshots..."
-        adb -s "$SERIAL" shell settings put global policy_control immersive.full=*
+        adb -s "$SERIAL" shell settings put global policy_control 'immersive.full=*'
         sleep 2
     fi
 
