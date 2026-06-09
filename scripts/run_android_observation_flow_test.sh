@@ -40,6 +40,39 @@ boot_emulator() {
   pkill -f "emulator.*-avd $AVD" > /dev/null 2>&1 || true
   sleep 3
 
+  # Ensure the AVD exists and is configured
+  SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+  AVDMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager"
+  IMAGE="system-images;android-34;google_apis;arm64-v8a"
+
+  if ! "$SDKMANAGER" --list_installed | grep -q "$IMAGE"; then
+      echo "📦 Downloading system image (this might take a few minutes)..."
+      yes | "$SDKMANAGER" --install "$IMAGE"
+  fi
+
+  if ! "$AVDMANAGER" list avd | grep -q "$AVD"; then
+      echo "📱 Creating emulator: $AVD..."
+      echo "no" | "$AVDMANAGER" create avd -n "$AVD" -k "$IMAGE" -d "pixel_9" --force
+  fi
+
+  # Configure the AVD (GPU host and cores)
+  local config="$HOME/.android/avd/${AVD}.avd/config.ini"
+  if [ -f "$config" ]; then
+      for key_value in \
+          "hw.gpu.enabled=yes" \
+          "hw.gpu.mode=host" \
+          "hw.cpu.ncore=2" \
+          "showDeviceFrame=no"; do
+          local key="${key_value%%=*}"
+          local value="${key_value#*=}"
+          if grep -q "^${key}=" "$config"; then
+              sed -i '' "s|^${key}=.*|${key}=${value}|" "$config"
+          else
+              echo "${key}=${value}" >> "$config"
+          fi
+      done
+  fi
+
   echo "🎬 Launching $AVD on $SERIAL..."
   EMULATOR_FLAGS=(
     -avd "$AVD"
