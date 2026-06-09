@@ -12,40 +12,59 @@ SCREENSHOT_NAME="${1:-all}"
 # Devices (App Store sizes):
 # Look up simulator UDIDs dynamically, falling back to older models if necessary.
 get_simulator_id() {
-    # Check each candidate in order
-    for name in "$@"; do
+    # 1. Get list of available/installed runtimes
+    local runtimes
+    runtimes=$(xcrun simctl list runtimes | grep -v "unavailable" | grep -o -E "(iOS|iPadOS) [0-9]+\.[0-9]+")
+    
+    # 2. Loop through each available runtime
+    while read -r runtime; do
+        [ -n "$runtime" ] || continue
+        # For this runtime, check each candidate name passed as argument in order
+        for name in "$@"; do
+            local id
+            id=$(xcrun simctl list devices "$runtime" 2>/dev/null | grep -E "${name} \(" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+            if [ -n "$id" ]; then
+                echo "$id"
+                return 0
+            fi
+        done
+    done <<< "$runtimes"
+    return 1
+}
+
+get_last_resort_id() {
+    local pattern="$1"
+    local runtimes
+    runtimes=$(xcrun simctl list runtimes | grep -v "unavailable" | grep -o -E "(iOS|iPadOS) [0-9]+\.[0-9]+")
+    
+    while read -r runtime; do
+        [ -n "$runtime" ] || continue
         local id
-        id=$(xcrun simctl list devices | grep -E "${name} \(" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+        id=$(xcrun simctl list devices "$runtime" 2>/dev/null | grep -i "$pattern" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
         if [ -n "$id" ]; then
             echo "$id"
             return 0
         fi
-    done
+    done <<< "$runtimes"
     return 1
 }
 
 IPHONE_ID=$(get_simulator_id "iPhone 17 Pro Max" "iPhone 16 Pro Max" "iPhone 15 Pro Max" "iPhone 14 Pro Max" "iPhone 13 Pro Max" "iPhone 12 Pro Max" "iPhone 11 Pro Max" "iPhone XS Max" "iPhone 15 Plus" "iPhone 14 Plus" || echo "")
 if [ -z "$IPHONE_ID" ]; then
-    # Last resort fallback: any Pro Max/Plus/Large iPhone, or any iPhone
-    IPHONE_ID=$(xcrun simctl list devices | grep -i "iPhone" | grep -i -E "Max|Plus" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
-    if [ -z "$IPHONE_ID" ]; then
-        IPHONE_ID=$(xcrun simctl list devices | grep -i "iPhone" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
-    fi
+    # Last resort fallback: any Pro Max/Plus/Large iPhone under a valid runtime
+    IPHONE_ID=$(get_last_resort_id "Max" || get_last_resort_id "Plus" || get_last_resort_id "iPhone" || echo "")
 fi
 
 IPHONE_SE_ID=$(get_simulator_id "iPhone SE (3rd generation)" "iPhone SE (2nd generation)" "iPhone SE" "iPhone 8" "iPhone 7" "iPhone 6" || echo "")
 if [ -z "$IPHONE_SE_ID" ]; then
-    # Last resort fallback: any standard or smaller iPhone
-    IPHONE_SE_ID=$(xcrun simctl list devices | grep -i "iPhone" | grep -v -i -E "Max|Plus|Pro|iPad" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
-    if [ -z "$IPHONE_SE_ID" ]; then
-        IPHONE_SE_ID=$(xcrun simctl list devices | grep -i "iPhone" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
-    fi
+    # Last resort fallback: any standard or smaller iPhone under a valid runtime
+    IPHONE_SE_ID=$(get_last_resort_id "iPhone" || echo "")
 fi
 
 IPAD_ID=$(get_simulator_id "iPad Pro 13-inch (M5)" "iPad Pro 13-inch (M4)" "iPad Pro (12.9-inch)" "iPad Pro 12.9-inch" "iPad Pro 11-inch" "iPad Pro (11-inch)" "iPad Air" "iPad" || echo "")
 if [ -z "$IPAD_ID" ]; then
-    # Last resort fallback: any iPad
-    IPAD_ID=$(xcrun simctl list devices | grep -i "iPad" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+    # Last resort fallback: any iPad under a valid runtime
+    IPAD_ID=$(get_last_resort_id "iPad" || echo "")
 fi
 
 if [ -z "$IPHONE_ID" ] || [ -z "$IPHONE_SE_ID" ] || [ -z "$IPAD_ID" ]; then
