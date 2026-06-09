@@ -47,7 +47,9 @@ boot_emulator() {
 
   if ! "$SDKMANAGER" --list_installed | grep -q "$IMAGE"; then
       echo "📦 Downloading system image (this might take a few minutes)..."
+      set +o pipefail
       yes | "$SDKMANAGER" --install "$IMAGE"
+      set -o pipefail
   fi
 
   if ! "$AVDMANAGER" list avd | grep -q "$AVD"; then

@@ -34,7 +34,9 @@ fi
 # 2. Ensure System Image is installed
 if ! $SDKMANAGER --list_installed | grep -q "$IMAGE"; then
     echo "📦 Downloading system image (this might take a few minutes)..."
+    set +o pipefail
     yes | $SDKMANAGER --install "$IMAGE"
+    set -o pipefail
 fi
 
 # 3. Create Emulators Function
