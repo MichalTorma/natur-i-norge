@@ -12,31 +12,46 @@ SCREENSHOT_NAME="${1:-all}"
 # Devices (App Store sizes):
 # Look up simulator UDIDs dynamically, falling back to older models if necessary.
 get_simulator_id() {
-    local primary_name="$1"
-    local fallback_name="$2"
-    
-    local id
-    id=$(xcrun simctl list devices | grep -E "${primary_name} \(" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
-    if [ -n "$id" ]; then
-        echo "$id"
-        return 0
-    fi
-    
-    id=$(xcrun simctl list devices | grep -E "${fallback_name} \(" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
-    if [ -n "$id" ]; then
-        echo "$id"
-        return 0
-    fi
-    
+    # Check each candidate in order
+    for name in "$@"; do
+        local id
+        id=$(xcrun simctl list devices | grep -E "${name} \(" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+        if [ -n "$id" ]; then
+            echo "$id"
+            return 0
+        fi
+    done
     return 1
 }
 
-IPHONE_ID=$(get_simulator_id "iPhone 17 Pro Max" "iPhone 15 Pro Max" || echo "")
-IPHONE_SE_ID=$(get_simulator_id "iPhone SE (3rd generation)" "iPhone SE (3rd generation)" || echo "")
-IPAD_ID=$(get_simulator_id "iPad Pro 13-inch (M5)" "iPad Pro 13-inch (M4)" || echo "")
+IPHONE_ID=$(get_simulator_id "iPhone 17 Pro Max" "iPhone 16 Pro Max" "iPhone 15 Pro Max" "iPhone 14 Pro Max" "iPhone 13 Pro Max" "iPhone 12 Pro Max" "iPhone 11 Pro Max" "iPhone XS Max" "iPhone 15 Plus" "iPhone 14 Plus" || echo "")
+if [ -z "$IPHONE_ID" ]; then
+    # Last resort fallback: any Pro Max/Plus/Large iPhone, or any iPhone
+    IPHONE_ID=$(xcrun simctl list devices | grep -i "iPhone" | grep -i -E "Max|Plus" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+    if [ -z "$IPHONE_ID" ]; then
+        IPHONE_ID=$(xcrun simctl list devices | grep -i "iPhone" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+    fi
+fi
+
+IPHONE_SE_ID=$(get_simulator_id "iPhone SE (3rd generation)" "iPhone SE (2nd generation)" "iPhone SE" "iPhone 8" "iPhone 7" "iPhone 6" || echo "")
+if [ -z "$IPHONE_SE_ID" ]; then
+    # Last resort fallback: any standard or smaller iPhone
+    IPHONE_SE_ID=$(xcrun simctl list devices | grep -i "iPhone" | grep -v -i -E "Max|Plus|Pro|iPad" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+    if [ -z "$IPHONE_SE_ID" ]; then
+        IPHONE_SE_ID=$(xcrun simctl list devices | grep -i "iPhone" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+    fi
+fi
+
+IPAD_ID=$(get_simulator_id "iPad Pro 13-inch (M5)" "iPad Pro 13-inch (M4)" "iPad Pro (12.9-inch)" "iPad Pro 12.9-inch" "iPad Pro 11-inch" "iPad Pro (11-inch)" "iPad Air" "iPad" || echo "")
+if [ -z "$IPAD_ID" ]; then
+    # Last resort fallback: any iPad
+    IPAD_ID=$(xcrun simctl list devices | grep -i "iPad" | head -n 1 | sed -E 's/.*\(([-0-9A-Fa-f]+)\).*/\1/')
+fi
 
 if [ -z "$IPHONE_ID" ] || [ -z "$IPHONE_SE_ID" ] || [ -z "$IPAD_ID" ]; then
     echo "❌ Error: Could not locate one or more required simulators."
+    echo "🔍 Available Simulators on this host:"
+    xcrun simctl list devices
     exit 1
 fi
 
