@@ -23,6 +23,12 @@ SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
 AVDMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager"
 IMAGE="system-images;android-34;google_apis;arm64-v8a"
 
+# Ensure Python's Pillow library is installed for image processing/validation
+if ! python3 -c "import PIL" >/dev/null 2>&1; then
+    echo "📦 Pillow not found. Installing Pillow..."
+    python3 -m pip install Pillow --user || pip3 install Pillow || true
+fi
+
 echo "🚀 Starting Screenshot Automation..."
 if [ "$SCREENSHOT_NAME" != "all" ]; then
   echo "📸 Capturing only: $SCREENSHOT_NAME"

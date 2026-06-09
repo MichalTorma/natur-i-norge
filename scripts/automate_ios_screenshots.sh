@@ -48,6 +48,12 @@ echo "   iPad Pro (13\"):      $IPAD_ID"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TARGET_DIR="$ROOT/fastlane/screenshots/ios/no"
 
+# Ensure Python's Pillow library is installed for image processing/validation
+if ! python3 -c "import PIL" >/dev/null 2>&1; then
+    echo "📦 Pillow not found. Installing Pillow..."
+    python3 -m pip install Pillow --user || pip3 install Pillow || true
+fi
+
 echo "🍏 Starting iOS Screenshot Automation..."
 if [ "$SCREENSHOT_NAME" != "all" ]; then
   echo "📸 Capturing only: $SCREENSHOT_NAME"
