@@ -285,3 +285,9 @@ macos/Flutter/ephemeral/
 google-cloud-sdk/
 firebase/
 .cursor/settings.json
+
+# Required assets for building the app
+!assets/app_icon.png
+!assets/nin_database.sqlite
+!assets/gad_na_tb01.sqlite
+!assets/images.zip
