@@ -223,7 +223,7 @@ void withMobileSecrets(Map config, Closure body) {
           rm -f vault.zip
         fi
 
-        $VAULT_BIN kv get -format=json secret/android/natur-i-norge | python3 -c '
+        $VAULT_BIN read -format=json secret/data/android/natur-i-norge | python3 -c '
 import sys, json, base64
 data = json.load(sys.stdin)["data"]["data"]
 sp = data["store_password"]
