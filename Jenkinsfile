@@ -210,20 +210,38 @@ void withMobileSecrets(Map config, Closure body) {
         set -e
         echo "🔑 Fetching Android signing keys from Vault..."
         mkdir -p android
-        vault kv get -format=json secret/android/natur-i-norge | python3 -c '
+
+        # Find or download Vault CLI
+        if command -v vault >/dev/null 2>&1; then
+          VAULT_BIN="vault"
+        else
+          echo "⚠️ vault CLI not found in PATH, downloading dynamically..."
+          python3 -c "import urllib.request; urllib.request.urlretrieve('https://releases.hashicorp.com/vault/1.17.2/vault_1.17.2_darwin_arm64.zip', 'vault.zip')"
+          python3 -m zipfile -e vault.zip .
+          chmod +x vault
+          VAULT_BIN="./vault"
+          rm -f vault.zip
+        fi
+
+        $VAULT_BIN kv get -format=json secret/android/natur-i-norge | python3 -c '
 import sys, json, base64
 data = json.load(sys.stdin)["data"]["data"]
 sp = data["store_password"]
 kp = data["key_password"]
 ka = data["key_alias"]
 with open("android/key.properties", "w") as f:
-    f.write(f"storePassword={sp}\n")
-    f.write(f"keyPassword={kp}\n")
-    f.write(f"keyAlias={ka}\n")
-    f.write("storeFile=../natur-i-norge.keystore\n")
+    print(f"storePassword={sp}", file=f)
+    print(f"keyPassword={kp}", file=f)
+    print(f"keyAlias={ka}", file=f)
+    print("storeFile=../natur-i-norge.keystore", file=f)
 with open("android/natur-i-norge.keystore", "wb") as f:
     f.write(base64.b64decode(data["keystore_base64"]))
 '
+
+        # Clean up dynamic vault binary if downloaded
+        if [ "$VAULT_BIN" = "./vault" ]; then
+          rm -f ./vault
+        fi
       '''
     }
     body()
