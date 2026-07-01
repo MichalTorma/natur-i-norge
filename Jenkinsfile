@@ -206,24 +206,25 @@ void withMobileSecrets(Map config, Closure body) {
 
   def runWithAndroidSigning = {
     if (config.installAndroidSigning) {
-      sh '''
-        set -e
-        echo "🔑 Fetching Android signing keys from Vault..."
-        mkdir -p android
+      withCredentials([string(credentialsId: 'vault-token', variable: 'VAULT_TOKEN')]) {
+        sh '''
+          set -e
+          echo "🔑 Fetching Android signing keys from Vault..."
+          mkdir -p android
 
-        # Find or download Vault CLI
-        if command -v vault >/dev/null 2>&1; then
-          VAULT_BIN="vault"
-        else
-          echo "⚠️ vault CLI not found in PATH, downloading dynamically..."
-          python3 -c "import urllib.request; urllib.request.urlretrieve('https://releases.hashicorp.com/vault/1.17.2/vault_1.17.2_darwin_arm64.zip', 'vault.zip')"
-          python3 -m zipfile -e vault.zip .
-          chmod +x vault
-          VAULT_BIN="./vault"
-          rm -f vault.zip
-        fi
+          # Find or download Vault CLI
+          if command -v vault >/dev/null 2>&1; then
+            VAULT_BIN="vault"
+          else
+            echo "⚠️ vault CLI not found in PATH, downloading dynamically..."
+            python3 -c "import urllib.request; urllib.request.urlretrieve('https://releases.hashicorp.com/vault/1.17.2/vault_1.17.2_darwin_arm64.zip', 'vault.zip')"
+            python3 -m zipfile -e vault.zip .
+            chmod +x vault
+            VAULT_BIN="./vault"
+            rm -f vault.zip
+          fi
 
-        $VAULT_BIN read -format=json secret/data/android/natur-i-norge | python3 -c '
+          $VAULT_BIN read -format=json secret/data/android/natur-i-norge | python3 -c '
 import sys, json, base64
 data = json.load(sys.stdin)["data"]["data"]
 sp = data["store_password"]
@@ -238,11 +239,12 @@ with open("android/natur-i-norge.keystore", "wb") as f:
     f.write(base64.b64decode(data["keystore_base64"]))
 '
 
-        # Clean up dynamic vault binary if downloaded
-        if [ "$VAULT_BIN" = "./vault" ]; then
-          rm -f ./vault
-        fi
-      '''
+          # Clean up dynamic vault binary if downloaded
+          if [ "$VAULT_BIN" = "./vault" ]; then
+            rm -f ./vault
+          fi
+        '''
+      }
     }
     body()
   }
