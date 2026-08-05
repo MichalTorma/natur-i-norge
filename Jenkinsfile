@@ -15,13 +15,9 @@
  *     Secret file — copy of .env (FASTLANE_USER, FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD, …)
  *     Required for: deploy iOS/Android only
  *
- *   natur-i-norge-android-key-properties
- *     Secret file — android/key.properties (storeFile, storePassword, keyAlias, keyPassword)
- *     Required for: release Android build & deploy
- *
- *   natur-i-norge-android-keystore
- *     Secret file — upload keystore (.jks / .keystore); path must match storeFile in key.properties
- *     Required for: release Android build & deploy
+ *   HashiCorp Vault path: secret/android/natur-i-norge
+ *     Contains key_alias, key_password, keystore_base64, store_password.
+ *     Fetched dynamically during build for Android signing.
  *
  *   natur-i-norge-google-play-json
  *     Secret file — Google Play service account JSON
@@ -76,6 +72,7 @@ pipeline {
     PATH = "/opt/homebrew/opt/ruby/bin:/opt/homebrew/opt/openjdk@17/bin:${env.HOME}/Library/Android/sdk/cmdline-tools/latest/bin:${env.HOME}/Library/Android/sdk/platform-tools:${env.HOME}/Library/Android/sdk/emulator:/opt/homebrew/bin:/usr/local/bin:${env.PATH}"
     // Must match fastlane/Appfile json_key_file basename
     PLAY_JSON_BASENAME = 'api-7365211286744298322-1762-e99cbc1803f2.json'
+    VAULT_ADDR = 'https://vault.gimli.lan'
   }
 
   stages {
@@ -197,22 +194,63 @@ pipeline {
   }
 }
 
-/** Install secret files from Jenkins credentials into the workspace layout publish.sh expects. */
+/** Install secret files from Jenkins credentials and Vault into the workspace layout publish.sh expects. */
 void withMobileSecrets(Map config, Closure body) {
   def creds = []
   if (config.installDotenv) {
     creds << file(credentialsId: 'natur-i-norge-dotenv', variable: 'DOTENV_FILE')
   }
-  if (config.installAndroidSigning) {
-    creds << file(credentialsId: 'natur-i-norge-android-key-properties', variable: 'KEYPROPS_FILE')
-    creds << file(credentialsId: 'natur-i-norge-android-keystore', variable: 'KEYSTORE_FILE')
-  }
   if (config.installPlayJson) {
     creds << file(credentialsId: 'natur-i-norge-google-play-json', variable: 'PLAY_JSON_FILE')
   }
 
-  if (creds.isEmpty()) {
+  def runWithAndroidSigning = {
+    if (config.installAndroidSigning) {
+      withCredentials([string(credentialsId: 'vault-token', variable: 'VAULT_TOKEN')]) {
+        sh '''
+          set -e
+          echo "🔑 Fetching Android signing keys from Vault..."
+          mkdir -p android
+
+          # Find or download Vault CLI
+          if command -v vault >/dev/null 2>&1; then
+            VAULT_BIN="vault"
+          else
+            echo "⚠️ vault CLI not found in PATH, downloading dynamically..."
+            python3 -c "import urllib.request; urllib.request.urlretrieve('https://releases.hashicorp.com/vault/1.17.2/vault_1.17.2_darwin_arm64.zip', 'vault.zip')"
+            python3 -m zipfile -e vault.zip .
+            chmod +x vault
+            VAULT_BIN="./vault"
+            rm -f vault.zip
+          fi
+
+          $VAULT_BIN read -format=json secret/data/android/natur-i-norge | python3 -c '
+import sys, json, base64
+data = json.load(sys.stdin)["data"]["data"]
+sp = data["store_password"]
+kp = data["key_password"]
+ka = data["key_alias"]
+with open("android/key.properties", "w") as f:
+    print(f"storePassword={sp}", file=f)
+    print(f"keyPassword={kp}", file=f)
+    print(f"keyAlias={ka}", file=f)
+    print("storeFile=../natur-i-norge.keystore", file=f)
+with open("android/natur-i-norge.keystore", "wb") as f:
+    f.write(base64.b64decode(data["keystore_base64"]))
+'
+
+          # Clean up dynamic vault binary if downloaded
+          if [ "$VAULT_BIN" = "./vault" ]; then
+            rm -f ./vault
+          fi
+        '''
+      }
+    }
     body()
+  }
+
+  if (creds.isEmpty()) {
+    runWithAndroidSigning()
     return
   }
 
@@ -225,23 +263,12 @@ void withMobileSecrets(Map config, Closure body) {
         . ./.env
         set +a
       fi
-      if [ -n "\${KEYPROPS_FILE:-}" ]; then
-        mkdir -p android
-        cp "\$KEYPROPS_FILE" android/key.properties
-      fi
-      if [ -n "\${KEYSTORE_FILE:-}" ] && [ -f android/key.properties ]; then
-        store_rel=\$(grep '^storeFile=' android/key.properties | cut -d= -f2- | tr -d ' ')
-        if [ -n "\$store_rel" ]; then
-          mkdir -p "\$(dirname "\$store_rel")"
-          cp "\$KEYSTORE_FILE" "\$store_rel"
-        fi
-      fi
       if [ -n "\${PLAY_JSON_FILE:-}" ]; then
         mkdir -p ".secrets/AndroidKeys"
         cp "\$PLAY_JSON_FILE" ".secrets/AndroidKeys/${env.PLAY_JSON_BASENAME}"
       fi
     """
-    body()
+    runWithAndroidSigning()
   }
 }
 
